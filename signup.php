@@ -1,36 +1,82 @@
 <?php
-// core configuration
 include_once "config/core.php";
-// set page title
-$page_title = "Sign Up";
-// include login checker
-$require_login=false;
+
+$page_title = "Sign up";
 include_once "login_checker.php";
-// default to false
-$access_denied=false;
-// post code will be here
-// include page header HTML
+
+//include classes
+include_once "config/database.php";
+include_once "objects/user.php";
+
+//include page header html
 include_once "layout_head.php";
-echo "<div class='col-sm-6 col-md-4 col-md-offset-4'>";
-	// alert messages will be here
-	// actual HTML login form
-	echo "<div class='account-wall'>";
-		echo "<div id='my-tab-content' class='tab-content'>";
-			echo "<div class='tab-pane active' id='login'>";
-				echo "<img class='profile-img' src='libs/images/logo.png'>";
-				echo "<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
-					echo "<input type='text' name='email' class='form-control' placeholder='Email' required autofocus />";
-                    echo "<input type='text' name='lastname' class='form-control' placeholder='Last Name' required />";
-                    echo "<input type='text' name='contact_no' class='form-control' placeholder='Contact No.' required />";
-					echo "<input type='password' name='password' class='form-control' placeholder='Password' required />";
-					echo "<input type='submit' class='btn btn-lg btn-primary btn-block' value='Log In' />";
-                    echo "Already have an account? <a href='signin.php'>Sign In Now!</a>";
-				echo "</form>";
-			echo "</div>";
+
+echo "<div class= 'col-md-12'>";
+
+if ($_POST) {
+	
+	$database = new Database();
+	$db = $database->getConnection();
+
+	//initialize the objects
+	$user = new User($db);
+	//set user contact number to  detect if it already used
+	$user->contact_number = $_POST['contact_number'];
+	$user->baranggay = $_POST['baranggay'];
+	$user->lastname = $_POST['lastname'];
+	$user->firstname = $_POST['firstname'];
+	$user->user_type = "consumer";
+
+	if ($user->create()) {
+
+		echo "<div class='alert alert-success'>";
+			echo "Information Submitted! <a href='{$home_url}login'> Please sign in to continue </a>";
 		echo "</div>";
-	echo "</div>";
+
+	}else{
+		echo "<div class='alert alert-danger'> role='alert'>ERROR! Please try again later.</div>";
+	}
+}
+?>
+<!-- sign up html form -->
+<form action="signup.php" method="post" id="signup">
+	<table class='table table-responsive'>
+		<tr>
+			<td>Contact No.</td>
+			<td><input type="text" name="contact_number" class="form-control" required></td>
+		</tr>
+
+		<tr>
+			<td class='width-30-percent'>Baranggay</td>
+			<td><input type="text" name="baranggay" class="form-control"></td>
+		</tr>
+
+		<tr>
+			<td class='width-30-percent'>Last Name</td>
+			<td><input type="text" name="lastname" class="form-control" required></td>
+		</tr>
+
+		<tr>
+			<td class='width-30-percent'>First Name</td>
+			<td><input type="text" name="firstname" class="form-control" required></td>
+		</tr>
+
+		<tr>
+			<td></td>
+			<td>
+				<button type="submit" class="btn btn-primary">
+					<span class="glyphicon glyphicon-plus"></span> Sign up
+
+				</button>
+			</td>
+		</tr>
+
+	</table>
+</form>
+
+<?php
 echo "</div>";
-// footer HTML and JavaScript codes
+
+
 include_once "layout_foot.php";
 ?>
-
