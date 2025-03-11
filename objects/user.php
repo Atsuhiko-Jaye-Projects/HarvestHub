@@ -14,6 +14,7 @@ class User{
     public $contact_number;
     public $password;
     public $rating;
+    public $first_time_logged_in;
     public $created;
     public $modified;
 
@@ -64,6 +65,43 @@ class User{
         echo "<pre>";
             print_r($stmt->errorInfo());
         echo "</pre>";
+    }
+
+    function credentialExists(){
+
+        $query = "SELECT id, firstname, baranggay, address, user_type, email_address, password, first_time_logged_in
+                FROM " . $this->table_name . "
+                WHERE contact_number = ? AND lastname = ?
+                LIMIT 0, 1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->contact_number=htmlspecialchars(strip_tags($this->contact_number));
+        $this->lastname=htmlspecialchars(strip_tags($this->lastname));
+
+        $stmt->bindParam(1, $this->contact_number);
+        $stmt->bindParam(2, $this->lastname);
+
+        $stmt->execute();
+        
+        $num = $stmt->rowCount();
+
+        if ($num>0) {
+            
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->id = $row['id'];
+            $this->firstname = $row['firstname'];
+            $this->baranggay = $row['baranggay'];
+            $this->address = $row['address'];
+            $this->user_type = $row['user_type'];
+            $this->email_address = $row['email_address'];
+            $this->password = $row['password'];
+            $this->first_time_logged_in = $row['first_time_logged_in'];
+
+            return true;
+        }
+        return false;
     }
 
 }
