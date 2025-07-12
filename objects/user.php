@@ -15,6 +15,7 @@ class User{
     public $password;
     public $rating;
     public $first_time_logged_in;
+    public $farm_details_exists;
     public $created;
     public $modified;
 
@@ -69,7 +70,7 @@ class User{
 
     function credentialExists(){
 
-        $query = "SELECT id, firstname, baranggay, address, user_type, email_address, password, first_time_logged_in
+        $query = "SELECT id, firstname, baranggay, address, user_type, email_address, password, first_time_logged_in, farm_details_exists
                 FROM " . $this->table_name . "
                 WHERE contact_number = ? AND lastname = ?
                 LIMIT 0, 1";
@@ -98,6 +99,7 @@ class User{
             $this->email_address = $row['email_address'];
             $this->password = $row['password'];
             $this->first_time_logged_in = $row['first_time_logged_in'];
+            $this->farm_details_exists = $row['farm_details_exists'];
 
             return true;
         }

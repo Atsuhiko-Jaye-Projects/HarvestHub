@@ -1,0 +1,112 @@
+/*general styling*/
+.container{
+	margin-left: 160px;
+	padding: 0px 10px;
+}
+
+
+/*sidebar styling*/
+.sidenav {
+  height: 100vh; /* Full viewport height */
+  width: 160px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes footer to bottom */
+  padding-top: 20px;
+  padding-bottom: 20px; /* Optional spacing at bottom */
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  background: white;
+  color: black;
+}
+
+.sidenav-footer{
+	padding-bottom: 20px;
+}
+
+/*farm details stlying*/
+
+.farm-details-container {
+  margin-left: 160px; /* to account for your fixed sidebar */
+  display: flex;
+  justify-content: center; /* center the form horizontally */
+  padding: 40px 20px;
+
+}
+
+.farm-details-form {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+.farm-details-form h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.farm-details-form table {
+  width: 100%;
+  border-spacing: 12px;
+}
+
+.farm-details-form td {
+  vertical-align: top;
+}
+
+.farm-details-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+.farm-details-form select,
+.farm-details-form input[type="text"] {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.farm-details-form select:focus,
+.farm-details-form input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 25px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+

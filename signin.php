@@ -31,12 +31,13 @@ if ($_POST) {
 		$_SESSION['firstname'] = $user->firstname;
 		$_SESSION['lastname'] = $user->lastname;
 		$_SESSION['contact_number'] = $user->contact_number;
+		$_SESSION['is_farm_registered'] = $user->farm_details_exists;
 
 		if ($user->user_type=='Admin') {
 			header("Location:{$home_url}admin/index.php?action=login_success");
 		}
-		else if($user->user_type=='Seller') {
-			header("Location:{$home_url}Seller/index.php?action=login_success");
+		else if($user->user_type=='Farmer') {
+			header("Location:{$home_url}user/farmer/index.php?action=login_success");
 		}else{
 			header("Location:{$home_url}Costumer/index.php?action=login_success");
 		}
