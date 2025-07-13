@@ -2,9 +2,12 @@
 include_once "../../config/core.php";
 
 
+$require_login=true;
+include_once "../../login_checker.php";
+
+
 $page_title = "Farm Details";
 include_once "layout_head.php";
-
 ?>
 
 <div class="farm-details-container">

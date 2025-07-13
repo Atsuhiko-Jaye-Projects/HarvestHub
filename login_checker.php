@@ -1,28 +1,40 @@
 <?php
-// login checker for 'customer' access level
-// if access level was not 'Admin', redirect him to login page
-if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Admin"){
-	header("Location: {$home_url}admin/index.php?action=logged_in_as_admin");
+
+$current_url = $_SERVER['REQUEST_URI'];
+
+if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
+    $_SESSION['logged_in'] === true &&
+    $_SESSION['user_type'] == "Admin" &&
+    strpos($current_url, 'admin/index.php') === true) {
+    header("Location: {$home_url}user/admin/index.php?action=success");
+    exit();
 }
 
-else if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Seller"){
-	header("Location: {$home_url}seller/index.php?action=logged_in_as_seller");
+else if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
+    $_SESSION['logged_in'] === true &&
+    $_SESSION['user_type'] == "Farmer" &&
+    strpos($current_url, 'farmer/index.php') === true) {
+
+    header("Location: {$home_url}user/farmer/index.php?action=success");
+    exit();
 }
-// if $require_login was set and value is 'true'
-else if(isset($require_login) && $require_login==true){
-	// if user not yet logged in, redirect to login page
-	if(!isset($_SESSION['user_type'])){
-		header("Location: {$home_url}login.php?action=please_login");
-	}
+
+else if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
+    $_SESSION['logged_in'] === true &&
+    $_SESSION['user_type'] == "Consumer" &&
+    strpos($current_url, 'consumer/index.php') === true) {
+
+    header("Location: {$home_url}user/consumer/index.php?action=success");
+    exit();
 }
-// if it was the 'login' or 'register' or 'sign up' page but the customer was already logged in
-else if(isset($page_title) && ($page_title=="Sign In" || $page_title=="Sign Up")){
-	// if user not yet logged in, redirect to login page
-	if(isset($_SESSION['user_type']) && $_SESSION['user_type']=="Consumer"){
-		header("Location: {$home_url}index.php?action=already_logged_in");
-	}
+
+// Require login enforcement
+if (isset($require_login) && $require_login === true) {
+    if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+        header("Location: {$home_url}signin.php?action=please_login");
+        exit();
+    }
+
 }
-else{
-	// no problem, stay on current page
-}
+
 ?>
