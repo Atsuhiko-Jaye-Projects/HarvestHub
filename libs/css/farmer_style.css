@@ -147,7 +147,6 @@
 
 
 
-
 /* index/dashboard styling */
 .stats-container{
   border: 1px solid red;
@@ -227,6 +226,26 @@
   cursor: pointer;
 }
 /*end of save product modal styling*/
+
+
+/*Product Management Styling*/
+
+.pm-header-table{
+  border: 1px solid black;
+  margin-bottom: 35px;
+  width: 70%;
+}
+
+.pm-header-tr td{
+  border: 1px solid black;
+}
+
+
+.pm-content table{
+  width: 100%;
+  border: 1px solid black;
+  text-align: center;
+}
 
 
 

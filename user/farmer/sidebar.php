@@ -1,6 +1,6 @@
 <div class="sidenav">
   <div class="sidenav-main">
-    <a href="#">Manage Products</a>
+    <a href="manage_product.php">Manage Products</a>
     <a href="#">Customer Orders</a>
     <a href="#">Submit Harvest</a>
   </div>
