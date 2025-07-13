@@ -146,3 +146,95 @@
 }
 
 
+
+
+/* index/dashboard styling */
+.stats-container{
+  border: 1px solid red;
+  padding: 5px;
+  margin-bottom: 5%;
+}
+
+/* stats table styling */
+.stats-content{
+  border: 1px solid blue;
+  width: 100%;
+}
+
+.stats-content table{
+  width: 100%;
+}
+
+.stats-value{
+  border: 1px solid green;
+}
+
+.stats-counts{
+  display: flex;
+  align-items: center;
+}
+.stats-counts img{
+  width: 50px;
+  height: 50px;
+}
+/* end of stats table styling */
+
+
+/* product details styling */
+.product-details table{
+  margin-top: 15px;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.product-details td{
+  text-align: center;
+}
+
+/* save product modal styling */
+.ap-modal{
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.addproduct-content-modal{
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+/*end of save product modal styling*/
+
+
+
+
+
+
+
+
+
+
+
