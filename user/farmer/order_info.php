@@ -5,14 +5,14 @@ include '../../config/core.php';
 $require_login=true;
 include_once "../../login_checker.php";
 
-$page_title = "Product management";
+$page_title = "Order Info";
 include_once "layout_head.php";
 ?>
 
-<div class="pm-container">
-	<div class="pm-header">
-		<table class="pm-header-table">
-			<tr class="pm-header-tr">
+<div class="oi-container">
+	<div class="oi-header">
+		<table class="oi-header-table">
+			<tr class="oi-header-tr">
 				<td><button>All</button></td>
 				<td><button>In Progress</button></td>
 				<td><button>Delivered</button></td>
@@ -22,7 +22,7 @@ include_once "layout_head.php";
 		</table>
 	</div>
 
-	<div class="pm-content">
+	<div class="oi-content">
 		<table>
 			<tr>
 				<th>Order ID</th>

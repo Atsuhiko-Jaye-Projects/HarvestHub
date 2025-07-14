@@ -228,25 +228,25 @@
 /*end of save product modal styling*/
 
 
-/*Product Management Styling*/
+/*order info Styling*/
 
-.pm-header-table{
+.oi-header-table{
   border: 1px solid black;
   margin-bottom: 35px;
   width: 70%;
 }
 
-.pm-header-tr td{
+.oi-header-tr td{
   border: 1px solid black;
 }
 
 
-.pm-content table{
+.oi-content table{
   width: 100%;
   border: 1px solid black;
   text-align: center;
 }
-
+/*end of order info styling*/
 
 
 
