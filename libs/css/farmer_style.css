@@ -248,6 +248,24 @@
 }
 /*end of order info styling*/
 
+/*manage product styling*/
+
+.mp-header-table{
+  border: 1px solid black;
+  margin-bottom: 35px;
+  width: 70%;
+}
+
+.mp-header-tr td{
+  border: 1px solid black;
+}
+
+
+.mp-content table{
+  width: 100%;
+  border: 1px solid black;
+  text-align: center;
+}
 
 
 
