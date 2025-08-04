@@ -164,3 +164,46 @@ body {
     font-size: medium;
     text-align: center;
 }
+
+
+
+/* Large screens (default) */
+.container {
+  display: flex;
+  max-width: 2000px;
+  width: 100%;
+}
+
+/* Medium desktops (1366px - 1600px) */
+@media (max-width: 1600px) {
+  .left-panel, .right-panel {
+    padding: 60px;
+  }
+  .right-panel h1 {
+    font-size: 42px;
+  }
+}
+
+/* Smaller desktops/laptops (1024px - 1365px) */
+@media (max-width: 1365px) {
+  .left-panel, .right-panel {
+    padding: 40px;
+  }
+  .account-wall {
+    padding: 30px;
+    max-width: 450px;
+  }
+  .right-panel h1 {
+    font-size: 36px;
+  }
+}
+
+/* Minimum for comfortable side-by-side (1024px) */
+@media (max-width: 1024px) {
+  .left-panel, .right-panel {
+    padding: 20px;
+  }
+  .right-panel h1 {
+    font-size: 30px;
+  }
+}
