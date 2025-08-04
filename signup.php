@@ -43,8 +43,8 @@ if ($_POST) {
 
 echo "<div class='left-panel'>";
     echo "<div class='account-wall'>";
-    	echo "<h2 class='text-center'>Login</h2>";
-        echo "<p class='text-center'>Don't have an account? <a href='signup.php'>Sign up</a></p>";
+    	echo "<h2 class='text-center'>$page_title</h2>";
+        echo "<p class='text-center'>Don't have an account? <a href='signin.php'>Sign up</a></p>";
         echo "<div id='my-tab-content' class='tab-content'>";
             echo "<div class='tab-pane active' id='login'>";
                 echo "<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";

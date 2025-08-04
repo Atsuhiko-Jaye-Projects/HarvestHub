@@ -5,6 +5,7 @@ body {
 
 .container {
   display: flex;
+   max-width: 2000px; 
   width: 100%;
   margin: 0;
   padding: 0;
