@@ -5,9 +5,12 @@ include_once "../../config/core.php";
 $require_login=true;
 include_once "../../login_checker.php";
 
-$page_title = "Dashboard";
+$page_title = "Index";
 include_once "layout_head.php";
 
+if ($_SESSION['is_farm_registered'] == 0 ) {
+    // code...
+}
 
 ?>
 

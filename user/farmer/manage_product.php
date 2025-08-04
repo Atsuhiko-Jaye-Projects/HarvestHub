@@ -16,7 +16,7 @@ include_once "layout_head.php";
 				<td>
 					<h3>Laon Mogpog</h3>
 					<span>May 13, 2023</span>
-					<h2>20°</h2>
+					<h2 id="temperature"></h2>
 					<span>Partly Cloudy</span>
 				</td>
 				<td>
@@ -26,6 +26,8 @@ include_once "layout_head.php";
 			</tr>
 		</table>
 	</div>
+
+
 
 	<div class="mp-content">
 		<table>

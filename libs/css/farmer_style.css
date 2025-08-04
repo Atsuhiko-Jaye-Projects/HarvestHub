@@ -1,4 +1,8 @@
 /*general styling*/
+*{
+  font-family: "Roboto", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
 .container{
 	margin-left: 170px;
 	padding: 0px 10px;
@@ -8,11 +12,11 @@
 /*sidebar styling*/
 .sidenav {
   height: 100vh;
-  width: 150px;
+  width: 160px;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #1e1e2f; /* modern dark indigo */
+  background-color: #f3f3f3; /* modern dark indigo */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -25,14 +29,26 @@
   padding: 12px 16px;
   margin: 6px 0;
   font-size: 14px;
-  color: #c7c7d3;
+  color: black;
   text-decoration: none;
   border-radius: 6px;
   transition: background 0.2s, color 0.2s;
 }
 
+.sidenav .sidenav-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+}
+
+.sidenav .sidenav-logo img{
+  width: 100px;
+  height: 100px;
+}
+
 .sidenav a:hover {
-  background: #2d2d44;
+  background: #1D4B3A;
   color: #fff;
 }
 
