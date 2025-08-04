@@ -2,6 +2,8 @@
 include_once "config/core.php";
 
 $page_title = "Sign up";
+include_once "layout_head.php";
+
 include_once "login_checker.php";
 
 //include classes
@@ -9,9 +11,7 @@ include_once "config/database.php";
 include_once "objects/user.php";
 
 //include page header html
-include_once "layout_head.php";
 
-echo "<div class= 'col-md-12'>";
 
 if ($_POST) {
 	
@@ -39,8 +39,54 @@ if ($_POST) {
 }
 ?>
 <!-- sign up html form -->
-<form action="signup.php" method="post" id="signup">
-	<table class='table table-responsive'>
+<?php
+
+echo "<div class='left-panel'>";
+    echo "<div class='account-wall'>";
+    	echo "<h2 class='text-center'>Login</h2>";
+        echo "<p class='text-center'>Don't have an account? <a href='signup.php'>Sign up</a></p>";
+        echo "<div id='my-tab-content' class='tab-content'>";
+            echo "<div class='tab-pane active' id='login'>";
+                echo "<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
+                    echo "<label> Contact Number</label>";
+                    echo "<input type='text' name='contact_number' class='form-control' placeholder='Contact No.' required autofocus />";
+                    echo "<span> Last Name</span>";
+                    echo "<input type='text' name='lastname' class='form-control' placeholder='Last Name' required />";
+                    echo "<input type='submit' class='btn btn-lg btn-primary btn-block' value='Log In' />";
+                    //checkbox ito para sa remember me aking mahal
+                    echo "<div class='forgot-password'>";
+                    	echo "<label>";
+                        echo "<input type='checkbox' name='remember_me' /> Remember me";
+                        echo "</label>";
+                        echo "<a href= '#' > Forgot Password?</a>";
+                    echo "</div>";
+                echo "</form>";
+                
+				//if mag-login sa google and fb
+                echo "<div class='social-login'>";
+                	echo "<p class='text-center'>or login with</p>";
+                    echo "<button class='btn btn-block btn-social btn-google'>";
+                        	echo "<i class='fa fa-google'></i> Login with Google";
+                	echo "</button>";
+                        echo "<button class='btn btn-block btn-social btn-facebook'>";
+                            echo "<i class='fa fa-facebook'></i> Login with Facebook";
+                            echo "</button>";
+                echo "</div>";
+            echo "</div>";
+        echo "</div>";
+    echo "</div>";
+echo "</div>";
+    
+echo "<div class='right-panel'>";
+    echo "<h1><span>Harvest</span> Hub</h1>";
+    echo "<p>A Digital Marketplace for Fresh Goods</p>";
+    echo "<p>Harvest Hub is an innovative online marketplace connecting local farmers directly with consumers and businesses.</p>";
+echo "</div>";
+?>
+
+
+
+	<!-- <table class='table table-responsive'>
 		<tr>
 			<td>Contact No.</td>
 			<td><input type="text" name="contact_number" class="form-control" required></td>
@@ -71,11 +117,9 @@ if ($_POST) {
 			</td>
 		</tr>
 
-	</table>
-</form>
+	</table> -->
 
 <?php
-echo "</div>";
 
 
 include_once "layout_foot.php";

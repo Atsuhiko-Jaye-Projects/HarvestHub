@@ -8,24 +8,11 @@
     <title><?php echo isset($page_title) ? strip_tags($page_title) : "Store Front"; ?></title>
     <!-- Bootstrap CSS -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+
 	<!-- admin custom CSS -->
-	<link href="<?php echo $home_url . "libs/css/style.css" ?>" rel="stylesheet" />
+	<link href="<?php echo $home_url . "libs/css/signin.css" ?>" rel="stylesheet" />
 </head>
 <body>
-	<!-- include the navigation bar -->
-	<?php include_once 'navigation.php'; ?>
     
     <!-- container -->
     <div class="container">
-		<?php
-		// if given page title is 'Login', do not display the title
-		if($page_title!="Login"){
-		?>
-		<div class='col-md-12'>
-	        <div class="page-header">
-	            <h1><?php echo $page_title?></h1>
-	        </div>
-		</div>
-		<?php
-		}
-		?>

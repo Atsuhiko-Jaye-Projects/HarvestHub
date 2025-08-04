@@ -3,6 +3,7 @@
 include_once "config/core.php";
 // set page title
 $page_title = "Login";
+include_once "layout_head.php";
 // include login checker
 $require_login=false;
 include_once "login_checker.php";
@@ -46,24 +47,55 @@ if ($_POST) {
 	}
 
 }
+if (isset($_POST['remember_me'])) {
+    // Set a cookie for 7 days
+    setcookie("contact_number", $user->contact_number, time() + (86400 * 7), "/");
+    setcookie("lastname", $user->lastname, time() + (86400 * 7), "/");
+}
+
 // include page header HTML
-include_once "layout_head.php";
-echo "<div class='col-sm-6 col-md-4 col-md-offset-4'>";
-	include_once 'alert_message.php';
-	// actual HTML login form
-	echo "<div class='account-wall'>";
-		echo "<div id='my-tab-content' class='tab-content'>";
-			echo "<div class='tab-pane active' id='login'>";
-				echo "<img class='profile-img' src='libs/images/logo.png'>";
-				echo "<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
-					echo "<input type='text' name='contact_number' class='form-control' placeholder='Contact No.' required autofocus />";
-					echo "<input type='text' name='lastname' class='form-control' placeholder='Last Name' required />";
-					echo "<input type='submit' class='btn btn-lg btn-primary btn-block' value='Log In' />";
-				echo "</form>";
-			echo "</div>";
-		echo "</div>";
-	echo "</div>";
-echo "</div>";
+    echo "<div class='left-panel'>";
+        include_once 'alert_message.php';
+        echo "<div class='account-wall'>";
+            echo "<h2 class='text-center'>Login</h2>";
+            echo "<p class='text-center'>Don't have an account? <a href='signup.php'>Sign up</a></p>";
+            echo "<div id='my-tab-content' class='tab-content'>";
+                echo "<div class='tab-pane active' id='login'>";
+                    echo "<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
+                        echo "<label> Contact Number</label>";
+                        echo "<input type='text' name='contact_number' class='form-control' placeholder='Contact No.' required autofocus />";
+                        echo "<span> Last Name</span>";
+                        echo "<input type='text' name='lastname' class='form-control' placeholder='Last Name' required />";
+                        echo "<input type='submit' class='btn btn-lg btn-primary btn-block' value='Log In' />";
+                        //checkbox ito para sa remember me aking mahal
+                        echo "<div class='forgot-password'>";
+                            echo "  <label>";
+                            echo "    <input type='checkbox' name='remember_me' /> Remember me";
+                            echo "  </label>";
+                            echo "<a href= '#' > Forgot Password?</a>";
+                        echo "</div>";
+                    echo "</form>";
+                    //if mag-login sa google and fb
+                    echo "<div class='social-login'>";
+                        echo "<p class='text-center'>or login with</p>";
+                        echo "<button class='btn btn-block btn-social btn-google'>
+                                <i class='fa fa-google'></i> Login with Google
+                              </button>";
+                        echo "<button class='btn btn-block btn-social btn-facebook'>
+                                <i class='fa fa-facebook'></i> Login with Facebook
+                              </button>";
+                    echo "</div>";
+                echo "</div>";
+            echo "</div>";
+        echo "</div>";
+    echo "</div>";
+    
+    echo "<div class='right-panel'>";
+        echo "<h1><span>Harvest</span> Hub</h1>";
+        echo "<p>A Digital Marketplace for Fresh Goods</p>";
+        echo "<p>Harvest Hub is an innovative online marketplace connecting local farmers directly with consumers and businesses.</p>";
+    echo "</div>";
+
 
 
 // footer HTML and JavaScript codes
