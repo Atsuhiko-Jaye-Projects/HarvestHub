@@ -106,6 +106,24 @@ class User{
         return false;
     }
 
+    function markFarmAsExists(){
+
+        $query = "UPDATE
+                " . $this->table_name . "
+                SET
+                farm_details_exists = :farm_details_exists
+                WHERE id = :id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $stmt->bindParam(":farm_details_exists", $this->farm_details_exists);
+        $stmt->bindParam(":id", $this->user_id);
+
+        $stmt->execute();
+    }
+
+
+
 }
 
 ?>

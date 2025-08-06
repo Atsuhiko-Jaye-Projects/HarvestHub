@@ -7,46 +7,70 @@ include_once "../../login_checker.php";
 
 $page_title = "Manage Product";
 include_once "layout_head.php";
+
 ?>
 
-<div class="mp-container">
-	<div class="mp-header">
-		<table class="mp-header-table">
-			<tr class="mp-header-tr">
-				<td>
-					<h3>Laon Mogpog</h3>
-					<span>May 13, 2023</span>
-					<h2 id="temperature"></h2>
-					<span>Partly Cloudy</span>
-				</td>
-				<td>
-					<span>Total Expense</span>
-					<span><h3>150.00 PHP</h3></span>
-				</td>
-			</tr>
-		</table>
+<div class="container">
+	<!-- Add Product Button -->
+	<div class="mb-3 mt-3">
+	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span> Add Product</button>
 	</div>
 
+	<?php include_once "modal-forms/add-product.php";?>
 
-
-	<div class="mp-content">
-		<table>
+	<!-- Table -->
+	<div class="table-responsive">
+		<table class="table align-middle">
+			<thead class="table-light">
 			<tr>
-				<th>Type</th>
-				<th>Item name</th>
-				<th>Quantity</th>
-				<th>Unit Cost</th>
+				<th>Product ID</th>
+				<th>Product Name</th>
+				<th>Category</th>
+				<th>Price</th>
+				<th>Unit</th>
+				<th>Lot Size</th>
 				<th>Date</th>
 				<th>Action</th>
 			</tr>
+			</thead>
+			<tbody>
 			<tr>
-				<td>Seed</td>
-				<td>Corn Seed</td>
-				<td>10</td>
-				<td>1500 PHP</td>
-				<td>02/20/2023</td>
-				<td><button>Edit</button></td>
+				<td>#2456JL</td>
+				<td>Carrot</td>
+				<td>High Valued Crops</td>
+				<td>₱200.00</td>
+				<td>kg</td>
+				<td>10kg/Lot</td>
+				<td>Feb 12, 12:23 pm</td>
+				<td>
+				<button class="btn btn-primary rounded-pill px-3">Edit</button>
+				</td>
 			</tr>
+			<tr>
+				<td>#5435DF</td>
+				<td>Mango</td>
+				<td>Fruit</td>
+				<td>₱200.00</td>
+				<td>kg</td>
+				<td>10kg/Lot</td>
+				<td>Feb 01, 01:13 pm</td>
+				<td>
+				<button class="btn btn-primary rounded-pill px-3">Edit</button>
+				</td>
+			</tr>
+			<tr>
+				<td>#9876XC</td>
+				<td>Egg Plant</td>
+				<td>High Valued Crops</td>
+				<td>₱200.00</td>
+				<td>kg</td>
+				<td>10kg/Lot</td>
+				<td>Jan 20, 09:08 am</td>
+				<td>
+				<button class="btn btn-primary rounded-pill px-3">Edit</button>
+				</td>
+			</tr>
+			</tbody>
 		</table>
 	</div>
 </div>

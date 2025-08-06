@@ -1,7 +1,10 @@
-	</div>
-</body>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  </body>
 </html>
-
 
 <!-- save product modal js -->
 <script>
@@ -44,6 +47,8 @@ window.onclick = function(event) {
       .then(response => response.json())
       .then(data => {
         const temp = data.main.temp;
+        const desc = data.weather[0].description;
+        document.getElementById('desc').textContent= `${desc}`;
         document.getElementById('temperature').textContent = `${temp} °C`;
       })
       .catch(error => {
