@@ -70,57 +70,73 @@ class Product{
         return false;
     }
 
-function uploadPhoto() {
-    $result_message = "";
+    function uploadPhoto() {
+        $result_message = "";
 
-    if ($this->product_image) {
-        $user_id = $this->user_id; // Assuming this is set from the session or earlier
-        $target_directory = "../../uploads/{$user_id}/products/";
-        $file_name = basename($this->product_image);
-        $target_file = $target_directory . $file_name;
-        $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+        if ($this->product_image) {
+            $user_id = $this->user_id; // Assuming this is set from the session or earlier
+            $target_directory = "../../uploads/{$user_id}/products/";
+            $file_name = basename($this->product_image);
+            $target_file = $target_directory . $file_name;
+            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
-        $file_upload_error_messages = "";
+            $file_upload_error_messages = "";
 
-        // Validate image file
-        $check = getimagesize($_FILES["product_image"]["tmp_name"]);
-        if ($check === false) {
-            $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
-        }
-
-        // Allowed file types
-        $allowed_file_types = array("jpg", "jpeg", "png", "gif");
-        if (!in_array(strtolower($file_type), $allowed_file_types)) {
-            $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-        }
-
-        // File exists check
-        if (file_exists($target_file)) {
-            $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
-        }
-
-        // File size check (max 1MB)
-        if ($_FILES['product_image']['size'] > 1024000) {
-            $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
-        }
-
-        // Ensure the upload folder exists
-        if (!is_dir($target_directory)) {
-            mkdir($target_directory, 0777, true);
-        }
-
-        // If no errors, attempt to move file
-        if (empty($file_upload_error_messages)) {
-            if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
-            } else {
-                $result_message = "<div>Unable to upload image.</div>";
+            // Validate image file
+            $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+            if ($check === false) {
+                $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
             }
-        } else {
-            $result_message = "<div class='alert alert-danger'>{$file_upload_error_messages}</div>";
+
+            // Allowed file types
+            $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+            if (!in_array(strtolower($file_type), $allowed_file_types)) {
+                $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+            }
+
+            // File exists check
+            if (file_exists($target_file)) {
+                $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+            }
+
+            // File size check (max 1MB)
+            if ($_FILES['product_image']['size'] > 1024000) {
+                $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+            }
+
+            // Ensure the upload folder exists
+            if (!is_dir($target_directory)) {
+                mkdir($target_directory, 0777, true);
+            }
+
+            // If no errors, attempt to move file
+            if (empty($file_upload_error_messages)) {
+                if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
+                } else {
+                    $result_message = "<div>Unable to upload image.</div>";
+                }
+            } else {
+                $result_message = "<div class='alert alert-danger'>{$file_upload_error_messages}</div>";
+            }
         }
+
+        return $result_message;
     }
 
-    return $result_message;
+function readAllProduct() {
+    $query = "SELECT *
+              FROM " . $this->table_name . "
+              WHERE user_id = :user_id";
+
+    $stmt = $this->conn->prepare($query);
+
+    $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+
+    $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    return $stmt;
 }
 
 

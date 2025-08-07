@@ -1,5 +1,16 @@
 <?php 
 include '../../config/core.php';
+include_once "../../config/database.php";
+include_once "../../objects/product.php";
+
+$database = new Database();
+$db = $database->getConnection();
+
+$product = new Product($db);
+
+$product->user_id = $_SESSION['user_id'];
+$stmt = $product->readAllProduct();
+$num = $stmt->rowCount();
 
 
 $require_login=true;
@@ -7,7 +18,6 @@ include_once "../../login_checker.php";
 
 $page_title = "Manage Product";
 include_once "layout_head.php";
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -47,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
+
+
 ?>
 
 <div class="container">
@@ -58,11 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<?php include_once "modal-forms/add-product.php";?>
 
 	<!-- Table -->
+	<?php
+		if ($num>0) {
+	?>
 	<div class="table-responsive">
 		<table class="table align-middle">
 			<thead class="table-light">
 			<tr>
-				<th>Product ID</th>
 				<th>Product Name</th>
 				<th>Category</th>
 				<th>Price</th>
@@ -73,45 +87,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</tr>
 			</thead>
 			<tbody>
-			<tr>
-				<td>#2456JL</td>
-				<td>Carrot</td>
-				<td>High Valued Crops</td>
-				<td>₱200.00</td>
-				<td>kg</td>
-				<td>10kg/Lot</td>
-				<td>Feb 12, 12:23 pm</td>
-				<td>
-				<button class="btn btn-primary rounded-pill px-3">Edit</button>
-				</td>
-			</tr>
-			<tr>
-				<td>#5435DF</td>
-				<td>Mango</td>
-				<td>Fruit</td>
-				<td>₱200.00</td>
-				<td>kg</td>
-				<td>10kg/Lot</td>
-				<td>Feb 01, 01:13 pm</td>
-				<td>
-				<button class="btn btn-primary rounded-pill px-3">Edit</button>
-				</td>
-			</tr>
-			<tr>
-				<td>#9876XC</td>
-				<td>Egg Plant</td>
-				<td>High Valued Crops</td>
-				<td>₱200.00</td>
-				<td>kg</td>
-				<td>10kg/Lot</td>
-				<td>Jan 20, 09:08 am</td>
-				<td>
-				<button class="btn btn-primary rounded-pill px-3">Edit</button>
-				</td>
-			</tr>
+			<?php
+				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+					extract($row);
+
+					echo "<tr>";
+						echo "<td>{$product_name}</td>";
+						echo "<td>{$category}</td>";
+						echo "<td>{$price_per_unit}</td>";
+						echo "<td>{$unit}</td>";
+						echo "<td>{$lot_size}</td>";
+						echo "<td>{$created_at}</td>";
+						echo "<td>";
+							echo "<button class='btn btn-primary me-2'>Edit</button>";
+							echo "<button class='btn btn-warning me-2'>View</button>";
+							echo "<button class='btn btn-danger me-2'>Remove</button>";
+						echo "</td>";
+					echo "</tr>";
+				}			
+			?>
 			</tbody>
 		</table>
 	</div>
+	<?php
+	}else{
+		echo "<div class='alert alert-danger'>No products Found</div>";
+	}
+	?>
 </div>
 
 
