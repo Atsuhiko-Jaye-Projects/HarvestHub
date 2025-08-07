@@ -54,9 +54,9 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <h6>Total Stock</h6>
-          <h2>30</h2>
-          <small>High Valued Products</small>
+          <h6>Total Sales</h6>
+          <h2>₱30,137.00</h2>
+          <small></small>
         </div>
         <div>
           <i class="bi bi-clipboard" style="font-size: 1.5rem;"></i>
@@ -71,9 +71,9 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <h6>Total Stock</h6>
+          <h6>Pending Orders</h6>
           <h2>15</h2>
-          <small>Fruit</small>
+          <small>Orders</small>
         </div>
         <div>
           <i class="bi bi-clipboard" style="font-size: 1.5rem;"></i>
@@ -88,9 +88,9 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <h6>Total Stock</h6>
+          <h6>Completed Orders</h6>
           <h2>10</h2>
-          <small>Livestock</small>
+          <small></small>
         </div>
         <div>
           <i class="bi bi-clipboard" style="font-size: 1.5rem;"></i>
