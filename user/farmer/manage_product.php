@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	$product->user_id = $_SESSION['user_id'];
 	$product->category = $_POST['category'];
+	$product->product_name = $_POST['product_name'];
 	$product->unit = $_POST['unit'];
 	$product->lot_size = $_POST['lot_size'];
 	$product->price_per_unit = $_POST['price_per_unit'];
