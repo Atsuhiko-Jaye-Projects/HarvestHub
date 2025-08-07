@@ -8,6 +8,44 @@ include_once "../../login_checker.php";
 $page_title = "Manage Product";
 include_once "layout_head.php";
 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+	include_once "../../config/database.php";
+	include_once "../../objects/product.php";
+
+	$database = new Database();
+	$db = $database->getConnection();
+
+	$product = new Product($db);
+
+	$product->user_id = $_SESSION['user_id'];
+	$product->category = $_POST['category'];
+	$product->unit = $_POST['unit'];
+	$product->lot_size = $_POST['lot_size'];
+	$product->price_per_unit = $_POST['price_per_unit'];
+	$product->total_stock = $_POST['total_stock'];
+	$product->product_description = $_POST['product_description']; 
+
+	$image=!empty($_FILES["product_image"]["name"])
+        ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
+	$product->product_image = $image;
+
+	
+	if ($product->createProduct()) {
+		echo $product->uploadPhoto();
+
+		echo "<div class='container'>";
+			echo "<div class='alert alert-success'>Product Info Saved!</div>";
+		echo "</div>";
+	}else{
+		echo "<div class='container'>";
+			echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
+		echo "</div>";
+	}
+
+}
+
 ?>
 
 <div class="container">

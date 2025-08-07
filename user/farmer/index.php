@@ -100,10 +100,6 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
     </div>
   </div>
 </div>
-<!-- Add Product Button -->
-<div class="mb-3 mt-3">
-  <button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span> Add Product</button>
-</div>
 
 <?php include_once "modal-forms/add-product.php";?>
 
