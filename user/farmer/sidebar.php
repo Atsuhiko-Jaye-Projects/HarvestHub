@@ -14,10 +14,10 @@
     </a>
 
     <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'manage_product.php' ? 'active bg-success' : '' ?>" href="manage_product.php">
-      <i class="bi bi-box"></i> <span>Products</span>
+      <i class="bi bi-box"></i> <span>Manage Products</span>
     </a>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php">
+    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php">
       <i class="bi bi-book"></i> <span>Manage Harvest</span>
     </a>
 
