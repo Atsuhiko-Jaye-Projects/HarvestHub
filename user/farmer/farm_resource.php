@@ -1,53 +1,47 @@
-<?php 
-include '../../config/core.php';
-include_once "../../config/database.php";
-include_once "../../objects/product.php";
-
-$database = new Database();
-$db = $database->getConnection();
-
-$product = new Product($db);
-
-$product->user_id = $_SESSION['user_id'];
-$stmt = $product->readAllProduct();
-$num = $stmt->rowCount();
-
-
-$require_login=true;
-include_once "../../login_checker.php";
-
-$page_title = "Manage Product";
-include_once "layout_head.php";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+<?php
+include_once "../../config/core.php";
 	include_once "../../config/database.php";
-	include_once "../../objects/product.php";
+	include_once "../../objects/farm-resource.php";
 
 	$database = new Database();
 	$db = $database->getConnection();
 
-	$product = new Product($db);
+$farm_resource = new FarmResource($db);
 
-	$product->user_id = $_SESSION['user_id'];
-	$product->category = $_POST['category'];
-	$product->product_name = $_POST['product_name'];
-	$product->unit = $_POST['unit'];
-	$product->lot_size = $_POST['lot_size'];
-	$product->price_per_unit = $_POST['price_per_unit'];
-	$product->total_stock = $_POST['total_stock'];
-	$product->product_description = $_POST['product_description']; 
+$require_login=true;
+include_once "../../login_checker.php";
 
-	$image=!empty($_FILES["product_image"]["name"])
-        ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
-	$product->product_image = $image;
+$page_title = "Farm Supplies & Resources";
+include_once "layout_head.php";
+
+$farm_resource->user_id = $_SESSION['user_id'];
+$stmt = $farm_resource->readAllResource();
+$num = $stmt->rowCount();
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+	include_once "../../config/database.php";
+	include_once "../../objects/farm-resource.php";
+
+	$database = new Database();
+	$db = $database->getConnection();
+
+	$farm_resource = new FarmResource($db);
+
+	$farm_resource->user_id = $_SESSION['user_id'];
+	$farm_resource->item_name = $_POST['item_name'];
+  $farm_resource->type = $_POST['type'];
+	$farm_resource->cost = $_POST['cost'];
+	$farm_resource->date = $_POST['date'];
+
 
 	
-	if ($product->createProduct()) {
-		echo $product->uploadPhoto();
+	if ($farm_resource->createFarmResource()) {
 
 		echo "<div class='container'>";
-			echo "<div class='alert alert-success'>Product Info Saved!</div>";
+			echo "<div class='alert alert-success'>Resource Info Saved!</div>";
 		echo "</div>";
 	}else{
 		echo "<div class='container'>";
@@ -56,8 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 }
-
-
 
 ?>
 
@@ -116,25 +108,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <div class="container">
+
+<?php include_once "modal-forms/add-resource.php"; ?>
+
+
+<div class="mb-3 mt-3 dropdown">
+  <button 
+    class="btn btn-success px-4 py-2 dropdown-toggle" 
+    type="button" 
+    id="dropdownMenuButton" 
+    data-bs-toggle="dropdown" 
+    aria-expanded="false">
+    <span><i class="bi bi-clipboard-data"></i></span> Options
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <li><a href="farm_product.php" class="dropdown-item">Farm Product</a></li>
+  </ul>
+</div>
+
 	<!-- Add Product Button -->
 	<div class="mb-3 mt-3">
-	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span> Add Product</button>
+	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span> Add Button</button>
 	</div>
-	<?php include_once "modal-forms/add-product.php";?>
+<h2><?php echo $page_title; ?></h2>
+
 	<!-- Table -->
 	<?php
 		if ($num>0) {
 	?>
-	<div class="table-responsive">
-		<table class="table align-middle">
+	<div class="table">
+		<table class="table align-middle table-bordered text-center">
 			<thead class="table-light">
 			<tr>
 				<th>Product Name</th>
-				<th>Category</th>
-				<th>Price</th>
-				<th>Unit</th>
-				<th>Lot Size</th>
-				<th>Date</th>
+				<th>Date Planted</th>
+				<th>Estimated Harvest Date</th>
+				<th>Expected Yield</th>
+        <th>Suggested Price</th>
 				<th>Action</th>
 			</tr>
 			</thead>
@@ -143,17 +154,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 					extract($row);
 
-					echo "<tr>";
-						echo "<td>{$product_name}</td>";
-						echo "<td>{$category}</td>";
-						echo "<td>{$price_per_unit}</td>";
-						echo "<td>{$unit}</td>";
-						echo "<td>{$lot_size}</td>";
-						echo "<td>{$created_at}</td>";
+					echo "<tr w-20>";
+						echo "<td>{$type}</td>";
+						echo "<td>{$item_name}</td>";
+						echo "<td>{$cost}</td>";
+						echo "<td>{$date}</td>";
 						echo "<td>";
 							echo "<button class='btn btn-primary me-2'>Edit</button>";
 							echo "<button class='btn btn-warning me-2'>View</button>";
-							echo "<button class='btn btn-danger me-2'>Remove</button>";
 						echo "</td>";
 					echo "</tr>";
 				}			
@@ -167,6 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	?>
 </div>
+
 
 
 <?php include_once "layout_foot.php"; ?>

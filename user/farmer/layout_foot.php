@@ -48,8 +48,10 @@ window.onclick = function(event) {
       .then(data => {
         const temp = data.main.temp;
         const desc = data.weather[0].description;
+        const location = data.name;
         document.getElementById('desc').textContent= `${desc}`;
         document.getElementById('temperature').textContent = `${temp} °C`;
+        document.getElementById('location').textContent = `${location}`;
       })
       .catch(error => {
         console.error('Error fetching temperature:', error);
