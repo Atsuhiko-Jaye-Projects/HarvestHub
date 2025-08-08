@@ -1,10 +1,22 @@
 <?php
 include_once "../../config/core.php";
+include_once "../../config/database.php";
+include_once "../../objects/product.php";
+
+$database = new Database();
+$db = $database->getConnection();
+
+$product = new Product($db);
+
 $require_login=true;
 include_once "../../login_checker.php";
 
 $page_title = "Manage Harvest";
 include_once "layout_head.php";
+
+$product->user_id = $_SESSION['user_id'];
+$stmt = $product->readAllProduct();
+$num = $stmt->rowCount();
 
 ?>
 
@@ -63,6 +75,21 @@ include_once "layout_head.php";
 </div>
 
 <div class="container">
+
+<div class="alert alert-secondary mt-2">
+    <div class="row align-items-center">
+        <div class="col-4">
+            <p class="mb-0">Weather Based Crop Suggestions</p>
+        </div>
+        <div class="col-8">
+            <button class='btn btn-success me-2'>Potato</button>
+            <button class='btn btn-success me-2'>Carrot</button>
+            <button class='btn btn-success me-2'>Ampalaya</button>
+            <button class='btn btn-success me-2'>Sitaw</button>
+        </div>
+    </div>
+</div>
+
 <?php include_once "modal-forms/add-product.php"; ?>
 <div class="mb-3 mt-3 dropdown">
   <button 
@@ -76,7 +103,7 @@ include_once "layout_head.php";
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <li><a href="farm_resource.php" class="dropdown-item">Farm Input</a></li>
-    <li><a href="manage_product.php" class="dropdown-item">Farm Product</a></li>
+    <li><a href=".php" class="dropdown-item">Farm Product</a></li>
   </ul>
 </div>
 <h2><?php echo $page_title; ?></h2>
