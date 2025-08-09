@@ -110,20 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include_once "modal-forms/add-farm-product.php"; ?>
 
 
-<div class="mb-3 mt-3 dropdown">
-  <button 
-    class="btn btn-success px-4 py-2 dropdown-toggle" 
-    type="button" 
-    id="dropdownMenuButton" 
-    data-bs-toggle="dropdown" 
-    aria-expanded="false">
-    <span><i class="bi bi-clipboard-data"></i></span> Options
-  </button>
-
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <li><a href="manage_product.php" class="dropdown-item">Farm Product</a></li>
-  </ul>
-</div>
 
 	<!-- Add Product Button -->
 	<div class="mb-3 mt-3">

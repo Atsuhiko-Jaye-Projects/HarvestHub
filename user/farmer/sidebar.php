@@ -13,13 +13,27 @@
       <i class="bi bi-grid"></i> <span>Dashboard</span>
     </a>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'manage_product.php' ? 'active bg-success' : '' ?>" href="manage_product.php">
-      <i class="bi bi-box"></i> <span>Manage Products</span>
-    </a>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php">
+
+
+    <button 
+    class="btn btn-outline-success px-4 py-2 dropdown-toggle align-items-center gap-2 mb-3 d-flex <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php" 
+    type="button" 
+    id="dropdownMenuButton" 
+    data-bs-toggle="dropdown" 
+    aria-expanded="false">
+    <span><i class="bi bi-tools"></i></span> Harvest Record
+    </button>
+
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <li><a href="farm_product.php" class="dropdown-item">Products</a></li>
+      <li><a href="manage_harvest.php" class="dropdown-item">Harvest</a></li>
+      <li><a href="farm_resource.php" class="dropdown-item">Supplies & Resources</a></li>
+    </ul>
+
+    <!-- <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php">
       <i class="bi bi-book"></i> <span>Manage Harvest</span>
-    </a>
+    </a> -->
 
     <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'orders.php' ? 'active bg-success' : '' ?>" href="orders.php">
       <i class="bi bi-archive"></i> <span>Orders</span>

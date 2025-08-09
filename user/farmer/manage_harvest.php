@@ -76,37 +76,43 @@ $num = $stmt->rowCount();
 
 <div class="container">
 
-<div class="alert alert-secondary mt-2">
-    <div class="row align-items-center">
-        <div class="col-4">
-            <p class="mb-0">Weather Based Crop Suggestions</p>
-        </div>
-        <div class="col-8">
-            <button class='btn btn-success me-2'>Potato</button>
-            <button class='btn btn-success me-2'>Carrot</button>
-            <button class='btn btn-success me-2'>Ampalaya</button>
-            <button class='btn btn-success me-2'>Sitaw</button>
+    <div class="alert alert-secondary mt-2">
+        <div class="row align-items-center">
+            <div class="col-4">
+                <p class="mb-0">Weather Based Crop Suggestions</p>
+            </div>
+            <div class="col-8">
+                <button class='btn btn-success me-2'>Potato</button>
+                <button class='btn btn-success me-2'>Carrot</button>
+                <button class='btn btn-success me-2'>Ampalaya</button>
+                <button class='btn btn-success me-2'>Sitaw</button>
+            </div>
         </div>
     </div>
-</div>
 
-<?php include_once "modal-forms/add-product.php"; ?>
-<div class="mb-3 mt-3 dropdown">
-  <button 
-    class="btn btn-success px-4 py-2 dropdown-toggle" 
-    type="button" 
-    id="dropdownMenuButton" 
-    data-bs-toggle="dropdown" 
-    aria-expanded="false">
-    <span><i class="bi bi-tools"></i></span>   Manage Harvest
-  </button>
+    <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <form class="d-flex w-50" role="search">
+        <div class="input-group">
+            <span class="input-group-text" id="search-icon">
+            <i class="bi bi-search"></i>
+            </span>
+            <input 
+            class="form-control" 
+            type="search" 
+            placeholder="Search" 
+            aria-label="Search" 
+            aria-describedby="search-icon"
+            />
+        </div>
+        <button class="btn btn-outline-success ms-2" type="submit">Search</button>
+        </form>
+    </div>
+    </nav>
 
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <li><a href="farm_resource.php" class="dropdown-item">Farm Input</a></li>
-    <li><a href=".php" class="dropdown-item">Farm Product</a></li>
-  </ul>
-</div>
-<h2><?php echo $page_title; ?></h2>
+    <?php include_once "modal-forms/add-product.php"; ?>
+
+    <h2><?php echo $page_title; ?></h2>
 
 	<!-- Table -->
 	<?php
@@ -140,7 +146,6 @@ $num = $stmt->rowCount();
 						echo "<td>";
 							echo "<button class='btn btn-primary me-2'>Edit</button>";
 							echo "<button class='btn btn-warning me-2'>View</button>";
-							echo "<button class='btn btn-danger me-2'>Remove</button>";
 						echo "</td>";
 					echo "</tr>";
 				}			

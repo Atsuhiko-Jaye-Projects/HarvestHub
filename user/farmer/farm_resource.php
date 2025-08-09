@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	$farm_resource->user_id = $_SESSION['user_id'];
 	$farm_resource->item_name = $_POST['item_name'];
-  $farm_resource->type = $_POST['type'];
+    $farm_resource->type = $_POST['type'];
 	$farm_resource->cost = $_POST['cost'];
 	$farm_resource->date = $_POST['date'];
 
@@ -109,29 +109,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container">
 
-<?php include_once "modal-forms/add-resource.php"; ?>
+	<?php include_once "modal-forms/add-resource.php"; ?>
 
 
-<div class="mb-3 mt-3 dropdown">
-  <button 
-    class="btn btn-success px-4 py-2 dropdown-toggle" 
-    type="button" 
-    id="dropdownMenuButton" 
-    data-bs-toggle="dropdown" 
-    aria-expanded="false">
-    <span><i class="bi bi-clipboard-data"></i></span> Options
-  </button>
-
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <li><a href="farm_product.php" class="dropdown-item">Farm Product</a></li>
-  </ul>
-</div>
 
 	<!-- Add Product Button -->
 	<div class="mb-3 mt-3">
-	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span> Add Button</button>
+	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
 	</div>
-<h2><?php echo $page_title; ?></h2>
+	<h2><?php echo $page_title; ?></h2>
 
 	<!-- Table -->
 	<?php
@@ -141,11 +127,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<table class="table align-middle table-bordered text-center">
 			<thead class="table-light">
 			<tr>
-				<th>Product Name</th>
-				<th>Date Planted</th>
-				<th>Estimated Harvest Date</th>
-				<th>Expected Yield</th>
-        <th>Suggested Price</th>
+				<th>Type</th>
+				<th>Name</th>
+				<th>Cost</th>
+				<th>Date</th>
 				<th>Action</th>
 			</tr>
 			</thead>
