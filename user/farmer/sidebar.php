@@ -35,7 +35,7 @@
       <i class="bi bi-book"></i> <span>Manage Harvest</span>
     </a> -->
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'orders.php' ? 'active bg-success' : '' ?>" href="orders.php">
+    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'order.php' ? 'active bg-success' : '' ?>" href="order.php">
       <i class="bi bi-archive"></i> <span>Orders</span>
     </a>
 
