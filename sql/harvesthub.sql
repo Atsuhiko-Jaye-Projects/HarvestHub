@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2025 at 01:04 PM
+-- Generation Time: Aug 10, 2025 at 12:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -118,6 +118,35 @@ INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `cost`, `date`, `cre
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `order_id` varchar(50) NOT NULL,
+  `contact_number` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `total_price` int(11) NOT NULL,
+  `mode_of_payment` varchar(100) NOT NULL,
+  `lot_size` int(11) NOT NULL,
+  `order_date` varchar(20) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `customer_id`, `order_id`, `contact_number`, `address`, `total_price`, `mode_of_payment`, `lot_size`, `order_date`, `status`, `created_at`, `modified_at`) VALUES
+(1, 2, 2, 'hvsth12312455', '09533307696', 'mogpo', 5000, 'COD', 10, '10-11-25 ', 'pending', '2025-08-10 18:18:21', '2025-08-10 10:18:21');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -207,6 +236,12 @@ ALTER TABLE `farm_resources`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -245,6 +280,12 @@ ALTER TABLE `farm_products`
 --
 ALTER TABLE `farm_resources`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
