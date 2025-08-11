@@ -53,20 +53,20 @@ class FarmResource{
     }
 
     function readAllResource() {
-    $query = "SELECT *
-              FROM " . $this->table_name . "
-              WHERE user_id = :user_id";
+        $query = "SELECT *
+                FROM " . $this->table_name . "
+                WHERE user_id = :user_id";
 
-    $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
-    $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
 
-    $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
 
-    $stmt->execute();
+        $stmt->execute();
 
-    return $stmt;
-}
+        return $stmt;
+    }
 
 
 
