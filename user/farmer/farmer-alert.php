@@ -1,5 +1,4 @@
 <?php 
-
 if ($page_title == "Index") {
 	if (isset($_SESSION['is_farm_registered']) && $_SESSION['is_farm_registered'] == 0) {
 		echo "
@@ -8,9 +7,4 @@ if ($page_title == "Index") {
 		</div>";
 	}
 }
-
-
-
-
-
 ?>

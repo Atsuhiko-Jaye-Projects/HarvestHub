@@ -18,8 +18,6 @@ $farm_product->user_id = $_SESSION['user_id'];
 $stmt = $farm_product->readAllProduct();
 $num = $stmt->rowCount();
 
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	include_once "../../config/database.php";
@@ -56,8 +54,6 @@ include_once "stats.php";
 <div class="container">
 
 <?php include_once "modal-forms/add-farm-product.php"; ?>
-
-
 
 	<!-- Add Product Button -->
 	<div class="mb-3 mt-3">
@@ -108,7 +104,5 @@ include_once "stats.php";
 	}
 	?>
 </div>
-
-
 
 <?php include_once "layout_foot.php"; ?>

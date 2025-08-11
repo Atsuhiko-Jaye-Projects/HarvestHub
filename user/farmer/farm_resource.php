@@ -59,8 +59,6 @@ include_once "stats.php";
 
 	<?php include_once "modal-forms/add-resource.php"; ?>
 
-
-
 	<!-- Add Product Button -->
 	<div class="mb-3 mt-3">
 	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
@@ -108,7 +106,5 @@ include_once "stats.php";
 	}
 	?>
 </div>
-
-
 
 <?php include_once "layout_foot.php"; ?>
