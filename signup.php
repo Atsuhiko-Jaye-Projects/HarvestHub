@@ -38,8 +38,80 @@ if ($_POST) {
 	}
 }
 ?>
+
+<div class="container-fluid">
+  <div class="row vh-100">
+    <!-- Left Column -->
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="w-75">
+        <h3 class="mb-4">Create an Account</h3>
+        <p class="small">Already have an Account? <a href="#">Login here</a></p>
+        
+        <form>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Full Name">
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control" placeholder="Email address">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Enter your password">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Re-enter your password">
+          </div>
+          <button type="submit" class="btn btn-success w-100">Submit</button>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Right Column with Background -->
+    <div class="col-md-6 p-0 d-none d-md-block" 
+         style="background: url('libs/images/background.png') no-repeat center center; background-size: cover;">
+      <div class="h-100 w-100 d-flex align-items-center justify-content-center text-center text-white px-4" style="background-color: rgba(0,0,0,0.2);">
+        <div>
+          <h1 class="fw-bold"><span class="text-success">Harvest</span> Hub</h1>
+          <p class="lead">A Digital Marketplace for Fresh Goods</p>
+          <p class="small">Harvest Hub is an innovative online marketplace connecting local farmers directly with consumers and businesses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- sign up html form -->
-<form action="signup.php" method="post" id="signup">
+<!-- <form action="signup.php" method="post" id="signup">
 	<table class='table table-responsive'>
 		<tr>
 			<td>Contact No.</td>
@@ -72,7 +144,7 @@ if ($_POST) {
 		</tr>
 
 	</table>
-</form>
+</form> -->
 
 <?php
 echo "</div>";
