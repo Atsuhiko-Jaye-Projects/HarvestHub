@@ -34,7 +34,6 @@ if (isset($require_login) && $require_login === true) {
         header("Location: {$home_url}signin.php?action=please_login");
         exit();
     }
-
 }
 
 ?>

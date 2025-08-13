@@ -24,41 +24,47 @@ class User{
 	}
 
     function create(){
-        
-        $this->created=date('Y-m-d H:i:s');
 
         $query= "INSERT INTO
                     " . $this->table_name . "
                 
                 SET
-                    contact_number = :contact_number,
                     firstname = :firstname,
-                    lastname = :lastname,
-                    baranggay = :baranggay,
+                    lastname=:lastname,
+                    password = :password,
+                    email_address = :email_address,
+                    farm_details_exists=:farm_details_exists,
                     user_type = :user_type,
                     created = :created";
         
         $stmt=$this->conn->prepare($query);
 
         //sanitize
-        $this->contact_number=htmlspecialchars(strip_tags($this->contact_number));
         $this->firstname=htmlspecialchars(strip_tags($this->firstname));
         $this->lastname=htmlspecialchars(strip_tags($this->lastname));
-        $this->baranggay=htmlspecialchars(strip_tags($this->baranggay));
+        $this->password=htmlspecialchars(strip_tags($this->password));
+        $this->email_address=htmlspecialchars(strip_tags($this->email_address));
+        $this->farm_details_exists=htmlspecialchars(strip_tags($this->farm_details_exists));
         $this->user_type=htmlspecialchars(strip_tags($this->user_type));
 
-        $stmt->bindParam(":contact_number", $this->contact_number);
+        $this->created=date('Y-m-d H:i:s');
+        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+
         $stmt->bindParam(":firstname", $this->firstname);
         $stmt->bindParam(":lastname", $this->lastname);
-        $stmt->bindParam(":baranggay", $this->baranggay);
+        $stmt->bindParam(":password", $password_hash);
+        $stmt->bindParam(":email_address", $this->email_address);
+        $stmt->bindParam(":farm_details_exists", $this->farm_details_exists);
         $stmt->bindParam(":user_type", $this->user_type);
         $stmt->bindParam(":created", $this->created);
 
         if ($stmt->execute()) {
             return true;
+            var_dump($stmt);
         }else{
             $this->showError($stmt);
             return false;
+                       var_dump($stmt);
         }
     }
 
@@ -70,18 +76,16 @@ class User{
 
     function credentialExists(){
 
-        $query = "SELECT id, firstname, baranggay, address, user_type, email_address, password, first_time_logged_in, farm_details_exists
+        $query = "SELECT id, firstname, baranggay, address, user_type, password, first_time_logged_in, farm_details_exists, contact_number, lastname
                 FROM " . $this->table_name . "
-                WHERE contact_number = ? AND lastname = ?
+                WHERE email_address=:email_address
                 LIMIT 0, 1";
         
         $stmt = $this->conn->prepare($query);
 
-        $this->contact_number=htmlspecialchars(strip_tags($this->contact_number));
-        $this->lastname=htmlspecialchars(strip_tags($this->lastname));
+        $this->email_address=htmlspecialchars(strip_tags($this->email_address));
 
-        $stmt->bindParam(1, $this->contact_number);
-        $stmt->bindParam(2, $this->lastname);
+        $stmt->bindParam(":email_address", $this->email_address);
 
         $stmt->execute();
         
@@ -93,6 +97,7 @@ class User{
 
             $this->id = $row['id'];
             $this->firstname = $row['firstname'];
+            $this->lastname = $row['lastname'];
             $this->baranggay = $row['baranggay'];
             $this->address = $row['address'];
             $this->user_type = $row['user_type'];

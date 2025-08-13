@@ -3,6 +3,7 @@
 include_once "config/core.php";
 // set page title
 $page_title = "Login";
+
 // include login checker
 $require_login=false;
 include_once "login_checker.php";
@@ -18,12 +19,10 @@ if ($_POST) {
 	$user = new User($db);
 	//check if contact number and password is in the database.
 
-	$user->contact_number = $_POST['contact_number'];
-	$user->lastname = $_POST['lastname'];
+	$user->email_address = $_POST['email_address'];
 	//check if the contact number is exists and last name is exists
 	$credential_exists = $user->credentialExists();
-
-	if ($credential_exists && $user->first_time_logged_in >= 0) {
+	if ($credential_exists && $user->first_time_logged_in >= 0 && password_verify($_POST['password'], $user->password)) {
 		
 		$_SESSION['logged_in'] = true;
 		$_SESSION['user_type'] = $user->user_type;
@@ -49,56 +48,7 @@ if ($_POST) {
 // include page header HTML
 include_once "layout_head.php";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// echo "<div class='col-sm-6 col-md-4 col-md-offset-4'>";
-// 	include_once 'alert_message.php';
-// 	// actual HTML login form
-// 	echo "<div class='account-wall'>";
-// 		echo "<div id='my-tab-content' class='tab-content'>";
-// 			echo "<div class='tab-pane active' id='login'>";
-// 				echo "<img class='profile-img' src='libs/images/logo.png'>";
-// 				echo "<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
-// 					echo "<input type='text' name='contact_number' class='form-control' placeholder='Contact No.' required autofocus />";
-// 					echo "<input type='text' name='lastname' class='form-control' placeholder='Last Name' required />";
-// 					echo "<input type='submit' class='btn btn-lg btn-primary btn-block' value='Log In' />";
-// 				echo "</form>";
-// 			echo "</div>";
-// 		echo "</div>";
-// 	echo "</div>";
-// echo "</div>";
-
-
-// footer HTML and JavaScript codes
-
 ?>
-
 
 
 <div class="container-fluid">
@@ -106,23 +56,18 @@ include_once "layout_head.php";
     <!-- Left Column -->
     <div class="col-md-6 d-flex align-items-center justify-content-center">
       <div class="w-75">
-        <h3 class="mb-4">Create an Account</h3>
-        <p class="small">Already have an Account? <a href="#">Login here</a></p>
+        <?php include_once "alert_message.php"; ?>
+        <h3 class="mb-4">Login</h3>
+        <p class="small">Don't have an account? <a href="signup.php">Create one</a></p>
         
-        <form>
+        <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST'>
           <div class="mb-3">
-            <input type="text" class="form-control" placeholder="Full Name">
+            <input type="email" name="email_address" class="form-control" placeholder="Email address" required>
           </div>
           <div class="mb-3">
-            <input type="email" class="form-control" placeholder="Email address">
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
           </div>
-          <div class="mb-3">
-            <input type="password" class="form-control" placeholder="Enter your password">
-          </div>
-          <div class="mb-3">
-            <input type="password" class="form-control" placeholder="Re-enter your password">
-          </div>
-          <button type="submit" class="btn btn-success w-100">Submit</button>
+          <button type="submit" class="btn btn-success w-100">Sign in</button>
         </form>
 
       </div>
