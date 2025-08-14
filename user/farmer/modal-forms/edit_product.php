@@ -16,7 +16,8 @@
         <div class="modal-body">
           <div class="card-body">
             <div class="container">
-              
+              <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+              <input type="hidden" name="action" value="update">
               <div class="row mb-3">
                 <div class="col-md-6">
                   <Label>Product Name</Label>
@@ -27,22 +28,22 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                   <Label>Date Planted</Label>
-                  <input type="date" name="unit" value="<?php echo $date_planted; ?>" class="form-control" required placeholder="Unit">
+                  <input type="date" name="date_planted" value="<?php echo $date_planted; ?>" class="form-control" required placeholder="Unit">
                 </div>
                 <div class="col-md-6">
                   <Label>Estimated Harvest Date</Label>
-                  <input type="date" name="" value="<?php echo $estimated_harvest_date; ?>" class="form-control" required placeholder="Lot Size">
+                  <input type="date" name="estimated_harvest_date" value="<?php echo $estimated_harvest_date; ?>" class="form-control" required placeholder="Lot Size">
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
                   <Label>Yeild</Label>
-                  <input type="number" name="" value="<?php echo $yield; ?>" class="form-control" required placeholder="Lot Size">
+                  <input type="number" name="yield" value="<?php echo $yield; ?>" class="form-control" required placeholder="Lot Size">
                 </div>
                 <div class="col-md-6">
                   <Label>Suggested Price</Label>
-                  <input type="number" name="" value="<?php echo $suggested_price; ?>" class="form-control" required placeholder="Lot Size">
+                  <input type="number" name="suggested_price" value="<?php echo $suggested_price; ?>" class="form-control" required placeholder="Lot Size">
                 </div>
               </div>
 

@@ -13,6 +13,7 @@ class FarmProduct{
     public $yield;
     public $suggested_price;
     public $created_at;
+    public $modified_at;
 
     public function __construct($db) {
 	    $this->conn = $db;
@@ -86,6 +87,45 @@ class FarmProduct{
         $num = $stmt->rowCount();
 
         return $num;
+    }
+
+        function updateFarmProduct(){
+
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                product_name=:product_name,
+                date_planted=:date_planted,
+                estimated_harvest_date=:estimated_harvest_date,
+                yield=:yield,
+                suggested_price=:suggested_price,
+                modified_at=:modified_at
+                WHERE id=:id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->product_name = htmlspecialchars(strip_tags($this->product_name));
+        $this->date_planted = htmlspecialchars(strip_tags($this->date_planted));
+        $this->estimated_harvest_date = htmlspecialchars(strip_tags($this->estimated_harvest_date));
+        $this->yield = htmlspecialchars(strip_tags($this->yield));
+        $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
+        $this->modified_at = date ("Y-m-d H:i:s");
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":product_name", $this->product_name);
+        $stmt->bindParam(":date_planted", $this->date_planted);
+        $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
+        $stmt->bindParam(":yield", $this->yield);
+        $stmt->bindParam(":suggested_price", $this->suggested_price);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
 

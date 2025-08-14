@@ -31,34 +31,49 @@ $stmt = $farm_product->readAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $farm_product->countAll();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
-	include_once "../../config/database.php";
-	include_once "../../objects/farm-resource.php";
+    include_once "../../config/database.php";
+    include_once "../../objects/farm-resource.php";
 
-	$database = new Database();
-	$db = $database->getConnection();
+    $database = new Database();
+    $db = $database->getConnection();
+    $farm_product = new FarmProduct($db);
 
-	$farm_product = new FarmProduct($db);
+    // ===== CREATE =====
+    if ($_POST['action'] == 'create') {
+        $farm_product->user_id = $_SESSION['user_id'];
+        $farm_product->product_name = $_POST['product_name'];
+        $farm_product->date_planted = $_POST['date_planted'];
+        $farm_product->estimated_harvest_date = $_POST['estimated_harvest_date'];
+        $farm_product->yield = $_POST['yield'];
+        $farm_product->suggested_price = $_POST['suggested_price'];
 
-	$farm_product->user_id = $_SESSION['user_id'];
-	$farm_product->product_name = $_POST['product_name'];
-    $farm_product->date_planted = $_POST['date_planted'];
-	$farm_product->estimated_harvest_date = $_POST['estimated_harvest_date'];
-	$farm_product->yield = $_POST['yield'];
-    $farm_product->suggested_price = $_POST['suggested_price'];
+        if ($farm_product->createFarmProduct()) {
+            echo "<div class='container'><div class='alert alert-success'>Product Info Saved!</div></div>";
+        } else {
+            echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";
+        }
+    }
 
-	if ($farm_product->createFarmProduct()) {
+    // ===== UPDATE =====
+    elseif ($_POST['action'] == 'update') {
+        $farm_product->id = $_POST['product_id']; // Make sure your form has this hidden input
+        $farm_product->product_name = $_POST['product_name'];
+        $farm_product->date_planted = $_POST['date_planted'];
+        $farm_product->estimated_harvest_date = $_POST['estimated_harvest_date'];
+        $farm_product->yield = $_POST['yield'];
+        $farm_product->suggested_price = $_POST['suggested_price'];
 
-		echo "<div class='container'>";
-			echo "<div class='alert alert-success'>Product Info Saved!</div>";
-		echo "</div>";
-	}else{
-		echo "<div class='container'>";
-			echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
-		echo "</div>";
-	}
+        if ($farm_product->updateFarmProduct()) {
+            echo "<div class='container'><div class='alert alert-success'>Product Info Updated!</div></div>";
+        } else {
+            echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
+        }
+    }
+
 }
+
 
 //include stats card
 include_once "stats.php";
@@ -118,7 +133,7 @@ include_once "stats.php";
 			</tbody>
 		</table>
 		<?php
-		
+		include "modal-forms/edit_product.php";
 		include_once "paging.php";
 		?>
 	</div>

@@ -14,7 +14,7 @@
         <div class="modal-body">
           <div class="card-body">
             <div class="container">
-              
+              <input type="hidden" name="action" value="create">
               <div class="row mb-3">
                 <div class="col-md-6">    
                     <label>Product Name</label>
