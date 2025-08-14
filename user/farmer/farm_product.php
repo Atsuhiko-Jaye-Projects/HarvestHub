@@ -70,7 +70,9 @@ include_once "stats.php";
 
 	<!-- Add Product Button -->
 	<div class="mb-3 mt-3">
-	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span> Add Button</button>
+	<span data-bs-toggle='tooltip' title='New'>
+	<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
+	</span>
 	</div>
 <h2><?php echo $page_title; ?></h2>
 
@@ -102,8 +104,8 @@ include_once "stats.php";
 						echo "<td>{$yield}</td>";
                         echo "<td>{$suggested_price}</td>";
 						echo "<td>";
-							echo "<button class='btn btn-primary me-2'>Edit</button>";
-							echo "<button class='btn btn-warning me-2'>View</button>";
+						echo "<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-primary me-2' data-bs-toggle='tooltip' title='Edit'><span><i class='bi bi-pencil-square'></i></span></a>";
+						echo "<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-warning me-2' data-bs-toggle='tooltip' title='View'><span><i class='bi bi-eye-fill'></i></span></a>";
 						echo "</td>";
 					echo "</tr>";
 				}			

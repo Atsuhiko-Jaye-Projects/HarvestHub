@@ -17,7 +17,7 @@
 
 
     <button 
-    class="btn btn-outline-success px-4 py-2 dropdown-toggle align-items-center gap-2 mb-3 d-flex <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php" 
+    class="btn btn-outline-success text-white px-4 py-2 dropdown-toggle align-items-center gap-2 mb-3 d-flex <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php" 
     type="button" 
     id="dropdownMenuButton" 
     data-bs-toggle="dropdown" 

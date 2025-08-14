@@ -3,11 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
-<<<<<<< HEAD
--- Generation Time: Aug 11, 2025 at 05:52 AM
-=======
--- Generation Time: Aug 10, 2025 at 12:32 PM
->>>>>>> eb558ade39b9e89520c310b13aac977e80d0d63a
+-- Generation Time: Aug 14, 2025 at 01:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -235,7 +231,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `baranggay`, `address`, `user_type`, `email_address`, `contact_number`, `password`, `rating`, `created`, `modified`, `first_time_logged_in`, `farm_details_exists`) VALUES
-(2, 'evelyn', 'gascon', 'boac', '', 'Farmer', '', '09533307696', '', 0, '2025-03-10 05:49:38', '2025-03-10 05:49:38', 0, 1);
+(2, 'evelyn', 'gascon', 'boac', '', 'Farmer', 'ajcodalify@gmail.com', '09533307696', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', '2025-03-10 05:49:38', 0, 1),
+(3, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$OP.c25h2BF404wKs2jM4JOKXnVhVvgeSIWx2BHhzbO6kSA/DC/NeO', 0, '2025-08-13 18:07:34', '2025-08-13 18:07:34', 0, 0),
+(4, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$XmqzVQBLn9q5bxVV57zET.mEeT315FVASiS0LDu5AR6vhZlQ4HyOG', 0, '2025-08-13 18:08:13', '2025-08-13 18:08:13', 0, 0),
+(5, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$5zTcSJTFI7AFAtV2eSA.7OxFnHPtIHG5//6CQshvHSGU.AvbwTYpy', 0, '2025-08-13 18:09:11', '2025-08-13 18:09:11', 0, 0),
+(6, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$JRsNg2UleLgdev9KsecryumpVddKjQ5LWbEWn22TWmJonpxKqQah.', 0, '2025-08-13 18:11:39', '2025-08-13 18:11:39', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -339,7 +339,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

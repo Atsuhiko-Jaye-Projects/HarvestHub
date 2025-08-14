@@ -44,7 +44,7 @@ include_once "stats.php";
         <tbody>
         <?php
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                extract($row); // will give $customer_name, $review_text, $rating, etc.
+                extract($row);
 
                 echo "<tr>";
                     // Customer name
@@ -79,7 +79,7 @@ include_once "stats.php";
 </div>
 <?php
     } else {
-        echo "<div class='alert alert-danger'>No Reviews Found</div>";
+        echo "<div class='alert alert-danger mt-3'>No Reviews Found</div>";
     }
 ?>
 </div>
