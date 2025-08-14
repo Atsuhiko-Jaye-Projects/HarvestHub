@@ -1,10 +1,10 @@
 <?php
 include_once "../../config/core.php";
-	include_once "../../config/database.php";
-	include_once "../../objects/farm-resource.php";
+include_once "../../config/database.php";
+include_once "../../objects/farm-resource.php";
 
-	$database = new Database();
-	$db = $database->getConnection();
+$database = new Database();
+$db = $database->getConnection();
 
 $farm_resource = new FarmResource($db);
 

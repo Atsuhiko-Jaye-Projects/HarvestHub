@@ -85,7 +85,6 @@ include_once "stats.php";
 			<thead class="table-light">
 			<tr>
 				<th>Product Name</th>
-				<th>Date Planted</th>
 				<th>Estimated Harvest Date</th>
 				<th>Yield</th>
                 <th>Suggested Price</th>
@@ -99,20 +98,29 @@ include_once "stats.php";
 
 					echo "<tr w-20>";
 						echo "<td>{$product_name}</td>";
-						echo "<td>{$date_planted}</td>";
 						echo "<td>{$estimated_harvest_date}</td>";
 						echo "<td>{$yield}</td>";
                         echo "<td>{$suggested_price}</td>";
 						echo "<td>";
-						echo "<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-primary me-2' data-bs-toggle='tooltip' title='Edit'><span><i class='bi bi-pencil-square'></i></span></a>";
-						echo "<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-warning me-2' data-bs-toggle='tooltip' title='View'><span><i class='bi bi-eye-fill'></i></span></a>";
+						echo "<span data-bs-toggle='tooltip' title='Edit'>
+								<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id' title='Edit'><span><i class='bi bi-pencil-square'></i></span></a>
+								</span>";
+						echo "<span data-bs-toggle='tooltip' title='Edit'>
+								<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-warning me-2' data-bs-toggle='modal' data-bs-target='#view-product-modal-$id' title='Edit'><span><i class='bi bi-eye-fill'></i></span></a>
+								</span>";
+
 						echo "</td>";
 					echo "</tr>";
+					include "modal-forms/edit_product.php";
+					include "modal-forms/view_product.php";
 				}			
 			?>
 			</tbody>
 		</table>
-		<?php include_once "paging.php";?>
+		<?php
+		
+		include_once "paging.php";
+		?>
 	</div>
 	<?php
 	}else{

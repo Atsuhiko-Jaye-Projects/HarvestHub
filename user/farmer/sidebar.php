@@ -3,7 +3,13 @@
 <div class="col-2 col-sm-3 col-xl-2 bg-dark">
   <nav class="navbar bg-dark border-bottom border-white mb-3" data-bs-theme="dark">
     <a class="navbar-brand d-flex flex-column align-items-center w-100" href="#">
-      <img src="../../libs/images/logo.png" alt="Harvest Hub" height="100" width="100" class="rounded-circle mb-2">
+      <?php
+        if ($page_title=="Edit Product") {
+            echo "<img src='../../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='100' height='100'>";
+        }else{
+            echo "<img src='../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='100' height='100'>";
+        }
+      ?>
     </a>
   </nav>
 

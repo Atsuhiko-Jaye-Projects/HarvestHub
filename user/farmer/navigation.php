@@ -4,8 +4,14 @@
 
         <div class="d-flex align-items-center">
             <!-- Avatar -->
-            <img src="../../libs/images/logo.png" alt="User Avatar" class="rounded-circle me-2" width="40" height="40">
-
+            <!-- <img src="../../libs/images/logo.png" alt="User Avatar" class="rounded-circle me-2" width="40" height="40"> -->
+            <?php
+                if ($page_title=="Edit Product") {
+                    echo "<img src='../../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='40' height='40'>";
+                }else{
+                    echo "<img src='../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='40' height='40'>";
+                }
+            ?>
             <!-- User Info -->
             <div class="d-flex flex-column ">
                 <span class="fw-bold">
