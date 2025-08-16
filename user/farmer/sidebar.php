@@ -18,14 +18,14 @@
     <!-- Dashboard -->
     <a href="index.php" class="sidebar-btn <?= $page=='index.php' ? 'active' : '' ?>">
       <i class="bi bi-grid me-2"></i>
-      <span>Dashboard</span>
+      <span>Home</span>
     </a>
 
     <!-- Harvest Record Collapsible -->
     <button class="sidebar-btn d-flex justify-content-between align-items-center <?= 
         in_array($page, ['farm_input.php','manage_harvest.php']) ? 'active' : '' ?>" 
         type="button" data-bs-toggle="collapse" data-bs-target="#collapseHarvest" aria-expanded="false" aria-controls="collapseHarvest">
-      <div><i class="bi bi-tools me-2"></i> Harvest Record</div>
+      <div><i class="bi bi-tools me-2"></i> Dashboard</div>
       <i class="bi <?= in_array($page, ['farm_input.php','manage_harvest.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
     <div class="collapse ps-3 <?= in_array($page, ['farm_resource.php','manage_harvest.php']) ? 'show' : '' ?>" id="collapseHarvest">
