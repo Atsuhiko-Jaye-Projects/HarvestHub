@@ -101,9 +101,12 @@ $total_rows = $order->countAll();
                         echo "<td>{$mode_of_payment}</td>";
                         echo "<td>{$lot_size}</td>";
                         echo "<td>{$order_date}</td>";
-                        echo "<td>{$status}</td>";
+                        $status = $row['status'] ?? 'N/A';
+                        echo "<td><button class='btn btn-warning text-uppercase'>{$status}</button></td>";
+
+
 						echo "<td>";
-							echo "<button class='btn btn-warning me-2'>View</button>";
+							echo "<button class='btn btn-warning me-2 text-uppercase'>view</button>";
 						echo "</td>";
 					echo "</tr>";
 				}			
