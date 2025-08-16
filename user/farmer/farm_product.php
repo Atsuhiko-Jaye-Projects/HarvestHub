@@ -31,6 +31,7 @@ $stmt = $farm_product->readAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $farm_product->countAll();
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     include_once "../../config/database.php";
@@ -71,7 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
         }
     }
-
 }
 
 
@@ -84,26 +84,30 @@ include_once "stats.php";
 <?php include_once "modal-forms/add-farm-product.php"; ?>
 
 	<!-- Add Product Button -->
-	<div class="mb-3 mt-3">
+	<div class="mb-3 mt-3 float-end">
 	<span data-bs-toggle='tooltip' title='New'>
 	<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
 	</span>
 	</div>
-<h2><?php echo $page_title; ?></h2>
+
+	<div class="p-3 bg-light rounded">
+		<h5 class="mb-0"><i class="bi bi-basket-fill text-success"></i> <?php echo $page_title; ?></h5>
+		<small class="text-muted">Manage your harvest records and pricing</small>
+	</div>
 
 	<!-- Table -->
 	<?php
 		if ($num>0) {
 	?>
 	<div class="table">
-		<table class="table align-middle table-bordered text-center">
-			<thead class="table-light">
+		<table class="table table-hover table-bordered align-middle">
+			<thead class="table-secondary">
 			<tr>
-				<th>Product Name</th>
-				<th>Estimated Harvest Date</th>
-				<th>Yield</th>
-                <th>Suggested Price</th>
-				<th>Action</th>
+				<th><i class="bi bi-box"></i> Product</th>
+				<th><i class="bi bi-calendar-event"></i> Harvest Date</th>
+				<th><i class="bi bi-graph-up"></i> Yield(kg)</th>
+                <th><i class="bi bi-cash"></i> Price(₱)</th>
+				<th><i class="bi bi-gear"></i> Actions</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -115,29 +119,28 @@ include_once "stats.php";
 						echo "<td>{$product_name}</td>";
 						echo "<td>{$estimated_harvest_date}</td>";
 						echo "<td>{$yield}</td>";
-                        echo "<td>{$suggested_price}</td>";
+                        echo "<td>₱{$suggested_price}.00</td>";
 						echo "<td>";
+						 echo "<div class='btn-group' role='group'>";
 						echo "<span data-bs-toggle='tooltip' title='Edit'>
-								<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id' title='Edit'><span><i class='bi bi-pencil-square'></i></span></a>
+								<button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id' title='Edit'><span><i class='bi bi-pencil-square'></i></span></button>
 								</span>";
 						echo "<span data-bs-toggle='tooltip' title='Edit'>
-								<a href='{$home_url}user/farmer/farm_product_details/edit_product.php?pid={$id}' class='btn btn-warning me-2' data-bs-toggle='modal' data-bs-target='#view-product-modal-$id' title='Edit'><span><i class='bi bi-eye-fill'></i></span></a>
+								<button class='btn btn-warning me-2' data-bs-toggle='modal' data-bs-target='#view-product-modal-$id' title='Edit'><span><i class='bi bi-eye-fill'></i></span></button>
 								</span>";
-
+						echo "</div>";
 						echo "</td>";
 					echo "</tr>";
 					include "modal-forms/edit_product.php";
 					include "modal-forms/view_product.php";
-				}			
+				}
 			?>
 			</tbody>
 		</table>
-		<?php
-		include "modal-forms/edit_product.php";
-		include_once "paging.php";
-		?>
+
 	</div>
 	<?php
+	include_once "paging.php";	
 	}else{
 		echo "<div class='alert alert-danger'>No products Found</div>";
 	}

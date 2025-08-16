@@ -17,7 +17,7 @@
               
               <div class="row mb-3">
                 <div class="col-md-6">    
-                  <input type="hidden" name="action" value="create">
+                  
                   <input type="text" name="category" class="form-control" required placeholder="Category">
                 </div>
                 <div class="col-md-6">

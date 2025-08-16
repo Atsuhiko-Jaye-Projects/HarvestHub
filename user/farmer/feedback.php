@@ -15,8 +15,21 @@ $page_title = "Feedback";
 include_once "layout_head.php";
 
 $product->user_id = $_SESSION['user_id'];
-$stmt = $product->readAllProduct();
+
+$page_url = "{$home_url}user/farmer/feedback.php?";
+
+// page given in URL parameter, default page is one
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// set number of records per page
+$records_per_page = 5;
+
+// calculate for the query LIMIT clause
+$from_record_num = ($records_per_page * $page) - $records_per_page;
+
+$stmt = $product->readAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
+$total_rows = $product->countAll();
 
 // include the stats cards
 include_once "stats.php";
@@ -59,7 +72,10 @@ include_once "stats.php";
 
     <?php include_once "modal-forms/add-product.php"; ?>
 
-    <h2><?php echo $page_title; ?></h2>
+	<div class="p-3 bg-light rounded">
+		<h5 class="mb-0"><i class="bi-pencil-square text-success"></i> <?php echo $page_title; ?></h5>
+		<small class="text-muted">Keep your harvest details up to date</small>
+	</div>
 
 	<!-- Table -->
 	<?php
@@ -101,6 +117,7 @@ include_once "stats.php";
 		</table>
 	</div>
 	<?php
+	include_once "paging.php";
 	}else{
 		echo "<div class='alert alert-danger'>No Resources Found</div>";
 	}

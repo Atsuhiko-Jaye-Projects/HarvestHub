@@ -89,7 +89,7 @@ class FarmProduct{
         return $num;
     }
 
-        function updateFarmProduct(){
+    function updateFarmProduct(){
 
         $query = "UPDATE 
                 " . $this->table_name . "

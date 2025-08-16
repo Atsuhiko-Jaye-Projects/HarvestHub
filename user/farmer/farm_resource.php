@@ -14,9 +14,21 @@ include_once "../../login_checker.php";
 $page_title = "Farm Supplies & Resources";
 include_once "layout_head.php";
 
+$page_url = "{$home_url}user/farmer/farm_resource.php?";
+
+// page given in URL parameter, default page is one
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// set number of records per page
+$records_per_page = 5;
+
+// calculate for the query LIMIT clause
+$from_record_num = ($records_per_page * $page) - $records_per_page;
+
 $farm_resource->user_id = $_SESSION['user_id'];
-$stmt = $farm_resource->readAllResource();
+$stmt = $farm_resource->readAllResource($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
+$total_rows = $farm_resource->countAll();
 
 
 
@@ -60,17 +72,21 @@ include_once "stats.php";
 	<?php include_once "modal-forms/add-resource.php"; ?>
 
 	<!-- Add Product Button -->
-	<div class="mb-3 mt-3">
+	<div class="mb-3 mt-3 float-end">
 	<button class="btn btn-success px-4 py-2 " data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
 	</div>
-	<h2><?php echo $page_title; ?></h2>
 
+	
+	<div class="p-3 bg-light rounded">
+	<h5 class="mb-0"><i class="bi-journal-text text-success"></i> <?php echo $page_title; ?></h5>
+	<small class="text-muted">Update and manage your farm supplies and resources</small>
+	</div>
 	<!-- Table -->
 	<?php
 		if ($num>0) {
 	?>
 	<div class="table">
-		<table class="table align-middle table-bordered text-center">
+		<table class="table table-hover table-bordered align-middle">
 			<thead class="table-light">
 			<tr>
 				<th>Type</th>
@@ -101,6 +117,9 @@ include_once "stats.php";
 		</table>
 	</div>
 	<?php
+	// include the pagination
+	include_once "paging.php";
+
 	}else{
 		echo "<div class='alert alert-danger'>No products Found</div>";
 	}

@@ -1,9 +1,9 @@
 <?php
 
-class Product{
+class HarvestProduct{
 
     private $conn;
-    private $table_name = "products";
+    private $table_name = "harvested_products";
 
     public $id;
     public $product_name;
@@ -16,6 +16,7 @@ class Product{
     public $product_image;
     public $unit;
     public $created_at;
+    public $modified;
 
 
     public function __construct($db) {
@@ -123,10 +124,12 @@ class Product{
         return $result_message;
     }
 
-    function readAllProduct() {
+    function readAllProduct($from_record_num, $records_per_page) {
         $query = "SELECT *
                 FROM " . $this->table_name . "
-                WHERE user_id = :user_id";
+                WHERE user_id = :user_id
+                LIMIT 
+                {$from_record_num}, {$records_per_page}";
 
         $stmt = $this->conn->prepare($query);
 
@@ -137,6 +140,64 @@ class Product{
         $stmt->execute();
 
         return $stmt;
+    }
+
+    
+
+    public function countAll(){
+
+        $query = "SELECT id FROM " . $this->table_name . "";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+
+        return $num;
+    }
+
+
+    function updateHarvestProduct(){
+
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                product_name=:product_name,
+                unit=:unit,
+                price_per_unit=:price_per_unit,
+                category=:category,
+                lot_size=:lot_size,
+                product_description=:product_description,
+                modified=:modified
+                WHERE 
+                    id=:id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->product_name = htmlspecialchars(strip_tags($this->product_name));
+        $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
+        $this->unit = htmlspecialchars(strip_tags($this->unit));
+        $this->category = htmlspecialchars(strip_tags($this->category));
+        $this->lot_size = htmlspecialchars(strip_tags($this->lot_size));
+        $this->product_description = htmlspecialchars(strip_tags($this->product_description));
+        $this->modified_at = date ("Y-m-d H:i:s");
+
+        
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":product_name", $this->product_name);
+        $stmt->bindParam(":price_per_unit", $this->price_per_unit);
+        $stmt->bindParam(":category", $this->category);
+        $stmt->bindParam(":lot_size", $this->lot_size);
+        $stmt->bindParam(":unit", $this->unit);
+        $stmt->bindParam(":product_description", $this->product_description);
+        $stmt->bindParam(":modified", $this->modified);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
 

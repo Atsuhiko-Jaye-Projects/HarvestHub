@@ -4,7 +4,7 @@
 <div class="container-xl mt-3">
     <div class="d-flex gap-3">
   <!-- Card 1 -->
-  <div class="card text-white bg-success flex-fill">
+  <div class="card text-white bg-success flex-fill shadow mb-3">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
@@ -20,7 +20,7 @@
   </div>
 
   <!-- Card 2 -->
-  <div class="card flex-fill">
+  <div class="card flex-fill shadow mb-3">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
@@ -37,7 +37,7 @@
   </div>
 
   <!-- Card 3 -->
-  <div class="card flex-fill">
+  <div class="card flex-fill shadow mb-3">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
