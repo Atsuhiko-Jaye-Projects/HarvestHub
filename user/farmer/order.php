@@ -103,7 +103,6 @@ $total_rows = $order->countAll();
                         echo "<td>{$order_date}</td>";
                         echo "<td>{$status}</td>";
 						echo "<td>";
-							echo "<button class='btn btn-primary me-2'>Edit</button>";
 							echo "<button class='btn btn-warning me-2'>View</button>";
 						echo "</td>";
 					echo "</tr>";
