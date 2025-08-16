@@ -1,64 +1,137 @@
 <?php $page = basename($_SERVER['PHP_SELF']); ?>
 
-<div class="col-2 col-sm-3 col-xl-2 bg-dark">
-  <nav class="navbar bg-dark border-bottom border-white mb-3" data-bs-theme="dark">
+<div class="col-2 col-sm-3 col-xl-2 bg-dark vh-100 p-0">
+
+  <!-- Logo -->
+  <nav class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
     <a class="navbar-brand d-flex flex-column align-items-center w-100" href="#">
       <?php
-        if ($page_title=="Edit Product") {
-            echo "<img src='../../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='100' height='100'>";
-        }else{
-            echo "<img src='../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='100' height='100'>";
-        }
+        $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../libs/images/logo.png';
+        echo "<img src='$logo_path' alt='User Avatar' class='rounded-circle' width='100' height='100'>";
       ?>
     </a>
   </nav>
-  
-  
 
+  <!-- Sidebar Menu -->
   <nav class="nav flex-column">
-    
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'index.php' ? 'active bg-success' : '' ?>" href="index.php">
-      <i class="bi bi-grid"></i> <span>Dashboard</span>
+    <!-- Dashboard -->
+    <a href="index.php" class="sidebar-btn <?= $page=='index.php' ? 'active' : '' ?>">
+      <i class="bi bi-grid me-2"></i>
+      <span>Dashboard</span>
     </a>
 
-
-
-
-    <button 
-    class="btn btn-outline-success text-white px-4 py-2 dropdown-toggle align-items-center gap-2 mb-3 d-flex <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php" 
-    type="button" 
-    id="dropdownMenuButton" 
-    data-bs-toggle="dropdown" 
-    aria-expanded="false">
-    <span><i class="bi bi-tools"></i></span> Harvest Record
+    <!-- Harvest Record Collapsible -->
+    <button class="sidebar-btn d-flex justify-content-between align-items-center <?= 
+        in_array($page, ['farm_input.php','manage_harvest.php']) ? 'active' : '' ?>" 
+        type="button" data-bs-toggle="collapse" data-bs-target="#collapseHarvest" aria-expanded="false" aria-controls="collapseHarvest">
+      <div><i class="bi bi-tools me-2"></i> Harvest Record</div>
+      <i class="bi <?= in_array($page, ['farm_input.php','manage_harvest.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
+    <div class="collapse ps-3 <?= in_array($page, ['farm_resource.php','manage_harvest.php']) ? 'show' : '' ?>" id="collapseHarvest">
+      <a href="farm_resource.php" class="sidebar-btn <?= $page=='farm_resource.php' ? 'active' : '' ?>">
+        <i class="bi bi-box-seam me-2"></i> Farm Inputs
+      </a>
+      <a href="manage_harvest.php" class="sidebar-btn <?= $page=='manage_harvest.php' ? 'active' : '' ?>">
+        <i class="bi bi-tree me-2"></i> Harvest
+      </a>
+    </div>
 
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <li><a href="farm_product.php" class="dropdown-item">Products</a></li>
-      <li><a href="manage_harvest.php" class="dropdown-item">Harvest</a></li>
-      <li><a href="farm_resource.php" class="dropdown-item">Supplies & Resources</a></li>
-    </ul>
+    <!-- Inventory Collapsible -->
+    <button class="sidebar-btn d-flex justify-content-between align-items-center <?= 
+        in_array($page, ['inventory.php','planted_crops.php']) ? 'active' : '' ?>" 
+        type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
+      <div><i class="bi bi-box-seam me-2"></i> Inventory</div>
+      <i class="bi <?= in_array($page, ['inventory.php','planted_crops.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
+    </button>
+    <div class="collapse ps-3 <?= in_array($page, ['manage_product.php','planted_crops.php']) ? 'show' : '' ?>" id="collapseInventory">
+      <a href="manage_product.php" class="sidebar-btn <?= $page=='manage_product.php' ? 'active' : '' ?>">
+        <i class="bi bi-box-fill me-2"></i> Products
+      </a>
 
-    <!-- <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'manage_harvest.php' ? 'active bg-success' : '' ?>" href="manage_harvest.php">
-      <i class="bi bi-book"></i> <span>Manage Harvest</span>
-    </a> -->
+    </div>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'order.php' ? 'active bg-success' : '' ?>" href="order.php">
-      <i class="bi bi-archive"></i> <span>Orders</span>
+    <!-- Orders -->
+    <a href="order.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
+      <i class="bi bi-archive me-2"></i>
+      <span>Orders</span>
     </a>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'feedback.php' ? 'active bg-success' : '' ?>" href="feedback.php">
-      <i class="bi bi-chat-left"></i> <span>Feedback</span>
+    <!-- Feedback -->
+    <a href="feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
+      <i class="bi bi-chat-left me-2"></i>
+      <span>Feedback</span>
     </a>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'help.php' ? 'active bg-success' : '' ?>" href="help.php">
-      <i class="bi bi-question-circle"></i> <span>Help & Support</span>
+    <!-- Help & Support -->
+    <a href="help.php" class="sidebar-btn <?= $page=='help.php' ? 'active' : '' ?>">
+      <i class="bi bi-question-circle me-2"></i>
+      <span>Help & Support</span>
     </a>
 
-    <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'farmers.php' ? 'active bg-success' : '' ?>" href="farmers.php">
-      <i class="bi bi-person"></i> <span>Farmers</span>
+    <!-- Farmers -->
+    <a href="farmers.php" class="sidebar-btn <?= $page=='farmers.php' ? 'active' : '' ?>">
+      <i class="bi bi-person me-2"></i>
+      <span>Farmers</span>
     </a>
 
   </nav>
 </div>
+
+<!-- Custom CSS -->
+<style>
+  .sidebar-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    text-align: left;
+    gap: 0.5rem;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .sidebar-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+    text-decoration: none;
+  }
+  .sidebar-btn.active {
+    background-color: #198754;
+    color: #fff;
+  }
+  #collapseHarvest .sidebar-btn,
+  #collapseInventory .sidebar-btn {
+    padding-left: 2rem;
+  }
+  .caret-icon {
+    transition: transform 0.3s;
+  }
+</style>
+
+<!-- JS for caret toggle -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Harvest Record caret
+    const collapseHarvest = document.getElementById('collapseHarvest');
+    const caretHarvest = collapseHarvest.previousElementSibling.querySelector('.caret-icon');
+
+    if (collapseHarvest.classList.contains('show')) {
+      caretHarvest.classList.replace('bi-caret-up-fill','bi-caret-down-fill');
+    }
+    collapseHarvest.addEventListener('show.bs.collapse', () => caretHarvest.classList.replace('bi-caret-up-fill','bi-caret-down-fill'));
+    collapseHarvest.addEventListener('hide.bs.collapse', () => caretHarvest.classList.replace('bi-caret-down-fill','bi-caret-up-fill'));
+
+    // Inventory caret
+    const collapseInventory = document.getElementById('collapseInventory');
+    const caretInventory = collapseInventory.previousElementSibling.querySelector('.caret-icon');
+
+    if (collapseInventory.classList.contains('show')) {
+      caretInventory.classList.replace('bi-caret-up-fill','bi-caret-down-fill');
+    }
+    collapseInventory.addEventListener('show.bs.collapse', () => caretInventory.classList.replace('bi-caret-up-fill','bi-caret-down-fill'));
+    collapseInventory.addEventListener('hide.bs.collapse', () => caretInventory.classList.replace('bi-caret-down-fill','bi-caret-up-fill'));
+  });
+</script>

@@ -1,15 +1,15 @@
 <?php 
 include '../../config/core.php';
 include_once "../../config/database.php";
-include_once "../../objects/product.php";
+include_once "../../objects/harvest_product.php";
 
 $database = new Database();
 $db = $database->getConnection();
 
-$product = new Product($db);
+$harvest_product = new HarvestProduct($db);
 
-$product->user_id = $_SESSION['user_id'];
-$stmt = $product->readAllProduct();
+$harvest_product->user_id = $_SESSION['user_id'];
+$stmt = $harvest_product->readAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 
 
