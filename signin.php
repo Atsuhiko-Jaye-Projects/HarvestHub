@@ -58,7 +58,7 @@ include_once "layout_head.php";
       <div class="w-75">
         <?php include_once "alert_message.php"; ?>
         <h3 class="mb-4">Login</h3>
-        <p class="small">Don't have an account? <a href="signup.php">Create one</a></p>
+        <p class="small">Don't have an account? <a class="text-decoration-none" href="signup.php">Create one</a></p>
         
         <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST'>
           <div class="mb-3">
@@ -69,7 +69,11 @@ include_once "layout_head.php";
           </div>
           <button type="submit" class="btn btn-success w-100">Sign in</button>
         </form>
-
+        <p class="small mt-3">Forgot your Password? <a  class="text-decoration-none" href="signin.php">HERE</a></p>
+        <hr>
+        <div>
+            <p class="small">By signing up, you agree to the HarvestHub.com Service <a href="">Terms & Conditions</a> and the <a href="">Privacy Policy.</a></p>
+        </div>
       </div>
     </div>
 

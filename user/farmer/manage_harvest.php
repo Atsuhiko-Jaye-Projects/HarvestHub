@@ -67,23 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 		$harvest_product->lot_size = $_POST['lot_size'];
 
         if ($harvest_product->updateHarvestProduct()) {
-						header("location:{$home_url}user/farmer/manage_harvest.php");
-echo '<!-- Hidden Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <i class="bi bi-check-circle-fill text-success fs-1"></i>
-        <p class="mt-2 mb-0">Product updated successfully!</p>
-      </div>
-    </div>
-  </div>
-</div>';
-    echo '<script>
-        var successModal = new bootstrap.Modal(document.getElementById("successModal"));
-        successModal.show();
-        setTimeout(function(){ successModal.hide(); }, 2000); // hide after 2 seconds
-    </script>';
+						
+            header("location:{$home_url}user/farmer/manage_harvest.php?r=pu");
 
 			//echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
 

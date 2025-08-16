@@ -33,6 +33,7 @@ class User{
                     lastname=:lastname,
                     password = :password,
                     email_address = :email_address,
+                    contact_number=:contact_number;
                     farm_details_exists=:farm_details_exists,
                     user_type = :user_type,
                     created = :created";
@@ -43,6 +44,7 @@ class User{
         $this->firstname=htmlspecialchars(strip_tags($this->firstname));
         $this->lastname=htmlspecialchars(strip_tags($this->lastname));
         $this->password=htmlspecialchars(strip_tags($this->password));
+        $this->contact_number=htmlspecialchars(strip_tags($this->contact_number));
         $this->email_address=htmlspecialchars(strip_tags($this->email_address));
         $this->farm_details_exists=htmlspecialchars(strip_tags($this->farm_details_exists));
         $this->user_type=htmlspecialchars(strip_tags($this->user_type));
@@ -53,6 +55,7 @@ class User{
         $stmt->bindParam(":firstname", $this->firstname);
         $stmt->bindParam(":lastname", $this->lastname);
         $stmt->bindParam(":password", $password_hash);
+        $stmt->bindParam(":contact_number", $this->contact_number);
         $stmt->bindParam(":email_address", $this->email_address);
         $stmt->bindParam(":farm_details_exists", $this->farm_details_exists);
         $stmt->bindParam(":user_type", $this->user_type);

@@ -12,8 +12,11 @@
       ?>
     </a>
   </nav>
+  
+  
 
   <nav class="nav flex-column">
+    
 
     <a class="btn btn-outline-success text-white mb-3 d-flex align-items-center gap-2 <?= $page == 'index.php' ? 'active bg-success' : '' ?>" href="index.php">
       <i class="bi bi-grid"></i> <span>Dashboard</span>

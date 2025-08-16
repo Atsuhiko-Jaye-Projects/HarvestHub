@@ -26,16 +26,25 @@ if ($_POST) {
     $user->lastname = $_POST['lastname'];
     $user->email_address = $_POST['email_address'];
     $user->password = $_POST['password'];
+    $user->contact_number = $_POST['contact_number'];
     $user->farm_details_exists = 0;
-    $user->user_type = "consumer";
+    $user->user_type = "seller";
+    $_POST['confirm_password'];
 
-    if ($user->create()) {
+
+    if ($_POST['password'] != $_POST['confirm_password']) {
+        $alert_message = "<div class='alert alert-danger' role='alert'>
+            Password did not match. <i class='bi bi-exclamation-diamond-fill'></i> 
+        </div>";
+    }
+
+    else if ($user->create()) {
         $alert_message = "<div class='alert alert-success'>
-            Information Submitted! <a href='{$home_url}login'> Please sign in to continue </a>
+            Start your account and <a href='{$home_url}login'>continue! </a>
         </div>";
     } else {
         $alert_message = "<div class='alert alert-danger' role='alert'>
-            ERROR! Please try again later.
+            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Please try again later.
         </div>";
     }
 }
@@ -52,7 +61,7 @@ if ($_POST) {
         } 
         ?>
 
-        <h3 class="mb-4">Create an Account</h3>
+        <h3 class="mb-4">Turn Your Products Into Profit!</h3>
         <p class="small">Already have an Account? <a class="text-decoration-none" href="signin.php">Login here</a></p>
         
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST'>
@@ -68,6 +77,11 @@ if ($_POST) {
                 <div class="mb-3">
                     <input type="email" name="email_address" class="form-control" placeholder="Email address" required>
                 </div>
+
+                <div class="mb-3">
+                    <input type="text" name="contact_number" class="form-control" placeholder="Contact No. (e.g., 09123456789 or +639123456789)" pattern="^(09\d{9}|\+639\d{9})$" required>
+                </div>
+
                 <div class="mb-3">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
                 </div>
@@ -78,12 +92,7 @@ if ($_POST) {
             </div>
             <button type="submit" class="btn btn-success w-100">Sign up</button>
         </form>
-
-        <div class="mt-3">
-            <p class="small">Want to sell your good the community? Be a seller! <a class="text-decoration-none" href="seller-signup.php">HERE</a></p>
-        </div>
         <hr>
-
         <div>
             <p class="small">By signing up, you agree to the HarvestHub.com Service <a href="">Terms & Conditions</a> and the <a href="">Privacy Policy.</a></p>
         </div>

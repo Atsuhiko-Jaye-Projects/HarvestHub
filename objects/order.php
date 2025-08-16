@@ -23,10 +23,12 @@ class Order{
         $this->conn = $db;
     }
 
-        function readAllOrder() {
+    function readAllOrder($from_record_num, $records_per_page) {
         $query = "SELECT *
                 FROM " . $this->table_name . "
-                WHERE user_id = :user_id";
+                WHERE user_id = :user_id
+                LIMIT
+                {$from_record_num}, {$records_per_page}";
 
         $stmt = $this->conn->prepare($query);
 
@@ -37,6 +39,18 @@ class Order{
         $stmt->execute();
 
         return $stmt;
+    }
+
+    public function countAll(){
+
+        $query = "SELECT id FROM " . $this->table_name . "";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+
+        return $num;
     }
 
 
