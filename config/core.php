@@ -8,6 +8,8 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 // home page url
 $home_url="http://localhost/harvesthub/";
+
+$base_url = "/harvesthub/";
 // page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 // set number of records per page

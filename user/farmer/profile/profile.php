@@ -1,12 +1,11 @@
 <?php
-include_once "../../config/core.php";
-
+include_once "../../../config/core.php";
 
 $require_login=true;
-include_once "../../login_checker.php";
+include_once "../../../login_checker.php";
 
 $page_title = "Profile";
-include_once "layout_head.php";
+include_once "../layout/layout_head.php";
 
 
 ?>
@@ -25,7 +24,7 @@ include_once "layout_head.php";
                     style="width:60px;height:60px;"
                     >
                     <!-- Placeholder icon (you can replace this with an <img src=""> tag) -->
-                    <img src="../../libs/images/logo.png" style="width:60px;height:60px;border-radius:50%" alt="">
+                    <img src="../../../libs/images/logo.png" style="width:60px;height:60px;border-radius:50%" alt="">
                     </div>
 
                     <!-- Name & Role -->
@@ -104,6 +103,6 @@ include_once "layout_head.php";
 </div>
 
 
-<?php include_once "layout_foot.php"; ?>
+<?php include_once "../layout/layout_foot.php"; ?>
 
 

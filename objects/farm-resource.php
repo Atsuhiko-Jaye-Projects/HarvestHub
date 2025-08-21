@@ -81,6 +81,54 @@ class FarmResource{
 
         return $num;
     }
+    public function search($search_term, $from_record_num, $records_per_page) {
+        // select query with alias used
+        $query = "SELECT
+                    i.*
+                FROM
+                    " . $this->table_name . " i
+                WHERE
+                    i.item_name LIKE ?
+                LIMIT ?, ?";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // bind variables
+        $search_term = "%{$search_term}%";
+        $stmt->bindParam(1, $search_term, PDO::PARAM_STR);
+        $stmt->bindParam(2, $from_record_num, PDO::PARAM_INT);
+        $stmt->bindParam(3, $records_per_page, PDO::PARAM_INT);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+
+    public function countAll_BySearch($search_term) {
+        // select query
+        $query = "SELECT
+                    COUNT(*) as total_rows
+                FROM
+                    " . $this->table_name . " i
+                WHERE
+                    i.item_name LIKE ?";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // bind variable values
+        $search_term = "%{$search_term}%";
+        $stmt->bindParam(1, $search_term, PDO::PARAM_STR);
+
+        // execute and fetch
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['total_rows'];
+    }
 
 
 

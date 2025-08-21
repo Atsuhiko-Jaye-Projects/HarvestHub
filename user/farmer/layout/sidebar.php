@@ -6,7 +6,7 @@
   <nav class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
     <a class="navbar-brand d-flex flex-column align-items-center w-100" href="#">
       <?php
-        $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../libs/images/logo.png';
+        $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../../libs/images/logo.png';
         echo "<img src='$logo_path' alt='User Avatar' class='rounded-circle' width='100' height='100'>";
       ?>
     </a>
@@ -29,7 +29,7 @@
       <i class="bi <?= in_array($page, ['farm_input.php','manage_harvest.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
     <div class="collapse ps-3 <?= in_array($page, ['farm_resource.php','manage_harvest.php']) ? 'show' : '' ?>" id="collapseHarvest">
-      <a href="farm_resource.php" class="sidebar-btn <?= $page=='farm_resource.php' ? 'active' : '' ?>">
+      <a href="<?php echo $base_url?>user/farmer/farm/farm_resource.php" class="sidebar-btn <?= $page=='farm_resource.php' ? 'active' : '' ?>">
         <i class="bi bi-box-seam me-2"></i> Farm Inputs
       </a>
       <a href="manage_harvest.php" class="sidebar-btn <?= $page=='manage_harvest.php' ? 'active' : '' ?>">
@@ -44,8 +44,9 @@
       <div><i class="bi bi-box-seam me-2"></i> Inventory</div>
       <i class="bi <?= in_array($page, ['inventory.php','planted_crops.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
-    <div class="collapse ps-3 <?= in_array($page, ['manage_product.php','planted_crops.php']) ? 'show' : '' ?>" id="collapseInventory">
-      <a href="manage_product.php" class="sidebar-btn <?= $page=='manage_product.php' ? 'active' : '' ?>">
+
+    <div class="collapse ps-3 <?= in_array($page, ['manage_product.php','search.php']) ? 'show' : '' ?>" id="collapseInventory">
+      <a href="<?php echo $base_url; ?>user/farmer/management/manage_product.php" class="sidebar-btn <?= ($page == 'manage_product.php' || $page == 'search.php') ? 'active' : '' ?>">
         <i class="bi bi-box-fill me-2"></i> Products
       </a>
 
