@@ -53,7 +53,7 @@
     </div>
 
     <!-- Orders -->
-    <a href="<?php echo $base_url;?>/user/farmer/order/order.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
+    <a href="<?php echo $base_url;?>user/farmer/order/order.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
       <i class="bi bi-archive me-2"></i>
       <span>Orders</span>
     </a>
