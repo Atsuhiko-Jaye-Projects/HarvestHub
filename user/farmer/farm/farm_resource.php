@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 //include stats card
-include_once "../statistics/stats.php";
+include_once "../statistics/management/management_resource_stats.php";
 include_once "template/farm_resource_template.php";
 ?>
 
