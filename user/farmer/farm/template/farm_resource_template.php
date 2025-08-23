@@ -62,10 +62,16 @@
 						echo "<td>{$cost}</td>";
 						echo "<td>{$date}</td>";
 						echo "<td>";
-							echo "<button class='btn btn-primary me-2'>Edit</button>";
-							echo "<button class='btn btn-warning me-2'>View</button>";
+						echo "<span data-bs-toggle='tooltip' title='Edit'>
+								<button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-farm-resource-modal-$id'><span><i class='bi bi-pencil-square'></i></span></button>
+								</span>";
+						echo "<span data-bs-toggle='tooltip' title='View'>
+								<button class='btn btn-warning me-2' data-bs-toggle='modal' data-bs-target='#view-farm-resource-modal-$id'><span><i class='bi bi-eye-fill'></i></span></button>
+								</span>";
 						echo "</td>";
 					echo "</tr>";
+					include "../modal-forms/farm/farm-resource.php";
+					include "../modal-forms/view_harvest.php";
 				}			
 			?>
 			</tbody>

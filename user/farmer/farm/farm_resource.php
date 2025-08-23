@@ -11,10 +11,10 @@ $farm_resource = new FarmResource($db);
 $require_login=true;
 include_once "../../../login_checker.php";
 
-$page_title = "Farm Supplies & Resources";
+$page_title = "Farm Resources & supplies";
 include_once "../layout/layout_head.php";
 
-$page_url = "{$home_url}user/farmer/farm_resource.php?";
+$page_url = "{$home_url}user/farmer/farm/farm_resource.php?";
 
 // page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -32,34 +32,54 @@ $total_rows = $farm_resource->countAll();
 
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
-	include_once "../../config/database.php";
-	include_once "../../objects/farm-resource.php";
+	include_once "../../../config/database.php";
+	include_once "../../../objects/farm-resource.php";
 
 	$database = new Database();
 	$db = $database->getConnection();
 
 	$farm_resource = new FarmResource($db);
 
-	$farm_resource->user_id = $_SESSION['user_id'];
-	$farm_resource->item_name = $_POST['item_name'];
-    $farm_resource->type = $_POST['type'];
-	$farm_resource->cost = $_POST['cost'];
-	$farm_resource->date = $_POST['date'];
+	if ($_POST["action"]=="create") {
+		$farm_resource->user_id = $_SESSION['user_id'];
+		$farm_resource->item_name = $_POST['item_name'];
+		$farm_resource->type = $_POST['type'];
+		$farm_resource->cost = $_POST['cost'];
+		$farm_resource->date = $_POST['date'];
+		
+		if ($farm_resource->createFarmResource()) {
+			echo "<div class='container'>";
+				echo "<div class='alert alert-success'>Resource Info Saved!</div>";
+			echo "</div>";
 
-
-	
-	if ($farm_resource->createFarmResource()) {
-
-		echo "<div class='container'>";
-			echo "<div class='alert alert-success'>Resource Info Saved!</div>";
-		echo "</div>";
-	}else{
-		echo "<div class='container'>";
-			echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
-		echo "</div>";
+		}else{
+			echo "<div class='container'>";
+				echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
+			echo "</div>";
+		}
 	}
+
+	if ($_POST["action"]=="update") {
+		$farm_resource->id = $_POST['item_id'];
+		$farm_resource->item_name = $_POST['item_name'];
+		$farm_resource->type = $_POST['type'];
+		$farm_resource->cost = $_POST['cost'];
+		$farm_resource->date = $_POST['date'];
+		
+		if ($farm_resource->updateFarmResource()) {
+			echo "<div class='container'>";
+				echo "<div class='alert alert-success'>Resource Info update!</div>";
+			echo "</div>";
+			
+		}else{
+			echo "<div class='container'>";
+				echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
+			echo "</div>";
+		}
+	}
+
 
 }
 

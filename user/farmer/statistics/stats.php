@@ -1,4 +1,4 @@
-<?php if ($page_title == "Manage Harvest" || $page_title == "Farm Products" || $page_title == "Farm Supplies & Resources") {
+<?php if ($page_title == "Manage Harvest" || $page_title == "Farm Products" || $page_title == "Farm Resources & supplies" || $page_title == "Manage Product") {
     # code...
 ?>
 <div class="container-xl mt-3">
