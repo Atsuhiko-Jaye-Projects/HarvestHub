@@ -9,7 +9,7 @@
                 if ($page_title=="Edit Product") {
                     echo "<img src='../../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='40' height='40'>";
                 }else{
-                    echo "<img src='../../../libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='40' height='40'>";
+                    echo "<img src='$base_url/libs/images/logo.png' alt='User Avatar' class='rounded-circle me-2' width='40' height='40'>";
                 }
             ?>
             <!-- User Info -->
@@ -26,7 +26,7 @@
                 <i class="bi bi-caret-down-fill"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="../profile/profile.php">Profile</a></li>
+                <li><a class="dropdown-item" href="<?php echo $base_url; ?>user/farmer/profile/profile.php">Profile</a></li>
                 <li><a class="dropdown-item" href="#">Settings</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="../../../logout.php">Logout</a></li>

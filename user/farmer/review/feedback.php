@@ -1,7 +1,7 @@
 <?php
-include_once "../../config/core.php";
-include_once "../../config/database.php";
-include_once "../../objects/harvest_product.php";
+include_once "../../../config/core.php";
+include_once "../../../config/database.php";
+include_once "../../../objects/harvest_product.php";
 
 $database = new Database();
 $db = $database->getConnection();
@@ -9,14 +9,14 @@ $db = $database->getConnection();
 $harvest_product = new HarvestProduct($db);
 
 $require_login=true;
-include_once "../../login_checker.php";
+include_once "../../../login_checker.php";
 
 $page_title = "Feedback";
-include_once "layout_head.php";
+include_once "../layout/layout_head.php";
 
 $harvest_product->user_id = $_SESSION['user_id'];
 
-$page_url = "{$home_url}user/farmer/feedback.php?";
+$page_url = "{$home_url}user/farmer/review/feedback.php?";
 
 // page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -32,7 +32,7 @@ $num = $stmt->rowCount();
 $total_rows = $harvest_product->countAll();
 
 // include the stats cards
-include_once "stats.php";
+include_once "../statistics/stats.php";
 ?>
 <div class="container">
 
@@ -70,7 +70,7 @@ include_once "stats.php";
     </div>
     </nav>
 
-    <?php include_once "modal-forms/add-product.php"; ?>
+    <?php include_once "../modal-forms/add-product.php"; ?>
 
 	<div class="p-3 bg-light rounded">
 		<h5 class="mb-0"><i class="bi-pencil-square text-success"></i> <?php echo $page_title; ?></h5>
@@ -117,7 +117,7 @@ include_once "stats.php";
 		</table>
 	</div>
 	<?php
-	include_once "paging.php";
+	include_once "../paging.php";
 	}else{
 		echo "<div class='alert alert-danger'>No Resources Found</div>";
 	}
@@ -126,4 +126,4 @@ include_once "stats.php";
 
 
 
-<?php include_once "layout_foot.php"; ?>
+<?php include_once "../layout/layout_foot.php"; ?>

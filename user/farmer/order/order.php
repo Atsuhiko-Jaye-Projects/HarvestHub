@@ -1,7 +1,7 @@
 <?php 
-include_once '../../config/core.php';
-include_once '../../config/database.php';
-include_once '../../objects/order.php'; 
+include_once '../../../config/core.php';
+include_once '../../../config/database.php';
+include_once '../../../objects/order.php'; 
 
 $database = new Database();
 $db = $database->getConnection();
@@ -9,10 +9,10 @@ $db = $database->getConnection();
 $order = new Order($db);
 
 $require_login=true;
-include_once "../../login_checker.php";
+include_once "../../../login_checker.php";
 
 $page_title = "Order Info";
-include_once "layout_head.php";
+include_once "../layout/layout_head.php";
 
 $page_url = "{$home_url}user/farmer/order.php?";
 // page given in URL parameter, default page is one
@@ -115,7 +115,7 @@ $total_rows = $order->countAll();
 		</table>
 	</div>
 	<?php
-    include_once "paging.php";
+    include_once "../paging.php";
 	}else{
 		echo "<div class='alert alert-danger'>No order Found</div>";
 	}
@@ -124,4 +124,4 @@ $total_rows = $order->countAll();
 
 
 
-<?php include_once "layout_foot.php"; ?>
+<?php include_once "../layout/layout_foot.php"; ?>

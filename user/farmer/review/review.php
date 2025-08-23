@@ -1,9 +1,9 @@
 <?php
 $product_id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Missing ID');
 
-include_once "../../config/core.php";
-include_once "../../config/database.php";
-include_once "../../objects/review.php";
+include_once "../../../config/core.php";
+include_once "../../../config/database.php";
+include_once "../../../objects/review.php";
 
 
 $database = new Database();
@@ -12,10 +12,10 @@ $db = $database->getConnection();
 $review = new Review($db);
 
 $require_login=true;
-include_once "../../login_checker.php";
+include_once "../../../login_checker.php";
 
 $page_title = "Reviews";
-include_once "layout_head.php";
+include_once "../layout/layout_head.php";
 
 $review->product_id = $product_id;
 $review->user_id = $_SESSION['user_id'];
@@ -23,7 +23,7 @@ $stmt = $review->readAllReview();
 $num = $stmt->rowCount();
 
 // include the stats cards
-include_once "stats.php";
+include_once "../statistics/stats.php";
 ?>
 
 <div class="container">

@@ -6,8 +6,8 @@
   <nav class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
     <a class="navbar-brand d-flex flex-column align-items-center w-100" href="#">
       <?php
-        $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../../libs/images/logo.png';
-        echo "<img src='$logo_path' alt='User Avatar' class='rounded-circle' width='100' height='100'>";
+        $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../../../../libs/images/logo.png';
+        echo "<img src='$base_url/libs/images/logo.png' alt='User Avatar' class='rounded-circle' width='100' height='100'>";
       ?>
     </a>
   </nav>
@@ -16,7 +16,7 @@
   <nav class="nav flex-column">
 
     <!-- Dashboard -->
-    <a href="index.php" class="sidebar-btn <?= $page=='index.php' ? 'active' : '' ?>">
+    <a href="<?php echo $base_url; ?>user/farmer/index.php" class="sidebar-btn <?= $page=='index.php' ? 'active' : '' ?>">
       <i class="bi bi-grid me-2"></i>
       <span>Home</span>
     </a>
@@ -32,7 +32,7 @@
       <a href="<?php echo $base_url?>user/farmer/farm/farm_resource.php" class="sidebar-btn <?= $page=='farm_resource.php' ? 'active' : '' ?>">
         <i class="bi bi-box-seam me-2"></i> Farm Inputs
       </a>
-      <a href="manage_harvest.php" class="sidebar-btn <?= $page=='manage_harvest.php' ? 'active' : '' ?>">
+      <a href="<?php echo $base_url; ?>user/farmer/management/manage_harvest.php" class="sidebar-btn <?= $page=='manage_harvest.php' ? 'active' : '' ?>">
         <i class="bi bi-tree me-2"></i> Harvest
       </a>
     </div>
@@ -53,28 +53,28 @@
     </div>
 
     <!-- Orders -->
-    <a href="order.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
+    <a href="<?php echo $base_url;?>/user/farmer/order/order.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
       <i class="bi bi-archive me-2"></i>
       <span>Orders</span>
     </a>
 
     <!-- Feedback -->
-    <a href="feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
+    <a href="<?php echo $base_url;?>user/farmer/review/feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
       <i class="bi bi-chat-left me-2"></i>
       <span>Feedback</span>
     </a>
 
     <!-- Help & Support -->
-    <a href="help.php" class="sidebar-btn <?= $page=='help.php' ? 'active' : '' ?>">
+    <!-- <a href="help.php" class="sidebar-btn <?= $page=='help.php' ? 'active' : '' ?>">
       <i class="bi bi-question-circle me-2"></i>
       <span>Help & Support</span>
-    </a>
+    </a> -->
 
     <!-- Farmers -->
-    <a href="farmers.php" class="sidebar-btn <?= $page=='farmers.php' ? 'active' : '' ?>">
+    <!-- <a href="farmers.php" class="sidebar-btn <?= $page=='farmers.php' ? 'active' : '' ?>">
       <i class="bi bi-person me-2"></i>
       <span>Farmers</span>
-    </a>
+    </a> -->
 
   </nav>
 </div>

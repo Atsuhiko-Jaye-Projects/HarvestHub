@@ -4,7 +4,7 @@ $require_login=true;
 include_once "../../login_checker.php";
 
 $page_title = "Index";
-include_once "layout_head.php";
+include_once "layout/layout_head.php";
 
 
 
@@ -171,7 +171,7 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
 <?php 
 }
 
-include_once "layout_foot.php"; 
+include_once "layout/layout_foot.php"; 
 ?>
 
 
