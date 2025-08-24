@@ -11,6 +11,7 @@ class FarmResource{
     public $cost;
     public $date;
     public $created_at;
+    public $modified_at;
 
     public function __construct($db) {
 	    $this->conn = $db;
@@ -128,6 +129,43 @@ class FarmResource{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $row['total_rows'];
+    }
+
+    function updateFarmResource(){
+
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                item_name=:item_name,
+                cost=:cost,
+                date=:date,
+                type=:type,
+                modified_at=:modified_at
+                WHERE 
+                id=:id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->item_name = htmlspecialchars(strip_tags($this->item_name));
+        $this->cost = htmlspecialchars(strip_tags($this->cost));
+        $this->date = htmlspecialchars(strip_tags($this->date));
+        $this->type = htmlspecialchars(strip_tags($this->type));
+        $this->modified_at = date ("Y-m-d H:i:s");
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":item_name", $this->item_name);
+        $stmt->bindParam(":cost", $this->cost);
+        $stmt->bindParam(":date", $this->date);
+        $stmt->bindParam(":type", $this->type);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
 

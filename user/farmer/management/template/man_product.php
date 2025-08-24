@@ -8,7 +8,7 @@
     <nav class="navbar bg-body-tertiary mt-3">
     
         <div class="container-fluid">
-            <!-- Search Form with Dropdown beside -->
+            <!-- Search Form with Dropdown beside -->	
             <form class="d-flex w-30 align-items-center" role="search" action="search.php">
                 <div class="input-group">
                     <span class="input-group-text" id="search-icon">
