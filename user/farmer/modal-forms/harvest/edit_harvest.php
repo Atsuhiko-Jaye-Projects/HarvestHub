@@ -47,7 +47,6 @@
                 <div class="col-md-6">
                     <Label>Lot Size</Label>
                     <input type="text" name="lot_size" value="<?php echo $lot_size; ?>" class="form-control" required placeholder="Lot Size">
-                    <input type="text" name="lot_size" value="<?php echo $is_posted; ?>" class="form-control" required placeholder="Lot Size">
                   </div>
               </div>
 
