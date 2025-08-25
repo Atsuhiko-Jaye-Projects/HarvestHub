@@ -1,7 +1,7 @@
 <?php 
 include '../../../config/core.php';
 include_once "../../../config/database.php";
-include_once "../../../objects/harvest_product.php";
+include_once "../../../objects/product.php";
 
 $page_title = "Manage Product";
 include_once "../layout/layout_head.php";
@@ -9,20 +9,19 @@ include_once "../layout/layout_head.php";
 $database = new Database();
 $db = $database->getConnection();
 
-$harvest_product = new HarvestProduct($db);
+$product = new Product($db);
 
 // get the search term
 $page_url = "{$home_url}user/farmer/management/manage_product.php?";
 // page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-
 // set number of records per page
 $records_per_page = 5;
 
-$harvest_product->user_id = $_SESSION['user_id'];
-$stmt = $harvest_product->readAllProduct($from_record_num, $records_per_page);
+$product->user_id = $_SESSION['user_id'];
+$stmt = $product->readAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
-$total_rows = $harvest_product->countAll();
+$total_rows = $product->countAll();
 
 // set the login require to to true
 $require_login=true;
