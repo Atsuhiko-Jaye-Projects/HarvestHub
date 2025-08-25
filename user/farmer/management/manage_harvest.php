@@ -94,16 +94,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 		$product->lot_size = $_POST['lot_size'];
         $product->product_image = $_POST['product_image'] ?? 'default.png';
 
+        $harvest_product->id = $_POST['product_id'];
+        $harvest_product->is_posted = "Posted";
 
-        if ($product->postProduct()) {
-            
-						
-            // /header("location:{$home_url}user/farmer/manage_harvest.php?r=pu");
-
+        if ($_POST['is_posted'] == "Posted") {
+            echo "<div class='container'><div class='alert alert-warning'>Product is already posted.</div></div>";
+        }else{
+            $product->postProduct();
+            //update the item by the status if its posted 
+			$harvest_product->postedProduct();
 			echo "<div class='container'><div class='alert alert-success'>Product Posted!</div></div>";
-
-        } else {
-            echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
         }
     }
 }

@@ -55,6 +55,7 @@
                   <label>Image</label>
                   <img  class="img-fluid border rounded" src="<?php echo $base_url; ?>uploads/<?php echo $_SESSION['user_id']; ?>/products/<?php echo $product_image ?: 'default.png'; ?>" alt="Product Image">
                   <input name = "product_image" type="text" value = "<?php echo $product_image ?>" hidden>
+                  <input type="text" name="is_posted" value="<?php echo $is_posted; ?>" class="form-control" hidden>
                 </div>
               </div>
             </div>
