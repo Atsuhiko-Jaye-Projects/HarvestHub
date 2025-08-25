@@ -101,7 +101,7 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
   </div>
 </div>
 
-<?php include_once "modal-forms/add-product.php";?>
+<?php include_once "modal-forms/product/add_product.php";?>
 
 </div>
 

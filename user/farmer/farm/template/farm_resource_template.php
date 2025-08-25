@@ -1,6 +1,6 @@
 <div class="container">
 
-	<?php include_once "../modal-forms/add-resource.php"; ?>
+	<?php include_once "../modal-forms/resource/add_resource.php"; ?>
         <nav class="navbar bg-body-tertiary mt-3">
     
         <div class="container-fluid">
@@ -71,7 +71,7 @@
 						echo "</td>";
 					echo "</tr>";
 					include "../modal-forms/farm/farm-resource.php";
-					include "../modal-forms/view_harvest.php";
+					include "../modal-forms/harvest/view_harvest.php";
 				}			
 			?>
 			</tbody>

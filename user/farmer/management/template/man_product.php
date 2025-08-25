@@ -2,7 +2,7 @@
 <div class="container">
 
     
-	<?php include_once "../modal-forms/add-product.php";?>
+	<?php include_once "../modal-forms/product/add_product.php";?>
 	<!-- Table -->
      
     <nav class="navbar bg-body-tertiary mt-3">

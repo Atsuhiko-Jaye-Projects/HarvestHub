@@ -1,5 +1,4 @@
 <div class="container">
-
     <div class="alert alert-secondary mt-2">
         <div class="row align-items-center">
             <div class="col-4">
@@ -38,7 +37,7 @@
     </div>
     </nav>
 
-    <?php include_once "../modal-forms/add-product.php"; ?>
+    <?php include_once "../modal-forms/harvest/add_harvest.php"; ?>
 
 	<!-- Table -->
 	<?php
@@ -72,21 +71,21 @@
 						echo "<span data-bs-toggle='tooltip' title='Edit'>
 								<button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-$id'><span><i class='bi bi-pencil-square'></i></span></button>
 								</span>";
-						echo "<span data-bs-toggle='tooltip' title='View'>
-								<button class='btn btn-warning me-2' data-bs-toggle='modal' data-bs-target='#view-harvest-modal-$id'><span><i class='bi bi-eye-fill'></i></span></button>
+						echo "<span data-bs-toggle='tooltip' title='Post'>
+								<button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-$id'><span><i class='bi bi-box-arrow-up'></i></span></button>
 								</span>";
 						echo "</div>";
 						echo "</td>";
 					echo "</tr>";
-					include "../modal-forms/edit_harvest.php";
-					include "../modal-forms/view_harvest.php";
+					include "../modal-forms/harvest/edit_harvest.php";
+					include "../modal-forms/harvest/view_harvest.php";
+					include "../modal-forms/harvest/post_harvest.php";
 				}		
 			?>
 			</tbody>
 		</table>
 	</div>
 	<?php
-	include_once "../modal-forms/edit_harvest.php";
 	include_once "paging.php";
 	}else{
 		echo "<div class='alert alert-danger'>No Resources Found</div>";
