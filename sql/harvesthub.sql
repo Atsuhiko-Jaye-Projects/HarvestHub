@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 21, 2025 at 03:01 AM
+-- Generation Time: Aug 29, 2025 at 02:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -33,6 +33,23 @@ CREATE TABLE `categories` (
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
   `description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `deleted_products`
+--
+
+CREATE TABLE `deleted_products` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_image` varchar(500) NOT NULL,
+  `product_status` varchar(25) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -111,10 +128,10 @@ CREATE TABLE `farm_resources` (
 --
 
 INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `cost`, `date`, `created_at`, `modified_at`, `type`) VALUES
-(1, 2, 'Kubota', 5000, '2025-08-05', '2025-08-08 18:10:02', '2025-08-08 10:10:02', ''),
-(2, 2, 'Kubota', 5000, '2025-08-05', '2025-08-08 18:10:30', '2025-08-08 10:10:30', ''),
-(3, 2, 'Kubota', 5000, '2025-08-06', '2025-08-08 18:14:20', '2025-08-08 10:14:20', ''),
-(4, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:21', '2025-08-08 10:15:21', ''),
+(1, 2, 'Kubota', 5000, '2025-08-05', '2025-08-08 18:10:02', '2025-08-24 03:16:31', 'Machine'),
+(2, 2, 'Kubota', 5000, '2025-08-05', '2025-08-08 18:10:30', '2025-08-24 03:43:41', 'Machine'),
+(3, 2, 'Kubota', 5000, '2025-08-06', '2025-08-08 18:14:20', '2025-08-24 03:16:45', 'Machine'),
+(4, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:21', '2025-08-24 03:16:52', 'Machine'),
 (5, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:58', '2025-08-08 10:15:58', 'Machine'),
 (6, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:58', '2025-08-08 10:15:58', 'Machine');
 
@@ -137,22 +154,23 @@ CREATE TABLE `harvested_products` (
   `quantity` int(11) NOT NULL,
   `product_image` varchar(255) NOT NULL,
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `is_posted` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `harvested_products`
 --
 
-INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`) VALUES
-(12, 2, 'Sitaws kong updated', 20, 'kilos', 'Vegetable', '20', 'Great ubasadsdas', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqweqw.png', '2025-08-16 05:37:44', '2025-08-07 15:45:45'),
-(13, 2, 'kangkong', 20, 'ton', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-07 07:47:16', '2025-08-07 15:47:16'),
-(14, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-07 08:55:34', '2025-08-07 16:55:34'),
-(15, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-07 08:55:46', '2025-08-07 16:55:46'),
-(16, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-08 05:33:56', '2025-08-08 13:33:56'),
-(17, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-08 05:33:56', '2025-08-08 13:33:56'),
-(18, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-18 10:29:12', '2025-08-18 18:29:12'),
-(19, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-18 10:29:21', '2025-08-18 18:29:21');
+INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`) VALUES
+(12, 2, 'asdasdasd', 123123123, 'kilos', 'asd', '20', 'asdasdas', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqweqw.png', '2025-08-25 10:08:48', '2025-08-07 15:45:45', 'Posted'),
+(13, 2, '', 0, '', '', '', '', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-24 04:29:36', '2025-08-07 15:47:16', ''),
+(14, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-25 10:10:55', '2025-08-07 16:55:34', 'Posted'),
+(15, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-07 16:55:46', 'Posted'),
+(16, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-08 05:33:56', '2025-08-08 13:33:56', ''),
+(17, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-08 13:33:56', 'Posted'),
+(18, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-18 10:29:12', '2025-08-18 18:29:12', ''),
+(19, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-18 10:29:21', '2025-08-18 18:29:21', '');
 
 -- --------------------------------------------------------
 
@@ -191,10 +209,11 @@ INSERT INTO `orders` (`id`, `user_id`, `customer_id`, `order_id`, `contact_numbe
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `product_name` varchar(250) NOT NULL,
-  `per_price_unit` int(20) NOT NULL,
-  `category` varchar(50) NOT NULL,
+  `price_per_unit` int(20) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
   `unit` varchar(20) NOT NULL,
   `quantity` int(11) NOT NULL,
   `product_description` varchar(500) NOT NULL,
@@ -202,8 +221,18 @@ CREATE TABLE `products` (
   `total_stocks` int(20) NOT NULL,
   `product_image` varchar(500) NOT NULL,
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `modified`, `created_at`, `status`) VALUES
+(5, 14, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '', '2025-08-24 14:04:59', '2025-08-24 22:04:59', 'Deleted'),
+(16, 15, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-29 19:39:26', 'Deleted'),
+(17, 17, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-29 19:41:18', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -280,6 +309,12 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `deleted_products`
+--
+ALTER TABLE `deleted_products`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `farm_details`
 --
 ALTER TABLE `farm_details`
@@ -338,6 +373,12 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `deleted_products`
+--
+ALTER TABLE `deleted_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
@@ -371,7 +412,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `reviews`
