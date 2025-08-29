@@ -2,10 +2,11 @@
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6DQD02PzVnN0O7mD9E+3eWPGFN9MuhOf23Q9Ifjh" 
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.4/bootbox.min.js"></script>
   </body>
+
 </html>
 
 
@@ -72,3 +73,41 @@ window.onclick = function(event) {
         document.getElementById('temperature').textContent = 'Error getting temperature';
       });
   </script>
+
+
+<script>
+// JavaScript for deleting product
+$(document).on('click', '.delete-object', function(){
+
+    var id = $(this).data('delete-id');
+
+    bootbox.confirm({
+        message: "<h4>Are you sure remove this product?</h4>",
+        buttons: {
+            confirm: {
+                label: '<span class="glyphicon glyphicon-ok"></span> Yes',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: '<span class="glyphicon glyphicon-remove"></span> No',
+                className: 'btn-primary'
+            }
+        },
+        callback: function (result) {
+
+            if(result==true){
+                $.post('/HarvestHub/user/farmer/management/delete_product.php', {
+                    object_id: id,
+                }, function(data){
+                    alert('Product Deleted');
+                    location.reload();
+                }).fail(function() {
+                    alert('Unable to delete.');
+                });
+            }
+        }
+    });
+
+    return false;
+});
+</script>

@@ -16,6 +16,7 @@ class Product{
     public $product_description;
     public $product_image;
     public $unit;
+    public $status;
     public $created_at;
     public $modified;
 
@@ -39,6 +40,7 @@ class Product{
                 lot_size=:lot_size,
                 product_image = :product_image,
                 product_description=:product_description,
+                status=:status,
                 created_at=:created_at";
         
         $stmt=$this->conn->prepare($query);
@@ -50,6 +52,7 @@ class Product{
         $this->unit = htmlspecialchars(strip_tags($this->unit));
         $this->category = htmlspecialchars(strip_tags($this->category));
         $this->lot_size = htmlspecialchars(strip_tags($this->lot_size));
+        $this->status = htmlspecialchars(strip_tags($this->status));
         $this->product_image = htmlspecialchars(strip_tags($this->product_image));
         $this->created_at = date ("Y-m-d H:i:s");
 
@@ -60,6 +63,7 @@ class Product{
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->bindParam(":category", $this->category);
         $stmt->bindParam(":lot_size", $this->lot_size);
+        $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":product_image", $this->product_image);
         $stmt->bindParam(":unit", $this->unit);
         $stmt->bindParam(":product_description", $this->product_description);
@@ -73,9 +77,8 @@ class Product{
     }
 
     function readAllProduct($from_record_num, $records_per_page) {
-        $query = "SELECT *
-                FROM " . $this->table_name . "
-                WHERE user_id = :user_id
+        $query = "SELECT * FROM " . $this->table_name . "
+                WHERE user_id = :user_id && status = 'Active    '
                 LIMIT 
                 {$from_record_num}, {$records_per_page}";
 
@@ -102,6 +105,27 @@ class Product{
         $num = $stmt->rowCount();
 
         return $num;
+    }
+    
+    function deleteProduct(){
+
+        $query = "UPDATE " . $this->table_name . " 
+                    SET status = :status
+                    WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+
+        $this->status=htmlspecialchars(strip_tags($this->status));
+
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":id", $this->id);
+
+        if($result = $stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

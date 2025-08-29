@@ -2,7 +2,7 @@
 <div class="container">
 
     
-	<?php include_once "../modal-forms/product/add_product.php";?>
+
 	<!-- Table -->
      
     <nav class="navbar bg-body-tertiary mt-3">
@@ -27,11 +27,6 @@
                 </div>
                 <button class="btn btn-outline-success ms-2" type="submit">Search</button>
             </form>
-                    <div class="mb-3 mt-3 float-end">
-            <span data-bs-toggle='tooltip' title='New'>
-                <button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
-            </span>
-	    </div>
         </div>
     </nav>
 
@@ -64,9 +59,17 @@
 						echo "<td>{$lot_size}</td>";
 						echo "<td>{$created_at}</td>";
 						echo "<td>";
-							echo "<button class='btn btn-primary me-2'>Edit</button>";
-							echo "<button class='btn btn-warning me-2'>View</button>";
-							echo "<button class='btn btn-danger me-2'>Remove</button>";
+						 echo "<div class='btn-group' role='group'>";
+						echo "<span data-bs-toggle='tooltip' title='Edit'>
+								<button class='btn btn-outline-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id'><span><i class='bi bi-pencil-square'></i></span></button>
+								</span>";
+						echo "<span data-bs-toggle='tooltip' title='Remove'>
+								<a href='#' data-delete-id='{$id}' class='btn btn-outline-danger me-2 delete-object'>
+									<i class='bi bi-trash'></i>
+								</a>
+							</span>";
+
+						echo "</div>";
 						echo "</td>";
 					echo "</tr>";
 				}			

@@ -93,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->product_description = $_POST['product_description'];
 		$product->lot_size = $_POST['lot_size'];
         $product->product_image = $_POST['product_image'] ?? 'default.png';
+        $product->status = "Active";
 
         $harvest_product->id = $_POST['product_id'];
         $harvest_product->is_posted = "Posted";

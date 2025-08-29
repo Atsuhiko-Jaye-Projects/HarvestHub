@@ -1,4 +1,6 @@
 <div class="container">
+
+	<?php include_once "../modal-forms/product/add_product.php";?>
     <div class="alert alert-secondary mt-2">
         <div class="row align-items-center">
             <div class="col-4">
@@ -34,6 +36,11 @@
         </div>
         <button class="btn btn-outline-success ms-2" type="submit">Search</button>
         </form>
+	    	<div class="mb-3 mt-3 float-end">
+				<span data-bs-toggle='tooltip' title='New'>
+					<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
+				</span>
+	    	</div>
     </div>
     </nav>
 
