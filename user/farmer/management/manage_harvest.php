@@ -17,6 +17,8 @@ include_once "../../../login_checker.php";
 $page_title = "Manage Harvest";
 include_once "../layout/layout_head.php";
 
+
+
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
 
 // page given in URL parameter, default page is one
