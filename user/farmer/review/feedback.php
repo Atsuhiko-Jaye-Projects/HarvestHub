@@ -107,7 +107,7 @@ include_once "../statistics/stats.php";
 						echo "<td>{$lot_size}</td>";
 						echo "<td>{$created_at}</td>";
 						echo "<td>";
-							echo "<a href='review.php?id={$id}' class='btn btn-primary me-2 >Edit</button></a>";
+							echo "<a href='$base_ur/user/review/review.php?id={$id}' class='btn btn-primary me-2 >Edit</button></a>";
 							echo "<button class='btn btn-warning me-2'>View Review</button>";
 						echo "</td>";
 					echo "</tr>";

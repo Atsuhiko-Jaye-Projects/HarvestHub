@@ -74,6 +74,13 @@ class HarvestProduct{
     function uploadPhoto() {
         $result_message = "";
 
+        $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+        if($check!==false){
+            // submitted file is an image
+        }else{
+            $file_upload_error_messages.="<div>Submitted file is not an image.</div>";
+        }
+
         if ($this->product_image) {
             $user_id = $this->user_id; // Assuming this is set from the session or earlier
             $target_directory = "../../uploads/{$user_id}/products/";

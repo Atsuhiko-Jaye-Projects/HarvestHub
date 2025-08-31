@@ -1,11 +1,11 @@
 <?php
-echo "<nav>";
+echo "<nav class='mt-3'>";
 echo "<ul class='pagination'>";
 
 // button for first page
 if($page > 1){
-    echo "<li class='page-item btn-success'>
-            <a class='page-link  text-white' style='background-color: #28a745;' href='{$page_url}' title='Go to the first page.'>
+    echo "<li class='page-item'>
+            <a class='page-link' href='{$page_url}' title='Go to the first page.'>
                 First
             </a>
           </li>";

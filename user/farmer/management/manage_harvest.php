@@ -46,14 +46,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     // ===== CREATE =====
     if ($_POST['action'] == 'create') {
-        $farm_product->product_name = $_POST['product_name'];
-        $farm_product->date_planted = $_POST['date_planted'];
-        $farm_product->estimated_harvest_date = $_POST['estimated_harvest_date'];
-        $farm_product->yield = $_POST['yield'];
-        $farm_product->suggested_price = $_POST['suggested_price'];
+        $harvest_product->user_id = $_SESSION['user_id'];
+        $harvest_product->product_name = $_POST['product_name'];
+        $harvest_product->price_per_unit = $_POST['price_per_unit'];
+        $harvest_product->category = $_POST['category'];
+        $harvest_product->unit = $_POST['unit'];
+        $harvest_product->product_description = $_POST['product_description'];
+		$harvest_product->lot_size = $_POST['lot_size'];
 
-        if ($farm_product->createFarmProduct()) {
+        $image=!empty($_FILES["product_image"]["name"])
+        ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
+        $harvest_product->product_image = $image;
+
+        if ($harvest_product->createProduct()) {
             echo "<div class='container'><div class='alert alert-success'>Product Info Saved!</div></div>";
+            if ($harvest_product->uploadPhoto()) {
+                echo "Upload complete";
+            }else{
+                echo "Upload Failed";
+            }
         } else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";
         }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2025 at 02:08 PM
+-- Generation Time: Aug 31, 2025 at 10:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -164,13 +164,21 @@ CREATE TABLE `harvested_products` (
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`) VALUES
 (12, 2, 'asdasdasd', 123123123, 'kilos', 'asd', '20', 'asdasdas', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqweqw.png', '2025-08-25 10:08:48', '2025-08-07 15:45:45', 'Posted'),
-(13, 2, '', 0, '', '', '', '', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-24 04:29:36', '2025-08-07 15:47:16', ''),
+(13, 2, '', 0, '', '', '', '', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-31 07:49:25', '2025-08-07 15:47:16', 'Posted'),
 (14, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-25 10:10:55', '2025-08-07 16:55:34', 'Posted'),
 (15, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-07 16:55:46', 'Posted'),
-(16, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-08 05:33:56', '2025-08-08 13:33:56', ''),
+(16, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-31 04:19:41', '2025-08-08 13:33:56', 'Posted'),
 (17, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-08 13:33:56', 'Posted'),
-(18, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-18 10:29:12', '2025-08-18 18:29:12', ''),
-(19, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-18 10:29:21', '2025-08-18 18:29:21', '');
+(18, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:29', '2025-08-18 18:29:12', 'Posted'),
+(19, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:33', '2025-08-18 18:29:21', 'Posted'),
+(22, 2, 'Bangus', 20, 'kilos', 'Fish', '20', 'Fresh from gasan', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:35:23', '2025-08-31 14:53:59', 'Posted'),
+(23, 2, 'Bangus', 180, 'kilos', 'Fish', '20', 'grat', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:37', '2025-08-31 14:56:48', 'Posted'),
+(24, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'sadsad', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:41', '2025-08-31 15:27:44', 'Posted'),
+(25, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'sdsad', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:43', '2025-08-31 15:28:39', 'Posted'),
+(26, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'greate', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:47', '2025-08-31 15:33:00', 'Posted'),
+(27, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:49:20', '2025-08-31 15:34:28', 'Posted'),
+(28, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:52', '2025-08-31 15:34:45', 'Posted'),
+(29, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:35:01', '2025-08-31 15:35:01', '');
 
 -- --------------------------------------------------------
 
@@ -230,9 +238,19 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `modified`, `created_at`, `status`) VALUES
-(5, 14, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '', '2025-08-24 14:04:59', '2025-08-24 22:04:59', 'Deleted'),
-(16, 15, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-29 19:39:26', 'Deleted'),
-(17, 17, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-29 19:41:18', 'Deleted');
+(16, 15, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-29 19:39:26', 'Active'),
+(17, 17, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-29 19:41:18', 'Active'),
+(19, 21, 'Bangus', 20, 2, 'Fish', 'kilos', 0, 'Fresh From Gasan', 20, 0, '', '2025-08-31 06:51:26', '2025-08-31 14:51:26', 'Active'),
+(20, 22, 'Bangus', 20, 2, 'Fish', 'kilos', 0, 'Fresh from gasan', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:35:23', '2025-08-31 15:35:23', 'Active'),
+(21, 27, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:49:20', '2025-08-31 15:49:20', 'Active'),
+(22, 13, '', 0, 2, '', '', 0, 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-31 07:49:25', '2025-08-31 15:49:25', 'Active'),
+(23, 18, 'okra', 20, 2, 'Meat', 'kilos', 0, 'great', 20, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:29', '2025-08-31 16:04:29', 'Active'),
+(24, 19, 'okra', 20, 2, 'Meat', 'kilos', 0, 'great', 20, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:33', '2025-08-31 16:04:33', 'Active'),
+(25, 23, 'Bangus', 180, 2, 'Fish', 'kilos', 0, 'grat', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:37', '2025-08-31 16:04:37', 'Active'),
+(26, 24, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'sadsad', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:41', '2025-08-31 16:04:41', 'Active'),
+(27, 25, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'sdsad', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:43', '2025-08-31 16:04:43', 'Active'),
+(28, 26, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'greate', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:47', '2025-08-31 16:04:47', 'Active'),
+(29, 28, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:52', '2025-08-31 16:04:52', 'Active');
 
 -- --------------------------------------------------------
 
@@ -400,7 +418,7 @@ ALTER TABLE `farm_resources`
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -412,7 +430,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `reviews`

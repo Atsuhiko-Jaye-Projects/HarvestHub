@@ -19,6 +19,7 @@
                 <div class="col-md-6">    
                   
                   <input type="text" name="category" class="form-control" required placeholder="Category">
+                  <input type="hidden" name="action" value="create">
                 </div>
                 <div class="col-md-6">
                   <input type="text" name="product_name" class="form-control" required placeholder="Product Name">

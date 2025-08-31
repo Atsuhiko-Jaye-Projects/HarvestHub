@@ -59,6 +59,7 @@
 				<th>Price</th>
 				<th>Unit</th>
 				<th>Lot Size</th>
+				<th>Status</th>
 				<th>Action</th>
 			</tr>
 			</thead>
@@ -73,6 +74,7 @@
 						echo "<td>{$price_per_unit}</td>";
 						echo "<td>{$unit}</td>";
 						echo "<td>{$lot_size}</td>";
+						echo "<td>{$is_posted}</td>";
 						echo "<td>";
 						 echo "<div class='btn-group' role='group'>";
 						echo "<span data-bs-toggle='tooltip' title='Edit'>

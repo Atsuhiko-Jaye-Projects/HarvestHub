@@ -109,8 +109,7 @@ class Product{
     
     function deleteProduct(){
 
-        $query = "UPDATE " . $this->table_name . " 
-                    SET status = :status
+        $query = "DELETE FROM " . $this->table_name . " 
                     WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
@@ -118,7 +117,6 @@ class Product{
 
         $this->status=htmlspecialchars(strip_tags($this->status));
 
-        $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":id", $this->id);
 
         if($result = $stmt->execute()){
@@ -126,6 +124,20 @@ class Product{
         }else{
             return false;
         }
+    }
+
+    function showAllProduct($from_record_num, $records_per_page){
+        $query = "SELECT * FROM " . $this->table_name . "
+                WHERE 
+                status = 'Active' 
+                LIMIT
+                {$from_record_num}, {$records_per_page}";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt;
     }
 
 
