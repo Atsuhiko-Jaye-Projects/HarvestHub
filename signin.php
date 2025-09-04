@@ -38,7 +38,7 @@ if ($_POST) {
 		else if($user->user_type=='Farmer') {
 			header("Location:{$home_url}user/farmer/index.php?action=login_success");
 		}else{
-			header("Location:{$home_url}Costumer/index.php?action=login_success");
+			header("Location:{$home_url}user/consumer/index.php?action=login_success");
 		}
 	}else{
 		$access_denied = true;

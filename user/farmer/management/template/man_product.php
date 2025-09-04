@@ -1,8 +1,6 @@
 
 <div class="container">
 
-    
-
 	<!-- Table -->
      
     <nav class="navbar bg-body-tertiary mt-3">
