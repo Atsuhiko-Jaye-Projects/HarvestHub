@@ -85,10 +85,22 @@ div#blueimp-gallery div.modal{ overflow: visible; }
     border-radius: 50%;
 }
 
-    .order-images img {
+
+/* order details styling page */
+.order-images img {
       width: 50px;
       height: 50px;
       object-fit: cover;
       border-radius: 8px;
       margin-right: 5px;
-    }
+}
+
+#order_details_img img{
+
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 5px;
+}
+

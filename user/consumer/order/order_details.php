@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Details - Harvest Hub</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<?php
+include_once "../../../config/core.php";
+include_once "../../../config/database.php";
 
-  <div class="container py-4">
-    <!-- Logo -->
-    <h3 class="fw-bold text-success">🌿 HARVEST HUB</h3>
+
+$page_title = "Order";
+include_once "../layout/layout_head.php";
+
+$require_login=true;
+include_once "../../../login_checker.php";
+
+?>
+
 
     <div class="row mt-4">
       <!-- Left side: Order Details -->
@@ -33,10 +33,10 @@
             </div>
 
             <!-- Review Order -->
-            <div class="border p-3 rounded">
+            <div class="border p-3 rounded" id='order_details_img'>
               <h6 class="fw-bold">Review Order</h6>
               <div class="d-flex align-items-center">
-                <img src="https://via.placeholder.com/60" class="rounded me-2" alt="Product">
+                <img src="<?php echo $base_url;?>libs/images/logo.png" alt="Product">
                 <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width:60px; height:60px;">+12</div>
               </div>
             </div>
@@ -72,7 +72,4 @@
     </div>
   </div>
 
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</body>
-</html>
+<?php include_once "../layout/layout_foot.php"; ?>

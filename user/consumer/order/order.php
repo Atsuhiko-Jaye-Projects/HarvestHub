@@ -58,7 +58,7 @@ include_once "../../../login_checker.php";
         </div>
       </div>
       <div class="col-md-4 d-flex flex-column align-items-end justify-content-between">
-        <a href="#" class="small text-decoration-none mb-2">View Order Details</a>
+        <a href="order_details.php" class="small text-decoration-none mb-2">View Order Details</a>
         <button class="btn btn-warning">Rate your Order</button>
       </div>
     </div>

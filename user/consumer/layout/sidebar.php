@@ -15,7 +15,7 @@
   <!-- Sidebar Menu -->
     <!-- Dashboard -->
 
-    <a href="<?php echo $base_url; ?>user/consumer/order/order.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
+    <a href="<?php echo $base_url; ?>user/consumer/order/order.php" class="sidebar-btn <?= $page=='order.php' || $page=='order_details.php' ? 'active' : '' ?>">
       <i class="bi bi-grid me-2"></i>
       <span>My Purchase</span>
     </a>
@@ -31,7 +31,7 @@
       <span>Your Reviews</span>
     </a>
 
-    <a href="<?php echo $base_url;?>user/consumer/support/support.php" class="sidebar-btn <?= $page=='order.php' ? 'active' : '' ?>">
+    <a href="<?php echo $base_url;?>user/consumer/support/support.php" class="sidebar-btn <?= $page=='support.php' ? 'active' : '' ?>">
       <i class="bi bi-question-circle"></i>
       <span>Help & Support</span>
     </a>
