@@ -1,5 +1,5 @@
 <?php
-echo "<nav class='mt-3'>";
+echo "<nav class='mt-3 '>";
 echo "<ul class='pagination'>";
 
 // button for first page

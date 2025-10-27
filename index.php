@@ -2,13 +2,13 @@
 include_once "config/core.php";
 include_once "config/database.php";
 include_once "objects/product.php";
+include_once "objects/cart_item.php";
 
 $database = new Database();
 $db = $database->getConnection();
 
 $product = new Product($db);
-
-
+$cart_item = new CartItem($db);
 
 $page_title = "Index";
 include_once "layout_head.php";
@@ -29,12 +29,14 @@ $stmt = $product->showAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $product->countAll();
 
-// include the navigation bar
+if (!isset($_SESSION['logged_in'])) {
+  
+}else{
+  $cart_item->user_id = $_SESSION['user_id'];
+  $cart_item_count= $cart_item->countItem();
+}
 
 ?>
-
-
-
 <div class="container">
 <?php include_once "layout/navigation.php";?>
   <!-- Hero Banner -->
@@ -80,8 +82,18 @@ $total_rows = $product->countAll();
                 echo "<img src='user/uploads/{$user_id}/products/{$product_image}' class='card-img-top' alt='Vegetables'>";
                 echo "<div class='card-body'>";
                   echo "<h6 class='card-title'>{$product_name}</h6>";
-                  echo "<p class='card-text'>$price_per_unit</p>";
-                  echo "<button class='btn btn-success w-100'>Add to Cart</button>";
+                  echo "<p class='card-text'>PHP {$price_per_unit}.00</p>";
+                  if (empty($_SESSION['logged_in'])) {
+                    echo "<a href='{$home_url}signin.php?action=add_to_cart' class='btn btn-info w-100'>Sign in to Order</a>";
+                  }else{
+
+                    echo "<a class='btn btn-success w-100' href='{$home_url}product/product_detail.php?pid={$product_id}'>Add to Cart</a>";
+
+                    // echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '" method="POST">';
+                    //   echo "<button type='submit' class='btn btn-success w-100'>Add to Cart</button>";
+                    //   echo '<input hidden name="product_id" value="' . htmlspecialchars($product_id) . '">';
+                    // echo "</form>";
+                  } 
                 echo "</div>";
               echo "</div>";
             echo "</div>";

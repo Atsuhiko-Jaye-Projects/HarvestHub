@@ -1,0 +1,60 @@
+body {
+    background-color: #fff;
+}
+.product-card img {
+    border-radius: 8px;
+    object-fit: cover;
+}
+.thumbs img {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+.thumbs img:hover {
+    border-color: #198754;
+}
+
+.price-range {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #198754;
+}
+.rating i {
+    color: #ffc107;
+}
+.btn-success {
+    font-weight: 500;
+}
+
+footer {
+    background: #442f16;
+    color: #fff;
+    padding: 40px 0;
+}
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+    .category-icon {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .product-card img {
+      height: 150px;
+      object-fit: cover;
+    }
+    .hero-banner {
+      background-color: #28a745;
+      color: white;
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }

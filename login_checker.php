@@ -2,6 +2,7 @@
 
 $current_url = $_SERVER['REQUEST_URI'];
 
+
 if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
     $_SESSION['logged_in'] === true &&
     $_SESSION['user_type'] == "Admin" &&
@@ -22,10 +23,16 @@ else if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
 else if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
     $_SESSION['logged_in'] === true &&
     $_SESSION['user_type'] == "Consumer" &&
-    strpos($current_url, 'consumer/index.php') === true) {
+    strpos($current_url, 'consumer/index.php') !== false) {
+    $action=isset($_GET['action']) ? $_GET['action'] : "";
+    if ($action=="add_to_cart") {
+        header("Location: {$home_url}index.php?action=success");
+        exit();
+    }else {
+        header("Location: {$home_url}user/consumer/index.php?action=success");
+        exit();
+    }
 
-    header("Location: {$home_url}user/consumer/index.php?action=success");
-    exit();
 }
 
 // Require login enforcement

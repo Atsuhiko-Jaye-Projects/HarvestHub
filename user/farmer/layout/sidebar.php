@@ -16,10 +16,10 @@
   <nav class="nav flex-column">
 
     <!-- Dashboard -->
-    <a href="<?php echo $base_url; ?>user/farmer/index.php" class="sidebar-btn <?= $page=='index.php' ? 'active' : '' ?>">
+    <!-- <a href="<?php echo $base_url; ?>user/farmer/index.php" class="sidebar-btn <?= $page=='index.php' ? 'active' : '' ?>">
       <i class="bi bi-grid me-2"></i>
       <span>Home</span>
-    </a>
+    </a> -->
 
     <!-- Harvest Record Collapsible -->
     <button class="sidebar-btn d-flex justify-content-between align-items-center <?= in_array($page, ['farm_resource.php']) ? 'active' : '' ?>" 

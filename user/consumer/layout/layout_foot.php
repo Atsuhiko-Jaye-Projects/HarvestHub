@@ -111,3 +111,32 @@ $(document).on('click', '.delete-object', function(){
     return false;
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const checkboxes = document.querySelectorAll(".product-checkbox");
+  const totalPriceElement = document.getElementById("total-price");
+  const itemCountElement = document.getElementById("items-count");
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", () => {
+      updateTotals();
+    });
+  });
+
+  function updateTotals() {
+    let total = 0;
+    let count = 0;
+
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        total += parseFloat(cb.getAttribute("data-price"));
+        count++;
+      }
+    });
+
+    totalPriceElement.textContent = "₱" + total.toFixed(2);
+    itemCountElement.textContent = count;
+  }
+});
+</script>

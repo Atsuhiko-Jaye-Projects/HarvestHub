@@ -52,9 +52,9 @@ include_once "../../../login_checker.php";
 
         <div class="order-images d-flex">
           <img src="<?php echo $base_url;?>libs/images/logo.png" alt="">
-          <img src="https://via.placeholder.com/50" alt="">
-          <img src="https://via.placeholder.com/50" alt="">
-          <img src="https://via.placeholder.com/50" alt="">
+          <img src="<?php echo $base_url;?>libs/images/logo.png" alt="">
+          <img src="<?php echo $base_url;?>libs/images/logo.png" alt="">
+          <img src="<?php echo $base_url;?>libs/images/logo.png" alt="">
         </div>
       </div>
       <div class="col-md-4 d-flex flex-column align-items-end justify-content-between">

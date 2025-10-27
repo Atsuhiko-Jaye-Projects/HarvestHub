@@ -4,7 +4,7 @@
 
   <!-- Logo -->
   <nav class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
-    <a class="navbar-brand d-flex flex-column align-items-center w-100" href="#">
+    <a class="navbar-brand d-flex flex-column align-items-center w-100" href="<?php echo $base_url;?>index.php">
       <?php
         $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../../../../libs/images/logo.png';
         echo "<img src='$base_url/libs/images/logo.png' alt='User Avatar' class='rounded-circle' width='100' height='100'>";
@@ -20,11 +20,7 @@
       <span>My Purchase</span>
     </a>
 
-    
-    <a href="<?php echo $base_url;?>user/consumer/notification/notification.php" class="sidebar-btn <?= $page=='notification.php' ? 'active' : '' ?>">
-      <i class="bi bi-bell"></i>
-      <span>Notifications</span>
-    </a>
+
 
     <a href="<?php echo $base_url;?>user/consumer/review/feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
       <i class="bi bi-chat-right"></i>
