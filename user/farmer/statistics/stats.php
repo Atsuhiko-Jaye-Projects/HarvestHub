@@ -1,5 +1,8 @@
-<?php if ($page_title == "Manage Harvest" || $page_title == "Farm Products" || $page_title == "Farm Resources & supplies" || $page_title == "Manage Product") {
-    # code...
+<?php 
+
+
+if ($page_title == "Manage Harvest" || $page_title == "Farm Products" || $page_title == "Farm Resources & supplies" || $page_title == "Manage Product") {
+
 ?>
 <div class="container-xl mt-3">
     <div class="d-flex gap-3">

@@ -33,7 +33,7 @@ class User{
                     lastname=:lastname,
                     password = :password,
                     email_address = :email_address,
-                    contact_number=:contact_number;
+                    contact_number=:contact_number,
                     farm_details_exists=:farm_details_exists,
                     user_type = :user_type,
                     created = :created";
@@ -127,6 +127,46 @@ class User{
         $stmt->bindParam(":id", $this->user_id);
 
         $stmt->execute();
+    }
+
+    function emailExists(){
+        $query = "SELECT id FROM
+                ". $this->table_name ."
+                WHERE email_address = ?  LIMIT 1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->email_address = htmlspecialchars(strip_tags($this->email_address));
+
+
+        $stmt->BindParam(1, $this->email_address);
+
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    function contactExists(){
+        $query = "SELECT id FROM
+                ". $this->table_name ."
+                WHERE contact_number = ? LIMIT 1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->contact_number = htmlspecialchars(strip_tags($this->contact_number));
+
+        $stmt->BindParam(1, $this->contact_number);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+        return false;
     }
 
 

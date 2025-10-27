@@ -1,12 +1,9 @@
 <?php
 include_once "config/core.php";
+//include classes
 
 $page_title = "Sign up";
 include_once "login_checker.php";
-
-//include classes
-include_once "config/database.php";
-include_once "objects/user.php";
 
 //include page header html
 include_once "layout_head.php";
@@ -16,7 +13,10 @@ echo "<div class='row vh-100'>";
 
 $alert_message = "";
 
-if ($_POST) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    include_once "config/database.php";
+    include_once "objects/user.php";
     $database = new Database();
     $db = $database->getConnection();
 
@@ -26,16 +26,27 @@ if ($_POST) {
     $user->lastname = $_POST['lastname'];
     $user->email_address = $_POST['email_address'];
     $user->password = $_POST['password'];
-    $user->farm_details_exists = 0;
+    $user->farm_details_exists = "0";
     $user->user_type = "consumer";
 
-    if ($user->create()) {
-        $alert_message = "<div class='alert alert-success'>
-            Information Submitted! <a href='{$home_url}login'> Please sign in to continue </a>
-        </div>";
-    } else {
+    if ($user->emailExists()) {
         $alert_message = "<div class='alert alert-danger' role='alert'>
-            ERROR! Please try again later.
+            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Email Address is already taken. Please try another.
+        </div>";
+
+    } 
+
+    else if ($user->contactExists()) {
+        $alert_message = "<div class='alert alert-danger' role='alert'>
+            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Contact number is already taken. Please try another.
+        </div>";
+    } 
+    
+    // no errors to inputs, proceed to account creation
+    else {
+        $user->create();
+        $alert_message = "<div class='alert alert-success'>
+            Start your account and <a href='{$home_url}login'>continue! </a>
         </div>";
     }
 }

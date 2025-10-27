@@ -4,20 +4,20 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/harvest_product.php";
 include_once "../../../objects/product.php";
+include_once "../../../objects/farm.php";
 
 $database = new Database();
 $db = $database->getConnection();
 
 $harvest_product = new HarvestProduct($db);
 $product = new Product($db);
+$farm = new Farm($db);
 
 $require_login=true;
 include_once "../../../login_checker.php";
 
 $page_title = "Manage Harvest";
 include_once "../layout/layout_head.php";
-
-
 
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
 
@@ -48,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     // ===== CREATE =====
     if ($_POST['action'] == 'create') {
+
         $harvest_product->user_id = $_SESSION['user_id'];
         $harvest_product->product_name = $_POST['product_name'];
         $harvest_product->price_per_unit = $_POST['price_per_unit'];
@@ -56,6 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->product_description = $_POST['product_description'];
 		$harvest_product->lot_size = $_POST['lot_size'];
 
+        $planted_area = $_POST['lot_size'];
+        //general usage from PSA
+        $general_yeild = 0.65;
+
+        // get the estimated price
+        $total_yeild = $planted_area * $general_yeild;
+        
+        
+
+        
         $image=!empty($_FILES["product_image"]["name"])
         ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
         $harvest_product->product_image = $image;
@@ -121,6 +132,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
     }
 }
+
+// get the users farm lot_size
+$farm->user_id = $_SESSION['user_id'];
+$farm_lot = $farm->getFarmLot();
 // include the stats cards
 include_once "../statistics/stats.php";
 include_once "template/man_harvest.php";

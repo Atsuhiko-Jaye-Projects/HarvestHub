@@ -40,7 +40,7 @@
 	<?php
 		if ($num>0) {
 	?>
-	<div class="table">
+	<div class="table mt-3">
 		<table class="table table-hover table-bordered align-middle">
 			<thead class="table-light">
 			<tr>
@@ -82,7 +82,7 @@
 	include_once "../paging.php";
 
 	}else{
-		echo "<div class='alert alert-danger'>No products Found</div>";
+		echo "<div class='alert alert-danger mt-3'>No Resource Found.</div>";
 	}
 	?>
 </div>

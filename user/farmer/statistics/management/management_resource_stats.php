@@ -21,15 +21,15 @@
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <h6>Pending Orders</h6>
-          <h2>15</h2>
+          <h6>Expense</h6>
+          <h2>PHP <?php echo $total; ?></h2>
           <small>Orders</small>
         </div>
         <div>
-          <i class="bi bi-clipboard" style="font-size: 1.5rem;"></i>
+          <i class="bi bi-bag" style="font-size: 1.5rem;"></i>
         </div>
       </div>
-      <small class="text-success">+3.16% From last month</small>
+      <small class="text-success">+3.16% Froms last month</small>
     </div>
   </div>
 

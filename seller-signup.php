@@ -16,21 +16,22 @@ echo "<div class='row vh-100'>";
 
 $alert_message = "";
 
-if ($_POST) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize the objects
     $user = new User($db);
+    
     $user->firstname = $_POST['firstname'];
     $user->lastname = $_POST['lastname'];
     $user->email_address = $_POST['email_address'];
     $user->password = $_POST['password'];
     $user->contact_number = $_POST['contact_number'];
-    $user->farm_details_exists = 0;
-    $user->user_type = "seller";
-    $_POST['confirm_password'];
+    $user->farm_details_exists = "0";
+    $user->user_type = "Farmer";
 
+    $_POST['confirm_password'];
 
     if ($_POST['password'] != $_POST['confirm_password']) {
         $alert_message = "<div class='alert alert-danger' role='alert'>
@@ -38,13 +39,24 @@ if ($_POST) {
         </div>";
     }
 
-    else if ($user->create()) {
+    else if ($user->emailExists()) {
+        $alert_message = "<div class='alert alert-danger' role='alert'>
+            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Email Address is already taken. Please try another.
+        </div>";
+
+    } 
+
+    else if ($user->contactExists()) {
+        $alert_message = "<div class='alert alert-danger' role='alert'>
+            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Contact number is already taken. Please try another.
+        </div>";
+    } 
+
+    // no errors to inputs, proceed to account creation
+    else {
+        $user->create();
         $alert_message = "<div class='alert alert-success'>
             Start your account and <a href='{$home_url}login'>continue! </a>
-        </div>";
-    } else {
-        $alert_message = "<div class='alert alert-danger' role='alert'>
-            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Please try again later.
         </div>";
     }
 }

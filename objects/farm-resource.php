@@ -168,6 +168,27 @@ class FarmResource{
         return false;
     }
 
+    function farmStatsTotalCost() {
+        $query = "SELECT SUM(cost) AS total_cost 
+                FROM " . $this->table_name . " 
+                WHERE user_id = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $stmt->bindParam(1, $this->user_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row && $row['total_cost'] !== null) {
+            return $row['total_cost'];
+        } else {
+            return 0; // No expenses found
+        }
+    }
+
+
 
 
 }

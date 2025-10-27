@@ -17,7 +17,14 @@
             </div>
 
             <div class="mb-3">
-              <input type="text" name="municipality" class="form-control" required placeholder="Municipality">
+              <select name="municipality" id="" class='form-select' required>
+                <option value="" hidden>Select Municipality...</option>
+                <option value="Mogpog">Mogpog</option>
+                <option value="Boac">Boac</option>
+                <option value="Gasan">Gasan</option>
+                <option value="Torrijos">Torrijos</option>
+                <option value="Santa Cruz">St.Cruz</option>
+              </select>
             </div>
 
             <div class="row mb-3">
@@ -31,11 +38,24 @@
 
             <div class="mb-3">
               <select name="farm_ownership"class="form-control caret">
-                <option value="" hidden>Please select type</option>
+                <option value="" hidden>Type of farm ownership</option>
                 <option value="rented">Rented</option>
                 <option value="owned">Owned</option>
               </select>
             </div>
+            
+            <div class="mb-3">
+                <input type="number" 
+                  name="lot_size" 
+                  class="form-control" 
+                  required 
+                  placeholder="Farm size (sqm)" 
+                  min="0" 
+                  max="5000"
+                  oninput="if(this.value > 10000) this.value = 10000;">
+            </div>
+
+
             <div class="mb-3 text-center">
               <input type="submit" class="btn btn-primary w-50">
             </div>

@@ -27,6 +27,7 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
         $farm->baranggay = $_POST['baranggay'];
         $farm->purok = $_POST['purok'];
         $farm->farm_ownership = $_POST['farm_ownership'];
+        $farm->lot_size = $_POST['lot_size'];
         
         $farm_details = 1;
         $user->farm_details_exists = $farm_details;
@@ -41,7 +42,7 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
         }
         
     }
-    include_once "farm_detail.php";
+    include_once "farm/farm_detail.php";
 
 
 }else{
@@ -107,10 +108,6 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
 
 
 <!-- other contents will be here -->
-
-
-
-
 
 <?php 
 }

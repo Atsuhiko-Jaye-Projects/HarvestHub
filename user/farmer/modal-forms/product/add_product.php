@@ -18,7 +18,11 @@
               <div class="row mb-3">
                 <div class="col-md-6">    
                   
-                  <input type="text" name="category" class="form-control" required placeholder="Category">
+                  <select name="category" class='form-select' id="" required>
+                    <option value="">Select Category...</option>
+                    <option value="Vegetable">Vegetable</option>
+                    <option value="Fruit">Fruit</option>
+                  </select>
                   <input type="hidden" name="action" value="create">
                 </div>
                 <div class="col-md-6">
@@ -28,29 +32,29 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <input type="text" name="unit" class="form-control" required placeholder="Unit">
+                  <input type="text" name="unit" class="form-control" required placeholder="Unit" value='KG' readonly>
                 </div>
                 <div class="col-md-6">
-                  <input type="text" name="lot_size" class="form-control" required placeholder="Lot Size">
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <input type="text" name="price_per_unit" class="form-control" required 
-                    placeholder="Price Per Unit" maxlength="5" pattern="\d{1,4}" 
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                </div>
-                <div class="col-md-6">
-                  <input type="text" name="total_stock" class="form-control" required 
-                    placeholder="Total Stocks" maxlength="4" pattern="\d{1,4}" 
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                  <input type="number" 
+                  name="lot_size" 
+                  class="form-control" 
+                  required 
+                  placeholder="Lot Size" 
+                  min="0" 
+                  max="5000"
+                  oninput="if(this.value > 5000) this.value = 5000;">
                 </div>
               </div>
 
               <div class="mb-3">
                 <label for="">Description</label>
                 <textarea name="product_description" class="form-control"></textarea>
+              </div>
+
+
+              <div class="mb-3">
+                <label for="">Owned Farm Land (SQM)</label>
+                <input type="text" name="product_name" class="form-control" value="<?php echo $farm_lot;?>" readonly>
               </div>
 
               <div class="mb-3">

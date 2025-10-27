@@ -82,7 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
 
 }
-
+// get the farm resource statistics
+$total = $farm_resource->farmStatsTotalCost();
 //include stats card
 include_once "../statistics/management/management_resource_stats.php";
 include_once "template/farm_resource_template.php";
