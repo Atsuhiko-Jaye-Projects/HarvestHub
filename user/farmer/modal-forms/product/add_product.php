@@ -34,16 +34,19 @@
                 <div class="col-md-6">
                   <input type="text" name="unit" class="form-control" required placeholder="Unit" value='KG' readonly>
                 </div>
-                <div class="col-md-6">
-                  <input type="number" 
-                  name="lot_size" 
-                  class="form-control" 
-                  required 
-                  placeholder="Lot Size" 
-                  min="0" 
-                  max="5000"
-                  oninput="if(this.value > 5000) this.value = 5000;">
-                </div>
+                  <div class="col-md-6">
+                    <input 
+                      type="number" 
+                      name="lot_size" 
+                      class="form-control" 
+                      required 
+                      placeholder="Lot Size"
+                      min="50" 
+                      max="5000"
+                      onchange="
+                        if (this.value < 50) { alert('Minimum lot size is 50 sqm'); this.value = 50; }
+                        if (this.value > 5000) { alert('Maximum lot size is 5000 sqm'); this.value = 5000; }">
+                  </div>
               </div>
 
               <div class="mb-3">
@@ -54,7 +57,13 @@
 
               <div class="mb-3">
                 <label for="">Owned Farm Land (SQM)</label>
-                <input type="text" name="product_name" class="form-control" value="<?php echo $farm_lot;?>" readonly>
+                <input type="text" name="farm_size_sqm" class="form-control" value="<?php echo $farm_lot;?>" readonly>
+              </div>
+
+              <div class="mb-3">
+                <label for="">Farm Expense</label>
+                <input type="text" name="farm_expense" class="form-control danger" value="<?php echo $total_farm_expense;?>" readonly>
+                <input type="text" name="" class="form-control danger" value="₱ <?php echo $total_farm_expense;?>.00" readonly>
               </div>
 
               <div class="mb-3">

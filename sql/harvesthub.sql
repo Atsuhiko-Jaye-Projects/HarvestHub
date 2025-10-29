@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2025 at 10:26 AM
+-- Generation Time: Oct 28, 2025 at 12:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `harvesthub`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_items`
+--
+
+CREATE TABLE `cart_items` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT current_timestamp(),
+  `modified` timestamp NOT NULL DEFAULT current_timestamp(),
+  `amount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `modified`, `amount`) VALUES
+(8, 30, 3, 30, '2025-10-12 12:43:49', '2025-10-12 04:43:49', 50),
+(9, 31, 3, 5, '2025-10-12 13:24:30', '2025-10-12 05:24:30', 100),
+(10, 30, 2, 5, '2025-10-12 23:09:43', '2025-10-12 15:09:43', 50);
 
 -- --------------------------------------------------------
 
@@ -66,8 +91,17 @@ CREATE TABLE `farm_details` (
   `purok` varchar(255) NOT NULL,
   `farm_ownership` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `lot_size` int(11) NOT NULL,
+  `used_lot_size` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `farm_details`
+--
+
+INSERT INTO `farm_details` (`id`, `user_id`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `created_at`, `modified_at`, `lot_size`, `used_lot_size`) VALUES
+(26, 20, 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', '2025-10-27 23:56:09', '2025-10-27 15:56:09', 5000, 0);
 
 -- --------------------------------------------------------
 
@@ -87,25 +121,6 @@ CREATE TABLE `farm_products` (
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `farm_products`
---
-
-INSERT INTO `farm_products` (`id`, `user_id`, `product_name`, `date_planted`, `estimated_harvest_date`, `yield`, `suggested_price`, `created_at`, `modified_at`) VALUES
-(1, 2, 'talong', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:51:31', '2025-08-14 14:15:34'),
-(2, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:51:34', '2025-08-08 10:51:34'),
-(3, 2, 'asdasdas', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:51:51', '2025-08-08 10:51:51'),
-(4, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:52:12', '2025-08-08 10:52:12'),
-(5, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:52:30', '2025-08-08 10:52:30'),
-(6, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:52:39', '2025-08-08 10:52:39'),
-(7, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:52:55', '2025-08-08 10:52:55'),
-(8, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:53:06', '2025-08-08 10:53:06'),
-(9, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:53:12', '2025-08-08 10:53:12'),
-(10, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:53:13', '2025-08-08 10:53:13'),
-(11, 2, 'Sitaw', '2025-08-05', '2025-08-23', 5, 24, '2025-08-08 18:53:46', '2025-08-08 10:53:46'),
-(12, 2, 'talong', '', '', 0, 0, '2025-08-14 20:30:50', '2025-08-14 12:30:50'),
-(13, 2, 'talong', '2025-08-07', '2025-08-16', 20, 23, '2025-08-14 21:36:54', '2025-08-14 13:36:54');
-
 -- --------------------------------------------------------
 
 --
@@ -116,24 +131,20 @@ CREATE TABLE `farm_resources` (
   `id` int(11) NOT NULL,
   `user_id` int(10) NOT NULL,
   `item_name` varchar(50) NOT NULL,
+  `type` varchar(255) NOT NULL,
   `cost` int(10) NOT NULL,
   `date` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `type` varchar(255) NOT NULL
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `farm_resources`
 --
 
-INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `cost`, `date`, `created_at`, `modified_at`, `type`) VALUES
-(1, 2, 'Kubota', 5000, '2025-08-05', '2025-08-08 18:10:02', '2025-08-24 03:16:31', 'Machine'),
-(2, 2, 'Kubota', 5000, '2025-08-05', '2025-08-08 18:10:30', '2025-08-24 03:43:41', 'Machine'),
-(3, 2, 'Kubota', 5000, '2025-08-06', '2025-08-08 18:14:20', '2025-08-24 03:16:45', 'Machine'),
-(4, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:21', '2025-08-24 03:16:52', 'Machine'),
-(5, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:58', '2025-08-08 10:15:58', 'Machine'),
-(6, 2, 'Kubota', 5000, '2025-08-13', '2025-08-08 18:15:58', '2025-08-08 10:15:58', 'Machine');
+INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `type`, `cost`, `date`, `created_at`, `modified_at`) VALUES
+(7, 20, 'Kubota', 'Machine', 600, '2025-10-27', '2025-10-27 22:12:09', '2025-10-27 14:13:59'),
+(8, 20, 'agri planters', 'Fertilizer', 50002, '2025-10-21', '2025-10-27 22:49:47', '2025-10-27 14:50:04');
 
 -- --------------------------------------------------------
 
@@ -163,22 +174,10 @@ CREATE TABLE `harvested_products` (
 --
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`) VALUES
-(12, 2, 'asdasdasd', 123123123, 'kilos', 'asd', '20', 'asdasdas', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqweqw.png', '2025-08-25 10:08:48', '2025-08-07 15:45:45', 'Posted'),
-(13, 2, '', 0, '', '', '', '', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-31 07:49:25', '2025-08-07 15:47:16', 'Posted'),
-(14, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-25 10:10:55', '2025-08-07 16:55:34', 'Posted'),
-(15, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-07 16:55:46', 'Posted'),
-(16, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-31 04:19:41', '2025-08-08 13:33:56', 'Posted'),
-(17, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-08 13:33:56', 'Posted'),
-(18, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:29', '2025-08-18 18:29:12', 'Posted'),
-(19, 2, 'okra', 20, 'kilos', 'Meat', '20', 'great', 0, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:33', '2025-08-18 18:29:21', 'Posted'),
-(22, 2, 'Bangus', 20, 'kilos', 'Fish', '20', 'Fresh from gasan', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:35:23', '2025-08-31 14:53:59', 'Posted'),
-(23, 2, 'Bangus', 180, 'kilos', 'Fish', '20', 'grat', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:37', '2025-08-31 14:56:48', 'Posted'),
-(24, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'sadsad', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:41', '2025-08-31 15:27:44', 'Posted'),
-(25, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'sdsad', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:43', '2025-08-31 15:28:39', 'Posted'),
-(26, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'greate', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:47', '2025-08-31 15:33:00', 'Posted'),
-(27, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:49:20', '2025-08-31 15:34:28', 'Posted'),
-(28, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:52', '2025-08-31 15:34:45', 'Posted'),
-(29, 2, 'Sitaw', 20, 'kilos', 'Vegetable', '20', 'great', 0, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:35:01', '2025-08-31 15:35:01', '');
+(30, 2, 'Egg Plant', 50, 'KIlos', 'Vegetable', '20', 'Great for Saute dishes, Fresh, Big Sizes', 0, 0, 'eed3f75df6f4fa820201f33042a4cf312800663d-eggplant.jpg', '2025-10-12 04:42:52', '2025-10-12 12:41:57', 'Posted'),
+(31, 2, 'Bangus/Milk Fish', 100, 'kilos', 'Seafood', '20', 'Fresh from gasan port, Great dish for fried and stews', 0, 0, '1299713ec279667ccc664d17767190ca58b3b123-bangus.jpg', '2025-10-12 05:24:14', '2025-10-12 13:23:46', 'Posted'),
+(32, 11, 'talong', 30, 'kilos', 'Vegetable', '10sqm', 'Fresh Eggplants', 0, 0, '9c97a227d907ce965634671e10845300a1d4d52a-download.jpg', '2025-10-27 07:27:35', '2025-10-27 15:27:35', ''),
+(33, 20, 'Sitaw', 20, 'Kilos', 'Vegetable', '20', 'Fresh from the ground ', 0, 0, '9c97a227d907ce965634671e10845300a1d4d52a-download.jpg', '2025-10-27 16:02:29', '2025-10-27 23:24:24', 'Posted');
 
 -- --------------------------------------------------------
 
@@ -190,7 +189,6 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `order_id` varchar(50) NOT NULL,
   `contact_number` varchar(100) NOT NULL,
   `address` varchar(100) NOT NULL,
   `total_price` int(11) NOT NULL,
@@ -206,8 +204,8 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `customer_id`, `order_id`, `contact_number`, `address`, `total_price`, `mode_of_payment`, `lot_size`, `order_date`, `status`, `created_at`, `modified_at`) VALUES
-(1, 2, 2, 'hvsth12312455', '09533307696', 'mogpo', 5000, 'COD', 10, '10-11-25 ', 'pending', '2025-08-10 18:18:21', '2025-08-10 10:18:21');
+INSERT INTO `orders` (`id`, `user_id`, `customer_id`, `contact_number`, `address`, `total_price`, `mode_of_payment`, `lot_size`, `order_date`, `status`, `created_at`, `modified_at`) VALUES
+(1, 2, 2, '09533307696', 'mogpo', 5000, 'COD', 10, '10-11-25 ', 'pending', '2025-08-10 18:18:21', '2025-08-10 10:18:21');
 
 -- --------------------------------------------------------
 
@@ -228,6 +226,7 @@ CREATE TABLE `products` (
   `lot_size` int(20) NOT NULL,
   `total_stocks` int(20) NOT NULL,
   `product_image` varchar(500) NOT NULL,
+  `sold_count` int(11) NOT NULL,
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `status` varchar(25) NOT NULL
@@ -237,20 +236,9 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `modified`, `created_at`, `status`) VALUES
-(16, 15, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:39:26', '2025-08-29 19:39:26', 'Active'),
-(17, 17, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-qweqwewq.png', '2025-08-29 11:41:18', '2025-08-29 19:41:18', 'Active'),
-(19, 21, 'Bangus', 20, 2, 'Fish', 'kilos', 0, 'Fresh From Gasan', 20, 0, '', '2025-08-31 06:51:26', '2025-08-31 14:51:26', 'Active'),
-(20, 22, 'Bangus', 20, 2, 'Fish', 'kilos', 0, 'Fresh from gasan', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:35:23', '2025-08-31 15:35:23', 'Active'),
-(21, 27, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 07:49:20', '2025-08-31 15:49:20', 'Active'),
-(22, 13, '', 0, 2, '', '', 0, 'great', 0, 0, '28b90ed444694a47cfe87a27c67a4e279c538f1b-123123.png', '2025-08-31 07:49:25', '2025-08-31 15:49:25', 'Active'),
-(23, 18, 'okra', 20, 2, 'Meat', 'kilos', 0, 'great', 20, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:29', '2025-08-31 16:04:29', 'Active'),
-(24, 19, 'okra', 20, 2, 'Meat', 'kilos', 0, 'great', 20, 0, '77c91bfb612d7cef7fdfc8d348dca4cf03cdaad6-530662302_753126267471399_8058883301672027554_n.jpg', '2025-08-31 08:04:33', '2025-08-31 16:04:33', 'Active'),
-(25, 23, 'Bangus', 180, 2, 'Fish', 'kilos', 0, 'grat', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:37', '2025-08-31 16:04:37', 'Active'),
-(26, 24, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'sadsad', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:41', '2025-08-31 16:04:41', 'Active'),
-(27, 25, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'sdsad', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:43', '2025-08-31 16:04:43', 'Active'),
-(28, 26, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'greate', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:47', '2025-08-31 16:04:47', 'Active'),
-(29, 28, 'Sitaw', 20, 2, 'Vegetable', 'kilos', 0, 'great', 20, 0, '47e7fce52ce59835e6c5763445b38848fb454f07-bangus.jpg', '2025-08-31 08:04:52', '2025-08-31 16:04:52', 'Active');
+INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`) VALUES
+(30, 30, 'Egg Plant', 50, 2, 'Vegetable', 'KIlos', 0, 'Great for Saute dishes, Fresh, Big Sizes', 20, 0, 'eed3f75df6f4fa820201f33042a4cf312800663d-eggplant.jpg', 0, '2025-10-12 04:42:52', '2025-10-12 12:42:52', 'Active'),
+(31, 31, 'Bangus/Milk Fish', 100, 2, 'Seafood', 'kilos', 0, 'Fresh from gasan port, Great dish for fried and stews', 20, 0, '1299713ec279667ccc664d17767190ca58b3b123-bangus.jpg', 0, '2025-10-12 05:24:14', '2025-10-12 13:24:14', 'Active');
 
 -- --------------------------------------------------------
 
@@ -298,7 +286,7 @@ CREATE TABLE `users` (
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `modified` datetime NOT NULL DEFAULT current_timestamp(),
   `first_time_logged_in` int(11) NOT NULL,
-  `farm_details_exists` int(11) DEFAULT NULL
+  `farm_details_exists` varchar(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -306,19 +294,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `baranggay`, `address`, `user_type`, `email_address`, `contact_number`, `password`, `rating`, `created`, `modified`, `first_time_logged_in`, `farm_details_exists`) VALUES
-(2, 'evelyn', 'gascon', 'boac', '', 'Farmer', 'ajcodalify@gmail.com', '09533307696', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', '2025-03-10 05:49:38', 0, 1),
-(3, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$OP.c25h2BF404wKs2jM4JOKXnVhVvgeSIWx2BHhzbO6kSA/DC/NeO', 0, '2025-08-13 18:07:34', '2025-08-13 18:07:34', 0, 0),
-(4, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$XmqzVQBLn9q5bxVV57zET.mEeT315FVASiS0LDu5AR6vhZlQ4HyOG', 0, '2025-08-13 18:08:13', '2025-08-13 18:08:13', 0, 0),
-(5, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$5zTcSJTFI7AFAtV2eSA.7OxFnHPtIHG5//6CQshvHSGU.AvbwTYpy', 0, '2025-08-13 18:09:11', '2025-08-13 18:09:11', 0, 0),
-(6, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$JRsNg2UleLgdev9KsecryumpVddKjQ5LWbEWn22TWmJonpxKqQah.', 0, '2025-08-13 18:11:39', '2025-08-13 18:11:39', 0, 0),
-(7, 'asdasd', 'asdasd', '', '', 'seller', 'ajcodalify@gmail.com', '', '$2y$10$W4xFaAakW0eHv1NVDhpUwe2US.3hQhsePK20Mf80ycNmQswDgi/Y.', 0, '2025-08-16 17:43:43', '2025-08-16 17:43:43', 0, 0),
-(8, 'asdasd', 'asdasd', '', '', 'seller', 'ajcodalify@gmail.com', '', '$2y$10$O/lmdAWOnDSdv7j0sdsgde7.vluRjcEN1gwS8ZUxJ0tksnBW45GG2', 0, '2025-08-16 17:44:22', '2025-08-16 17:44:22', 0, 0),
-(9, 'asdasd', 'asdasd', '', '', 'seller', 'ajcodalify@gmail.com', '', '$2y$10$Nxu.XNqkBaZnBNatSgAinOeHOeCQ2Brd3sIfaodP4sAMrrpzSHr4m', 0, '2025-08-16 17:44:48', '2025-08-16 17:44:48', 0, 0),
-(10, 'asdasd', 'asdasd', '', '', '', 'ajcodalify@gmail.com', '+639533307696', '$2y$10$1qmfSej/7rgQ1AkjUC6WdukKnF0kvU30kfkjHP9ApUW2GId1K6Z.S', 0, '2025-08-16 18:00:13', '2025-08-16 18:00:13', 0, NULL);
+(2, 'evelyn', 'gascon', 'boac', '', 'Farmer', 'ajcodalify@gmail.com', '09533307696', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', '2025-03-10 05:49:38', 0, '1'),
+(3, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$OP.c25h2BF404wKs2jM4JOKXnVhVvgeSIWx2BHhzbO6kSA/DC/NeO', 0, '2025-08-13 18:07:34', '2025-08-13 18:07:34', 0, '0'),
+(20, 'Atsuhiko', 'Dumale', '', '', 'Farmer', 'atsuhikodumale@gmail.com', '09707662820', '$2y$10$7wn0cCgWvrb3fyymAYKpgu8bJmFhsLWz3d6klkUYfXx73pJev4T.e', 0, '2025-10-27 21:52:01', '2025-10-27 21:52:01', 0, '1');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cart_items`
+--
+ALTER TABLE `cart_items`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `categories`
@@ -385,6 +373,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `cart_items`
+--
+ALTER TABLE `cart_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -400,7 +394,7 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `farm_products`
@@ -412,13 +406,13 @@ ALTER TABLE `farm_products`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -430,7 +424,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -442,7 +436,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

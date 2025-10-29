@@ -16,6 +16,7 @@ class HarvestProduct{
     public $product_image;
     public $unit;
     public $created_at;
+    public $is_posted;
     public $modified;
 
 
@@ -25,7 +26,7 @@ class HarvestProduct{
 
     function createProduct(){
 
-        $query = "INSERT INTO 
+        $query = "INSERT INTO
                 " . $this->table_name . "
                 SET
                 user_id=:user_id,
@@ -37,37 +38,41 @@ class HarvestProduct{
                 lot_size=:lot_size,
                 product_description=:product_description,
                 product_image=:product_image,
+                is_posted = :is_posted,
                 created_at=:created_at";
-        
+
         $stmt=$this->conn->prepare($query);
 
-        $this->product_name = htmlspecialchars(strip_tags($this->product_name));
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
-        $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
+
+        $this->product_name = htmlspecialchars(strip_tags($this->product_name));
         $this->unit = htmlspecialchars(strip_tags($this->unit));
+        $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
         $this->category = htmlspecialchars(strip_tags($this->category));
         $this->total_stocks = htmlspecialchars(strip_tags($this->total_stocks));
         $this->lot_size = htmlspecialchars(strip_tags($this->lot_size));
         $this->product_description = htmlspecialchars(strip_tags($this->product_description));
         $this->product_image = htmlspecialchars(strip_tags($this->product_image));
-
+        $this->is_posted = htmlspecialchars(strip_tags($this->is_posted));
         $this->created_at = date ("Y-m-d H:i:s");
 
-        $stmt->bindParam(":product_name", $this->product_name);
+
         $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->bindParam(":product_name", $this->product_name);
+        $stmt->bindParam(":unit", $this->unit);
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
         $stmt->bindParam(":category", $this->category);
         $stmt->bindParam(":total_stocks", $this->total_stocks);
         $stmt->bindParam(":lot_size", $this->lot_size);
-        $stmt->bindParam(":unit", $this->unit);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":product_image", $this->product_image);
+        $stmt->bindParam(":is_posted", $this->is_posted);
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {
             return true;
         }
-
         return false;
     }
 
@@ -131,12 +136,11 @@ class HarvestProduct{
         return $result_message;
     }
 
-    function readAllProduct($from_record_num, $records_per_page) {
+    function readAllProduct() {
         $query = "SELECT *
                 FROM " . $this->table_name . "
-                WHERE user_id = :user_id
-                LIMIT 
-                {$from_record_num}, {$records_per_page}";
+                WHERE
+                user_id = :user_id";
 
         $stmt = $this->conn->prepare($query);
 
@@ -146,10 +150,17 @@ class HarvestProduct{
 
         $stmt->execute();
 
-        return $stmt;
-    }
+        // return $stmt;
 
-    
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($data as &$row) {
+        $row['product_image_path'] = !empty($row['product_image'])
+        ? $GLOBALS['base_url'] . "user/uploads/" . $_SESSION['user_id'] . "/products/" . $row['product_image']
+        : $GLOBALS['base_url'] . "user/uploads/logo.png"; // fallback
+        }
+        return $data;
+    }
 
     public function countAll(){
 
@@ -166,7 +177,7 @@ class HarvestProduct{
 
     function updateHarvestProduct(){
 
-        $query = "UPDATE 
+        $query = "UPDATE
                 " . $this->table_name . "
                 SET
                 product_name=:product_name,
@@ -176,9 +187,9 @@ class HarvestProduct{
                 lot_size=:lot_size,
                 product_description=:product_description,
                 modified=:modified
-                WHERE 
+                WHERE
                     id=:id";
-        
+
         $stmt=$this->conn->prepare($query);
 
         $this->id=htmlspecialchars(strip_tags($this->id));
@@ -190,7 +201,7 @@ class HarvestProduct{
         $this->product_description = htmlspecialchars(strip_tags($this->product_description));
         $this->modified_at = date ("Y-m-d H:i:s");
 
-        
+
         $stmt->bindParam(":id", $this->id);
         $stmt->bindParam(":product_name", $this->product_name);
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
@@ -258,21 +269,21 @@ class HarvestProduct{
 
     function postedProduct(){
 
-        $query = "UPDATE 
+        $query = "UPDATE
                 " . $this->table_name . "
                 SET
                 is_posted=:is_posted,
                 modified=:modified
-                WHERE 
+                WHERE
                     id=:id";
-        
+
         $stmt=$this->conn->prepare($query);
 
         $this->id=htmlspecialchars(strip_tags($this->id));
         $this->is_posted=htmlspecialchars(strip_tags($this->is_posted));
         $this->modified_at = date ("Y-m-d H:i:s");
 
-        
+
         $stmt->bindParam(":id", $this->id);
         $stmt->bindParam(":is_posted", $this->is_posted);
         $stmt->bindParam(":modified", $this->modified);
@@ -281,8 +292,8 @@ class HarvestProduct{
             return true;
         }
         return false;
-    } 
-    
+    }
+
 
 
 

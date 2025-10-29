@@ -3,7 +3,7 @@
 
   <div class="modal-dialog">
     <div class="modal-content">
-      
+
       <!-- Form starts here and wraps the modal content -->
       <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
 
