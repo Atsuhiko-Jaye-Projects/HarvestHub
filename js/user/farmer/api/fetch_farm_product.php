@@ -23,8 +23,8 @@ $total_rows = $result['total_rows'];
 // Build full image path
 foreach ($records as &$row) {
     $row['product_image_path'] = !empty($row['product_image'])
-        ? $base_url . "uploads/" . $_SESSION['user_id'] . "/products/" . $row['product_image']
-        : $base_url . "uploads/default.png";
+        ? $base_url . "user/uploads/" . $_SESSION['user_id'] . "/products/" . $row['product_image']
+        : $base_url . "user/uploads/default.png";
 }
 
 // Calculate total pages

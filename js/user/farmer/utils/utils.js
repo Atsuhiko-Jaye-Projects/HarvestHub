@@ -54,8 +54,8 @@ function renderPagination(current, total){
   if (total > 1) {
     paginationHTML +=`
       <nav>
-        <ul class = "pagination justify-content-center">
-          <li class="page-item ${current === 1} ? 'disabled' : ''}">
+        <ul class = "pagination">
+          <li class="page-item ${current === 0} ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="loadTableData(${current - 1})">Prev</a>
           </li>
     `;
