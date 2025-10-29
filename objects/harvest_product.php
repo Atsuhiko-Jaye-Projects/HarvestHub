@@ -136,43 +136,38 @@ class HarvestProduct{
         return $result_message;
     }
 
-    function readAllProduct() {
-        $query = "SELECT *
-                FROM " . $this->table_name . "
-                WHERE
-                user_id = :user_id";
+    function readAllProduct($from_record_num, $records_per_page) {
+        $query = "SELECT * FROM " . $this->table_name . "
+                  WHERE user_id = :user_id
+                  ORDER BY id DESC
+                  LIMIT :from_record_num, :records_per_page";
 
         $stmt = $this->conn->prepare($query);
 
-        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
-
-        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+        // IMPORTANT: Use bindValue() instead of bindParam() for LIMIT (avoids reference issues)
+        $stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
+        $stmt->bindValue(":from_record_num", (int)$from_record_num, PDO::PARAM_INT);
+        $stmt->bindValue(":records_per_page", (int)$records_per_page, PDO::PARAM_INT);
 
         $stmt->execute();
 
-        // return $stmt;
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Count total rows for pagination
+        $count_query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE user_id = :user_id";
+        $count_stmt = $this->conn->prepare($count_query);
+        $count_stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
+        $count_stmt->execute();
 
-        foreach ($data as &$row) {
-        $row['product_image_path'] = !empty($row['product_image'])
-        ? $GLOBALS['base_url'] . "user/uploads/" . $_SESSION['user_id'] . "/products/" . $row['product_image']
-        : $GLOBALS['base_url'] . "user/uploads/logo.png"; // fallback
-        }
-        return $data;
+        $count_row = $count_stmt->fetch(PDO::FETCH_ASSOC);
+        $total_rows = $count_row['total_rows'];
+
+        return [
+            "records" => $products,
+            "total_rows" => $total_rows
+        ];
     }
 
-    public function countAll(){
-
-        $query = "SELECT id FROM " . $this->table_name . "";
-
-        $stmt = $this->conn->prepare( $query );
-        $stmt->execute();
-
-        $num = $stmt->rowCount();
-
-        return $num;
-    }
 
 
     function updateHarvestProduct(){

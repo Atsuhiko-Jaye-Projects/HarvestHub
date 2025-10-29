@@ -6,23 +6,34 @@ include_once "../../../../objects/harvest_product.php";
 $database = new Database();
 $db = $database->getConnection();
 
-$page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
+$harvest_product = new HarvestProduct($db);
+$harvest_product->user_id = $_SESSION['user_id'];
 
-// page given in URL parameter, default page is one
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-
-// set number of records per page
+// Pagination parameters
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $records_per_page = 5;
-
-// calculate for the query LIMIT clause
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
+// Fetch records and total count
+$result = $harvest_product->readAllProduct($from_record_num, $records_per_page);
 
-$harvest_product = new HarvestProduct($db);
+$records = $result['records'];
+$total_rows = $result['total_rows'];
 
-$harvest_product->user_id = $_SESSION['user_id'];
-$data = $harvest_product->readAllProduct();
+// Build full image path
+foreach ($records as &$row) {
+    $row['product_image_path'] = !empty($row['product_image'])
+        ? $base_url . "uploads/" . $_SESSION['user_id'] . "/products/" . $row['product_image']
+        : $base_url . "uploads/default.png";
+}
 
-echo json_encode($data, JSON_PRETTY_PRINT);
+// Calculate total pages
+$total_pages = ceil($total_rows / $records_per_page);
 
-?>
+header('Content-Type: application/json');
+echo json_encode([
+    "records" => $records,
+    "total_rows" => $total_rows,
+    "current_page" => $page,
+    "total_pages" => $total_pages
+], JSON_PRETTY_PRINT);

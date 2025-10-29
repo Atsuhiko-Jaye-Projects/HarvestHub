@@ -19,30 +19,30 @@
   <small class="text-muted">Update and manage your harvest inventory</small>
 </div>
 
-    <nav class="navbar bg-body-tertiary">
-	    <div class="container-fluid">
-	        <form class="d-flex w-50" role="search">
-	        <div class="input-group">
-	            <span class="input-group-text" id="search-icon">
-	            <i class="bi bi-search"></i>
-	            </span>
-	            <input
-	            class="form-control"
-	            type="search"
-	            placeholder="Search"
-	            aria-label="Search"
-	            aria-describedby="search-icon"
-	            />
-	        </div>
-	        <button class="btn btn-outline-success ms-2" type="submit">Search</button>
-	        </form>
-		    	<div class="mb-3 mt-3 float-end">
+    <!-- <nav class="navbar bg-body-tertiary">
+			<div class="container-fluid">
+				<form class="d-flex w-50" role="search">
+					<div class="input-group">
+						<span class="input-group-text" id="search-icon">
+							<i class="bi bi-search"></i>
+						</span>
+						<input
+						class="form-control"
+						type="search"
+						placeholder="Search"
+						aria-label="Search"
+						aria-describedby="search-icon"
+						/>
+					</div>
+					<button class="btn btn-outline-success ms-2" type="submit">Search</button>
+				</form>
+				<div class="mb-3 mt-3 float-end">
 					<span data-bs-toggle='tooltip' title='New'>
 						<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
 					</span>
-		    	</div>
-	    </div>
-    </nav>
+				</div>
+			</div>
+		</nav> -->
 
     <?php include_once "../modal-forms/harvest/add_harvest.php"; ?>
 
@@ -94,11 +94,5 @@
   <button onclick="loadPage(current_page - 1)" id="prevBtn">Previous</button>
   <button onclick="loadPage(current_page + 1)" id="nextBtn">Next</button>
 </div> -->
-	<?php
-	include_once "paging.php";
-	// }else{
-	// 	echo "<div class='alert alert-danger'>No Resources Found</div>";
-	//
-	// }
-	?>
+<div id="pagination"></div>
 </div>
