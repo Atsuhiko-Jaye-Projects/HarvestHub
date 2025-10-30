@@ -1,4 +1,3 @@
-// edit Harvest Product
 function editHarvestProduct(row){
 
   return `
@@ -11,7 +10,7 @@ function editHarvestProduct(row){
         <form action="${UpdatePostURL}" method="POST" enctype="multipart/form-data">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Update Details</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
@@ -27,18 +26,24 @@ function editHarvestProduct(row){
                   </div>
 
                   <div class="col-md-6">
-                    <Label>Category</Label>
-                    <input type="text" name="category" value="${row.category}" class="form-control" required placeholder="Unit">
+                    <label>Category</label>
+                    <select name="category" class="form-select" required>
+                      <option value="">Select Category...</option>
+                      <option value="Vegetable" ${row.category === 'Vegetable' ? 'selected' : ''}>Vegetable</option>
+                      <option value="Fruit" ${row.category === 'Fruit' ? 'selected' : ''}>Fruit</option>
+                      <option value="Rootcrop" ${row.category === 'Rootcrop' ? 'selected' : ''}>Rootcrop</option>
+                      <option value="Legume" ${row.category === 'Legume' ? 'selected' : ''}>Legume</option>
+                    </select>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <Label>Price</Label>
-                    <input type="text" name="price_per_unit" value="${row.price_per_unit}" class="form-control" required placeholder="Lot Size">
+                    <input type="text" name="price_per_unit" readonly value="${row.price_per_unit}" class="form-control" required placeholder="Lot Size">
                   </div>
                   <div class="col-md-6">
                     <Label>Unit</Label>
-                    <input type="text" name="unit" value="${row.unit}" class="form-control" required placeholder="Lot Size">
+                    <input type="text" name="unit" readonly value="${row.unit}" class="form-control" required placeholder="Lot Size">
                   </div>
                 </div>
 
@@ -47,10 +52,14 @@ function editHarvestProduct(row){
                     <Label>Description Price</Label>
                     <textarea name="product_description" class="form-control" required>${row.product_description}</textarea>
                   </div>
+
                   <div class="col-md-6">
                       <Label>Lot Size</Label>
-                      <input type="text" name="lot_size" value="${row.lot_size}" class="form-control" required placeholder="Lot Size">
+                      <input type="text" name="lot_size" readonly value="${row.lot_size}" class="form-control" required placeholder="Lot Size">
+
+                      <input type="text" hidden name="is_posted" readonly value="${row.is_posted}" class="form-control" required placeholder="Lot Size">
                     </div>
+
                 </div>
 
               </div>

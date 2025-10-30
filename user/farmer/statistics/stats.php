@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 
-if ($page_title == "Manage Harvest" || $page_title == "Farm Products" || $page_title == "Farm Resources & supplies" || $page_title == "Manage Product") {
+if ($page_title == "Manage Crop") {
 
 ?>
 <div class="container-xl mt-3">
@@ -27,9 +27,9 @@ if ($page_title == "Manage Harvest" || $page_title == "Farm Products" || $page_t
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <h6>Pending Orders</h6>
-          <h2>15</h2>
-          <small>Orders</small>
+          <h6>Planted Crops</h6>
+          <h2 id="recordCount"></h2>
+          <small>Crops</small>
         </div>
         <div>
           <i class="bi bi-clipboard" style="font-size: 1.5rem;"></i>

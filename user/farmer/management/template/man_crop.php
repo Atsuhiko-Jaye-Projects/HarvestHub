@@ -16,9 +16,8 @@
     </div>
 	<div class="p-3 bg-light rounded">
   <h5 class="mb-0"><i class="bi bi-basket-fill text-success"></i> <?php echo $page_title; ?></h5>
-  <small class="text-muted">Update and manage your harvest inventory</small>
+  <small class="text-muted">Manage your Crops inventory</small>
 </div>
-
     <nav class="navbar bg-body-tertiary">
 			<div class="container-fluid">
 				<form class="d-flex w-50" role="search">
@@ -36,9 +35,9 @@
 					</div>
 					<button class="btn btn-outline-success ms-2" type="submit">Search</button> -->
 				</form>
-				<div class="mb-3 mt-3 float-end">
+				<div class="mb-3 mt-1 float-end">
 					<span data-bs-toggle='tooltip' title='New'>
-						<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#exampleModal"><span><i class="bi bi-plus-circle"></i></span></button>
+						<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#new-crop-modal"><span><i class="bi bi-plus-circle"></i></span></button>
 					</span>
 				</div>
 			</div>
@@ -54,16 +53,16 @@
 		<table class="table table-hover align-middle shadow" id='userTable'>
 			<thead class="table-light">
 			<tr>
-				<th>Product</th>
-				<th>Category</th>
-				<th>Price</th>
-				<th>Unit</th>
-				<th>Lot Size</th>
-				<th>Status</th>
+				<th>Crop Name</th>
+				<th>Yield (kg)</th>
+				<th>Cultivated Area (sqm)</th>
+				<th>Date Planted</th>
+				<th>Harvest EST.</th>
+				<th>Duration</th>
 				<th>Action</th>
 			</tr>
 			</thead>
-			<tbody id='harvest_product'>
+			<tbody id='crop_table'>
 			<?php
 			// 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			// 		extract($row);
@@ -94,5 +93,5 @@
   <button onclick="loadPage(current_page - 1)" id="prevBtn">Previous</button>
   <button onclick="loadPage(current_page + 1)" id="nextBtn">Next</button>
 </div> -->
-<div id="harvest_product_pagination"></div>
+<div id="crop_pagination"></div>
 </div>

@@ -57,13 +57,13 @@
 
               <div class="mb-3">
                 <label for="">Owned Farm Land (SQM)</label>
-                <input type="text" name="farm_size_sqm" class="form-control" value="<?php echo $farm_lot;?>" readonly>
+                <input type="text" name="farm_size_sqm" class="form-control" value="<?php echo number_format($farm_lot);?>" readonly>
               </div>
 
               <div class="mb-3">
                 <label for="">Farm Expense</label>
-                <input type="text" name="farm_expense" class="form-control danger" value="<?php echo $total_farm_expense;?>" readonly>
-                <input type="text" name="" class="form-control danger" value="₱ <?php echo $total_farm_expense;?>.00" readonly>
+                <input type="text" name="farm_expense" class="form-control danger" hidden value="<?php echo $total_farm_expense;?>" readonly>
+                <input type="text" name="" class="form-control danger" value="₱ <?php echo number_format($total_farm_expense);?>.00" readonly>
               </div>
 
               <div class="mb-3">

@@ -28,7 +28,7 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
         $farm->purok = $_POST['purok'];
         $farm->farm_ownership = $_POST['farm_ownership'];
         $farm->lot_size = $_POST['lot_size'];
-        
+
         $farm_details = 1;
         $user->farm_details_exists = $farm_details;
 
@@ -40,7 +40,7 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
         }else{
             echo "<div class='alert alert-danger'><span><i class='bi bi-clipboard2-x'></i></span> Failed to save your Details, Please Try again!</div>";
         }
-        
+
     }
     include_once "farm/farm_detail.php";
 
@@ -48,7 +48,9 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
 }else{
 ?>
 
-<div class="container-xl mt-3">
+
+
+<div class="container-fluid mt-3">
     <div class="d-flex gap-3">
   <!-- Card 1 -->
   <div class="card text-white bg-success flex-fill">
@@ -106,13 +108,99 @@ if ($_SESSION['is_farm_registered'] == 0 ) {
 
 </div>
 
+<div class="row">
+  <div class="col-lg-6">
+    <div class="container mt-4">
+      <div class="card p-3 shadow-sm">
+        <h5>Sales Summary</h5>
+        <p><strong>3K</strong> <span class="text-success">+2.1%</span> vs Last Week</p>
+        <canvas id="salesChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
 
-<!-- other contents will be here -->
 
-<?php 
+    <div class="col-lg-6">
+    <div class="container mt-4">
+      <div class="card p-3 shadow-sm">
+        <h5>Order Volume</h5>
+        <p><strong>3K</strong> <span class="text-success">+2.1%</span> vs Last Week</p>
+        <canvas id="salesChart2" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-white fw-bold">Notifications</div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <small class="text-muted">Feb 11</small><br>
+        Juan Dela Cruz ordered 10kg of hybrid corn seeds on February 11, 2025. Please confirm availability.
+      </li>
+      <li class="list-group-item">
+        <small class="text-muted">Feb 11</small><br>
+        [IMPORTANT] Update to API Endpoint Limit
+      </li>
+      <li class="list-group-item">
+        <small class="text-muted">Feb 07</small><br>
+        Juan Dela Cruz ordered 20kg Tomatoes. Prepare for delivery by July 21.
+      </li>
+    </ul>
+    <div class="card-footer d-flex justify-content-between">
+      <button class="btn btn-outline-secondary btn-sm">&lt;</button>
+      <button class="btn btn-outline-secondary btn-sm">&gt;</button>
+    </div>
+  </div>
+    </div>
+  </div>
+
+    <div class="col-lg-6">
+    <div class="container mt-4">
+      <div class="card shadow-sm">
+          <div class="card-header bg-white fw-bold">Top Products</div>
+          <div class="card-body p-0">
+            <table class="table mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Rank</th>
+                  <th>Product Name</th>
+                  <th>Total Sold</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-success bg-opacity-10">
+                  <td>1</td>
+                  <td>Carrot</td>
+                  <td>20</td>
+                </tr>
+                <tr class="bg-secondary bg-opacity-10">
+                  <td>2</td>
+                  <td>Eggplant</td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Potato</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Cabbage</td>
+                  <td>5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+<?php
 }
 
-include_once "layout/layout_foot.php"; 
+include_once "layout/layout_foot.php";
 ?>
-
-

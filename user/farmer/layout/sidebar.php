@@ -1,6 +1,6 @@
 <?php $page = basename($_SERVER['PHP_SELF']); ?>
 
-<div class="col-2 col-sm-3 col-xl-2 bg-dark vh-100 p-0">
+<div class="col-2 col-sm-3 col-xl-2 bg-dark min-vh-100 p-0">
 
   <!-- Logo -->
   <nav class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
@@ -22,23 +22,23 @@
     </a>
 
     <!-- sidebar hide if the farm details is not yet set -->
-    <?php 
+    <?php
       if ($_SESSION['is_farm_registered'] == "0") {
-        
+
         //sidebar must be blank
       }
       else if ($_SESSION['is_farm_registered'] == "1"){
     ?>
 
     <!-- Harvest Record Collapsible -->
-    <button class="sidebar-btn d-flex justify-content-between align-items-center <?= in_array($page, ['farm_resource.php']) ? 'active' : '' ?>" 
+    <button class="sidebar-btn d-flex justify-content-between align-items-center <?= in_array($page, ['farm_resource.php']) ? 'active' : '' ?>"
         type="button" data-bs-toggle="collapse" data-bs-target="#collapseHarvest" aria-expanded="false" aria-controls="collapseHarvest">
       <div><i class="bi bi-tools me-2"></i> Dashboard</div>
       <i class="bi <?= in_array($page, ['farm_resource.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
 
     <div class="collapse ps-3 mt-3 <?= in_array($page, ['farm_resource.php', 'search.php']) ? 'show' : '' ?>" id="collapseHarvest">
-      <a href="<?php echo $base_url?>user/farmer/farm/farm_resource.php" 
+      <a href="<?php echo $base_url?>user/farmer/farm/farm_resource.php"
         class="sidebar-btn <?= ($page=='farm_resource.php' || $page == "search.php") ? 'active' : '' ?>">
         <i class="bi bi-box-seam me-2"></i> Farm Inputs
       </a>
@@ -46,19 +46,27 @@
     </div>
 
     <!-- Inventory Collapsible -->
-    <button class="sidebar-btn d-flex justify-content-between align-items-center  <?= in_array($page, ['manage_product.php','manage_harvest.php']) ? 'active' : '' ?>" 
+    <button class="sidebar-btn d-flex justify-content-between align-items-center  <?= in_array($page, ['manage_product.php','manage_harvest.php', 'manage_crop.php']) ? 'active' : '' ?>"
         type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
       <div><i class="bi bi-box-seam me-2"></i> Inventory</div>
-      <i class="bi <?= in_array($page, ['inventory.php','manage_harvest.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
+      <i class="bi <?= in_array($page, ['inventory.php','manage_harvest.php', 'manage_crop.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
 
-    <div class="collapse ps-3 mt-3 <?= in_array($page, ['manage_product.php','manage_harvest.php','search.php']) ? 'show' : '' ?>" id="collapseInventory">
+    <div class="collapse ps-3 mt-3 <?= in_array($page, ['manage_product.php','manage_harvest.php','manage_crop.php','search.php']) ? 'show' : '' ?>" id="collapseInventory">
+
+      <a href="<?php echo $base_url; ?>user/farmer/management/manage_crop.php" class="sidebar-btn <?= $page=='manage_crop.php' ? 'active' : '' ?>">
+        <i class="bi bi-tree me-2"></i> Crops
+      </a>
+
+      <a href="<?php echo $base_url; ?>user/farmer/management/manage_harvest.php" class="sidebar-btn <?= $page=='manage_harvest.php' ? 'active' : '' ?>">
+        <i class="bi bi-tree me-2"></i> Harvested
+      </a>
+
       <a href="<?php echo $base_url; ?>user/farmer/management/manage_product.php" class="sidebar-btn <?= ($page == 'manage_product.php' || $page == 'search.php') ? 'active' : '' ?>">
         <i class="bi bi-box-fill me-2"></i> Products
       </a>
-      <a href="<?php echo $base_url; ?>user/farmer/management/manage_harvest.php" class="sidebar-btn <?= $page=='manage_harvest.php' ? 'active' : '' ?>">
-        <i class="bi bi-tree me-2"></i> Harvest
-      </a>
+
+
 
     </div>
 
@@ -87,7 +95,7 @@
     </a> -->
 
   </nav>
-  <?php 
+  <?php
     }
     else{
       // tobe improve
