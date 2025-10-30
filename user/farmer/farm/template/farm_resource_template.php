@@ -70,8 +70,8 @@
 								</span>";
 						echo "</td>";
 					echo "</tr>";
-					include "../modal-forms/farm/farm-resource.php";
-					include "../modal-forms/harvest/view_harvest.php";
+					// include "../modal-forms/farm/farm-resource.php";
+					// include "../modal-forms/harvest/view_harvest.php";
 				}			
 			?>
 			</tbody>

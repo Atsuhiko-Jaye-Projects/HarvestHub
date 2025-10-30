@@ -1,5 +1,4 @@
 function editHarvestProduct(row){
-
   return `
   <div class="modal fade" id="edit-harvest-modal-${row.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 

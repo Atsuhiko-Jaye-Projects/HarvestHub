@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->category = $_POST['category'];
         $harvest_product->unit = $_POST['unit'];
         $harvest_product->product_description = $_POST['product_description'];
-		    $harvest_product->lot_size = $_POST['lot_size'];
+		$harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
 
         if ($harvest_product->updateHarvestProduct()) {
@@ -164,4 +164,9 @@ include_once "../statistics/stats.php";
 include_once "template/man_crop.php";
 ?>
 
+
+<script>
+    const UpdatePostURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
+    const ProductPostingURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
+</script>
 <?php include_once "../layout/layout_foot.php"; ?>

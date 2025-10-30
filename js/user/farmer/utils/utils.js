@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
               <td>${row.lot_size}</td>
               <td>${row.is_posted}</td>
               <td>
-                <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-crop-modal-${row.id}'>
+                <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-${row.id}'>
                   <i class='bi bi-pencil-square'></i>
                 </button>
-                <button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#harvest-crop-modal-${row.id}'>
+                <button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-${row.id}'>
                   <i class='bi bi-box-arrow-up'></i>
                 </button>
               </td>
@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
       dataType: 'json',
       success: function(response) {
         let rows = '';
+        let update_crop_modal = '';
 
         if (!response.records || response.records.length === 0) {
           $('#crop_table').html("<tr><td colspan='7' class='text-center'>No crops found.</td></tr>");
@@ -128,21 +129,19 @@ document.addEventListener('DOMContentLoaded', function() {
               <td>${row.estimated_harvest_date || '-'}</td>
               <td>${duration}</td>
               <td>
-                <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-${row.id}'>
+                <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#update-crop-modal-${row.id}'>
                   <i class='bi bi-pencil-square'></i>
-                </button>
-                <button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-${row.id}'>
-                  <i class='bi bi-box-arrow-up'></i>
                 </button>
               </td>
             </tr>
           `;
+          update_crop_modal += updateFarmCrop(row);
         });
 
         // Show total records count
         document.getElementById('recordCount').textContent = response.records.length;
-
         $('#crop_table').html(rows);
+        $('#modalContainer').html(update_crop_modal);
         renderCropPagination(response.current_page, response.total_pages);
       },
       error: function() {
@@ -188,39 +187,40 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // // check the estimation of plant Date
-// document.addEventListener('DOMContentLoaded', function(){
-//   document.getElementById('cropForm').addEventListener('submit', function(e) {
-//     const datePlanted = new Date(document.getElementById('date_planted').value);
-//     const harvestDate = new Date(document.getElementById('estimated_harvest_date').value);
-//
-//     if (harvestDate <= datePlanted) {
-//       e.preventDefault();
-//       bootbox.alert({
-//         title: "Invalid Dates ❌",
-//         message: "Estimated harvest date must be after the date planted.",
-//       }).delay(200);
-//       return;
-//     }
-//
-//     const diffTime = harvestDate - datePlanted;
-//     const diffDays = diffTime / (1000 * 60 * 60 * 24);
-//
-//     if (diffDays < 45) {
-//       e.preventDefault();
-//       bootbox.alert({
-//         title: "Too Soon 🌱",
-//         message: "The estimated harvest date must be at least 45 days after planting.",
-//       }).delay(200);
-//       return;
-//     }
-//
-//     if (diffDays > 365) {
-//       e.preventDefault();
-//       bootbox.alert({
-//         title: "Too Far ⚠️",
-//         message: "The harvest date seems too far. Please check the date.",
-//       }).delay(200);
-//       return;
-//     }
-//   });
-// });
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('cropForm').addEventListener('submit', function(e) {
+    const datePlanted = new Date(document.getElementById('date_planted').value);
+    const harvestDate = new Date(document.getElementById('estimated_harvest_date').value);
+
+    if (harvestDate <= datePlanted) {
+      e.preventDefault();
+      bootbox.alert({
+        title: "Invalid Dates ❌",
+        message: "Estimated harvest date must be after the date planted.",
+        backdrop: false
+      });
+      return;
+    }
+
+    const diffTime = harvestDate - datePlanted;
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    if (diffDays < 45) {
+      e.preventDefault();
+      bootbox.alert({
+        title: "Too Soon 🌱",
+        message: "The estimated harvest date must be at least 45 days after planting.",
+      });
+      return;
+    }
+
+    if (diffDays > 365) {
+      e.preventDefault();
+      bootbox.alert({
+        title: "Too Far ⚠️",
+        message: "The harvest date seems too far. Please check the date.",
+      });
+      return;
+    }
+  });
+});
