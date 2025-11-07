@@ -21,23 +21,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         response.records.forEach(row => {
           rows += `
-            <tr>
-              <td>${row.product_name}</td>
-              <td>${row.unit}</td>
-              <td>${row.category}</td>
-              <td>${row.price_per_unit}</td>
-              <td>${row.lot_size}</td>
-              <td>${row.is_posted}</td>
-              <td>
-                <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-${row.id}'>
-                  <i class='bi bi-pencil-square'></i>
-                </button>
-                <button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-${row.id}'>
-                  <i class='bi bi-box-arrow-up'></i>
-                </button>
-              </td>
-            </tr>
-          `;
+              <tr>
+                <td>${row.product_name}</td>
+                <td>${row.category}</td>
+                <td>${row.price_per_unit}</td>
+                <td>${row.unit}</td>
+                <td>${row.lot_size}</td>
+                <td>${row.is_posted}</td>
+                <td>
+                  <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-${row.id}'>
+                    <i class='bi bi-pencil-square'></i>
+                  </button>
+                  <button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-${row.id}'>
+                    <i class='bi bi-box-arrow-up'></i>
+                  </button>
+                </td>
+              </tr>
+            `;
           edit_modal += editHarvestProduct(row);
           postProduct_modal += postHarvestProduct(row);
         });
@@ -93,6 +93,26 @@ document.addEventListener('DOMContentLoaded', function() {
 // CROP TABLE SECTION
 // =====================
 document.addEventListener('DOMContentLoaded', function() {
+  // Helper function: calculate days since planted
+  function getDaysSincePlanted(datePlanted) {
+    if (!datePlanted) return '-';
+    const planted = new Date(datePlanted);
+    const today = new Date();
+    const diffTime = today - planted;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    diffDays === 1 ? " Day" : " Days"
+    return diffDays + (diffDays === 1 ? " Day" : " Days");
+  }
+
+  // Helper function: determine crop status based on days
+  function getCropStatus(datePlanted) {
+    const days = getDaysSincePlanted(datePlanted);
+    if (days === 0) return 'Planted';
+    if (days <= 4) return 'Germinating';
+    if (days <= 10) return 'Cultivating';
+    return 'Growing';
+  }
+
   window.loadCropTable = function(page = 1) {
     $.ajax({
       url: '../../../js/user/farmer/api/fetch_farm_crop.php',
@@ -104,20 +124,22 @@ document.addEventListener('DOMContentLoaded', function() {
         let update_crop_modal = '';
 
         if (!response.records || response.records.length === 0) {
-          $('#crop_table').html("<tr><td colspan='7' class='text-center'>No crops found.</td></tr>");
+          $('#crop_table').html("<tr><td colspan='8' class='text-center'>No crops found.</td></tr>");
           $('#crop_pagination').html('');
           return;
         }
 
         response.records.forEach(row => {
-          const planted = new Date(row.date_planted);
-          const harvest = new Date(row.estimated_harvest_date);
-          let duration = '-';
+          const daysSincePlanted = getDaysSincePlanted(row.date_planted);
+          const status = getCropStatus(row.date_planted);
 
+          // duration until estimated harvest
+          let duration = '-';
           if (row.estimated_harvest_date) {
-            const diffTime = harvest - planted;
+            const diffTime = new Date(row.estimated_harvest_date) - new Date(row.date_planted);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            duration = diffDays + " Days";
+
+            duration = diffDays + (diffDays === 1 ? " Day" : " Days"); // adds space and singular/plural
           }
 
           rows += `
@@ -128,6 +150,8 @@ document.addEventListener('DOMContentLoaded', function() {
               <td>${row.date_planted}</td>
               <td>${row.estimated_harvest_date || '-'}</td>
               <td>${duration}</td>
+              <td>${daysSincePlanted}</td>
+              <td>${status}</td>
               <td>
                 <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#update-crop-modal-${row.id}'>
                   <i class='bi bi-pencil-square'></i>
@@ -135,11 +159,11 @@ document.addEventListener('DOMContentLoaded', function() {
               </td>
             </tr>
           `;
+
           update_crop_modal += updateFarmCrop(row);
         });
 
-        // Show total records count
-        document.getElementById('recordCount').textContent = response.records.length;
+        document.getElementById('recordCount').textContent = response.total_rows;
         $('#crop_table').html(rows);
         $('#modalContainer').html(update_crop_modal);
         renderCropPagination(response.current_page, response.total_pages);
@@ -185,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load crop data when page opens
   loadCropTable();
 });
+
 
 // // check the estimation of plant Date
 document.addEventListener('DOMContentLoaded', function(){

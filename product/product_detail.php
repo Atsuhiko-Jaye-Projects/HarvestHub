@@ -16,13 +16,12 @@ $product = new Product($db);
 $cart_item = new CartItem($db);
 
 
-    // ✅ User is logged in
+// ✅ User is logged in
 $product->id = $product_id;
 $product->readOne();
 
 $cart_item->user_id = $_SESSION['user_id'];
 $cart_item_count = $cart_item->countItem();
-
 
 $page_title = "HarvestHUB";
 include_once "layout_head.php";
@@ -33,12 +32,13 @@ if ($_POST) {
   $cart_item->user_id = $_SESSION['user_id'];
   $cart_item->quantity = $_POST['kilo'];
   $cart_item->amount = $_POST['amount'];
+  $cart_item->status = "Pending";
   
   if ($cart_item->itemExist()) {
       echo "<div class='alert alert-warning'>Product already added to your cart.</div>";
   } else {
       if ($cart_item->addItem()) {
-          echo "Product successfully added to cart!";
+          // echo "Product successfully added to cart!";
       } else {
           echo "Failed to add product. Please try again later.";
       }
@@ -46,7 +46,21 @@ if ($_POST) {
 }
 ?>
 
+<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+      <div id="loadingSpinner" class="modern-loader"></div>
+      <div id="checkIcon" class="check-icon">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+      <p id="statusText" class="status-text">Adding to cart...</p>
+    </div>
+  </div>
+</div>
+
+
 <div class="container py-5">
+  
     <?php include_once "../layout/navigation.php" ; ?>
   <!-- Product Section -->
   <div class="row g-5 align-items-start">
@@ -91,9 +105,9 @@ if ($_POST) {
       </p>
 
       <p><strong>Lot Size:</strong> 30</p>
-      <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST'>
+
+      <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' id="cartForm">
         <div class="mb-3">
-          <form action="">
           <label class="form-label">Select Kilos:</label><br>
           <div class="btn-group" role="group" aria-label="Select Kilos">
             <input type="text" name="product_id" hidden value="<?php echo $product->id; ?>">
@@ -120,12 +134,15 @@ if ($_POST) {
         </div>
 
         <div class="d-flex gap-3">
-          <button type="submit" class="btn btn-success px-4">Add to Cart</button>
+          <button type="button" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
+
           <button class="btn btn-outline-dark px-4">Checkout Now</button>
         </div>
       </div>
     </form>
   </div>
+
+  
 
   <!-- Related Products -->
   <div class="mt-5">
@@ -178,6 +195,18 @@ if ($_POST) {
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cartModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-5 border-0 shadow">
+      <div id="loadingSpinner" class="modern-loader mx-auto mb-3"></div>
+      <div id="checkIcon" class="check-icon text-success mb-3" style="display: none;">
+        <i class="bi bi-check-circle-fill fs-1"></i>
+      </div>
+      <p id="statusText" class="status-text fw-semibold">Adding to cart...</p>
     </div>
   </div>
 </div>

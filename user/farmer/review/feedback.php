@@ -3,16 +3,16 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/harvest_product.php";
 
-$database = new Database();
-$db = $database->getConnection();
-
-$harvest_product = new HarvestProduct($db);
+$page_title = "Feedback";
+include_once "../layout/layout_head.php";
 
 $require_login=true;
 include_once "../../../login_checker.php";
 
-$page_title = "Feedback";
-include_once "../layout/layout_head.php";
+$database = new Database();
+$db = $database->getConnection();
+
+$harvest_product = new HarvestProduct($db);
 
 $harvest_product->user_id = $_SESSION['user_id'];
 

@@ -95,6 +95,7 @@
                 <div class="col-md-6">
                   <Label>Date</Label>
                   <input type="text" name="price_per_unit" value="<?php echo $date; ?>" class="form-control" required placeholder="Cost">
+                  
                 </div>
               </div>
 

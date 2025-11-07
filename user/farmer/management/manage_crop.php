@@ -7,6 +7,12 @@ include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
 
+$page_title = "Manage Crop";
+include_once "../layout/layout_head.php";
+
+$require_login=true;
+include_once "../../../login_checker.php";
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -15,11 +21,6 @@ $product = new Product($db);
 $farm = new Farm($db);
 $farm_resource = new FarmResource($db);
 
-$require_login=true;
-include_once "../../../login_checker.php";
-
-$page_title = "Manage Crop";
-include_once "../layout/layout_head.php";
 
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
 
@@ -103,21 +104,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     // ===== UPDATE =====
     elseif ($_POST['action'] == 'update') {
 
-        $harvest_product->user_id = $_SESSION['user_id'];
-        $harvest_product->id = $_POST['product_id'];
-        $harvest_product->product_name = $_POST['product_name'];
-        $harvest_product->price_per_unit = $_POST['price_per_unit'];
-        $harvest_product->category = $_POST['category'];
-        $harvest_product->unit = $_POST['unit'];
-        $harvest_product->product_description = $_POST['product_description'];
-		$harvest_product->lot_size = $_POST['lot_size'];
-        $harvest_product->is_posted = "Pending";
+        $crop->id = $_POST['id'];
+        $crop->user_id = $_SESSION['user_id'];
+        $crop->crop_name = $_POST['crop_name'];
+        $crop->date_planted = $_POST['date_planted'];
+        $crop->estimated_harvest_date = $_POST['estimated_harvest_date'];
+        $crop->yield = $_POST['yield'];
+        $crop->cultivated_area = $_POST['cultivated_area'];
+        $crop->is_posted = "Pending";
 
-        if ($harvest_product->updateHarvestProduct()) {
-
+        if ($crop->updateFarmProduct()) {
             // header("location:{$home_url}user/farmer/manage_harvest.php?r=pu");
-
-			      echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
+		     echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
 
         } else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
@@ -133,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->category = $_POST['category'];
         $product->unit = $_POST['unit'];
         $product->product_description = $_POST['product_description'];
-		    $product->lot_size = $_POST['lot_size'];
+	    $product->lot_size = $_POST['lot_size'];
         $product->product_image = $_POST['product_image'] ?? 'default.png';
         $product->status = "Active";
 
@@ -167,6 +165,6 @@ include_once "template/man_crop.php";
 
 <script>
     const UpdatePostURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
-    const ProductPostingURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
+
 </script>
 <?php include_once "../layout/layout_foot.php"; ?>

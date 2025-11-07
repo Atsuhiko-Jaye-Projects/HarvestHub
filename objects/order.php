@@ -6,15 +6,11 @@ class Order{
     private $table_name = "orders";
 
     public $id;
-    public $user_id;
+    public $product_id;
+    public $invoice_number;
     public $customer_id;
-    public $order_id;
-    public $contact_number;
-    public $address;
-    public $total_price;
     public $mode_of_payment;
-    public $lot_size;
-    public $order_date;
+    public $quantity;
     public $status;
     public $created_at;
     public $modified_at;
@@ -26,15 +22,16 @@ class Order{
     function readAllOrder($from_record_num, $records_per_page) {
         $query = "SELECT *
                 FROM " . $this->table_name . "
-                WHERE user_id = :user_id
-                LIMIT
-                {$from_record_num}, {$records_per_page}";
+                WHERE customer_id = :customer_id
+                ORDER BY id DESC
+                LIMIT {$from_record_num}, {$records_per_page}";
+
 
         $stmt = $this->conn->prepare($query);
 
-        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->customer_id = htmlspecialchars(strip_tags($this->customer_id));
 
-        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+        $stmt->bindParam(":customer_id", $this->customer_id, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -43,7 +40,7 @@ class Order{
 
     public function countAll(){
 
-        $query = "SELECT id FROM " . $this->table_name . "";
+        $query = "SELECT customer_id FROM " . $this->table_name . "";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -52,6 +49,45 @@ class Order{
 
         return $num;
     }
+
+    function placeOrder(){
+        $query = "INSERT INTO
+                ". $this->table_name ."
+                SET
+                product_id = :product_id,
+                invoice_number = :invoice_number,
+                customer_id = :customer_id,
+                mode_of_payment = :mode_of_payment,
+                quantity = :quantity,
+                status = :status,
+                created_at =:created_at";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+        $this->invoice_number= htmlspecialchars(strip_tags($this->invoice_number));
+        $this->customer_id = htmlspecialchars(strip_tags($this->customer_id));
+        $this->mode_of_payment=htmlspecialchars(strip_tags($this->mode_of_payment));
+        $this->quantity=htmlspecialchars(strip_tags($this->quantity));
+        $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->created_at=htmlspecialchars(strip_tags($this->created_at));
+
+        $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->bindParam(":invoice_number", $this->invoice_number);
+        $stmt->bindParam(":customer_id", $this->customer_id);
+        $stmt->bindParam(":mode_of_payment", $this->mode_of_payment);
+        $stmt->bindParam(":quantity", $this->quantity);
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":created_at", $this->created_at);
+        
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    
 
 
 }

@@ -31,6 +31,7 @@ foreach ($records as &$row) {
 $total_pages = ceil($total_rows / $records_per_page);
 
 header('Content-Type: application/json');
+
 echo json_encode([
     "records" => $records,
     "total_rows" => $total_rows,

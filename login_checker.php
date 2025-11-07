@@ -32,7 +32,6 @@ else if (isset($_SESSION['logged_in'], $_SESSION['user_type']) &&
         header("Location: {$home_url}user/consumer/index.php?action=success");
         exit();
     }
-
 }
 
 // Require login enforcement
@@ -42,5 +41,18 @@ if (isset($require_login) && $require_login === true) {
         exit();
     }
 }
+
+// check if the user is already loggedin, return to its page
+if ($page_title == "Login" || $page_title == "Sign Up") {
+    if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+        if ($_SESSION['user_type'] === 'Farmer') {
+            header("Location: {$home_url}user/farmer/index.php?action=already_logged_in");
+        } elseif ($_SESSION['user_type'] === 'Consumer') {
+            header("Location: {$home_url}user/consumer/index.php?action=already_logged_in");
+        }
+        exit;
+    }
+}
+
 
 ?>

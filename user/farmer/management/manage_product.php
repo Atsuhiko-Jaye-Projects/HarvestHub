@@ -6,6 +6,9 @@ include_once "../../../objects/product.php";
 $page_title = "Manage Product";
 include_once "../layout/layout_head.php";
 
+$require_login=true;
+include_once "../../../login_checker.php";
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -24,8 +27,7 @@ $num = $stmt->rowCount();
 $total_rows = $product->countAll();
 
 // set the login require to to true
-$require_login=true;
-include_once "../../../login_checker.php";
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

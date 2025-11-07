@@ -10,6 +10,7 @@ class CartItem{
     public $product_id;
     public $quantity;
     public $amount;
+    public $status;
     public $created;
     public $modified;
 
@@ -25,6 +26,7 @@ class CartItem{
                     user_id = :user_id,
                     quantity = :quantity,
                     amount = :amount,
+                    status = :status,
                     created = :created";
         
         $stmt=$this->conn->prepare($query);
@@ -33,12 +35,14 @@ class CartItem{
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
         $this->quantity = htmlspecialchars(strip_tags($this->quantity));
         $this->amount = htmlspecialchars(strip_tags($this->amount));
+        $this->status = htmlspecialchars(strip_tags($this->status));
         $this->created = date ("Y-m-d H:i:s");
 
         $stmt->bindParam(":product_id", $this->product_id);
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->bindParam(":quantity", $this->quantity);
         $stmt->bindParam(":amount", $this->amount);
+        $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":created", $this->created);
 
         if ($stmt->execute()) {
@@ -74,7 +78,7 @@ class CartItem{
                     FROM
                     " . $this->table_name . "
                     WHERE
-                    user_id=:user_id";
+                    user_id=:user_id AND status = 'Pending' ";
 
         $stmt=$this->conn->prepare($query);
 
@@ -117,7 +121,7 @@ class CartItem{
     function countCartItem(){
         $query = "SELECT * FROM " . $this->table_name . "
             WHERE 
-                user_id = :user_id";
+                user_id = :user_id AND status = 'Pending' ";
 
         $stmt = $this->conn->prepare($query);
 
@@ -140,6 +144,32 @@ class CartItem{
         $num = $stmt->rowCount();
 
         return $num;
+    }
+
+    function markCartItemsAsOrdered(){
+
+        $query = "UPDATE ". $this->table_name . "
+                SET
+                    status = :status,
+                    modified = :modified
+                WHERE 
+                    product_id = :product_id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $this->status = htmlspecialchars(strip_tags($this->status));
+         $this->modified = date("Y-m-d H:i:s");
+        $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":modified", $this->modified);
+        $stmt->bindParam(":product_id", $this->product_id);
+
+
+        if ($stmt->execute()) {
+           return true;
+        }
+        return false;
     }
 
 

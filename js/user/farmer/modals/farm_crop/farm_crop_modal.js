@@ -6,7 +6,7 @@ return `
     <div class="modal-content">
 
       <!-- Form starts here and wraps the modal content -->
-      <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data" id="cropForm">
+      <form action="${UpdatePostURL}" method="POST" enctype="multipart/form-data" id="cropForm">
 
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Update Crop details</h5>
@@ -16,7 +16,8 @@ return `
         <div class="modal-body">
           <div class="card-body">
             <div class="container">
-              <input type="hidden" name="action" value="create">
+              <input type="hidden" name="action" value='update'>
+              <input type="hidden" name="id" value='${row.id}'>
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Crop Name</label>
@@ -37,7 +38,7 @@ return `
                 </div>
                 <div class="col-md-6">
                     <label>
-                      Yield <span class="badge bg-primary">General Yield 0.8</span>
+                      Yield <span class="badge bg-primary">General Yieldss 0.8</span>
                     </label>
                     <input type="text" name="yield" class="form-control" value="0.8" readonly>
                 </div>

@@ -21,7 +21,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <h6>Expense</h6>
+          <h6>Farm Expense</h6>
           <h2>PHP <?php echo number_format($total); ?></h2>
           <small>Orders</small>
         </div>

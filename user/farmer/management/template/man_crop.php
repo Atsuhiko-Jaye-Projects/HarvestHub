@@ -1,97 +1,192 @@
-<div class="container">
+<div class="container py-4">
 
-	<?php include_once "../modal-forms/product/add_product.php";?>
-    <div class="alert alert-secondary mt-2">
-        <div class="row align-items-center">
-            <div class="col-4">
-                <p class="mb-0">Weather Based Crop Suggestions</p>
-            </div>
-            <div class="col-8">
-                <button class='btn btn-success me-2'>Potato</button>
-                <button class='btn btn-success me-2'>Carrot</button>
-                <button class='btn btn-success me-2'>Ampalaya</button>
-                <button class='btn btn-success me-2'>Sitaw</button>
-            </div>
+  <?php include_once "../modal-forms/product/add_product.php"; ?>
+
+  <!-- ✅ Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100 rounded-4">
+        <div class="card-body text-center">
+          <i class="bi bi-box-seam text-success fs-2 mb-2"></i>
+          <h6 class="text-muted">Total Crops</h6>
+          <h4 id="totalCrops">0</h4>
         </div>
+      </div>
     </div>
-	<div class="p-3 bg-light rounded">
-  <h5 class="mb-0"><i class="bi bi-basket-fill text-success"></i> <?php echo $page_title; ?></h5>
-  <small class="text-muted">Manage your Crops inventory</small>
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100 rounded-4">
+        <div class="card-body text-center">
+          <i class="bi bi-cart-check text-primary fs-2 mb-2"></i>
+          <h6 class="text-muted">Posted Crops</h6>
+          <h4 id="postedCrops">0</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100 rounded-4">
+        <div class="card-body text-center">
+          <i class="bi bi-hourglass-split text-warning fs-2 mb-2"></i>
+          <h6 class="text-muted">Pending</h6>
+          <h4 id="pendingCrops">0</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100 rounded-4">
+        <div class="card-body text-center">
+          <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
+          <h6 class="text-muted">Avg. Yield (kg)</h6>
+          <h4 id="avgYield">0</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weather Suggestions -->
+  <div class="alert alert-light border shadow-sm rounded-4 mb-4">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-4 mb-2 mb-md-0">
+        <h6 class="mb-0"><i class="bi bi-cloud-sun text-warning me-2"></i>Weather-Based Crop Suggestions</h6>
+      </div>
+      <div class="col-12 col-md-8 text-md-end">
+        <button class='btn btn-outline-success btn-sm me-2 mb-1 mb-md-0'>Potato</button>
+        <button class='btn btn-outline-success btn-sm me-2 mb-1 mb-md-0'>Carrot</button>
+        <button class='btn btn-outline-success btn-sm me-2 mb-1 mb-md-0'>Ampalaya</button>
+        <button class='btn btn-outline-success btn-sm mb-1 mb-md-0'>Sitaw</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="p-3 bg-light rounded shadow-sm d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+    <div>
+      <h5 class="mb-1"><i class="bi bi-basket-fill text-success"></i> <?php echo $page_title; ?></h5>
+      <small class="text-muted">Manage your crops and keep your farm data organized</small>
+    </div>
+    <button class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#new-crop-modal">
+      <i class="bi bi-plus-circle me-2"></i> Add Crop
+    </button>
+  </div>
+
+  <?php include_once "../modal-forms/crop/add_crop.php"; ?>
+  <div id="modalContainer"></div>
+
+  <!-- Search and Filter -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+    <input type="text" id="searchCrop" class="form-control w-100 w-md-50" placeholder="Search crop...">
+    <select id="statusFilter" class="form-select w-100 w-md-auto">
+      <option value="">All Status</option>
+      <option value="Posted">Posted</option>
+      <option value="Pending">Pending</option>
+    </select>
+  </div>
+
+  <!-- Crop Table -->
+  <div class="table-responsive shadow-sm rounded-4">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-success text-uppercase">
+        <tr>
+          <th>Crop Name</th>
+          <th>Yield (kg)</th>
+          <th>Cultivated Area (sqm)</th>
+          <th>Date Planted</th>
+          <th>Harvest Est.</th>
+          <th>Duration</th>
+          <th>Crop Age</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="crop_table" class="table-group-divider">
+        <tr>
+          <td colspan="9" class="text-center py-5 text-muted" id="loadingState">
+            <div class="spinner-border text-success" role="status"></div>
+            <div class="mt-2">Loading data...</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div id="crop_pagination" class="mt-4 d-flex justify-content-center"></div>
+
 </div>
-    <nav class="navbar bg-body-tertiary">
-			<div class="container-fluid">
-				<form class="d-flex w-50" role="search">
-					<!-- <div class="input-group">
-						<span class="input-group-text" id="search-icon">
-							<i class="bi bi-search"></i>
-						</span>
-						<input
-						class="form-control"
-						type="search"
-						placeholder="Search"
-						aria-label="Search"
-						aria-describedby="search-icon"
-						/>
-					</div>
-					<button class="btn btn-outline-success ms-2" type="submit">Search</button> -->
-				</form>
-				<div class="mb-3 mt-1 float-end">
-					<span data-bs-toggle='tooltip' title='New'>
-						<button class="btn btn-success px-4 py-2 "  data-bs-toggle="modal" data-bs-target="#new-crop-modal"><span><i class="bi bi-plus-circle"></i></span></button>
-					</span>
-				</div>
-			</div>
-		</nav>
 
-    <?php include_once "../modal-forms/crop/add_crop.php"; ?>
+<!-- JS Enhancements -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Simulate fetching data
+  setTimeout(() => {
+    document.getElementById("loadingState").outerHTML = `
+      <tr>
+        <td>Tomato</td>
+        <td>150</td>
+        <td>250</td>
+        <td>2025-10-01</td>
+        <td>2025-11-15</td>
+        <td>45 days</td>
+        <td>20 days</td>
+        <td><span class="badge bg-success">Posted</span></td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-pencil-square"></i></button>
+          <button class="btn btn-sm btn-success"><i class="bi bi-upload"></i></button>
+        </td>
+      </tr>`;
+    
+    document.getElementById("totalCrops").innerText = "14";
+    document.getElementById("postedCrops").innerText = "8";
+    document.getElementById("pendingCrops").innerText = "6";
+    document.getElementById("avgYield").innerText = "42.5";
+  }, 1000);
 
-		<div id="modalContainer">
-		</div>
-	<!-- Table -->
+  // Search functionality
+  const searchInput = document.getElementById("searchCrop");
+  searchInput.addEventListener("input", () => {
+    const filter = searchInput.value.toLowerCase();
+    document.querySelectorAll("#crop_table tr").forEach(row => {
+      const match = row.innerText.toLowerCase().includes(filter);
+      row.style.display = match ? "" : "none";
+    });
+  });
 
-	<div class="table-responsive">
-		<table class="table table-hover align-middle shadow" id='userTable'>
-			<thead class="table-light">
-			<tr>
-				<th>Crop Name</th>
-				<th>Yield (kg)</th>
-				<th>Cultivated Area (sqm)</th>
-				<th>Date Planted</th>
-				<th>Harvest EST.</th>
-				<th>Duration</th>
-				<th>Action</th>
-			</tr>
-			</thead>
-			<tbody id='crop_table'>
-			<?php
-			// 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			// 		extract($row);
+  // Status filter
+  const statusSelect = document.getElementById("statusFilter");
+  statusSelect.addEventListener("change", () => {
+    const status = statusSelect.value.toLowerCase();
+    document.querySelectorAll("#crop_table tr").forEach(row => {
+      if (!status) {
+        row.style.display = "";
+      } else {
+        const rowStatus = row.cells[7]?.innerText.toLowerCase();
+        row.style.display = rowStatus === status ? "" : "none";
+      }
+    });
+  });
+});
+</script>
 
-			// 		echo "<tr>";
-			// 			echo "<td>{$product_name}</td>";
-			// 			echo "<td>{$category}</td>";
-			// 			echo "<td>{$price_per_unit}</td>";
-			// 			echo "<td>{$unit}</td>";
-			// 			echo "<td>{$lot_size}</td>";
-			// 			echo "<td>{$is_posted}</td>";
-			// 			echo "<td>";
-			// 			 echo "<div class='btn-group' role='group'>";
-						// echo "<span data-bs-toggle='tooltip' title='Edit'>
-						// 		<button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-$id'><span><i class='bi bi-pencil-square'></i></span></button>
-						// 		</span>";
-			// 			echo "<span data-bs-toggle='tooltip' title='Post'>
+<style>
+/* Hover & button effects */
+.table-hover tbody tr:hover {
+  background-color: #e9f7ef;
+  transition: background-color 0.3s ease;
+}
+.btn-group .btn:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
 
-			// 			echo "</div>";
-			// 			echo "</td>";
-			// 		echo "</tr>";
-			// 	}
-			// ?>
-			</tbody>
-		</table>
-	</div>
-	<!-- <div id="pagination">
-  <button onclick="loadPage(current_page - 1)" id="prevBtn">Previous</button>
-  <button onclick="loadPage(current_page + 1)" id="nextBtn">Next</button>
-</div> -->
-<div id="crop_pagination"></div>
-</div>
+/* Small screen table */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  .table thead {
+    font-size: 0.8rem;
+  }
+  .table tbody td {
+    font-size: 0.85rem;
+  }
+}
+</style>

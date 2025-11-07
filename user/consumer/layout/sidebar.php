@@ -1,93 +1,47 @@
-<?php $page = basename($_SERVER['PHP_SELF']); ?>
 
-<div class="col-2 col-sm-3 col-xl-2 bg-dark vh-100 p-0">
+
+<!-- Sidebar -->
+<div class="sidebar bg-dark text-white vh-100 d-flex flex-column p-0 shadow-sm position-fixed top-0 start-0" style="width: 250px;">
 
   <!-- Logo -->
-  <nav class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
-    <a class="navbar-brand d-flex flex-column align-items-center w-100" href="<?php echo $base_url;?>index.php">
-      <?php
-        $logo_path = ($page_title=="Edit Product") ? '../../../libs/images/logo.png' : '../../../../../libs/images/logo.png';
-        echo "<img src='$base_url/libs/images/logo.png' alt='User Avatar' class='rounded-circle' width='100' height='100'>";
-      ?>
+  <div class="text-center py-4 border-bottom border-secondary">
+    <a href="<?php echo $base_url;?>index.php" class="text-decoration-none text-white">
+      <img src="<?php echo $base_url; ?>libs/images/logo.png" 
+           alt="Logo" 
+           class="rounded-circle mb-2" 
+           width="90" height="90">
+      <h6 class="fw-bold mb-0">HarvestHub</h6>
     </a>
-  </nav>
+  </div>
 
-  <!-- Sidebar Menu -->
-    <!-- Dashboard -->
+  <!-- Navigation Menu -->
 
-    <a href="<?php echo $base_url; ?>user/consumer/order/order.php" class="sidebar-btn <?= $page=='order.php' || $page=='order_details.php' ? 'active' : '' ?>">
-      <i class="bi bi-grid me-2"></i>
-      <span>My Purchase</span>
-    </a>
+<nav class="flex-grow-1 py-3 overflow-auto">
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a href="<?php echo $base_url; ?>user/consumer/order/order.php"
+         class="nav-link text-white <?= ($page=='order.php' || $page=='order_details.php') ? 'active' : '' ?>">
+        <i class="bi bi-basket2-fill me-2"></i> My Purchase
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="<?php echo $base_url;?>user/consumer/review/feedback.php"
+         class="nav-link text-white <?= ($page=='feedback.php') ? 'active' : '' ?>">
+        <i class="bi bi-chat-right-text-fill me-2"></i> Your Reviews
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="<?php echo $base_url;?>user/consumer/support/support.php"
+         class="nav-link text-white <?= ($page=='support.php') ? 'active' : '' ?>">
+        <i class="bi bi-question-circle-fill me-2"></i> Help & Support
+      </a>
+    </li>
+  </ul>
+</nav>
 
 
-
-    <a href="<?php echo $base_url;?>user/consumer/review/feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
-      <i class="bi bi-chat-right"></i>
-      <span>Your Reviews</span>
-    </a>
-
-    <a href="<?php echo $base_url;?>user/consumer/support/support.php" class="sidebar-btn <?= $page=='support.php' ? 'active' : '' ?>">
-      <i class="bi bi-question-circle"></i>
-      <span>Help & Support</span>
-    </a>
-  </nav>
+  <!-- Footer -->
+  <div class="border-top border-secondary text-center py-3 small bg-white text-muted">
+    <i class="bi bi-flower2 text-success"></i> HarvestHub © 2025
+  </div>
 </div>
-
-<!-- Custom CSS -->
-<style>
-  .sidebar-btn {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    color: #fff;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    text-align: left;
-    gap: 0.5rem;
-    transition: background 0.2s;
-    text-decoration: none;
-  }
-  .sidebar-btn:hover {
-    background-color: rgba(255,255,255,0.1);
-    text-decoration: none;
-  }
-  .sidebar-btn.active {
-    background-color: #198754;
-    color: #fff;
-  }
-  #collapseHarvest .sidebar-btn,
-  #collapseInventory .sidebar-btn {
-    padding-left: 2rem;
-  }
-  .caret-icon {
-    transition: transform 0.3s;
-  }
-</style>
-
-<!-- JS for caret toggle -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Harvest Record caret
-    const collapseHarvest = document.getElementById('collapseHarvest');
-    const caretHarvest = collapseHarvest.previousElementSibling.querySelector('.caret-icon');
-
-    if (collapseHarvest.classList.contains('show')) {
-      caretHarvest.classList.replace('bi-caret-up-fill','bi-caret-down-fill');
-    }
-    collapseHarvest.addEventListener('show.bs.collapse', () => caretHarvest.classList.replace('bi-caret-up-fill','bi-caret-down-fill'));
-    collapseHarvest.addEventListener('hide.bs.collapse', () => caretHarvest.classList.replace('bi-caret-down-fill','bi-caret-up-fill'));
-
-    // Inventory caret
-    const collapseInventory = document.getElementById('collapseInventory');
-    const caretInventory = collapseInventory.previousElementSibling.querySelector('.caret-icon');
-
-    if (collapseInventory.classList.contains('show')) {
-      caretInventory.classList.replace('bi-caret-up-fill','bi-caret-down-fill');
-    }
-    collapseInventory.addEventListener('show.bs.collapse', () => caretInventory.classList.replace('bi-caret-up-fill','bi-caret-down-fill'));
-    collapseInventory.addEventListener('hide.bs.collapse', () => caretInventory.classList.replace('bi-caret-down-fill','bi-caret-up-fill'));
-  });
-</script>

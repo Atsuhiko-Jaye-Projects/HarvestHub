@@ -32,3 +32,35 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </body>
 </html>
+
+<script>
+window.addEventListener("load", function() {
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  if (!addToCartBtn) return;
+
+  const cartModal = new bootstrap.Modal(document.getElementById("cartModal"));
+  const loadingSpinner = document.getElementById("loadingSpinner");
+  const checkIcon = document.getElementById("checkIcon");
+  const statusText = document.getElementById("statusText");
+
+  addToCartBtn.addEventListener("click", function() {
+    cartModal.show();
+
+    loadingSpinner.style.display = "block";
+    checkIcon.style.display = "none";
+    statusText.textContent = "Adding to cart...";
+
+    setTimeout(() => {
+      loadingSpinner.style.display = "none";
+      checkIcon.style.display = "block";
+      statusText.textContent = "Added successfully!";
+
+      setTimeout(() => {
+        cartModal.hide();
+        document.getElementById("cartForm").submit();
+      }, 1500);
+    }, 1500);
+  });
+});
+</script>
+

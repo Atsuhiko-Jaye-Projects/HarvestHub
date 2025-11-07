@@ -8,10 +8,10 @@ $db = $database->getConnection();
 
 $farm_resource = new FarmResource($db);
 
-$require_login=true;
-include_once "../../../login_checker.php";
 
 $page_title = "Farm Resources & supplies";
+$require_login=true;
+include_once "../../../login_checker.php";
 include_once "../layout/layout_head.php";
 
 $page_url = "{$home_url}user/farmer/farm/farm_resource.php?";

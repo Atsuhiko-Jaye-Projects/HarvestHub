@@ -7,6 +7,13 @@ include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
 
+$page_title = "Manage Harvest";
+include_once "../layout/layout_head.php";
+
+$require_login=true;
+include_once "../../../login_checker.php";
+
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -15,11 +22,6 @@ $product = new Product($db);
 $farm = new Farm($db);
 $farm_resource = new FarmResource($db);
 
-$require_login=true;
-include_once "../../../login_checker.php";
-
-$page_title = "Manage Harvest";
-include_once "../layout/layout_head.php";
 
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
 
@@ -59,24 +61,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $markup = 1.5;
 
         // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
-        $general_yield = 0.08;
+        $general_yield = 3.5;
+        
 
         // Prevent division by zero
         if ($planted_area > 0 && $farm_expense > 0 && $total_farm_size > 0) {
 
-            // 1️⃣ Compute expense for the planted lot (proportionally)
+            // Expense allocated to the planted area
             $expense_farm_lot = ($farm_expense / $total_farm_size) * $planted_area;
 
-            // 2️⃣ Compute estimated yield (kg)
+            // Estimated total harvested yield (kg)
             $total_harvested_yield = $planted_area * $general_yield;
 
-            // 3️⃣ Compute cost per kg
+            // Prevent zero division
+            if ($total_harvested_yield <= 0) {
+                $total_harvested_yield = 1;
+            }
+
+            // Cost per kg
             $cost_per_kg = $expense_farm_lot / $total_harvested_yield;
 
-            // 4️⃣ Add markup
+            // Selling price with markup
             $selling_price = $cost_per_kg * $markup;
 
-            // 5️⃣ Round to 2 decimals for currency
+            // Rounded price (currency format)
             $harvest_product->price_per_unit = round($selling_price, 2);
 
         } else {
@@ -98,10 +106,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->product_image = $image;
 
         if ($harvest_product->createProduct()) {
-            echo "<div class='container'><div class='alert alert-success'>Product Info Saved!</div></div>";
+            echo "
+                <div class='container mt-3'>
+                <div class='alert alert-success alert-dismissible fade show shadow-sm border-0' role='alert' 
+                    style='border-radius: 12px; font-size: 0.95rem;'>
+                    <i class='bi bi-check-circle-fill me-2'></i> 
+                    <strong>Success!</strong> Product information has been saved successfully.
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+                </div>
+                ";
             if ($harvest_product->uploadPhoto()) {
-            }else{
-                echo "Upload Failed";
+                echo "";
             }
         } else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";

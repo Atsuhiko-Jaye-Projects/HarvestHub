@@ -143,44 +143,44 @@ class Product{
         return $stmt;
     }
 
-    function readOne(){
-
-        $query = "SELECT * FROM " . $this->table_name . "
-                WHERE
-                id = ?
-                LIMIT 
-                0 , 1";
-        
+    function readOne() {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE product_id = ? LIMIT 0, 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $this->product_name = $row['product_name'];
-        $this->user_id = $row['user_id'];
-        $this->price_per_unit = $row['price_per_unit'];
-        $this->unit = $row['price_per_unit'];
-        $this->category = $row['category'];
-        $this->lot_size = $row['lot_size'];
-        $this->product_description = $row['product_description'];
-        $this->total_stocks = $row['total_stocks'];
-        $this->product_image = $row['product_image'];
-        $this->sold_count = $row['sold_count'];
+        if ($row) {
+            $this->product_name = $row['product_name'];
+            $this->user_id = $row['user_id'];
+            $this->price_per_unit = $row['price_per_unit'];
+            $this->unit = $row['unit'];
+            $this->category = $row['category'];
+            $this->lot_size = $row['lot_size'];
+            $this->product_description = $row['product_description'];
+            $this->total_stocks = $row['total_stocks'];
+            $this->product_image = $row['product_image'];
+            $this->sold_count = $row['sold_count'];
+            return true;
+        }
+
+        return false;
     }
+
 
     function readProductName(){
         
         $query = "SELECT * FROM 
                     ". $this->table_name . "
                     WHERE 
-                    id=:id";
+                    product_id=:product_id";
         
         $stmt = $this->conn->prepare($query);
 
-        $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->product_id = htmlspecialchars(strip_tags($this->product_id));
         
-        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":product_id", $this->product_id);
 
         $stmt->execute();
 
@@ -190,6 +190,7 @@ class Product{
             $this->product_name = $row['product_name'];
             $this->product_image = $row['product_image'];
             $this->user_id = $row['user_id'];
+            $this->price_per_unit = $row['price_per_unit'];
         }else{
             return null;
         }
