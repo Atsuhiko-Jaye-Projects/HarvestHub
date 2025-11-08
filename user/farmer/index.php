@@ -31,7 +31,7 @@ if ($_SESSION['is_farm_registered'] == 0) {
         $user->farm_details_exists = $farm_details;
 
         if ($farm->createFarmInfo()) {
-            $user->user_id = $_SESSION['user_id'];
+            // $user->user_id = $_SESSION['user_id'];
             $user->markFarmAsExists();
             $_SESSION['is_farm_registered'] = 1;
             echo "<div class='alert alert-success'><i class='bi bi-clipboard2-check-fill'></i> Farm Details saved successfully!</div>";
