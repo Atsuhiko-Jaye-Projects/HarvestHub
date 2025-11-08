@@ -64,9 +64,9 @@
           <option value="Posted">Posted</option>
           <option value="Pending">Pending</option>
         </select>
-        <button class="btn btn-success px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#new-product-modal">
+        <!-- <button class="btn btn-success px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#new-product-modal">
           <i class="bi bi-plus-circle me-2"></i> Add Product
-        </button>
+        </button> -->
       </div>
     </div>
   </nav>
