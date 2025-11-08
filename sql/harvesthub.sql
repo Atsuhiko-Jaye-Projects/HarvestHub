@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2025 at 12:31 AM
+-- Generation Time: Nov 08, 2025 at 06:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -33,18 +33,17 @@ CREATE TABLE `cart_items` (
   `user_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified` timestamp NOT NULL DEFAULT current_timestamp(),
-  `amount` int(11) NOT NULL
+  `amount` int(11) NOT NULL,
+  `status` varchar(15) NOT NULL,
+  `modified` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cart_items`
 --
 
-INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `modified`, `amount`) VALUES
-(8, 30, 3, 30, '2025-10-12 12:43:49', '2025-10-12 04:43:49', 50),
-(9, 31, 3, 5, '2025-10-12 13:24:30', '2025-10-12 05:24:30', 100),
-(10, 30, 2, 5, '2025-10-12 23:09:43', '2025-10-12 15:09:43', 50);
+INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`) VALUES
+(22, 89, 3, 10, '2025-11-07 23:37:06', 60, 'Ordered', '2025-11-07 15:37:43');
 
 -- --------------------------------------------------------
 
@@ -58,6 +57,47 @@ CREATE TABLE `categories` (
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
   `description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `crops`
+--
+
+CREATE TABLE `crops` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `crop_name` varchar(250) NOT NULL,
+  `yield` int(11) NOT NULL,
+  `cultivated_area` int(11) NOT NULL,
+  `date_planted` varchar(250) NOT NULL,
+  `estimated_harvest_date` varchar(255) NOT NULL,
+  `suggested_price` int(11) NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `crops`
+--
+
+INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`) VALUES
+(32, 2, 'Strawberry', 1, 50, '2025-11-08', '2026-01-16', 0, '2025-11-07 18:42:05', '2025-11-08 02:42:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `crop_statistics`
+--
+
+CREATE TABLE `crop_statistics` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `crop_name` varchar(50) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `season` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -106,24 +146,6 @@ INSERT INTO `farm_details` (`id`, `user_id`, `municipality`, `baranggay`, `purok
 -- --------------------------------------------------------
 
 --
--- Table structure for table `farm_products`
---
-
-CREATE TABLE `farm_products` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `product_name` varchar(250) NOT NULL,
-  `date_planted` varchar(250) NOT NULL,
-  `estimated_harvest_date` varchar(255) NOT NULL,
-  `yield` int(11) NOT NULL,
-  `suggested_price` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `farm_resources`
 --
 
@@ -143,8 +165,10 @@ CREATE TABLE `farm_resources` (
 --
 
 INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `type`, `cost`, `date`, `created_at`, `modified_at`) VALUES
-(7, 20, 'Kubota', 'Machine', 600, '2025-10-27', '2025-10-27 22:12:09', '2025-10-27 14:13:59'),
-(8, 20, 'agri planters', 'Fertilizer', 50002, '2025-10-21', '2025-10-27 22:49:47', '2025-10-27 14:50:04');
+(8, 20, 'agri planters', 'Fertilizer', 114001, '2025-10-21', '2025-10-27 22:49:47', '2025-10-30 06:24:28'),
+(9, 2, 'agri planters', 'machine', 5000, '2025-10-30', '2025-10-30 13:39:52', '2025-10-30 05:39:52'),
+(10, 2, 'Kubota', 'machine', 5000, '2025-11-08', '2025-11-08 01:56:08', '2025-11-07 17:56:08'),
+(11, 2, 'Kubota', 'machine', 5000, '2025-11-08', '2025-11-08 02:24:46', '2025-11-07 18:24:46');
 
 -- --------------------------------------------------------
 
@@ -174,10 +198,26 @@ CREATE TABLE `harvested_products` (
 --
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`) VALUES
-(30, 2, 'Egg Plant', 50, 'KIlos', 'Vegetable', '20', 'Great for Saute dishes, Fresh, Big Sizes', 0, 0, 'eed3f75df6f4fa820201f33042a4cf312800663d-eggplant.jpg', '2025-10-12 04:42:52', '2025-10-12 12:41:57', 'Posted'),
-(31, 2, 'Bangus/Milk Fish', 100, 'kilos', 'Seafood', '20', 'Fresh from gasan port, Great dish for fried and stews', 0, 0, '1299713ec279667ccc664d17767190ca58b3b123-bangus.jpg', '2025-10-12 05:24:14', '2025-10-12 13:23:46', 'Posted'),
-(32, 11, 'talong', 30, 'kilos', 'Vegetable', '10sqm', 'Fresh Eggplants', 0, 0, '9c97a227d907ce965634671e10845300a1d4d52a-download.jpg', '2025-10-27 07:27:35', '2025-10-27 15:27:35', ''),
-(33, 20, 'Sitaw', 20, 'Kilos', 'Vegetable', '20', 'Fresh from the ground ', 0, 0, '9c97a227d907ce965634671e10845300a1d4d52a-download.jpg', '2025-10-27 16:02:29', '2025-10-27 23:24:24', 'Posted');
+(87, 2, 'Tomatoes/Kamatis', 0, 'KG', 'Vegetable', '1000', 'Fresh Farm Tomatoes\r\nHandpicked from local farms in Mogpog, these vibrant red tomatoes are juicy, flavorful, and packed with natural sweetness. Perfect for salads, sauces, and everyday cooking. Enjoy farm-fresh quality straight from the source.', 0, 0, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', '2025-11-07 14:55:56', '2025-11-07 22:51:07', 'Posted'),
+(88, 2, 'Okra', 0, 'KG', 'Vegetable', '1000', 'Fresh Farm Okra\r\nCrisp, tender, and freshly harvested from local farms in Mogpog. Our okra is perfect for stews, sinigang, pinakbet, or frying. Enjoy the taste of fresh produce grown with care and delivered straight from the farm to your table.', 0, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-11-07 14:55:54', '2025-11-07 22:51:38', 'Posted'),
+(89, 2, 'Kangkong', 0, 'KG', 'Vegetable', '1000', 'Fresh Native Kangkong\r\nLocally grown and freshly harvested, our kangkong is crisp, vibrant, and perfect for sinigang, adobo, or stir-fried dishes. Delivered straight from Mogpog farms to your kitchen for that farm-fresh goodness.', 0, 0, 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg', '2025-11-07 14:55:52', '2025-11-07 22:53:53', 'Posted'),
+(90, 2, 'Egg Plant', 0, 'KG', 'Vegetable', '1000', 'Fresh Native Eggplant (Talong)\r\nHandpicked from local farms, our eggplants are firm, shiny, and full of flavor — perfect for tortang talong, pinakbet, or grilled dishes. Delivered fresh straight from the farm to your table.', 0, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-11-07 14:55:51', '2025-11-07 22:54:48', 'Posted'),
+(91, 2, 'Kalabasa', 0, 'KG', 'Vegetable', '1000', 'Fresh Native Kalabasa (Squash)\r\nHarvested from local farms, our kalabasa is naturally sweet and rich in flavor — perfect for ginataang kalabasa, soups, or stir-fried dishes. Packed with nutrients and freshness straight from the field.', 0, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-07 18:24:32', '2025-11-07 22:55:42', 'Posted'),
+(92, 2, 'Sitaw', 0, 'KG', 'Vegetable', '1000', 'great', 0, 0, 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg', '2025-11-07 18:55:05', '2025-11-08 02:55:05', 'Pending'),
+(93, 2, 'Sitaw', 0, 'KG', 'Vegetable', '100', 'sadsadsa', 0, 0, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', '2025-11-07 19:09:57', '2025-11-08 02:56:29', 'Pending');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `id` int(11) NOT NULL,
+  `inovoice_number` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -187,14 +227,11 @@ INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_un
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `invoice_number` varchar(255) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `contact_number` varchar(100) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `total_price` int(11) NOT NULL,
   `mode_of_payment` varchar(100) NOT NULL,
-  `lot_size` int(11) NOT NULL,
-  `order_date` varchar(20) NOT NULL,
+  `quantity` int(11) NOT NULL,
   `status` varchar(20) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -204,8 +241,8 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `customer_id`, `contact_number`, `address`, `total_price`, `mode_of_payment`, `lot_size`, `order_date`, `status`, `created_at`, `modified_at`) VALUES
-(1, 2, 2, '09533307696', 'mogpo', 5000, 'COD', 10, '10-11-25 ', 'pending', '2025-08-10 18:18:21', '2025-08-10 10:18:21');
+INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`) VALUES
+(39, 89, 'INV-690E1247B93D5', 3, 'COD', 20, 'Order Placed', '2025-11-07 23:37:43', '2025-11-07 15:37:43');
 
 -- --------------------------------------------------------
 
@@ -237,8 +274,12 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`) VALUES
-(30, 30, 'Egg Plant', 50, 2, 'Vegetable', 'KIlos', 0, 'Great for Saute dishes, Fresh, Big Sizes', 20, 0, 'eed3f75df6f4fa820201f33042a4cf312800663d-eggplant.jpg', 0, '2025-10-12 04:42:52', '2025-10-12 12:42:52', 'Active'),
-(31, 31, 'Bangus/Milk Fish', 100, 2, 'Seafood', 'kilos', 0, 'Fresh from gasan port, Great dish for fried and stews', 20, 0, '1299713ec279667ccc664d17767190ca58b3b123-bangus.jpg', 0, '2025-10-12 05:24:14', '2025-10-12 13:24:14', 'Active');
+(45, 91, 'Kalabasa', 43, 2, 'Vegetable', 'KG', 0, 'Fresh Native Kalabasa (Squash)\r\nHarvested from local farms, our kalabasa is naturally sweet and rich in flavor — perfect for ginataang kalabasa, soups, or stir-fried dishes. Packed with nutrients and freshness straight from the field.', 1000, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-07 14:55:46', '2025-11-07 22:55:46', 'Active'),
+(46, 90, 'Egg Plant', 90, 2, 'Vegetable', 'KG', 0, 'Fresh Native Eggplant (Talong)\r\nHandpicked from local farms, our eggplants are firm, shiny, and full of flavor — perfect for tortang talong, pinakbet, or grilled dishes. Delivered fresh straight from the farm to your table.', 1000, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', 0, '2025-11-07 14:55:51', '2025-11-07 22:55:51', 'Active'),
+(47, 89, 'Kangkong', 60, 2, 'Vegetable', 'KG', 0, 'Fresh Native Kangkong\r\nLocally grown and freshly harvested, our kangkong is crisp, vibrant, and perfect for sinigang, adobo, or stir-fried dishes. Delivered straight from Mogpog farms to your kitchen for that farm-fresh goodness.', 1000, 0, 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg', 0, '2025-11-07 14:55:52', '2025-11-07 22:55:52', 'Active'),
+(48, 88, 'Okra', 80, 2, 'Vegetable', 'KG', 0, 'Fresh Farm Okra\r\nCrisp, tender, and freshly harvested from local farms in Mogpog. Our okra is perfect for stews, sinigang, pinakbet, or frying. Enjoy the taste of fresh produce grown with care and delivered straight from the farm to your table.', 1000, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-07 14:55:54', '2025-11-07 22:55:54', 'Active'),
+(49, 87, 'Tomatoes/Kamatis', 100, 2, 'Vegetable', 'KG', 0, 'Fresh Farm Tomatoes\r\nHandpicked from local farms in Mogpog, these vibrant red tomatoes are juicy, flavorful, and packed with natural sweetness. Perfect for salads, sauces, and everyday cooking. Enjoy farm-fresh quality straight from the source.', 1000, 0, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', 0, '2025-11-07 14:55:56', '2025-11-07 22:55:56', 'Active'),
+(50, 91, 'Kalabasa', 0, 2, 'Vegetable', 'KG', 0, 'Fresh Native Kalabasa (Squash)\r\nHarvested from local farms, our kalabasa is naturally sweet and rich in flavor — perfect for ginataang kalabasa, soups, or stir-fried dishes. Packed with nutrients and freshness straight from the field.', 1000, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-07 18:24:32', '2025-11-08 02:24:32', 'Active');
 
 -- --------------------------------------------------------
 
@@ -294,9 +335,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `baranggay`, `address`, `user_type`, `email_address`, `contact_number`, `password`, `rating`, `created`, `modified`, `first_time_logged_in`, `farm_details_exists`) VALUES
-(2, 'evelyn', 'gascon', 'boac', '', 'Farmer', 'ajcodalify@gmail.com', '09533307696', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', '2025-03-10 05:49:38', 0, '1'),
-(3, 'Alexis Jaye', 'Dumale', '', '', 'consumer', 'alexisdumale@gmail.com', '', '$2y$10$OP.c25h2BF404wKs2jM4JOKXnVhVvgeSIWx2BHhzbO6kSA/DC/NeO', 0, '2025-08-13 18:07:34', '2025-08-13 18:07:34', 0, '0'),
-(20, 'Atsuhiko', 'Dumale', '', '', 'Farmer', 'atsuhikodumale@gmail.com', '09707662820', '$2y$10$7wn0cCgWvrb3fyymAYKpgu8bJmFhsLWz3d6klkUYfXx73pJev4T.e', 0, '2025-10-27 21:52:01', '2025-10-27 21:52:01', 0, '1');
+(2, 'Farmer', 'Richard', 'boac', '', 'Farmer', 'farmer@farm.com', '09533307696', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', '2025-03-10 05:49:38', 0, '1'),
+(3, 'Customer', 'Dave', '', '', 'Consumer', 'consumer@consume.com', '', '$2y$10$OP.c25h2BF404wKs2jM4JOKXnVhVvgeSIWx2BHhzbO6kSA/DC/NeO', 0, '2025-08-13 18:07:34', '2025-08-13 18:07:34', 0, '0');
 
 --
 -- Indexes for dumped tables
@@ -315,6 +355,18 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `crops`
+--
+ALTER TABLE `crops`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `crop_statistics`
+--
+ALTER TABLE `crop_statistics`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `deleted_products`
 --
 ALTER TABLE `deleted_products`
@@ -324,12 +376,6 @@ ALTER TABLE `deleted_products`
 -- Indexes for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `farm_products`
---
-ALTER TABLE `farm_products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -376,12 +422,24 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `crops`
+--
+ALTER TABLE `crops`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `crop_statistics`
+--
+ALTER TABLE `crop_statistics`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -397,34 +455,28 @@ ALTER TABLE `farm_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `farm_products`
---
-ALTER TABLE `farm_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `reviews`
