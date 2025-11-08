@@ -30,6 +30,42 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+
+  function updateCartCount() {
+    $.ajax({
+      url: "../js/user/farmer/api/fetch_cart_count.php",
+      type: "GET",
+      dataType: "json",
+      success: function(response) {
+        console.log("Cart count response:", response); // 🧭 Debugging line
+
+        let count = response.cart_item_count ?? 0;
+        $("#cart-count").text(count);
+        $("#cart-count").fadeIn(300);
+      
+      },
+      error: function(xhr, status, error) {
+        console.error("Error fetching cart count:", error);
+      }
+    });
+  }
+
+  // Initial load
+  updateCartCount();
+
+  // Update on interval
+  setInterval(updateCartCount, 10000);
+
+  // Example triggers
+  // $(document).on("click", ".add-to-cart-btn, .delete-object", function() {
+  //   setTimeout(updateCartCount, 500);
+  // });
+});
+</script>
+
 </body>
 </html>
 
@@ -63,4 +99,8 @@ window.addEventListener("load", function() {
   });
 });
 </script>
+
+
+
+
 

@@ -136,14 +136,16 @@ class CartItem{
 
     public function countAll(){
 
-        $query = "SELECT id FROM " . $this->table_name . "";
+        $query = "SELECT COUNT(*) AS total
+                FROM 
+                    " . $this->table_name . "
+                WHERE user_id =:user_id AND status=:status";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
 
-        $num = $stmt->rowCount();
-
-        return $num;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
 
     function markCartItemsAsOrdered(){

@@ -36,17 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } 
 
-    else if ($user->contactExists()) {
-        $alert_message = "<div class='alert alert-danger' role='alert'>
-            <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Contact number is already taken. Please try another.
-        </div>";
-    } 
+    // else if ($user->contactExists()) {
+    //     $alert_message = "<div class='alert alert-danger' role='alert'>
+    //         <i class='bi bi-exclamation-diamond-fill'></i> ERROR! Contact number is already taken. Please try another.
+    //     </div>";
+    // } 
     
     // no errors to inputs, proceed to account creation
     else {
         $user->create();
         $alert_message = "<div class='alert alert-success'>
-            Start your account and <a href='{$home_url}login'>continue! </a>
+            Start your account and <a href='{$home_url}signin.php'>continue! </a>
         </div>";
     }
 }

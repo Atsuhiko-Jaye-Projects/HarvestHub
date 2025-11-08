@@ -16,9 +16,7 @@
           echo "<ul class='navbar-nav position-relative'>";
             echo "<li class='nav-item position-relative'>";
               echo "<a class='nav-link' href='{$base_url}user/consumer/order/cart.php'>Cart";
-                     echo "<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>";
-                        echo $cart_item_count;
-                      echo "</span>";
+                     echo "<span id='cart-count' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'></span>";
                     echo"</a>";
             echo "</li>";
             if ($_SESSION['user_type']=='farmer') {
@@ -38,3 +36,4 @@
     </div>
   </div>
 </nav>
+

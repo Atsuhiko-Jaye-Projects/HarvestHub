@@ -6,6 +6,9 @@ include_once "../config/database.php";
 include_once "../objects/product.php";
 include_once "../objects/cart_item.php";
 
+$page_title = "HarvestHUB";
+include_once "layout_head.php";
+
 $require_login=true;
 include_once "../login_checker.php";
 
@@ -23,8 +26,6 @@ $product->readOne();
 $cart_item->user_id = $_SESSION['user_id'];
 $cart_item_count = $cart_item->countItem();
 
-$page_title = "HarvestHUB";
-include_once "layout_head.php";
 
 if ($_POST) {
 
@@ -59,9 +60,11 @@ if ($_POST) {
 </div>
 
 
+
+
 <div class="container py-5">
   
-    <?php include_once "../layout/navigation.php" ; ?>
+  <?php include_once "../layout/navigation.php" ; ?>
   <!-- Product Section -->
   <div class="row g-5 align-items-start">
     <!-- Left: Image -->
