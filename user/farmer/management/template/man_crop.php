@@ -76,8 +76,10 @@
     <input type="text" id="searchCrop" class="form-control w-100 w-md-50" placeholder="Search crop...">
     <select id="statusFilter" class="form-select w-100 w-md-auto">
       <option value="">All Status</option>
-      <option value="Posted">Posted</option>
-      <option value="Pending">Pending</option>
+      <option value="planted">Planted</option>
+      <option value="growing">Growing</option>
+      <option value="germination">Germination</option>
+      <option value="ready to harvest">Ready To Harvest</option>
     </select>
   </div>
 

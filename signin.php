@@ -29,7 +29,6 @@ if ($_POST) {
 		$_SESSION['user_id'] = $user->id;
 		$_SESSION['firstname'] = $user->firstname;
 		$_SESSION['lastname'] = $user->lastname;
-		$_SESSION['contact_number'] = $user->contact_number;
 		$_SESSION['is_farm_registered'] = $user->farm_details_exists;
 
 		if ($user->user_type=='Admin') {

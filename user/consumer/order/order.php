@@ -4,6 +4,9 @@ include_once "../../../config/database.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/product.php";
 
+$page_title = "My Orders";
+include_once "../layout/layout_head.php";
+
 // always make the page required is enabled
 $require_login = true;
 include_once "../../../login_checker.php";
@@ -30,8 +33,7 @@ $order->customer_id = $_SESSION['user_id'];
 $stmt = $order->readAllOrder($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 
-$page_title = "My Orders";
-include_once "../layout/layout_head.php";
+
 
 ?>
 

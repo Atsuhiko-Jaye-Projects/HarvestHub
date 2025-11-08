@@ -1,39 +1,49 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light py-3 mb-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-light py-3 shadow-sm mb-3">
   <div class="container">
-    <img src="<?php echo $base_url; ?>libs/images/logo.png" alt="Vegetables" class="category-icon mb-2">
-    <a class="navbar-brand" href="<?php echo $base_url; ?>index.php">Harvest Hub</a>
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="<?php echo $base_url; ?>index.php">
+      <img src="<?php echo $base_url; ?>libs/images/logo.png" alt="Harvest Hub Logo" class="me-2" style="width:40px;height:40px;">
+      <span class="fw-bold">Harvest Hub</span>
+    </a>
+
+    <!-- Mobile Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <form class="d-flex ms-auto me-3">
-        <input class="form-control me-2" type="search" placeholder="Search products">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-      <?php
-        if (isset($_SESSION['logged_in'])) {
-          echo "<ul class='navbar-nav position-relative'>";
-            echo "<li class='nav-item position-relative'>";
-              echo "<a class='nav-link' href='{$base_url}user/consumer/order/cart.php'>Cart";
-                     echo "<span id='cart-count' class='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'></span>";
-                    echo"</a>";
-            echo "</li>";
-            if ($_SESSION['user_type']=='farmer') {
-              echo "<li class='nav-item'><a class='nav-link' href='{$home_url}user/farmer/profile/profile.php'>Profile</a></li>";
-            }else{
-              echo "<li class='nav-item'><a class='nav-link' href='{$home_url}user/consumer/profile/profile.php'>Profile</a></li>";
-            }
 
-          echo "</ul>";
-        }else{
-          echo "<ul class='navbar-nav'>";
-            echo "<li class='nav-item'><a class='nav-link' href='{$home_url}signin.php?action=add_to_cart'>Sign In</a></li>";
-            echo "<li class='nav-item'><a class='nav-link' href='#'>Sign Up</a></li>";
-          echo "</ul>";
-        }
-      ?>
+    <!-- Navbar Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Optional: Hide search until ready -->
+      <!-- <form class="d-flex ms-auto me-3">
+        <input class="form-control me-2" type="search" placeholder="Search products" disabled>
+        <button class="btn btn-outline-success" type="submit" disabled>Search</button>
+      </form> -->
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <?php if (isset($_SESSION['logged_in'])): ?>
+          <!-- Cart -->
+          <a class="nav-link position-relative" href="<?php echo $base_url; ?>user/consumer/order/cart.php">
+            <i class="bi bi-cart-fill fs-5"></i>
+            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+          </a>
+
+          <!-- User Dropdown -->
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+              <img src="<?php echo $_SESSION['profile_pic'] ?? $base_url.'libs/images/logo.png'; ?>" alt="Avatar" class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
+              <span><?php echo $_SESSION['firstname']; ?></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="<?php echo $base_url; ?>user/consumer/profile/profile.php">Profile</a></li>
+              <li><a class="dropdown-item" href="<?php echo $base_url; ?>logout.php">Logout</a></li>
+            </ul>
+          </div>
+        <?php else: ?>
+          <!-- Sign In / Sign Up -->
+          <a class="btn btn-outline-success" href="<?php echo $home_url; ?>signin.php?action=add_to_cart">Sign In</a>
+          <a class="btn btn-success" href="<?php echo $home_url; ?>signup.php">Sign Up</a>
+        <?php endif; ?>
+      </div>
     </div>
   </div>
 </nav>
-
