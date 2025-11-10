@@ -1,37 +1,79 @@
 <?php
 include_once "../../../config/core.php";
-
+include_once "../../../config/database.php";
+include_once "../../../objects/user.php";
+include_once "../../../objects/farm.php";
 
 $page_title = "Profile";
 include_once "../layout/layout_head.php";
-print_r($_SESSION);
 
 $require_login = true;
 include_once "../../../login_checker.php";
+
+$database = new Database();
+$db = $database->getConnection();
+
+$user = new User($db);
+$farm = new Farm($db);
+$user->id = $_SESSION['user_id'];
+
+
+if($user->getFarmerProfileById()){
+    $farm->user_id = $user->id;
+
+
+        # code...
+
+
 ?>
 
 <div class="container py-4">
     <!-- Profile Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card bg-success text-white">
-                <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
-                    <div class="d-flex align-items-center mb-3 mb-md-0">
-                        <div class="rounded-circle bg-light d-flex justify-content-center align-items-center" style="width:80px; height:80px;">
-                            <img id="profilePreview" src="../../../libs/images/logo.png" style="width:80px; height:80px; border-radius:50%; object-fit:cover;" alt="User Avatar">
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="mb-1 text-capitalize"><?php echo $_SESSION['lastname'] . ", " . $_SESSION['firstname']; ?></h5>
-                            <small><?php echo $_SESSION['user_type']; ?></small>
-                        </div>
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-success text-white shadow-sm">
+            <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
+                
+                <!-- Left: Avatar + Welcome Message -->
+                <div class="d-flex align-items-center mb-3 mb-md-0">
+                    <!-- Avatar -->
+                    <div class="rounded-circle bg-light overflow-hidden d-flex justify-content-center align-items-center"
+                         style="width:80px; height:80px; transition: transform 0.3s;">
+                        <img id="profilePreview" src="../../../libs/images/logo.png" 
+                             style="width:80px; height:80px; border-radius:50%; object-fit:cover;" 
+                             alt="User Avatar" 
+                             title="Click edit to change profile picture">
                     </div>
-                    <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                        <i class="bi bi-pencil-fill"></i> Edit Profile
-                    </button>
+
+                    <!-- Welcome & Role -->
+                    <div class="ms-3">
+                        <h5 class="mb-1 text-capitalize">
+                            Welcome BACK, <?php echo htmlspecialchars($user->firstname . " " . $user->lastname); ?>!
+                        </h5>
+                        <small class="text-light-opacity"><?php echo htmlspecialchars($_SESSION['user_type']); ?></small>
+                    </div>
                 </div>
+
+                <!-- Right: Edit Button -->
+                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    <i class="bi bi-pencil-fill me-1"></i> Edit Profile
+                </button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Optional: Small hover effect on avatar -->
+<style>
+    #profilePreview:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+    .text-light-opacity {
+        opacity: 0.85;
+    }
+</style>
+
 
     <!-- Info Cards -->
     <div class="row g-3">
@@ -45,13 +87,17 @@ include_once "../../../login_checker.php";
                     </button>
                 </div>
                 <div class="card-body">
-                    <p><strong>Full Name:</strong> <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></p>
-                    <p><strong>Email:</strong> <?php echo $_SESSION['email']; ?></p>
-                    <p><strong>Contact Number:</strong> <?php echo $_SESSION['contact_number']; ?></p>
-                    <p><strong>Address:</strong> <?php echo $_SESSION['street'] . ", " . $_SESSION['barangay'] . ", " . $_SESSION['municipality'] . ", " . $_SESSION['province']; ?></p>
+                    <p><strong>Full Name: <?php echo $user->firstname . " " .  $user->lastname; ?></strong> <?php?></p>
+                    <p><strong>Email:</strong> <?php echo $user->email_address; ?></p>
+                    <p><strong>Contact Number:</strong> <?php echo $user->contact_number; ?></p>
+                    <p><strong>Address:</strong> <?= !empty($user->address) ? htmlspecialchars($user->address) : 'Not Set' ?></p>
                 </div>
             </div>
         </div>
+<?php
+    if ($farm->getFarmerDetailsById()) {
+        # code...
+?>
 
         <!-- Farm Info -->
         <div class="col-12 col-md-6">
@@ -63,21 +109,22 @@ include_once "../../../login_checker.php";
                     </button>
                 </div>
                 <div class="card-body">
-                    <p><strong>Farm Name:</strong> <?php echo $_SESSION['farm_name'] ?? '-'; ?></p>
-                    <p><strong>Farm Size:</strong> <?php echo $_SESSION['farm_size'] ?? '-'; ?> sqm</p>
-                    <p><strong>Farm Type:</strong> <?php echo $_SESSION['farm_type'] ?? '-'; ?></p>
-                    <p><strong>Farm Location:</strong> <?php echo $_SESSION['farm_location'] ?? '-'; ?></p>
+                    <p><strong>Farm Name:</strong> <?= !empty($farm->farm_name) ? htmlspecialchars($farm->farm_name) : 'Not Set' ?></p>
+                    <p><strong>Farm Size:</strong> <?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?> sqm</p>
+                    <p><strong>Farm Type:</strong> <?= !empty($farm->farm_type) ? htmlspecialchars($farm->farm_type) : 'Not Set' ?></p>
+                    <p><strong>Farm Location:</strong> <?= !empty($farm->municipality) ? htmlspecialchars($farm->municipality) : 'Not Set' ?></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <!-- Edit Profile Modal -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="editProfileForm" enctype="multipart/form-data">
+            <form id="editProfileForm" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' enctype="multipart/form-data">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title">Edit Profile</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -92,26 +139,26 @@ include_once "../../../login_checker.php";
                     </div>
                     <div class="mb-3">
                         <label>First Name</label>
-                        <input type="text" name="firstname" class="form-control" value="<?php echo $_SESSION['firstname']; ?>" required>
+                        <input type="text" name="firstname" class="form-control" value="<?php echo $user->firstname; ?>" required>
                     </div>
                     <div class="mb-3">
                         <label>Last Name</label>
-                        <input type="text" name="lastname" class="form-control" value="<?php echo $_SESSION['lastname']; ?>" required>
+                        <input type="text" name="lastname" class="form-control" value="<?php echo $user->lastname; ?>" required>
                     </div>
                     <div class="mb-3">
                         <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="<?php echo $_SESSION['email']; ?>" required>
+                        <input type="email_address" name="email" class="form-control" value="<?php echo $user->email_address; ?>" required>
                     </div>
                     <div class="mb-3">
                         <label>Contact Number</label>
-                        <input type="text" name="contact_number" class="form-control" value="<?php echo $_SESSION['contact_number']; ?>" required>
+                        <input type="text" name="contact_number" class="form-control" value="<?php echo $user->contact_number; ?>" readonly required>
                     </div>
                     <div class="mb-3">
                         <label>Address</label>
-                        <input type="text" name="street" class="form-control mb-2" placeholder="Street / Purok" value="<?php echo $_SESSION['street'] ?? ''; ?>">
-                        <input type="text" name="barangay" class="form-control mb-2" placeholder="Barangay" value="<?php echo $_SESSION['barangay'] ?? ''; ?>">
-                        <input type="text" name="municipality" class="form-control mb-2" placeholder="Municipality" value="<?php echo $_SESSION['municipality'] ?? ''; ?>">
-                        <input type="text" name="province" class="form-control" placeholder="Province" value="<?php echo $_SESSION['province'] ?? ''; ?>">
+                        <input type="text" name="street" class="form-control mb-2" placeholder="Street / Purok" value="<?= !empty($user->address) ? htmlspecialchars($user->address) : 'Not Set' ?>">
+                        <input type="text" name="barangay" class="form-control mb-2" placeholder="Barangay" value="<?= !empty($user->baranggay) ? htmlspecialchars($user->baranggay) : 'Not Set' ?>">
+                        <input type="text" name="municipality" class="form-control mb-2" placeholder="Municipality" value="<?= !empty($user->municipality) ? htmlspecialchars($user->municipality) : 'Not Set' ?>">
+                        <input type="text" name="province" class="form-control" placeholder="Province" value="<?= !empty($user->province) ? htmlspecialchars($user->province) : 'Not Set' ?>">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -127,7 +174,7 @@ include_once "../../../login_checker.php";
 <div class="modal fade" id="editFarmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="editFarmForm">
+            <form id="editFarmForm" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST'>
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title">Edit Farm Info</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -135,24 +182,25 @@ include_once "../../../login_checker.php";
                 <div class="modal-body">
                     <div class="mb-3">
                         <label>Farm Name</label>
-                        <input type="text" name="farm_name" class="form-control" value="<?php echo $_SESSION['farm_name'] ?? ''; ?>">
+                        <input type="text" name="farm_name" class="form-control" value="<?= !empty($farm->farm_name) ? htmlspecialchars($farm->farm_name) : 'Not Set' ?>">
                     </div>
                     <div class="mb-3">
                         <label>Farm Size (sqm)</label>
-                        <input type="number" name="farm_size" class="form-control" value="<?php echo $_SESSION['farm_size'] ?? ''; ?>">
+                        <input type="number" name="farm_size" class="form-control" value="<?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?>">
                     </div>
                     <div class="mb-3">
                         <label>Farm Type</label>
                         <select name="farm_type" class="form-select">
                             <option value="">Select type</option>
-                            <option value="Vegetable" <?php if(($_SESSION['farm_type'] ?? '')=='Vegetable') echo 'selected'; ?>>Vegetable</option>
-                            <option value="Fruit" <?php if(($_SESSION['farm_type'] ?? '')=='Fruit') echo 'selected'; ?>>Fruit</option>
-                            <option value="Livestock" <?php if(($_SESSION['farm_type'] ?? '')=='Livestock') echo 'selected'; ?>>Livestock</option>
+                            <?= !empty($farm->farm_name) ? htmlspecialchars($farm->farm_name) : 'Not Set' ?>
+                            <option value="Vegetable" <?php if(($farm->farm_type ?? '')=='Vegetable') echo 'selected'; ?>>Vegetable</option>
+                            <option value="Fruit" <?php if(($farm->farm_type ?? '')=='Fruit') echo 'selected'; ?>>Fruit</option>
+                            <option value="Livestock" <?php if(($farm->farm_type ?? '')=='Livestock') echo 'selected'; ?>>Livestock</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label>Farm Location</label>
-                        <input type="text" name="farm_location" class="form-control" value="<?php echo $_SESSION['farm_location'] ?? ''; ?>">
+                        <input type="text" name="farm_location" class="form-control" value="<?= !empty($farm->municipality) ? htmlspecialchars($farm->municipality) : 'Not Set' ?>">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -163,6 +211,13 @@ include_once "../../../login_checker.php";
         </div>
     </div>
 </div>
+<?php }else{
+    echo "ERROR:";
+}?>
+<?php
+
+}
+?>
 
 <script>
 $(document).ready(function() {

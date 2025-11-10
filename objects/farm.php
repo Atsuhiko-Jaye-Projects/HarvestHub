@@ -12,6 +12,8 @@ class Farm{
     public $purok;
     public $farm_ownership;
     public $lot_size;
+    public $farm_type;
+    public $used_lot_size;
     public $created_at;
     public $modified;
 
@@ -79,6 +81,41 @@ class Farm{
         }else{
             return false;
         }
+    }
+
+    function getFarmerDetailsById(){
+        $query = "SELECT
+                farm_name,
+                farm_ownership,
+                lot_size,
+                used_lot_size,
+                farm_type,
+                municipality
+                FROM " . $this->table_name . "
+                WHERE 
+                user_id=:user_id LIMIT 0, 1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->user_id = (int) $this->user_id;
+        
+        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $row =  $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($row) {
+            $this->farm_name = $row['farm_name'];
+            $this->farm_ownership = $row['farm_ownership'];
+            $this->lot_size = $row['lot_size'];
+            $this->used_lot_size = $row['used_lot_size'];
+            $this->municipality = $row['municipality'];
+            $this->farm_type = $row['farm_type'];
+            return true;
+        }
+        return false;
+
     }
 
 }

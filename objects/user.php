@@ -169,6 +169,44 @@ class User{
         return false;
     }
 
+    function getFarmerProfileById(){
+        $query = "SELECT
+                firstname,
+                lastname,
+                address,
+                baranggay,
+                email_address,
+                contact_number,
+                municipality,
+                province FROM " . $this->table_name . "
+                WHERE 
+                id=:id LIMIT 0, 1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = (int) $this->id;
+        
+        $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $row =  $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($row) {
+            $this->firstname = $row['firstname'];
+            $this->lastname = $row['lastname'];
+            $this->address = $row['address'];
+            $this->email_address = $row['email_address'];
+            $this->contact_number = $row['contact_number'];
+            $this->baranggay = $row['baranggay'];
+            $this->municipality = $row['municipality'];
+            $this->province = $row['province'];
+            return true;
+        }
+        return false;
+
+    }
+
 
 
 }

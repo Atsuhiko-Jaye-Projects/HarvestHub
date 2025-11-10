@@ -34,7 +34,7 @@ for ($x = $initial_num; $x < $condition_limit_num; $x++) {
                     </span>
                   </li>";
         }
-        // other pages
+        // other pagesasdasd
         else {
             echo "<li class='page-item'>
                     <a class='page-link' href='{$page_url}page=$x'>$x</a>
