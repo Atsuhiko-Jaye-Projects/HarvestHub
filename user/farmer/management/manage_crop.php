@@ -165,6 +165,5 @@ include_once "template/man_crop.php";
 
 <script>
     const UpdatePostURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
-
 </script>
 <?php include_once "../layout/layout_foot.php"; ?>

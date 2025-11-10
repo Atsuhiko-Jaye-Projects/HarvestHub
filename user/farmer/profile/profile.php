@@ -21,10 +21,26 @@ $user->id = $_SESSION['user_id'];
 if($user->getFarmerProfileById()){
     $farm->user_id = $user->id;
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
-        # code...
+    if ($_POST['action'] == "update_profile") {
+        
+        $user->id = $_SESSION['user_id'];
+        $user->firstname = $_POST['firstname'];
+        $user->profile_pic = $_POST['profile_pic'] ?? null;
+        $user->lastname = $_POST['lastname'];
+        $user->address = $_POST['address'];
+        $user->municipality = $_POST['municipality'];
+        $user->barangay = $_POST['barangay'];
+        $user->province = $_POST['province'];
 
-
+        if ($user->updateFarmerProfile()) {
+            echo "<div class = 'alert alert-success'>Profile has been updated</div>";
+        }else{
+            echo "<div class = 'alert alert-danger'>ERROR: Profile update failed.</div>";
+        }
+    }
+}
 ?>
 
 <div class="container py-4">
@@ -125,6 +141,7 @@ if($user->getFarmerProfileById()){
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form id="editProfileForm" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' enctype="multipart/form-data">
+                <input type="hidden" name="action" value="update_profile">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title">Edit Profile</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -155,8 +172,8 @@ if($user->getFarmerProfileById()){
                     </div>
                     <div class="mb-3">
                         <label>Address</label>
-                        <input type="text" name="street" class="form-control mb-2" placeholder="Street / Purok" value="<?= !empty($user->address) ? htmlspecialchars($user->address) : 'Not Set' ?>">
-                        <input type="text" name="barangay" class="form-control mb-2" placeholder="Barangay" value="<?= !empty($user->baranggay) ? htmlspecialchars($user->baranggay) : 'Not Set' ?>">
+                        <input type="text" name="address" class="form-control mb-2" placeholder="Street / Purok" value="<?= !empty($user->address) ? htmlspecialchars($user->address) : 'Not Set' ?>">
+                        <input type="text" name="barangay" class="form-control mb-2" placeholder="Barangay" value="<?= !empty($user->barangay) ? htmlspecialchars($user->barangay) : 'Not Set' ?>">
                         <input type="text" name="municipality" class="form-control mb-2" placeholder="Municipality" value="<?= !empty($user->municipality) ? htmlspecialchars($user->municipality) : 'Not Set' ?>">
                         <input type="text" name="province" class="form-control" placeholder="Province" value="<?= !empty($user->province) ? htmlspecialchars($user->province) : 'Not Set' ?>">
                     </div>

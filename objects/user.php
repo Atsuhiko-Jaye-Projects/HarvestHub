@@ -12,6 +12,7 @@ class User{
     public $user_type;
     public $email_address;
     public $contact_number;
+    public $profile_pic;
     public $password;
     public $rating;
     public $first_time_logged_in;
@@ -174,7 +175,7 @@ class User{
                 firstname,
                 lastname,
                 address,
-                baranggay,
+                barangay,
                 email_address,
                 contact_number,
                 municipality,
@@ -198,7 +199,7 @@ class User{
             $this->address = $row['address'];
             $this->email_address = $row['email_address'];
             $this->contact_number = $row['contact_number'];
-            $this->baranggay = $row['baranggay'];
+            $this->barangay = $row['barangay'];
             $this->municipality = $row['municipality'];
             $this->province = $row['province'];
             return true;
@@ -206,6 +207,108 @@ class User{
         return false;
 
     }
+
+    function updateFarmerProfile(){
+        $query = "UPDATE " . $this->table_name . "
+                    SET
+                    firstname=:firstname,
+                    lastname=:lastname,
+                    profile_pic = :profile_pic,
+                    address=:address,
+                    municipality=:municipality,
+                    barangay=:barangay,
+                    province=:province,
+                    modified=:modified
+                    WHERE id=:id";
+
+        $stmt=$this->conn->prepare($query);
+        
+        $this->firstname=htmlspecialchars(strip_tags($this->firstname));
+        $this->lastname=htmlspecialchars(strip_tags($this->lastname));
+        $this->profile_pic=htmlspecialchars(strip_tags($this->profile_pic));
+        $this->address=htmlspecialchars(strip_tags($this->address));
+        $this->municipality=htmlspecialchars(strip_tags($this->municipality));
+        $this->barangay=htmlspecialchars(strip_tags($this->barangay));
+        $this->province=htmlspecialchars(strip_tags($this->province));
+        $this->modified=date('Y-m-d H:i:s');
+        
+        $stmt->bindParam(":id", $this->id, PDO::PARAM_INT);
+        $stmt->bindParam(":firstname", $this->firstname);
+        $stmt->bindParam(":lastname", $this->lastname);
+        $stmt->bindParam(":profile_pic", $this->profile_pic);
+        $stmt->bindParam(":address", $this->address);
+        $stmt->bindParam(":municipality", $this->municipality);
+        $stmt->bindParam(":barangay", $this->barangay);
+        $stmt->bindParam(":province", $this->province);
+        $stmt->bindParam(":modified", $this->modified);
+
+        if ($stmt->execute()) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    function uploadPhoto() {
+        $result_message = "";
+
+        $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+        if($check!==false){
+            // submitted file is an image
+        }else{
+            $file_upload_error_messages.="<div>Submitted file is not an image.</div>";
+        }
+
+        if ($this->product_image) {
+            $user_id = $this->user_id; // Assuming this is set from the session or earlier
+            $target_directory = "../../uploads/{$user_id}/products/";
+            $file_name = basename($this->product_image);
+            $target_file = $target_directory . $file_name;
+            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+
+            $file_upload_error_messages = "";
+
+            // Validate image file
+            $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+            if ($check === false) {
+                $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
+            }
+
+            // Allowed file types
+            $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+            if (!in_array(strtolower($file_type), $allowed_file_types)) {
+                $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+            }
+
+            // File exists check
+            if (file_exists($target_file)) {
+                $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+            }
+
+            // File size check (max 1MB)
+            if ($_FILES['product_image']['size'] > 1024000) {
+                $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+            }
+
+            // Ensure the upload folder exists
+            if (!is_dir($target_directory)) {
+                mkdir($target_directory, 0777, true);
+            }
+
+            // If no errors, attempt to move file
+            if (empty($file_upload_error_messages)) {
+                if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
+                } else {
+                    $result_message = "<div>Unable to upload image.</div>";
+                }
+            } else {
+                $result_message = "<div class='alert alert-danger'>{$file_upload_error_messages}</div>";
+            }
+        }
+    }
+
+
 
 
 
