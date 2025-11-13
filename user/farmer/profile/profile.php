@@ -18,7 +18,7 @@ $farm = new Farm($db);
 $user->id = $_SESSION['user_id'];
 
 
-if($user->getFarmerProfileById()){
+if($user->getUserProfileById()){
     $farm->user_id = $user->id;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
@@ -26,16 +26,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     if ($_POST['action'] == "update_profile") {
         
         $user->id = $_SESSION['user_id'];
+        $user->user_type = $_SESSION['user_type'];
         $user->firstname = $_POST['firstname'];
         $user->profile_pic = $_POST['profile_pic'] ?? null;
         $user->lastname = $_POST['lastname'];
+        $user->contact_number = $_POST['contact_number'];
         $user->address = $_POST['address'];
         $user->municipality = $_POST['municipality'];
         $user->barangay = $_POST['barangay'];
         $user->province = $_POST['province'];
 
-        if ($user->updateFarmerProfile()) {
-            echo "<div class = 'alert alert-success'>Profile has been updated</div>";
+        $image=!empty($_FILES["profile_pic"]["name"])
+        ? sha1_file($_FILES['profile_pic']['tmp_name']) . "-" . basename($_FILES["profile_pic"]["name"]) : "";
+        $user->profile_pic = $image;
+
+
+        if ($user->updateUserProfile()) {
+            if ($user->uploadPhoto()) {
+                echo "<div class = 'alert alert-success'>Profile has been updated</div>";
+            }else{
+                echo "<div class = 'alert alert-warning'>Profile has been updated</div>"; 
+            }
         }else{
             echo "<div class = 'alert alert-danger'>ERROR: Profile update failed.</div>";
         }
@@ -55,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     <!-- Avatar -->
                     <div class="rounded-circle bg-light overflow-hidden d-flex justify-content-center align-items-center"
                          style="width:80px; height:80px; transition: transform 0.3s;">
-                        <img id="profilePreview" src="../../../libs/images/logo.png" 
+                        <img id="profilePreview" src="../../uploads/profile_pictures/<?php echo $_SESSION['user_type'] . "/" . $_SESSION['user_id'] . "/" . $user->profile_pic;?>" 
                              style="width:80px; height:80px; border-radius:50%; object-fit:cover;" 
                              alt="User Avatar" 
                              title="Click edit to change profile picture">
@@ -150,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     <div class="mb-3 text-center">
                         <label class="form-label">Profile Picture</label>
                         <div class="mb-2">
-                            <img id="profileModalPreview" src="../../../libs/images/logo.png" class="rounded-circle" style="width:100px;height:100px;object-fit:cover;">
+                            <img id="profileModalPreview" src="../../uploads/profile_pictures/<?php echo $_SESSION['user_type'] . "/" . $_SESSION['user_id'] . "/" . $user->profile_pic;?>" class="rounded-circle" style="width:100px;height:100px;object-fit:cover;">
                         </div>
                         <input type="file" name="profile_pic" class="form-control" accept="image/*" id="profilePicInput">
                     </div>

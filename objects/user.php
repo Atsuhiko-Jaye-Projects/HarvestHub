@@ -80,7 +80,7 @@ class User{
 
     function credentialExists(){
 
-        $query = "SELECT id, firstname, baranggay, address, user_type, password, first_time_logged_in, farm_details_exists, contact_number, lastname
+        $query = "SELECT id, firstname, barangay, address, user_type, password, first_time_logged_in, farm_details_exists, contact_number, lastname
                 FROM " . $this->table_name . "
                 WHERE email_address=:email_address
                 LIMIT 0, 1";
@@ -102,7 +102,7 @@ class User{
             $this->id = $row['id'];
             $this->firstname = $row['firstname'];
             $this->lastname = $row['lastname'];
-            $this->baranggay = $row['baranggay'];
+            $this->barangay = $row['barangay'];
             $this->address = $row['address'];
             $this->user_type = $row['user_type'];
             $this->password = $row['password'];
@@ -170,7 +170,7 @@ class User{
         return false;
     }
 
-    function getFarmerProfileById(){
+    function getUserProfileById(){
         $query = "SELECT
                 firstname,
                 lastname,
@@ -179,6 +179,7 @@ class User{
                 email_address,
                 contact_number,
                 municipality,
+                profile_pic,
                 province FROM " . $this->table_name . "
                 WHERE 
                 id=:id LIMIT 0, 1";
@@ -198,6 +199,7 @@ class User{
             $this->lastname = $row['lastname'];
             $this->address = $row['address'];
             $this->email_address = $row['email_address'];
+            $this->profile_pic = $row['profile_pic'];
             $this->contact_number = $row['contact_number'];
             $this->barangay = $row['barangay'];
             $this->municipality = $row['municipality'];
@@ -208,13 +210,14 @@ class User{
 
     }
 
-    function updateFarmerProfile(){
+    function updateUserProfile(){
         $query = "UPDATE " . $this->table_name . "
                     SET
                     firstname=:firstname,
                     lastname=:lastname,
                     profile_pic = :profile_pic,
                     address=:address,
+                    contact_number=:contact_number,
                     municipality=:municipality,
                     barangay=:barangay,
                     province=:province,
@@ -227,6 +230,7 @@ class User{
         $this->lastname=htmlspecialchars(strip_tags($this->lastname));
         $this->profile_pic=htmlspecialchars(strip_tags($this->profile_pic));
         $this->address=htmlspecialchars(strip_tags($this->address));
+        $this->contact_number=htmlspecialchars(strip_tags($this->contact_number));
         $this->municipality=htmlspecialchars(strip_tags($this->municipality));
         $this->barangay=htmlspecialchars(strip_tags($this->barangay));
         $this->province=htmlspecialchars(strip_tags($this->province));
@@ -236,6 +240,7 @@ class User{
         $stmt->bindParam(":firstname", $this->firstname);
         $stmt->bindParam(":lastname", $this->lastname);
         $stmt->bindParam(":profile_pic", $this->profile_pic);
+        $stmt->bindParam(":contact_number", $this->contact_number);
         $stmt->bindParam(":address", $this->address);
         $stmt->bindParam(":municipality", $this->municipality);
         $stmt->bindParam(":barangay", $this->barangay);
@@ -252,32 +257,29 @@ class User{
 
     function uploadPhoto() {
         $result_message = "";
+        $file_upload_error_messages = "";
 
-        $check = getimagesize($_FILES["product_image"]["tmp_name"]);
-        if($check!==false){
-            // submitted file is an image
-        }else{
-            $file_upload_error_messages.="<div>Submitted file is not an image.</div>";
-        }
+        // Check if a file was uploaded
+        if (!empty($_FILES["profile_pic"]["name"])) {
 
-        if ($this->product_image) {
-            $user_id = $this->user_id; // Assuming this is set from the session or earlier
-            $target_directory = "../../uploads/{$user_id}/products/";
-            $file_name = basename($this->product_image);
+            $this->profile_pic = $_FILES["profile_pic"]["name"];
+            $user_id = $this->id;
+            $user_type = $this->user_type;
+
+            $target_directory = "../../uploads/profile_pictures/$user_type/{$user_id}/";
+            $file_name = basename($this->profile_pic);
             $target_file = $target_directory . $file_name;
-            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+            $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-            $file_upload_error_messages = "";
-
-            // Validate image file
-            $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+            // Validate image
+            $check = getimagesize($_FILES["profile_pic"]["tmp_name"]);
             if ($check === false) {
                 $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
             }
 
             // Allowed file types
             $allowed_file_types = array("jpg", "jpeg", "png", "gif");
-            if (!in_array(strtolower($file_type), $allowed_file_types)) {
+            if (!in_array($file_type, $allowed_file_types)) {
                 $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
             }
 
@@ -287,7 +289,7 @@ class User{
             }
 
             // File size check (max 1MB)
-            if ($_FILES['product_image']['size'] > 1024000) {
+            if ($_FILES['profile_pic']['size'] > 1024000) {
                 $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
             }
 
@@ -296,20 +298,22 @@ class User{
                 mkdir($target_directory, 0777, true);
             }
 
-            // If no errors, attempt to move file
+            // If no errors, move file
             if (empty($file_upload_error_messages)) {
-                if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
+                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+                    $result_message = "<div class='alert alert-success'>Profile picture uploaded successfully.</div>";
                 } else {
-                    $result_message = "<div>Unable to upload image.</div>";
+                    $result_message = "<div class='alert alert-danger'>Unable to upload image.</div>";
                 }
             } else {
                 $result_message = "<div class='alert alert-danger'>{$file_upload_error_messages}</div>";
             }
+        } else {
+            $result_message = "<div class='alert alert-warning'>No image uploaded.</div>";
         }
+
+        return $result_message;
     }
-
-
-
 
 
 }
