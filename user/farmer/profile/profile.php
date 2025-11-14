@@ -82,9 +82,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 </div>
 
                 <!-- Right: Edit Button -->
-                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <!-- <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                     <i class="bi bi-pencil-fill me-1"></i> Edit Profile
-                </button>
+                </button> -->
             </div>
         </div>
     </div>

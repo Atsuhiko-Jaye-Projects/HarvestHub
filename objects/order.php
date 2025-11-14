@@ -87,6 +87,32 @@ class Order{
         return false;
     }
 
+    function readOrderDetails(){
+        $query = "SELECT 
+                product_id, invoice_number, customer_id, mode_of_payment, quantity, created_at
+                FROM " . $this->table_name . "
+                where id = :id
+                LIMIT
+                0,1";
+        $stmt=$this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->product_id = $row['product_id'];
+        $this->invoice_number = $row['invoice_number'];
+        $this->mode_of_payment = $row['mode_of_payment'];
+        $this->quantity = $row['quantity'];
+        $this->created_at = $row['created_at'];
+        $this->customer_id = $row['customer_id'];
+        
+    }
+
     
 
 

@@ -262,7 +262,7 @@ class User{
         // Check if a file was uploaded
         if (!empty($_FILES["profile_pic"]["name"])) {
 
-            $this->profile_pic = $_FILES["profile_pic"]["name"];
+
             $user_id = $this->id;
             $user_type = $this->user_type;
 
@@ -313,6 +313,29 @@ class User{
         }
 
         return $result_message;
+    }
+
+    function getShippingAddress(){
+        $query = "SELECT 
+                address, municipality, barangay, province, contact_number
+                FROM " . $this->table_name . "
+                WHERE id = :id
+                LIMIT
+                0, 1";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->address = $row['address'];
+        $this->municipality = $row['municipality'];
+        $this->barangay = $row['barangay'];
+        $this->province = $row['province'];
+        $this->contact_number = $row['contact_number'];
     }
 
 

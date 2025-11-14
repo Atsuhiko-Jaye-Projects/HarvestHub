@@ -135,7 +135,7 @@ $num = $stmt->rowCount();
       </div>
 
       <div class="col-md-4 d-flex flex-column align-items-end justify-content-between">
-        <a href="order_details.php" class="btn btn-outline-success btn-sm mb-2 w-100">
+        <a href="order_details.php?vod=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm mb-2 w-100">
           View Order Details
         </a>
         <button class="btn btn-warning btn-sm w-100">

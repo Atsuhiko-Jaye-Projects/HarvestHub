@@ -46,8 +46,17 @@ if($user->getUserProfileById()){
             echo "<div class = 'alert alert-danger'>ERROR: Profile update failed.</div>";
         }
     }
-}
+    }
 
+    // check the image to not show broken image
+    $profile_image = "";
+    $raw_image = $user->profile_pic;
+
+    if ($user->profile_pic == "") {
+        $profile_img = "{$base_url}/user/uploads/logo.png";
+    }else{
+        $profile_img = "{$base_url}/user/uploads/profile_pictures/{$_SESSION['user_type']}/{$_SESSION['user_id']}/{$raw_image}";
+    }
 ?>
 
 <div class="container py-4">
@@ -58,7 +67,7 @@ if($user->getUserProfileById()){
                 <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
                     <div class="d-flex align-items-center mb-3 mb-md-0">
                         <div class="rounded-circle bg-light d-flex justify-content-center align-items-center" style="width:80px;height:80px;">
-                            <img id="currentProfilePic" src="../../../libs/images/logo.png" 
+                            <img id="currentProfilePic" src="<?php echo $profile_img; ?>" 
                                  style="width:80px;height:80px;border-radius:50%;object-fit:cover;" alt="User Avatar">
                         </div>
                         <div class="ms-3">
@@ -118,10 +127,24 @@ if($user->getUserProfileById()){
                     <div class="mb-3 text-center">
                         <label class="form-label">Profile Picture</label>
                         <div class="mb-2">
-                            <img id="profilePreview" name="profile_pic" src="../../../libs/images/logo.png" 
+                            <img id="profilePreview" name="profile_pic" src="<?php echo $profile_img;?>" 
                                  alt="Profile Picture" class="rounded-circle" style="width:120px;height:120px;object-fit:cover;">
                         </div>
-                        <input type="file" name="profile_pic" class="form-control" accept="image/*" id="profilePicInput">
+                        
+                        <?php if (empty($user->profile_pic)) : ?>
+                            <!-- No profile picture yet -->
+                            <input type="file" name="profile_pic" class="form-control" accept="image/*" id="profilePicInput">
+                        <?php else : ?>
+                            <!-- Show current picture -->
+                            <div class="mb-2 text-center">
+                                <img src="<?= "{$base_url}/uploads/{$_SESSION['user_type']}/{$_SESSION['user_id']}/{$user->profile_pic}" ?>"
+                                    alt="Profile Picture"
+                                    class="rounded-circle shadow"
+                                    style="width:120px; height:120px; object-fit:cover;">
+                            </div>
+                            <label for="profilePicInput" class="form-label">Change Profile Picture</label>
+                            <input type="file" name="profile_pic" class="form-control" accept="image/*" id="profilePicInput">
+                        <?php endif; ?>
                         <small class="text-muted">Choose a profile picture to preview (not saved yet).</small>
                     </div>
 
