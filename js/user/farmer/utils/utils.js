@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <tr>
                 <td>${row.product_name}</td>
                 <td>${row.category}</td>
-                <td>${row.price_per_unit}</td>
+                <td class='price'>₱${row.price_per_unit}.00</td>
                 <td>${row.unit}</td>
                 <td>${row.lot_size}</td>
                 <td>${row.is_posted}</td>

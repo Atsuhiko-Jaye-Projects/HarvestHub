@@ -98,9 +98,15 @@ $num = $stmt->rowCount();
     <hr>
 
     <div class="row">
-      <div class="col-md-8">
-        <div class="d-flex align-items-center mb-3">
-          <div class="me-4">
+      <div class="col-md-4">
+        <div class="d-flex justify-content-center align-items-center mb-3">
+          <div class="order-images d-flex mr-3">
+              <img src="<?php echo $base_url;?>libs/images/logo.png" alt="item">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="me-4">
             <h6 class="mb-0 text-success">
                <?php 
                   $price = $product->price_per_unit; 
@@ -111,8 +117,6 @@ $num = $stmt->rowCount();
                 ?>
             </h6>
             <small class="text-muted"><strong><?php echo $row['mode_of_payment']; ?></strong></small>
-          </div>
-          <div>
             <h6 class="mb-0">
               <?php 
               $row['quantity'];
@@ -124,13 +128,6 @@ $num = $stmt->rowCount();
               ?>
             </h6>
             <small class="text-muted"><strong><?php echo $product->product_name; ?></strong></small>
-          </div>
-        </div>
-
-        <div class="order-images d-flex">
-          <img src="<?php echo $base_url;?>libs/images/logo.png" alt="item">
-          <img src="<?php echo $base_url;?>libs/images/logo.png" alt="item">
-          <img src="<?php echo $base_url;?>libs/images/logo.png" alt="item">
         </div>
       </div>
 

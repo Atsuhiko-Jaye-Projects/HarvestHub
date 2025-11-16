@@ -8,8 +8,8 @@
       <div class="card border-0 shadow-sm h-100">
         <div class="card-body text-center">
           <i class="bi bi-box-seam text-success fs-2 mb-2"></i>
-          <h6 class="text-muted">Total Products</h6>
-          <h4 id="totalProducts">0</h4>
+          <h6 class="text-muted">Total Products </h6>
+          <h4 id=""><?php echo $count_total_product; ?></h4>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
           <h6 class="text-muted">Avg. Price (/KG)</h6>
-          <h4 id="avgPrice">₱0.00</h4>
+          <h4 id="avgPrice"><?php echo "₱". number_format($avg_price,2);?></h4>
         </div>
       </div>
     </div>
@@ -135,12 +135,13 @@
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
+
     // Simulated dashboard data (for now)
     setTimeout(() => {
-      document.getElementById("totalProducts").innerText = "14";
-      document.getElementById("postedProducts").innerText = "8";
-      document.getElementById("pendingProducts").innerText = "6";
-      document.getElementById("avgPrice").innerText = "₱42.50";
+      document.getElementById("totalProducts").innerText = "";
+      document.getElementById("postedProducts").innerText = "";
+      document.getElementById("pendingProducts").innerText = "";
+      document.getElementById("avgPrice").value = price;
     }, 1000);
 
     // ✅ Search filter

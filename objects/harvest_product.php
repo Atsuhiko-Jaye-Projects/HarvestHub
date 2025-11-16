@@ -292,6 +292,31 @@ class HarvestProduct{
         return false;
     }
 
+    function harvestCount(){
+        $query = "SELECT COUNT(*) AS total
+                  FROM ". $this->table_name ."
+                  WHERE user_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam("user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $total = $row['total'];
+    }
+
+    function SumOfHarvest(){
+        $query = "SELECT SUM(price_per_unit) AS total_price
+                  FROM " . $this->table_name . "
+                  WHERE user_id = :user_id";
+
+        $stmt=$this->conn->prepare($query);
+        
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $total_price = $row['total_price'];
+    }
+
 
 
 

@@ -31,10 +31,13 @@
               </div>
 
               <div class="row mb-3">
-                <div class="col-md-6">
-                  <input type="text" name="unit" class="form-control" required placeholder="Unit" value='KG' readonly>
+                <div class="col-md-4">
+                  <input type="number" name="plant_count" class="form-control" required placeholder="No. of Plants">
                 </div>
-                  <div class="col-md-6">
+                <div class="col-md-4">
+                  <input type="number" name="kilo_per_plant" class="form-control" required placeholder="KG/Plant">
+                </div>
+                  <div class="col-md-4">
                     <input 
                       type="number" 
                       name="lot_size" 
@@ -61,9 +64,16 @@
               </div>
 
               <div class="mb-3">
-                <label for="">Farm Expense</label>
-                <input type="text" name="farm_expense" class="form-control danger" hidden value="<?php echo $total_farm_expense;?>" readonly>
-                <input type="text" name="" class="form-control danger" value="₱ <?php echo number_format($total_farm_expense);?>.00" readonly>
+                <label for="">Overall Plant Expense</label>
+                
+                <input type="Number" 
+                name="total_plant_expense" 
+                class="form-control danger" 
+                placeholder= "₱0.00" 
+                min="1000" max="200000"
+                onchange=
+                "if (this.value < 1000) { alert('Minimum expense amount is ₱1,000'); this.value = 1000; }
+                if (this.value > 200000) { alert('Maximum expense amount is ₱200,000'); this.value = 200000; }">
               </div>
 
               <div class="mb-3">

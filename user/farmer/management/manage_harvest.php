@@ -54,32 +54,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     if ($_POST['action'] == 'create') {
 
         $planted_area = isset($_POST['lot_size']) ? (float)str_replace(',', '', $_POST['lot_size']) : 0;
-        $farm_expense = isset($_POST['farm_expense']) ? (float)str_replace(',', '', $_POST['farm_expense']) : 0;
+        $plant_count = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
+        $kilo_per_plant = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
+        $farm_expense = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
         $total_farm_size = isset($_POST['farm_size_sqm']) ? (float)str_replace(',', '', $_POST['farm_size_sqm']) : 0;
 
         // General markup (50% profit)
-        $markup = 1.5;
+        $markup = 0.015 * 100;
 
         // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
-        $general_yield = 3.5;
         
 
         // Prevent division by zero
         if ($planted_area > 0 && $farm_expense > 0 && $total_farm_size > 0) {
 
+            
             // Expense allocated to the planted area
-            $expense_farm_lot = ($farm_expense / $total_farm_size) * $planted_area;
-
-            // Estimated total harvested yield (kg)
-            $total_harvested_yield = $planted_area * $general_yield;
+            $kilo_harvested_product = $plant_count * $kilo_per_plant;
 
             // Prevent zero division
-            if ($total_harvested_yield <= 0) {
-                $total_harvested_yield = 1;
+            if ($kilo_harvested_product <= 0) {
+                $kilo_harvested_product = 1;
             }
 
             // Cost per kg
-            $cost_per_kg = $expense_farm_lot / $total_harvested_yield;
+            $cost_per_kg = $farm_expense / $kilo_harvested_product;
 
             // Selling price with markup
             $selling_price = $cost_per_kg * $markup;
@@ -94,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->user_id = $_SESSION['user_id'];
         $harvest_product->product_name = $_POST['product_name'];
         $harvest_product->category = $_POST['category'];
-        $harvest_product->unit = $_POST['unit'];
+        $harvest_product->unit = "KG";
         $harvest_product->product_description = $_POST['product_description'];
         $harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
@@ -104,6 +103,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $image=!empty($_FILES["product_image"]["name"])
         ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
         $harvest_product->product_image = $image;
+
+        $price = $harvest_product->price_per_unit = round($selling_price, 2);
+
 
         if ($harvest_product->createProduct()) {
             echo "
@@ -183,14 +185,17 @@ $farm_resource->user_id = $_SESSION['user_id'];
 $total_farm_expense = $farm_resource->farmStatsTotalCost();
 
 $farm_lot = $farm->getFarmLot();
+$harvest_product->user_id = $_SESSION['user_id'];
+$count_total_product = $harvest_product->harvestCount();
+$product_price = $harvest_product->SumOfHarvest();
+
+$avg_price = $product_price / $count_total_product;
+
 // include the stats cards
 include_once "../statistics/stats.php";
 include_once "template/man_harvest.php";
 ?>
 
-
-
-<!-- include the load api  -->
 
 <!-- pass the php post methods from php to JS -->
 <script>

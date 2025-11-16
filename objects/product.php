@@ -196,6 +196,33 @@ class Product{
         }
     }
 
+    function getProductInfo(){
+        $query = "SELECT 
+                price_per_unit,
+                product_image,
+                product_name,
+                user_id
+            FROM 
+                " . $this->table_name . "
+            WHERE
+                product_id = :product_id
+            LIMIT 
+                0,1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->price_per_unit = $row['price_per_unit'];
+        $this->product_image = $row['product_image'];
+        $this->product_name = $row['product_name'];
+        $this->user_id = $row['user_id'];
+
+    }
+
 
 
 

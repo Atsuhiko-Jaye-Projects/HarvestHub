@@ -5,6 +5,7 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/user.php";
+include_once "../../../objects/product.php";
 
 $page_title = "Order";
 include_once "../layout/layout_head.php";
@@ -16,7 +17,10 @@ $database = new Database();
 $db = $database->getConnection();
 
 $order = new Order($db);
+$product = new Product($db);
 $user = new User($db);
+$farmer = new User($db);
+
 
 $order->id = $order_id;
 $order->readOrderDetails();
@@ -24,9 +28,28 @@ $order->readOrderDetails();
 // get the user address info base on id
 $user->id = $order->customer_id;
 $user->getShippingAddress();
-
 $shipping_address = "{$user->address},{$user->barangay},{$user->municipality}";
 
+
+
+
+//get the product total price
+$product->product_id = $order->product_id;
+$product->getProductInfo();
+
+// compute the product Price
+$quanitity = $order->quantity;
+$price = $product->price_per_unit;
+$total = $price * $quanitity;
+$shipping_fee = $total * 0.0225;
+$grand_total = $total + $shipping_fee;
+
+// get the farmer info for Consumer
+$farmer->id = $product->user_id;
+$farmer->getFarmerInfo();
+
+$farmer_address = "{$farmer->address}, {$farmer->barangay}, {$farmer->municipality}, {$farmer->province}";
+$farmer_contact = $farmer->contact_number;
 ?>
 
 
@@ -41,14 +64,19 @@ $shipping_address = "{$user->address},{$user->barangay},{$user->municipality}";
             <!-- Delivery Info -->
             <div class="border p-3 rounded mb-3">
               <h6 class="fw-bold">Delivery info</h6>
-              <p class="mb-0"><i class="bi bi-geo-alt text-success"></i> <?php echo $shipping_address;?>  </p>
+              <p class="mb-0"><i class="bi bi-geo-alt text-success"></i> <?php echo $shipping_address;?></p>
+              <p class="mb-0"><i class="bi bi-cash-coin text-success"></i> <?php echo $order->mode_of_payment; ?> </p>
+              <p class="mb-9"><i class="bi bi-phone"> <?php echo $user->contact_number; ?></i></p>
+            </div>
+
+            <!-- Farmer Info -->
+            <div class="border p-3 rounded mb-3">
+              <h6 class="fw-bold">Farmer info</h6>
+              <p class="mb-0"><i class="bi bi-geo-alt text-success"></i> <?php echo $farmer_address;?>  </p>
+              <p class="mb-0"><i class="bi bi-phone"> </i> <?php echo $farmer_contact;?></p>
             </div>
 
             <!-- Payment Method -->
-            <div class="border p-3 rounded mb-3">
-              <h6 class="fw-bold">Payment Method</h6>
-              <p class="mb-0"><i class="bi bi-cash-coin text-success"></i> <?php echo $order->mode_of_payment; ?> <br> <?php echo $user->contact_number; ?></p>
-            </div>
 
             <!-- Review Order -->
             <div class="border p-3 rounded" id='order_details_img'>
@@ -59,7 +87,6 @@ $shipping_address = "{$user->address},{$user->barangay},{$user->municipality}";
                 </p>
               <div class="d-flex align-items-center">
                 <img src="<?php echo $base_url;?>libs/images/logo.png" alt="Product">
-
                 <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width:60px; height:60px;">+12</div>
               </div>
             </div>
@@ -73,21 +100,17 @@ $shipping_address = "{$user->address},{$user->barangay},{$user->municipality}";
           <div class="card-body">
             <h5 class="fw-bold">Order Summary</h5>
             <div class="d-flex justify-content-between">
-              <span>Delivery fee</span>
-              <span>₱5.00</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Service fee</span>
-              <span>₱5.00</span>
+              <span>Service Fee (2.25%)</span>
+              <span>₱<?php echo number_format($shipping_fee,2)?></span>
             </div>
             <div class="d-flex justify-content-between mb-2">
               <span>Items total</span>
-              <span>₱200.00</span>
+              <span>₱<?php echo number_format($total,2)?></span>
             </div>
             <hr>
             <div class="d-flex justify-content-between fw-bold">
               <span>Total</span>
-              <span>₱200.00</span>
+              <span>₱<?php echo number_format($grand_total,2)?></span>
             </div>
           </div>
         </div>

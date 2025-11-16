@@ -25,13 +25,13 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="<?php echo $base_url;?>user/consumer/review/feedback.php"
+      <!-- <a href="<?php echo $base_url;?>user/consumer/review/feedback.php"
          class="nav-link text-white <?= ($page=='feedback.php') ? 'active' : '' ?>">
         <i class="bi bi-chat-right-text-fill me-2"></i> Your Reviews
-      </a>
+      </a> -->
     </li>
     <li class="nav-item">
-      <a href="<?php echo $base_url;?>user/consumer/support/support.php"
+      <a href="test.php"
          class="nav-link text-white <?= ($page=='support.php') ? 'active' : '' ?>">
         <i class="bi bi-question-circle-fill me-2"></i> Help & Support
       </a>
