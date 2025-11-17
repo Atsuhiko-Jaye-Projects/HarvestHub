@@ -11,6 +11,7 @@ class CartItem{
     public $quantity;
     public $amount;
     public $status;
+    public $farmer_id;
     public $created;
     public $modified;
 
@@ -27,6 +28,7 @@ class CartItem{
                     quantity = :quantity,
                     amount = :amount,
                     status = :status,
+                    farmer_id = :farmer_id,
                     created = :created";
         
         $stmt=$this->conn->prepare($query);
@@ -36,6 +38,7 @@ class CartItem{
         $this->quantity = htmlspecialchars(strip_tags($this->quantity));
         $this->amount = htmlspecialchars(strip_tags($this->amount));
         $this->status = htmlspecialchars(strip_tags($this->status));
+        $this->farmer_id = htmlspecialchars(strip_tags($this->farmer_id));
         $this->created = date ("Y-m-d H:i:s");
 
         $stmt->bindParam(":product_id", $this->product_id);
@@ -43,6 +46,7 @@ class CartItem{
         $stmt->bindParam(":quantity", $this->quantity);
         $stmt->bindParam(":amount", $this->amount);
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
         $stmt->bindParam(":created", $this->created);
 
         if ($stmt->execute()) {

@@ -3,6 +3,7 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/product.php";
+print_r($_SESSION);
 
 $page_title = "My Orders";
 include_once "../layout/layout_head.php";

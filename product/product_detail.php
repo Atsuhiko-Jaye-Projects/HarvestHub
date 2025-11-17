@@ -32,6 +32,7 @@ if ($_POST) {
   $cart_item->product_id = $_POST['product_id'];
   $cart_item->user_id = $_SESSION['user_id'];
   $cart_item->quantity = $_POST['kilo'];
+  $cart_item->farmer_id = $_POST['farmer_id'];
   $cart_item->amount = $_POST['amount'];
   $cart_item->status = "Pending";
   
@@ -138,8 +139,8 @@ if ($_POST) {
 
         <div class="d-flex gap-3">
           <button type="button" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
-
-          <button class="btn btn-outline-dark px-4">Checkout Now</button>
+          <input type="hidden" class="btn-check" name="farmer_id" value="<?php echo $product->user_id;?>">
+          <!-- <button class="btn btn-outline-dark px-4">Checkout Now</button> -->
         </div>
       </div>
     </form>

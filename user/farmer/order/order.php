@@ -19,8 +19,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
-$order->user_id = $_SESSION['user_id'];
-$stmt = $order->readAllOrder($from_record_num, $records_per_page);
+$order->farmer_id = $_SESSION['user_id'];
+$stmt = $order->readOrders($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $order->countAll();
 ?>
@@ -82,12 +82,9 @@ $total_rows = $order->countAll();
             <table class="table table-hover align-middle text-center">
                 <thead class="table-success text-uppercase">
                     <tr>
-                        <th>Order ID</th>
-                        <th>Contact Number</th>
-                        <th>Address</th>
-                        <th>Total Price</th>
-                        <th>Mode of Payment</th>
-                        <th>Lot Size</th>
+                        <th>INVOICE NO.</th>
+                        <th>MODE OF PAYMENT</th>
+                        <th>QTY</th>
                         <th>Date of Order</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -100,27 +97,24 @@ $total_rows = $order->countAll();
 
                         // Status badge color
                         $statusClass = match (strtolower($status)) {
-                            'pending' => 'bg-warning text-dark',
+                            'order placed' => 'bg-warning text-dark',
                             'completed' => 'bg-success',
                             'cancelled' => 'bg-danger',
                             default => 'bg-secondary'
                         };
                     ?>
                     <tr class="align-middle">
-                        <td class="fw-bold text-success"><?php echo $order_id; ?></td>
-                        <td><?php echo $contact_number; ?></td>
-                        <td class="text-truncate" style="max-width: 150px;"><?php echo $address; ?></td>
-                        <td>₱<?php echo number_format($total_price, 2); ?></td>
-                        <td><?php echo $mode_of_payment; ?></td>
-                        <td><?php echo $lot_size; ?></td>
-                        <td><?php echo $order_date; ?></td>
+                        <td class="fw-bold text-success"><?php echo $row['invoice_number']; ?></td>
+                        <td><?php echo $row['mode_of_payment']; ?></td>
+                        <td class="text-truncate" style="max-width: 150px;"><?php echo $row['quantity']; ?> KG</td>
+                        <td><?php echo $row['created_at']; ?></td>
                         <td>
                             <span class="badge <?php echo $statusClass; ?> px-3 py-2 text-uppercase">
                                 <?php echo $status; ?>
                             </span>
                         </td>
                         <td>
-                            <button class="btn btn-outline-success btn-sm rounded-pill px-3">
+                            <a href="<?php echo $base_url?>user/farmer/order/process_order.php?id=<?php echo $id;?>" class="btn btn-outline-success btn-sm rounded-pill px-3">
                                 <i class="bi bi-eye me-1"></i> View
                             </button>
                         </td>

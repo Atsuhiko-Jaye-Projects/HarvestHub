@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
     $order->customer_id = $user_id;
     $order->mode_of_payment = $_POST['payment_method'];
     $order->quantity = isset($_POST['quantity'][$pid]) ? (int)$_POST['quantity'][$pid] : 1;
+    $order->farmer_id = isset($_POST['farmer_id'][$pid]) ? (int)$_POST['farmer_id'][$pid] : 1;
     $order->status = "Order Placed";
     $order->created_at = $date;
     $order->placeOrder();
@@ -123,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           </div>
 
           <!-- ✅ Hidde xn Inputs -->
+          <input type="hidden" name="farmer_id[<?php echo $row['product_id']; ?>]" value="<?php echo $product->user_id; ?>">
           <input type="hidden" name="quantity[<?php echo $row['product_id']; ?>]" value="<?php echo $row['quantity']; ?>">
           <input type="hidden" name="unit_price[<?php echo $row['product_id']; ?>]" value="<?php echo $unit_price; ?>">
         </div>

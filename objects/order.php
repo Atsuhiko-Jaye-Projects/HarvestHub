@@ -9,6 +9,7 @@ class Order{
     public $product_id;
     public $invoice_number;
     public $customer_id;
+    public $farmer_id;
     public $mode_of_payment;
     public $quantity;
     public $status;
@@ -22,7 +23,7 @@ class Order{
     function readAllOrder($from_record_num, $records_per_page) {
         $query = "SELECT *
                 FROM " . $this->table_name . "
-                WHERE customer_id = :customer_id
+                WHERE customer_id=:customer_id
                 ORDER BY id DESC
                 LIMIT {$from_record_num}, {$records_per_page}";
 
@@ -32,6 +33,26 @@ class Order{
         $this->customer_id = htmlspecialchars(strip_tags($this->customer_id));
 
         $stmt->bindParam(":customer_id", $this->customer_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    // display orders to farmers order Page
+    function readOrders($from_record_num, $records_per_page) {
+        $query = "SELECT *
+                FROM " . $this->table_name . "
+                WHERE farmer_id =:farmer_id
+                ORDER BY id DESC
+                LIMIT {$from_record_num}, {$records_per_page}";
+
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->customer_id = htmlspecialchars(strip_tags($this->customer_id));
+
+        $stmt->bindParam(":farmer_id", $this->farmer_id, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -60,6 +81,7 @@ class Order{
                 mode_of_payment = :mode_of_payment,
                 quantity = :quantity,
                 status = :status,
+                farmer_id = :farmer_id,
                 created_at =:created_at";
 
         $stmt = $this->conn->prepare($query);
@@ -70,6 +92,7 @@ class Order{
         $this->mode_of_payment=htmlspecialchars(strip_tags($this->mode_of_payment));
         $this->quantity=htmlspecialchars(strip_tags($this->quantity));
         $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->farmer_id=htmlspecialchars(strip_tags($this->farmer_id));
         $this->created_at=htmlspecialchars(strip_tags($this->created_at));
 
         $stmt->bindParam(":product_id", $this->product_id);
@@ -78,6 +101,7 @@ class Order{
         $stmt->bindParam(":mode_of_payment", $this->mode_of_payment);
         $stmt->bindParam(":quantity", $this->quantity);
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
         $stmt->bindParam(":created_at", $this->created_at);
         
         if ($stmt->execute()) {
