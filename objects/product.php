@@ -201,6 +201,7 @@ class Product{
                 price_per_unit,
                 product_image,
                 product_name,
+                category,
                 user_id
             FROM 
                 " . $this->table_name . "
@@ -219,14 +220,9 @@ class Product{
         $this->price_per_unit = $row['price_per_unit'];
         $this->product_image = $row['product_image'];
         $this->product_name = $row['product_name'];
+        $this->category = $row['category'];
         $this->user_id = $row['user_id'];
-
     }
-
-
-
-
-
 }
 
 

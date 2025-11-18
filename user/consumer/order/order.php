@@ -72,27 +72,44 @@ $num = $stmt->rowCount();
       </div>
       <!-- status must be base on the alert box -->
       <?php
-        $status = "";
-        if ($row['status'] == "Order Placed") {
-          $status = "Preparing";
-        }elseif ($row['status'] == "Prepared") {
-          $status = "To Pick-Up";
-        }elseif ($row['status'] == "In Transit"){
-          $status = "In Transit";
-        }else{
-          $status = "Cancelled";
-        }
+      $status = $row['status']; // use directly from DB
 
-        switch ($status) {
-          case "Preparing": $class = "preparing"; break;
-          case "To Pick-Up": $class = "pickup"; break;
-          case "In Transit": $class = "transit"; break;
-          case "Complete" : $class = "complete"; break;
-          case "Cancelled": $class = "cancelled"; break;
-        }
-
-        echo "<span class='order-status $class'>$status</span>";
+      // Map DB status to display text
+      switch ($status) {
+          case "Order Placed":
+              $displayStatus = "Order Placed";
+              $class = "bg-info text-white"; // blue
+              break;
+          case "Accept":
+              $displayStatus = "Preparing";
+              $class = "bg-warning text-dark"; // yellow/orange
+              break;
+          case "Decline":
+              $displayStatus = "Declined";
+              $class = "bg-danger text-white"; // red
+              break;
+          case "Complete":
+              $displayStatus = "Complete";
+              $class = "bg-success text-white"; // green
+              break;
+          case "In Transit":
+              $displayStatus = "In Transit";
+              $class = "bg-primary text-white"; // darker blue
+              break;
+          case "Cancelled":
+              $displayStatus = "Cancelled";
+              $class = "bg-secondary text-white"; // gray
+              break;
+          default:
+              $displayStatus = $status;
+              $class = "bg-light text-dark"; // default
+              break;
+      }
       ?>
+      <span class="badge <?php echo $class; ?>">
+    <?php echo $displayStatus; ?>
+</span>
+
     </div>
 
     <hr>

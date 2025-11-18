@@ -46,6 +46,7 @@ $total_rows = $order->countAll();
                     </span>
                     <input 
                         class="form-control form-control-lg border-success-subtle"
+                        id="orderSearch" 
                         type="search"
                         placeholder="Search orders..."
                         aria-label="Search"
@@ -98,8 +99,9 @@ $total_rows = $order->countAll();
                         // Status badge color
                         $statusClass = match (strtolower($status)) {
                             'order placed' => 'bg-warning text-dark',
+                            'accept' => 'bg-primary',
                             'completed' => 'bg-success',
-                            'cancelled' => 'bg-danger',
+                            'decline' => 'bg-danger',
                             default => 'bg-secondary'
                         };
                     ?>
@@ -135,5 +137,32 @@ $total_rows = $order->countAll();
         </div>
     <?php } ?>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("orderSearch");
+    const table = document.querySelector(".table tbody");
+    const rows = table.querySelectorAll("tr");
+
+    searchInput.addEventListener("keyup", function() {
+        const filter = this.value.toLowerCase();
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(filter)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
+    // Prevent form submit on search (optional if you want live search only)
+    searchInput.closest("form").addEventListener("submit", function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+
 
 <?php include_once "../layout/layout_foot.php"; ?>

@@ -144,6 +144,7 @@ class Order{
                     customer_id,
                     mode_of_payment,
                     status,
+                    quantity,
                     created_at,
                     farmer_id
                 FROM
@@ -155,9 +156,36 @@ class Order{
 
         $stmt->bindParam(":id", $this->id);
         $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->product_id = $row['product_id'];
+        $this->invoice_number = $row['invoice_number'];
+        $this->mode_of_payment = $row['mode_of_payment'];
+        $this->customer_id = $row['customer_id'];
+        $this->status = $row['status'];
+        $this->quantity = $row['quantity'];
+        $this->created_at = $row['created_at'];
+        $this->farmer_id = $row['farmer_id'];
     }
 
-    
+    function processOrder(){
+
+        $query = "UPDATE " . $this->table_name . "
+                SET status = :status
+                WHERE id = :id";
+
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':id', $this->id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 
 
 }

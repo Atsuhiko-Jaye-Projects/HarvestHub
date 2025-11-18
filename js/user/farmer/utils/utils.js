@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let rows = '';
         let edit_modal = '';
         let postProduct_modal = '';
+        let statusClass = '';
 
         if (!response.records || response.records.length === 0) {
           $('#harvest_product').html("<tr><td colspan='7' class='text-center'>No products found.</td></tr>");
@@ -20,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         response.records.forEach(row => {
+
+          if (row.is_posted === "Pending") {
+            statusClass = "bg-warning text-dark";
+            } else if (row.is_posted === "Posted") {
+                statusClass = "bg-success text-white";
+            }
           rows += `
               <tr>
                 <td>${row.product_name}</td>
@@ -27,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class='price'>₱${row.price_per_unit}.00</td>
                 <td>${row.unit}</td>
                 <td>${row.lot_size}</td>
-                <td>${row.is_posted}</td>
+                <td><span class='badge ${statusClass} px-3 py-2 text-uppercase'>${row.is_posted}</span></td>
                 <td>
                   <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-${row.id}'>
                     <i class='bi bi-pencil-square'></i>

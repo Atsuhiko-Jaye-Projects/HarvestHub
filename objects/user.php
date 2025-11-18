@@ -317,7 +317,7 @@ class User{
 
     function getShippingAddress(){
         $query = "SELECT 
-                address, municipality, barangay, province, contact_number
+                firstname, lastname, address, municipality, barangay, province, contact_number
                 FROM " . $this->table_name . "
                 WHERE id = :id
                 LIMIT
@@ -332,6 +332,8 @@ class User{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->address = $row['address'];
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
         $this->municipality = $row['municipality'];
         $this->barangay = $row['barangay'];
         $this->province = $row['province'];
