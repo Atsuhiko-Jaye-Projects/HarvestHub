@@ -114,7 +114,7 @@ $total_rows = $order->countAll();
                             </span>
                         </td>
                         <td>
-                            <a href="<?php echo $base_url?>user/farmer/order/process_order.php?id=<?php echo $id;?>" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                            <a href="<?php echo $base_url?>user/farmer/order/process_order.php?pid=<?php echo $id;?>" class="btn btn-outline-success btn-sm rounded-pill px-3">
                                 <i class="bi bi-eye me-1"></i> View
                             </button>
                         </td>

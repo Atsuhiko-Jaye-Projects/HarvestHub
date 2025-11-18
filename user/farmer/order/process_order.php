@@ -1,4 +1,5 @@
 <?php 
+$order_id = isset($_GET['pid']) ? $_GET['pid'] : die('ERROR: missing ID.');
 include_once '../../../config/core.php';
 include_once '../../../config/database.php';
 include_once '../../../objects/order.php'; 
@@ -8,6 +9,15 @@ include_once "../layout/layout_head.php";
 
 $require_login = true;
 include_once "../../../login_checker.php";
+
+$database = new Database();
+$db = $database->getConnection();
+
+$order = new Order($db);
+
+
+
+
 ?>
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" id="checkoutForm">

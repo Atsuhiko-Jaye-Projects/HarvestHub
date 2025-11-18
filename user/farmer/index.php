@@ -53,11 +53,11 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
             <h6>Total Sales</h6>
-            <h3>₱30,137.00</h3>
+            <h3>₱0.00</h3>
           </div>
           <i class="bi bi-clipboard fs-2"></i>
         </div>
-        <div class="card-footer text-white-50 small">+3.16% From last month</div>
+        <div class="card-footer text-white-50 small">0% From last month</div>
       </div>
     </div>
     <div class="col-md-4 col-sm-6">
@@ -65,12 +65,12 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
             <h6>Pending Orders</h6>
-            <h3>15</h3>
-            <small>Orders</small>
+            <h3>0</h3>
+            <small>Order</small>
           </div>
           <i class="bi bi-hourglass-split fs-2 text-warning"></i>
         </div>
-        <div class="card-footer text-success small">+3.16% From last month</div>
+        <div class="card-footer text-success small">0% From last month</div>
       </div>
     </div>
     <div class="col-md-4 col-sm-6">
@@ -78,11 +78,11 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
             <h6>Completed Orders</h6>
-            <h3>10</h3>
+            <h3>0</h3>
           </div>
           <i class="bi bi-check-circle fs-2 text-primary"></i>
         </div>
-        <div class="card-footer text-success small">+2.24% From last month</div>
+        <div class="card-footer text-success small">0% From last month</div>
       </div>
     </div>
   </div>

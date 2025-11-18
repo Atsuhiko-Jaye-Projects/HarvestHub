@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2025 at 07:10 AM
+-- Generation Time: Nov 18, 2025 at 02:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -45,7 +45,9 @@ CREATE TABLE `cart_items` (
 
 INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`) VALUES
 (35, 108, 21, 5, '2025-11-16 12:19:38', 38, 'Ordered', '2025-11-16 04:19:43', 2),
-(36, 90, 21, 15, '2025-11-16 12:55:33', 90, 'Ordered', '2025-11-16 04:55:40', 2);
+(36, 90, 21, 15, '2025-11-16 12:55:33', 90, 'Ordered', '2025-11-16 04:55:40', 2),
+(37, 88, 23, 10, '2025-11-18 08:57:23', 80, 'Pending', '2025-11-18 00:57:23', 2),
+(38, 91, 21, 5, '2025-11-18 09:20:50', 43, 'Pending', '2025-11-18 01:20:50', 2);
 
 -- --------------------------------------------------------
 
@@ -361,7 +363,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`) VALUES
 (2, 'Richard updated', 'farmer', 'farmer@farm.com', '09772639814', 'Purok 2', 'Anapog-Sibucao', 'Anapog', 'Marinduque', 'Farmer', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', 0, '2025-11-13 17:56:29', '1', 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg'),
-(21, 'Alexis Jaye', 'Dumales', 'don@gmail.com', '09533307696', 'Anapog-Sibucao', 'Anapog', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$wGotL4R6eNsz03aTF8hFLu2cWtfYNwsIRekLjJCU8LkbMiYpf0kDO', 0, '2025-11-08 18:42:11', 0, '2025-11-15 11:02:21', '0', 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png');
+(21, 'Alexis Jaye', 'Dumales', 'don@gmail.com', '09533307696', 'Anapog-Sibucao', 'Anapog', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$wGotL4R6eNsz03aTF8hFLu2cWtfYNwsIRekLjJCU8LkbMiYpf0kDO', 0, '2025-11-08 18:42:11', 0, '2025-11-15 11:02:21', '0', 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png'),
+(22, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '09324435144', '', '', '', '', 'Farmer', '$2y$10$EUjqB4lviFzVdvhPaXKTtOpf9ehHs9oMYOTkz8jRl4VRBwLhfG2xO', 0, '2025-11-18 08:55:46', 0, '2025-11-18 08:55:46', '0', ''),
+(23, 'jessieca', 'sadiwa', 'jessiecasadiwa@gmail.com', '', '', '', '', '', 'consumer', '$2y$10$PyTxYxaqthK2SMn4fLFmSOpMiPvPeihnLiQtC4vv2A5uqM6zIj6Ua', 0, '2025-11-18 08:56:59', 0, '2025-11-18 08:56:59', '0', ''),
+(24, 'jessieca', 'sadiwa', 'jessiecasadiwa23@gmail.com', '', '', '', '', '', 'consumer', '$2y$10$VPy1fnc0bFK865B7YmVBxeE0ZAk4sxLbSCtJFjdf9.tdbvX0DUAoa', 0, '2025-11-18 09:20:16', 0, '2025-11-18 09:20:16', '0', '');
 
 --
 -- Indexes for dumped tables
@@ -447,7 +452,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -513,7 +518,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
