@@ -133,8 +133,28 @@ class Order{
         $this->mode_of_payment = $row['mode_of_payment'];
         $this->quantity = $row['quantity'];
         $this->created_at = $row['created_at'];
-        $this->customer_id = $row['customer_id'];
+        $this->customer_id = $row['customer_id'];   
+    }
+
+    function readOneOrder(){
         
+        $query = "SELECT
+                    product_id,
+                    invoice_number,
+                    customer_id,
+                    mode_of_payment,
+                    status,
+                    created_at,
+                    farmer_id
+                FROM
+                    " . $this->table_name . "
+                WHERE id = :id
+                LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->execute();
     }
 
     

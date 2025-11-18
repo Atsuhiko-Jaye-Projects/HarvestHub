@@ -189,7 +189,11 @@ $harvest_product->user_id = $_SESSION['user_id'];
 $count_total_product = $harvest_product->harvestCount();
 $product_price = $harvest_product->SumOfHarvest();
 
-$avg_price = $product_price / $count_total_product;
+if ($count_total_product > 0) {
+    $avg_price = $product_price / $count_total_product;
+} else {
+    $avg_price = 0; // or null, or whatever default you want
+}
 
 // include the stats cards
 include_once "../statistics/stats.php";
