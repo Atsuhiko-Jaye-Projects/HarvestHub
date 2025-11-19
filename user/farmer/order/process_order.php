@@ -209,7 +209,8 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
           <?php }else{
           ?>
           <h6 class="fw-bold text-muted mb-3 mt-3"> This transaction is cancelled</h6>
-          <a href="order.php" class="btn btn-outline-danger w-100">Return</a>
+          <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
+          <button type="submit" name="action" value="accept"class="btn btn-success w-100 mb-2">Re-Open</button>
           <?php
           } ?>
         </div>

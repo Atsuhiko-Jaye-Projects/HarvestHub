@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
     $order->mode_of_payment = $_POST['payment_method'];
     $order->quantity = isset($_POST['quantity'][$pid]) ? (int)$_POST['quantity'][$pid] : 1;
     $order->farmer_id = isset($_POST['farmer_id'][$pid]) ? (int)$_POST['farmer_id'][$pid] : 1;
-    $order->status = "Order Placed";
+    $order->status = "order placed";
     $order->created_at = $date;
     $order->placeOrder();
     // Update the products to ORDERED
     $cart_item->product_id = $pid;
-    $cart_item->status = "Ordered";
+    $cart_item->status = "ordered";
     $cart_item->markCartItemsAsOrdered();
   }
   header("Location: checkout.php?invoice=$invoice_no");
