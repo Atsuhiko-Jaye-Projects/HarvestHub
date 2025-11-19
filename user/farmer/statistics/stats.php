@@ -40,37 +40,18 @@ if ($page_title == "Manage Crop") {
   <!-- Card 3 -->
   <div class="card flex-fill shadow mb-3">
     <div class="card shadow-sm">
-        <div class="card-header bg-white fw-bold">Most Planted Crops</div>
+        <div class="card-header bg-white fw-bold">Top Crops in This Farm</div>
         <div class="card-body p-0">
           <table class="table mb-0">
             <thead class="table-light">
               <tr>
                 <th>Rank</th>
                 <th>Product Name</th>
-                <th>Total Sold</th>
+                <th>Total Planted</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="table-primary bg-opacity-10">
-                <td>1</td>
-                <td>Carrot</td>
-                <td>20</td>
-              </tr>
-              <tr class="bg-secondary bg-opacity-10">
-                <td>2</td>
-                <td>Eggplant</td>
-                <td>15</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Potato</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Cabbage</td>
-                <td>5</td>
-              </tr>
+            <tbody id="mostPlantedTable">
+              <tr><td colspan="3" class="text-center">Loading...</td></tr>
             </tbody>
           </table>
         </div>

@@ -187,6 +187,51 @@ class Order{
         return false;
     }
 
+    function countPendingOrder(){
+        $query = "SELECT COUNT(*) as pending_order
+                  FROM " . $this->table_name . "
+                  WHERE farmer_id = :farmer_id AND status='pending'";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['pending_order'] ?? 0;
+    }
+
+    function countCompletedOrder(){
+        $query = "SELECT COUNT(*) as completed_order
+                  FROM " . $this->table_name . "
+                  WHERE farmer_id = :farmer_id AND status='complete'";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['completed_order'] ?? 0;
+    }
+
+    // get the completed order to display the sales
+    function totalSales() {
+        $query = "SELECT SUM(o.quantity * p.price_per_unit) AS total_sales
+                FROM " . $this->table_name . " o
+                JOIN products p ON o.product_id = p.product_id
+                WHERE o.farmer_id = :farmer_id
+                AND o.status = 'Complete'";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_sales'] ?? 0; // 0 if no sales
+    }
+
+
 
 }
 

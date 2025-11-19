@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2025 at 02:40 AM
+-- Generation Time: Nov 19, 2025 at 02:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -79,17 +79,18 @@ CREATE TABLE `crops` (
   `estimated_harvest_date` varchar(255) NOT NULL,
   `suggested_price` int(11) NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `stocks` int(11) NOT NULL,
+  `plant_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `crops`
 --
 
-INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`) VALUES
-(32, 2, 'Strawberry', 1, 50, '2025-11-08', '2026-01-16', 0, '2025-11-07 18:42:05', '2025-11-08 02:42:05'),
-(33, 2, 'Strawberry', 1, 50, '2025-11-10', '2026-03-19', 0, '2025-11-10 10:44:55', '2025-11-10 18:44:55'),
-(34, 2, 'Strawberrys updated', 1, 50, '2025-11-10', '2026-01-15', 0, '2025-11-10 10:45:45', '2025-11-10 18:45:35');
+INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`) VALUES
+(46, 2, 'Strawberry', 2, 512, '2025-11-19', '2026-01-20', 0, '2025-11-19 12:03:41', '2025-11-19 20:03:41', 2472, 1236),
+(47, 2, 'mango', 15, 512, '2025-11-19', '2026-04-18', 0, '2025-11-19 12:05:33', '2025-11-19 20:04:31', 930, 62);
 
 -- --------------------------------------------------------
 
@@ -149,7 +150,8 @@ CREATE TABLE `farm_details` (
 --
 
 INSERT INTO `farm_details` (`id`, `user_id`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `created_at`, `modified_at`, `lot_size`, `used_lot_size`, `farm_name`, `farm_type`) VALUES
-(26, 2, 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', '2025-10-27 23:56:09', '2025-10-27 15:56:09', 5000, 0, '', 'Vegetable');
+(26, 2, 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', '2025-10-27 23:56:09', '2025-10-27 15:56:09', 5000, 0, '', 'Vegetable'),
+(27, 22, 'Mogpog', 'mogpog', 'Purok 2', '', '2025-11-18 09:53:03', '2025-11-18 01:53:03', 5000, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -214,7 +216,10 @@ INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_un
 (105, 2, 'Kamatis', 29, 'KG', 'Vegetable', '1000', '', 0, 0, '36fc1f203d6ed26741703fab7790adcbda4abc03-sss number.jpg', '2025-11-15 14:06:05', '2025-11-15 22:06:05', 'Pending'),
 (106, 2, 'Sitaw', 38, 'KG', 'Vegetable', '1000', '', 0, 0, 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png', '2025-11-15 14:10:52', '2025-11-15 22:10:52', 'Pending'),
 (107, 2, 'kalabasa', 25, 'KG', 'Vegetable', '1000', '', 0, 0, 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png', '2025-11-15 14:49:41', '2025-11-15 22:49:41', 'Pending'),
-(108, 2, 'patatas', 38, 'KG', 'Vegetable', '500', 'asdsad', 0, 0, '19f8582993b0eb48f7d2056cb04f6a0c54d96376-1.jpg', '2025-11-16 02:18:10', '2025-11-15 23:05:00', 'Posted');
+(108, 2, 'patatas', 38, 'KG', 'Vegetable', '500', 'asdsad', 0, 0, '19f8582993b0eb48f7d2056cb04f6a0c54d96376-1.jpg', '2025-11-16 02:18:10', '2025-11-15 23:05:00', 'Posted'),
+(109, 2, 'New Patatas', 63, 'KG', 'Vegetable', '1000', '', 1, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-19 12:24:54', '2025-11-18 19:17:34', 'Posted'),
+(110, 2, 'Sitaw', 78, 'KG', 'Vegetable', '1000', 'great', 2200, 0, '22b5e0083bf9b56d876756682c4a60946b5e2741-3.jpg', '2025-11-19 12:33:01', '2025-11-18 19:21:07', 'Pending'),
+(111, 2, 'new breed kamatis', 36, 'KG', 'Vegetable', '1000', 'new updates', 4800, 0, 'a36850033c95d1912a366a36403a1c428a1a5a75-b811bd39-815d-4dcb-a7cf-75518f84e0c0.jpg', '2025-11-19 12:32:53', '2025-11-18 19:22:14', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -253,8 +258,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`) VALUES
-(43, 108, 'INV-691950DF42E3F', 21, 'COD', 5, 'Order Placed', '2025-11-16 12:19:43', '2025-11-16 04:19:43', 2),
-(44, 90, 'INV-6919594C9AC8E', 21, 'COD', 15, 'Order Placed', '2025-11-16 12:55:40', '2025-11-16 04:55:40', 2);
+(43, 108, 'INV-691950DF42E3F', 21, 'COD', 5, 'order placed', '2025-11-16 12:19:43', '2025-11-16 04:19:43', 2),
+(44, 90, 'INV-6919594C9AC8E', 21, 'COD', 15, 'complete', '2025-11-16 12:55:40', '2025-11-16 04:55:40', 2);
 
 -- --------------------------------------------------------
 
@@ -297,13 +302,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`) VALUES
-(45, 91, 'Kalabasa', 43, 2, 'Vegetable', 'KG', 0, 'Fresh Native Kalabasa (Squash)\r\nHarvested from local farms, our kalabasa is naturally sweet and rich in flavor — perfect for ginataang kalabasa, soups, or stir-fried dishes. Packed with nutrients and freshness straight from the field.', 1000, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-07 14:55:46', '2025-11-07 22:55:46', 'Active'),
-(46, 90, 'Egg Plant', 90, 2, 'Vegetable', 'KG', 0, 'Fresh Native Eggplant (Talong)\r\nHandpicked from local farms, our eggplants are firm, shiny, and full of flavor — perfect for tortang talong, pinakbet, or grilled dishes. Delivered fresh straight from the farm to your table.', 1000, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', 0, '2025-11-07 14:55:51', '2025-11-07 22:55:51', 'Active'),
-(47, 89, 'Kangkong', 60, 2, 'Vegetable', 'KG', 0, 'Fresh Native Kangkong\r\nLocally grown and freshly harvested, our kangkong is crisp, vibrant, and perfect for sinigang, adobo, or stir-fried dishes. Delivered straight from Mogpog farms to your kitchen for that farm-fresh goodness.', 1000, 0, 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg', 0, '2025-11-07 14:55:52', '2025-11-07 22:55:52', 'Active'),
-(48, 88, 'Okra', 80, 2, 'Vegetable', 'KG', 0, 'Fresh Farm Okra\r\nCrisp, tender, and freshly harvested from local farms in Mogpog. Our okra is perfect for stews, sinigang, pinakbet, or frying. Enjoy the taste of fresh produce grown with care and delivered straight from the farm to your table.', 1000, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-07 14:55:54', '2025-11-07 22:55:54', 'Active'),
-(49, 87, 'Tomatoes/Kamatis', 100, 2, 'Vegetable', 'KG', 0, 'Fresh Farm Tomatoes\r\nHandpicked from local farms in Mogpog, these vibrant red tomatoes are juicy, flavorful, and packed with natural sweetness. Perfect for salads, sauces, and everyday cooking. Enjoy farm-fresh quality straight from the source.', 1000, 0, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', 0, '2025-11-07 14:55:56', '2025-11-07 22:55:56', 'Active'),
-(50, 91, 'Kalabasa', 0, 2, 'Vegetable', 'KG', 0, 'Fresh Native Kalabasa (Squash)\r\nHarvested from local farms, our kalabasa is naturally sweet and rich in flavor — perfect for ginataang kalabasa, soups, or stir-fried dishes. Packed with nutrients and freshness straight from the field.', 1000, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-07 18:24:32', '2025-11-08 02:24:32', 'Active'),
-(51, 108, 'patatas', 38, 2, 'Vegetable', 'KG', 0, 'asdsad', 500, 0, '19f8582993b0eb48f7d2056cb04f6a0c54d96376-1.jpg', 0, '2025-11-16 02:18:10', '2025-11-16 10:18:10', 'Active');
+(52, 110, 'Sitaw', 78, 2, 'Vegetable', 'KG', 0, '', 1000, 480, '22b5e0083bf9b56d876756682c4a60946b5e2741-3.jpg', 26, '2025-11-18 11:24:05', '2025-11-18 19:24:05', 'Active'),
+(57, 111, 'new breed kamatis', 36, 2, 'Vegetable', 'KG', 0, 'new updates', 1000, 4800, 'a36850033c95d1912a366a36403a1c428a1a5a75-b811bd39-815d-4dcb-a7cf-75518f84e0c0.jpg', 526, '2025-11-18 12:08:16', '2025-11-18 20:08:16', 'Active'),
+(58, 109, 'New Patatas', 63, 2, 'Vegetable', 'KG', 0, '', 1000, 500, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 126, '2025-11-19 12:24:54', '2025-11-19 20:24:54', 'Active');
 
 -- --------------------------------------------------------
 
@@ -366,7 +367,8 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_nu
 (21, 'Alexis Jaye', 'Dumales', 'don@gmail.com', '09533307696', 'Anapog-Sibucao', 'Anapog', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$wGotL4R6eNsz03aTF8hFLu2cWtfYNwsIRekLjJCU8LkbMiYpf0kDO', 0, '2025-11-08 18:42:11', 0, '2025-11-15 11:02:21', '0', 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png'),
 (22, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '09324435144', '', '', '', '', 'Farmer', '$2y$10$EUjqB4lviFzVdvhPaXKTtOpf9ehHs9oMYOTkz8jRl4VRBwLhfG2xO', 0, '2025-11-18 08:55:46', 0, '2025-11-18 08:55:46', '0', ''),
 (23, 'jessieca', 'sadiwa', 'jessiecasadiwa@gmail.com', '', '', '', '', '', 'consumer', '$2y$10$PyTxYxaqthK2SMn4fLFmSOpMiPvPeihnLiQtC4vv2A5uqM6zIj6Ua', 0, '2025-11-18 08:56:59', 0, '2025-11-18 08:56:59', '0', ''),
-(24, 'jessieca', 'sadiwa', 'jessiecasadiwa23@gmail.com', '', '', '', '', '', 'consumer', '$2y$10$VPy1fnc0bFK865B7YmVBxeE0ZAk4sxLbSCtJFjdf9.tdbvX0DUAoa', 0, '2025-11-18 09:20:16', 0, '2025-11-18 09:20:16', '0', '');
+(24, 'jessieca', 'sadiwa', 'jessiecasadiwa23@gmail.com', '', '', '', '', '', 'consumer', '$2y$10$VPy1fnc0bFK865B7YmVBxeE0ZAk4sxLbSCtJFjdf9.tdbvX0DUAoa', 0, '2025-11-18 09:20:16', 0, '2025-11-18 09:20:16', '0', ''),
+(25, 'asdasd', 'asdasd', 'ajcodalify@gmail.com', '', '', '', '', '', 'consumer', '$2y$10$YFeDEzSSeKqdYwVYPHzc/OHtthSLxfn5IbFQfew334CClyLlc6KGu', 0, '2025-11-19 08:51:22', 0, '2025-11-19 08:51:22', '0', '');
 
 --
 -- Indexes for dumped tables
@@ -464,7 +466,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -482,7 +484,7 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `farm_resources`
@@ -494,7 +496,7 @@ ALTER TABLE `farm_resources`
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -506,7 +508,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -518,7 +520,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -8,26 +8,26 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-box-seam text-success fs-2 mb-2"></i>
-          <h6 class="text-muted">Total Crops</h6>
-          <h4 id="totalCrops">0</h4>
+          <h6 class="text-muted">Total Crop Type</h6>
+          <h4 id="recordCounts"></h4>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
-          <i class="bi bi-cart-check text-primary fs-2 mb-2"></i>
-          <h6 class="text-muted">Posted Crops</h6>
-          <h4 id="postedCrops">0</h4>
+          <i class="bi bi-box-seam text-primary fs-2 mb-2"></i>
+          <h6 class="text-muted">Crops Stocks (KG)</h6>
+          <h4 id="crop_stocks">0</h4>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
-          <i class="bi bi-hourglass-split text-warning fs-2 mb-2"></i>
-          <h6 class="text-muted">Pending</h6>
-          <h4 id="pendingCrops">0</h4>
+         <i class="bi bi-tree text-success fs-2 mb-2"></i>
+          <h6 class="text-muted">Total Planted Crops</h6>
+          <h4 id="planted_crop_count">0</h4>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
           <h6 class="text-muted">Avg. Yield (kg)</h6>
-          <h4 id="avgYield">0</h4>
+          <h4 id="avg_Yields"><span>Kg</span></h4>
         </div>
       </div>
     </div>
@@ -74,23 +74,19 @@
   <!-- Search and Filter -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
     <input type="text" id="searchCrop" class="form-control w-100 w-md-50" placeholder="Search crop...">
-    <select id="statusFilter" class="form-select w-100 w-md-auto">
-      <option value="">All Status</option>
-      <option value="planted">Planted</option>
-      <option value="growing">Growing</option>
-      <option value="germination">Germination</option>
-      <option value="ready to harvest">Ready To Harvest</option>
-    </select>
+
   </div>
 
   <!-- Crop Table -->
   <div class="table-responsive shadow-sm rounded-4">
-    <table class="table table-hover align-middle mb-0">
-      <thead class="table-success text-uppercase">
+    <table class="table table-hover table-bordered align-middle mb-0">
+      <thead class="table-success text-uppercase text-center ">
         <tr>
           <th>Crop Name</th>
-          <th>Yield (kg)</th>
+          <th>KG/Plant</th>
           <th>Cultivated Area (sqm)</th>
+          <th>Harvest Stocks (EST.)</th>
+          <th>Planted Crops</th>
           <th>Date Planted</th>
           <th>Harvest Est.</th>
           <th>Duration</th>

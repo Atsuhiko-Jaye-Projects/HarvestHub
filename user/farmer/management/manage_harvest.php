@@ -77,8 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $kilo_harvested_product = 1;
             }
 
+            $stocks = $plant_count * $kilo_per_plant;
+
             // Cost per kg
             $cost_per_kg = $farm_expense / $kilo_harvested_product;
+
+            
 
             // Selling price with markup
             $selling_price = $cost_per_kg * $markup;
@@ -93,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->user_id = $_SESSION['user_id'];
         $harvest_product->product_name = $_POST['product_name'];
         $harvest_product->category = $_POST['category'];
+        $harvest_product->total_stocks = $stocks;
         $harvest_product->unit = "KG";
         $harvest_product->product_description = $_POST['product_description'];
         $harvest_product->lot_size = $_POST['lot_size'];
@@ -136,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->category = $_POST['category'];
         $harvest_product->unit = $_POST['unit'];
         $harvest_product->product_description = $_POST['product_description'];
-		    $harvest_product->lot_size = $_POST['lot_size'];
+		$harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
 
         if ($harvest_product->updateHarvestProduct()) {
@@ -158,8 +163,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->price_per_unit = $_POST['price_per_unit'];
         $product->category = $_POST['category'];
         $product->unit = $_POST['unit'];
+        $product->total_stocks = $_POST['total_stocks'];
         $product->product_description = $_POST['product_description'];
-		    $product->lot_size = $_POST['lot_size'];
+		$product->lot_size = $_POST['lot_size'];
         $product->product_image = $_POST['product_image'] ?? 'default.png';
         $product->status = "Active";
 
@@ -188,6 +194,8 @@ $farm_lot = $farm->getFarmLot();
 $harvest_product->user_id = $_SESSION['user_id'];
 $count_total_product = $harvest_product->harvestCount();
 $product_price = $harvest_product->SumOfHarvest();
+$count_posted_product = $harvest_product->postedProductCount();
+$count_pending_product = $harvest_product->pendingProductCount();
 
 if ($count_total_product > 0) {
     $avg_price = $product_price / $count_total_product;

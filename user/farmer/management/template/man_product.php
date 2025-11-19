@@ -15,7 +15,7 @@
         <div class="card-body text-center">
           <i class="bi bi-cart-check text-primary fs-2 mb-2"></i>
           <h6 class="text-muted">Posted Products</h6>
-          <h4 id="postedProducts">0</h4>
+          <h4 id="postedProducts"><?php echo $total_posted_product; ?></h4>
         </div>
       </div>
     </div>
@@ -23,8 +23,8 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-hourglass-split text-warning fs-2 mb-2"></i>
-          <h6 class="text-muted">Pending</h6>
-          <h4 id="pendingProducts">0</h4>
+          <h6 class="text-muted">Total Product Sold (KG)</h6>
+          <h4 id="pendingProducts"><?php echo number_format($product_sold_count); ?> KG</h4>
         </div>
       </div>
     </div>
@@ -32,8 +32,8 @@
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
-          <h6 class="text-muted">Avg. Price</h6>
-          <h4 id="avgPrice">₱0.00</h4>
+          <h6 class="text-muted">Farm Product Worth</h6>
+          <h4 id="avgPrice">₱ <?php echo number_format($product_total_value, 2)?></h4>
         </div>
       </div>
     </div>
@@ -74,13 +74,14 @@
   <?php
     if ($num > 0) {
   ?>
-  <div class="table-responsive shadow-sm rounded-4">
-    <table class="table table-hover align-middle mb-0" id="productTable">
-      <thead class="table-success text-uppercase">
+  <div class="table-responsive shadow-sm ">
+    <table class="table table-hover table-bordered align-middle mb-0" id="productTable">
+      <thead class="table-success text-uppercase text-center">
         <tr>
           <th>Product Name</th>
           <th>Category</th>
           <th>Price</th>
+          <th>Available (kg)</th>
           <th>Unit</th>
           <th>Lot Size</th>
           <th>Date</th>
@@ -91,19 +92,20 @@
       <?php
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           extract($row);
-          echo "<tr class='align-middle'>";
+          echo "<tr class='align-middle text-center'>";
             echo "<td>{$product_name}</td>";
             echo "<td>{$category}</td>";
-            echo "<td>₱{$price_per_unit}</td>";
+            echo "<td>₱ " . number_format($price_per_unit, 2) . "</td>";
+            echo "<td>{$total_stocks} kg</td>";
             echo "<td>{$unit}</td>";
-            echo "<td>{$lot_size}</td>";
-            echo "<td>{$created_at}</td>";
+            echo "<td>".number_format($lot_size)." sqm</td>";
+            echo "<td>". date("m-d-Y", strtotime($created_at))."</td>";
             echo "<td class='text-center'>";
               echo "<div class='btn-group' role='group'>";
-              echo "<button class='btn btn-outline-primary btn-sm rounded-pill me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id' title='Edit'>
-                      <i class='bi bi-pencil-square'></i>
-                    </button>";
-              echo "<a href='#' data-delete-id='{$id}' class='btn btn-outline-danger btn-sm rounded-pill delete-object' title='Remove'>
+              // echo "<button class='btn btn-outline-primary btn-sm rounded-pill me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id' title='Edit'>
+              //         <i class='bi bi-pencil-square'></i>
+              //       </button>";
+              echo "<a href='#' data-delete-id='{$id}' class='btn btn-outline-danger delete-object' title='Remove'>
                       <i class='bi bi-trash'></i>
                     </a>";
               echo "</div>";

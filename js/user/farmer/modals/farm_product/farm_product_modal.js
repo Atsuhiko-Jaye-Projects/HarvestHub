@@ -90,7 +90,7 @@ function postHarvestProduct(row){
         <form action="${ProductPostingURL}" method="POST" enctype="multipart/form-data">
 
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Product Detailsss</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
@@ -112,11 +112,15 @@ function postHarvestProduct(row){
                 </div>
 
                 <div class="row mb-3">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <label>Price</label>
                     <input type="text" name="price_per_unit" value="${row.price_per_unit}" class="form-control" readonly>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
+                    <label>EST Stocks (KG)</label>
+                    <input type="text" name="total_stocks" value="${row.total_stocks}" class="form-control" readonly>
+                  </div>
+                  <div class="col-md-4">
                     <label>Unit</label>
                     <input type="text" name="unit" value="${row.unit}" class="form-control" readonly>
                   </div>

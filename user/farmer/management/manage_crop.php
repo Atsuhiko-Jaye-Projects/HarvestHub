@@ -35,6 +35,8 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
 $crop->user_id = $_SESSION['user_id'];
 
 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     include_once "../../../config/database.php";
@@ -49,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     // ===== CREATE =====
     if ($_POST['action'] == 'create') {
 
-        // $planted_area = isset($_POST['cultivated_area']) ? (float)str_replace(',', '', $_POST['cultivated_area']) : 0;
-        // $farm_expense = isset($_POST['farm_expense']) ? (float)str_replace(',', '', $_POST['farm_expense']) : 0;
+        $kilo_per_plant = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
+        $plant_counts = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
         // $total_farm_size = isset($_POST['farm_size_sqm']) ? (float)str_replace(',', '', $_POST['farm_size_sqm']) : 0;
         //
         // // General markup (50% profit)
@@ -59,33 +61,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         // // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
         // $general_yield = 0.08;
         //
-        // // Prevent division by zero
-        // if ($planted_area > 0 && $farm_expense > 0 && $total_farm_size > 0) {
-        //
-        //     // 1️⃣ Compute expense for the planted lot (proportionally)
-        //     $expense_farm_lot = ($farm_expense / $total_farm_size) * $planted_area;
-        //
-        //     // 2️⃣ Compute estimated yield (kg)
-        //     $total_harvested_yield = $planted_area * $general_yield;
-        //
-        //     // 3️⃣ Compute cost per kg
-        //     $cost_per_kg = $expense_farm_lot / $total_harvested_yield;
-        //
-        //     // 4️⃣ Add markup
-        //     $selling_price = $cost_per_kg * $markup;
-        //
-        //     // 5️⃣ Round to 2 decimals for currency
-        //     $harvest_product->price_per_unit = round($selling_price, 2);
-        //
-        // } else {
-        //     $harvest_product->price_per_unit = 0;
-        // }
+        // Prevent division by zero
+        if ($kilo_per_plant > 0 && $plant_counts > 0) {
+
+            $estimated_stocks = ($plant_counts * $kilo_per_plant);
+        
+        } else {
+            $harvest_product->price_per_unit = 0;
+        }
 
         $crop->user_id = $_SESSION['user_id'];
         $crop->crop_name = $_POST['crop_name'];
         $crop->date_planted = $_POST['date_planted'];
         $crop->estimated_harvest_date = $_POST['estimated_harvest_date'];
-        $crop->yield = $_POST['yield'];
+        $crop->yield = $_POST['kilo_per_plant'];
+        $crop->plant_count = $_POST['plant_count'];
+        $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
 
 
@@ -106,10 +97,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
         $crop->id = $_POST['id'];
         $crop->user_id = $_SESSION['user_id'];
+        $kilo_per_plant = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
+        $plant_counts = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
+        // $total_farm_size = isset($_POST['farm_size_sqm']) ? (float)str_replace(',', '', $_POST['farm_size_sqm']) : 0;
+        //
+        // // General markup (50% profit)
+        // $markup = 1.5;
+        //
+        // // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
+        // $general_yield = 0.08;
+        //
+        // Prevent division by zero
+        if ($kilo_per_plant > 0 && $plant_counts > 0) {
+
+            $estimated_stocks = ($plant_counts * $kilo_per_plant);
+        
+        } else {
+            $harvest_product->price_per_unit = 0;
+        }
+
+        $crop->user_id = $_SESSION['user_id'];
         $crop->crop_name = $_POST['crop_name'];
         $crop->date_planted = $_POST['date_planted'];
         $crop->estimated_harvest_date = $_POST['estimated_harvest_date'];
-        $crop->yield = $_POST['yield'];
+        $crop->yield = $_POST['kilo_per_plant'];
+        $crop->plant_count = $_POST['plant_count'];
+        $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->is_posted = "Pending";
 

@@ -317,6 +317,32 @@ class HarvestProduct{
         return $total_price = $row['total_price'];
     }
 
+    function postedProductCount(){
+        $query = "SELECT COUNT(*) AS total
+                  FROM ". $this->table_name ."
+                  WHERE user_id = :user_id
+                  AND is_posted = 'posted'";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam("user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $total = $row['total'];
+    }
+    
+    function pendingProductCount(){
+        $query = "SELECT COUNT(*) AS total
+                  FROM ". $this->table_name ."
+                  WHERE user_id = :user_id
+                  AND is_posted = 'pending'";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam("user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $total = $row['total'];
+    }
+
 
 
 

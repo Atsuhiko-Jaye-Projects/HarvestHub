@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user->firstname = $_POST['firstname'];
     $user->lastname = $_POST['lastname'];
     $user->email_address = $_POST['email_address'];
+    $user->contact_number = $_POST['contact_number'];
     $user->password = $_POST['password'];
     $user->farm_details_exists = "0";
     $user->user_type = "consumer";
@@ -76,9 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="lastname" class="form-control" placeholder="Last Name" required>
                 </div>
 
-                <div class="mb-3">
+                <div class="col-md-6 mb-3">
+                    <input type="text" name="contact_number" class="form-control" placeholder="Contact No" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
                     <input type="email" name="email_address" class="form-control" placeholder="Email address" required>
                 </div>
+                
                 <div class="mb-3">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
                 </div>

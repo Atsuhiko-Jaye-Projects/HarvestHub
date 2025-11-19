@@ -45,23 +45,20 @@ $service_fee = $sub_total * 0.0225;
 
 
 
-if (isset($_POST['action'])) {
-
+if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel'])) {
     $order->id = $_POST['order_id'];
-    $order->status = $_POST['action']; // accept OR decline
+    $order->status = $_POST['action'];
 
     if ($order->processOrder($_POST['action'])) {
-        
         echo "<div class='alert alert-success'>
                 Order " . ucfirst($_POST['action']) . "
               </div>";
-
     } else {
-
         echo "<div class='alert alert-danger'>
                 Failed to update order
               </div>";
     }
+}elseif (!empty($_POST['action']) == 'complete') {
 }
 
 
@@ -192,11 +189,29 @@ if (isset($_POST['action'])) {
       <div class="card shadow-sm position-sticky mt-3" style="top: 20px;">
         <div class="card-body text-center">
 
+          <?php
+            if ($order->status == "order placed") {
+          ?>
           <h6 class="fw-bold text-muted mb-3">Confirm This Order?</h6>
-
-          <button type="submit" name="action" value="Accept"class="btn btn-success w-100 mb-2">Accept Order</button>
-          <button type="submit" name="action" value="Decline" class="btn btn-outline-danger w-100">Decline Order</button>
-
+          <button type="submit" name="action" value="accept"class="btn btn-success w-100 mb-2">Accept Order</button>
+          <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline Order</button>
+          <?php
+            }elseif($order->status == "accept"){
+          ?>
+          <h6 class="fw-bold text-muted mb-3 mt-3">Complete this transaction?</h6>
+          <button type="submit" name="action" value="complete"class="btn btn-success w-100 mb-2">Complete</button>
+          <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
+          <?php
+            }elseif($order->status == "complete"){
+          ?>
+          <h6 class="fw-bold text-muted mb-3 mt-3"> This transaction is complete</h6>
+          <a href="order.php" class="btn btn-outline-success w-100">Return</a>
+          <?php }else{
+          ?>
+          <h6 class="fw-bold text-muted mb-3 mt-3"> This transaction is cancelled</h6>
+          <a href="order.php" class="btn btn-outline-danger w-100">Return</a>
+          <?php
+          } ?>
         </div>
       </div>
 
@@ -207,5 +222,31 @@ if (isset($_POST['action'])) {
   <!-- ✅ Hidden container for dynamic JS data -->
   <div id="selectedProductsContainer"></div>
 </form>
+
+<script>
+  document.querySelectorAll('.order-action').forEach(button => {
+    button.addEventListener('click', function() {
+        const orderId = this.dataset.id;
+        const action = this.dataset.action;
+
+        fetch('process_order.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `order_id=${orderId}&action=${action}`
+        })
+        .then(res => res.text())
+        .then(data => {
+            // display response message
+            document.getElementById('order-msg').innerHTML = data;
+
+            // optionally, reload chart or totals
+            // loadChart(); or updateDashboard();
+        });
+    });
+});
+
+</script>
+
+
 
 <?php include_once "../layout/layout_foot.php"; ?>

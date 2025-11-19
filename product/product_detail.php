@@ -107,6 +107,10 @@ if ($_POST) {
       <p class="text-secondary">
         <?php echo $product->product_description; ?>
       </p>
+      <h6>Stocks:</h6>
+      <p class="text-secondary">
+        <?php echo $product->total_stocks; ?>
+      </p>
 
       <p><strong>Lot Size:</strong> 30</p>
 

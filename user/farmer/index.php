@@ -1,11 +1,18 @@
 <?php
 include_once "../../config/core.php";
+include_once "../../config/database.php";
+include_once "../../objects/order.php";
 
 $page_title = "Index";
 $require_login = true;
 include_once "../../login_checker.php";
-
 include_once "layout/layout_head.php";
+
+$database = new Database();
+$db = $database->getConnection();
+
+$order = new Order($db);
+
 
 if ($_SESSION['is_farm_registered'] == 0) {
 
@@ -43,6 +50,13 @@ if ($_SESSION['is_farm_registered'] == 0) {
     include_once "farm/farm_detail.php";
 
 } else {
+  // display the complete and pending count to dashboard
+  $order->farmer_id = $_SESSION['user_id'];
+  $pending_order_count = $order->countPendingOrder();
+  $completed_order_count = $order->countCompletedOrder();
+
+  // display the total sales to dashboard
+  $total = $order->totalSales();
 ?>
 
 <div class="container-fluid mt-3">
@@ -53,7 +67,7 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
             <h6>Total Sales</h6>
-            <h3>₱0.00</h3>
+            <h3><?php echo "₱" . number_format($total,2);?></h3>
           </div>
           <i class="bi bi-clipboard fs-2"></i>
         </div>
@@ -65,7 +79,7 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
             <h6>Pending Orders</h6>
-            <h3>0</h3>
+            <h3><?php echo $pending_order_count;?></h3>
             <small>Order</small>
           </div>
           <i class="bi bi-hourglass-split fs-2 text-warning"></i>
@@ -78,7 +92,7 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
             <h6>Completed Orders</h6>
-            <h3>0</h3>
+            <h3><?php echo $completed_order_count;?></h3>
           </div>
           <i class="bi bi-check-circle fs-2 text-primary"></i>
         </div>

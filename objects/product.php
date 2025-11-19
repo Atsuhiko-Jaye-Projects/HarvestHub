@@ -39,6 +39,7 @@ class Product{
                 price_per_unit=:price_per_unit,
                 category=:category,
                 lot_size=:lot_size,
+                total_stocks=:total_stocks,
                 product_image = :product_image,
                 product_description=:product_description,
                 status=:status,
@@ -51,6 +52,7 @@ class Product{
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
         $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
         $this->unit = htmlspecialchars(strip_tags($this->unit));
+        $this->total_stocks = htmlspecialchars(strip_tags($this->total_stocks));
         $this->category = htmlspecialchars(strip_tags($this->category));
         $this->lot_size = htmlspecialchars(strip_tags($this->lot_size));
         $this->status = htmlspecialchars(strip_tags($this->status));
@@ -67,6 +69,7 @@ class Product{
         $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":product_image", $this->product_image);
         $stmt->bindParam(":unit", $this->unit);
+        $stmt->bindParam(":total_stocks", $this->total_stocks);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":created_at", $this->created_at);
 
@@ -222,6 +225,50 @@ class Product{
         $this->product_name = $row['product_name'];
         $this->category = $row['category'];
         $this->user_id = $row['user_id'];
+    }
+
+    function activeProductCount(){
+        $query = "SELECT COUNT(*) as total
+                  FROM 
+                    " . $this->table_name . "
+                  WHERE user_id = :user_id AND status = 'Active'";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $total = $row['total'];
+    }
+
+    function countProductSold(){
+        $query = "SELECT SUM(sold_count) as product_sold_count
+                  FROM 
+                    " . $this->table_name . "
+                  WHERE user_id = :user_id AND status = 'Active'";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $total = $row['product_sold_count'];
+    }
+
+    function productValue(){
+
+        $query = "SELECT 
+                  SUM(price_per_unit * total_stocks) as total_value
+                  FROM
+                  " . $this->table_name . "
+                  WHERE 
+                    user_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_value'];
+
     }
 }
 

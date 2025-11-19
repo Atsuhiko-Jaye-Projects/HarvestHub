@@ -61,6 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // include stats card
 include_once "../statistics/stats.php";
 
+//show the data counts in the cards
+$product->user_id = $_SESSION['user_id'];
+$total_posted_product = $product->activeProductCount();
+$product_sold_count = $product->countProductSold();
+$product_total_value = $product->productValue();
+
 // include the management product template
 include_once "template/man_product.php";
 ?>

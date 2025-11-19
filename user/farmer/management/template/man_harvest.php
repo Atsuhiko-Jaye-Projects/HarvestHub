@@ -18,7 +18,7 @@
         <div class="card-body text-center">
           <i class="bi bi-cart-check text-primary fs-2 mb-2"></i>
           <h6 class="text-muted">Posted Products</h6>
-          <h4 id="postedProducts">0</h4>
+          <h4 id="postedProducts"><?php echo $count_posted_product; ?></h4>
         </div>
       </div>
     </div>
@@ -26,8 +26,8 @@
       <div class="card border-0 shadow-sm h-100">
         <div class="card-body text-center">
           <i class="bi bi-hourglass-split text-warning fs-2 mb-2"></i>
-          <h6 class="text-muted">Pending</h6>
-          <h4 id="pendingProducts">0</h4>
+          <h6 class="text-muted">Pending Products</h6>
+          <h4 id="pendingProducts"><?php echo $count_pending_product; ?></h4>
         </div>
       </div>
     </div>
@@ -75,11 +75,7 @@
       <input type="text" id="searchProduct" class="form-control" placeholder="Search product...">
     </div>
     <div>
-      <select id="statusFilter" class="form-select w-auto">
-        <option value="">All Status</option>
-        <option value="Posted">Posted</option>
-        <option value="Pending">Pending</option>
-      </select>
+
     </div>
   </div>
 
@@ -92,6 +88,7 @@
           <th>Category</th>
           <th>Price (/KG)</th>
           <th>Unit</th>
+          <th>EST Stocks</th>
           <th>Lot Size</th>
           <th>Status</th>
           <th class="text-center">Action</th>

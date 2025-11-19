@@ -35,11 +35,12 @@
                 </div>
                 <div class="col-md-6">
                     <label>
-                      Yield <span class="badge bg-primary">General Yield 0.8</span>
+                      KG/Plant (Estimated)
                     </label>
-                    <input type="text" name="yield" class="form-control" value="0.8" readonly>
+                    <input type="number" name="kilo_per_plant" class="form-control">
                 </div>
               </div>
+              <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Cultivated Area</label>
                     <input type="number"
@@ -49,6 +50,13 @@
                       if (this.value < 50) { alert('Minimum cultivated area size is 50 sqm'); this.value = 50; }
                       if (this.value > 5000) { alert('Maximum cultivated area size is 5000 sqm'); this.value = 5000; }" value="50">
                 </div>
+                  <div class="col-md-6">
+                    <label>
+                      No. of plants (Estimated)
+                    </label>
+                    <input type="number" name="plant_count" class="form-control">
+                </div>
+              </div>
             </div>
           </div>
         </div>

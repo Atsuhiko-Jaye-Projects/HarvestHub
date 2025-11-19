@@ -13,12 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
         let edit_modal = '';
         let postProduct_modal = '';
         let statusClass = '';
+        let totalrows = response.records.length;
+        let postedPlantCount = 0;
 
         if (!response.records || response.records.length === 0) {
           $('#harvest_product').html("<tr><td colspan='7' class='text-center'>No products found.</td></tr>");
           $('#harvest_product_pagination').html('');
           return;
         }
+
 
         response.records.forEach(row => {
 
@@ -27,12 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (row.is_posted === "Posted") {
                 statusClass = "bg-success text-white";
             }
+
           rows += `
               <tr>
                 <td>${row.product_name}</td>
                 <td>${row.category}</td>
                 <td class='price'>₱${row.price_per_unit}.00</td>
                 <td>${row.unit}</td>
+                <td>${Number(row.total_stocks).toLocaleString()}</td>
                 <td>${row.lot_size}</td>
                 <td><span class='badge ${statusClass} px-3 py-2 text-uppercase'>${row.is_posted}</span></td>
                 <td>
@@ -129,6 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
       success: function(response) {
         let rows = '';
         let update_crop_modal = '';
+        let total_stocks = 0;
+        let planted_crops = 0;
+        let total_harvest = 0;
+        let cultivatedArea = 0;
+        let avgYield = 0;
+        let plantCount = 0;
 
         if (!response.records || response.records.length === 0) {
           $('#crop_table').html("<tr><td colspan='8' class='text-center'>No crops found.</td></tr>");
@@ -148,12 +159,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
             duration = diffDays + (diffDays === 1 ? " Day" : " Days"); // adds space and singular/plural
           }
+          
+        response.records.forEach(row=>{
+        let total_stocks = 0;
+        });
 
           rows += `
-            <tr>
-              <td>${row.crop_name}</td>
-              <td>${row.yield}</td>
-              <td>${row.cultivated_area}</td>
+            <tr class="text-center">
+              <td style="text-transform: capitalize;">${row.crop_name}</td>
+              <td>${row.yield} KG</td>
+              <td>${Number(row.cultivated_area).toLocaleString()} SQM</td>
+              <td>${Number(row.stocks).toLocaleString()} KG</td>
+              <td>${row.plant_count} Planted</td>
               <td>${row.date_planted}</td>
               <td>${row.estimated_harvest_date || '-'}</td>
               <td>${duration}</td>
@@ -168,9 +185,18 @@ document.addEventListener('DOMContentLoaded', function() {
           `;
 
           update_crop_modal += updateFarmCrop(row);
+          total_stocks += Number(row.stocks);
+          planted_crops += Number(row.plant_count);
+          total_harvest = parseFloat(row.stocks);
+          cultivatedArea = parseFloat(row.cultivated_area);
+          avgYield = cultivatedArea > 0 ? (total_harvest / cultivatedArea) : 0;
         });
-
         document.getElementById('recordCount').textContent = response.total_rows;
+        document.getElementById('recordCounts').textContent = response.total_rows;
+        document.getElementById('crop_stocks').textContent = total_stocks.toLocaleString();
+        document.getElementById('planted_crop_count').textContent = planted_crops.toLocaleString();
+        document.getElementById('avg_Yields').textContent = avgYield.toFixed(2)  + " kg";
+        
         $('#crop_table').html(rows);
         $('#modalContainer').html(update_crop_modal);
         renderCropPagination(response.current_page, response.total_pages);
@@ -256,5 +282,41 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 });
+
+function loadMostPlanted() {
+  $.ajax({
+    url: "../../../js/user/farmer/api/fetch_most_planted.php",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+      if (!response.records || response.records.length === 0) {
+        $("#mostPlantedTable").html(`
+          <tr><td colspan="3" class="text-center">No data found</td></tr>
+        `);
+        return;
+      }
+
+      let rows = "";
+      let rank = 1;
+
+      response.records.forEach(row => {
+        rows += `
+          <tr>
+            <td>${rank}</td>
+
+            <td style="text-transform: capitalize;">${row.crop_name}</td>
+            <td>${Number(row.total_planted).toLocaleString()}</td>
+          </tr>
+        `;
+        rank++;
+      });
+
+      $("#mostPlantedTable").html(rows);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadMostPlanted);
+
 
 

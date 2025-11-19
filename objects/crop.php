@@ -12,7 +12,9 @@ class Crop{
     public $estimated_harvest_date;
     public $yield;
     public $suggested_price;
+    public $plant_count;
     public $created_at;
+    public $stocks;
     public $modified_at;
 
     public function __construct($db) {
@@ -31,7 +33,9 @@ class Crop{
                 date_planted=:date_planted,
                 estimated_harvest_date=:estimated_harvest_date,
                 suggested_price=:suggested_price,
-                created_at=:created_at";
+                created_at=:created_at,
+                stocks=:stocks,
+                plant_count = :plant_count";
 
         $stmt=$this->conn->prepare($query);
 
@@ -43,6 +47,8 @@ class Crop{
         $this->date_planted = htmlspecialchars(strip_tags($this->date_planted));
         $this->estimated_harvest_date = htmlspecialchars(strip_tags($this->estimated_harvest_date));
         $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
+        $this->stocks = htmlspecialchars(strip_tags($this->stocks));
+        $this->plant_count = htmlspecialchars(strip_tags($this->plant_count));
         $this->created_at = date ("Y-m-d H:i:s");
 
 
@@ -53,6 +59,8 @@ class Crop{
         $stmt->bindParam(":date_planted", $this->date_planted);
         $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
         $stmt->bindParam(":suggested_price", $this->suggested_price);
+        $stmt->bindParam(":stocks", $this->stocks);
+        $stmt->bindParam(":plant_count", $this->plant_count);
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {
@@ -94,51 +102,77 @@ class Crop{
     }
 
     function updateFarmProduct() {
-    $query = "UPDATE
-                " . $this->table_name . "
-              SET
-                user_id = :user_id,
-                crop_name = :crop_name,
-                yield = :yield,
-                cultivated_area = :cultivated_area,
-                date_planted = :date_planted,
-                estimated_harvest_date = :estimated_harvest_date,
-                suggested_price = :suggested_price,
-                modified_at = :modified_at
-              WHERE id = :id";
+        $query = "UPDATE
+                    " . $this->table_name . "
+                SET
+                    user_id = :user_id,
+                    crop_name = :crop_name,
+                    yield = :yield,
+                    cultivated_area = :cultivated_area,
+                    date_planted = :date_planted,
+                    estimated_harvest_date = :estimated_harvest_date,
+                    suggested_price = :suggested_price,
+                    plant_count = :plant_count,
+                    stocks = :stocks,
+                    modified_at = :modified_at
+                WHERE id = :id";
 
-    $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
-    $this->user_id = htmlspecialchars(strip_tags($this->user_id));
-    $this->crop_name = htmlspecialchars(strip_tags($this->crop_name));
-    $this->yield = htmlspecialchars(strip_tags($this->yield));
-    $this->cultivated_area = htmlspecialchars(strip_tags($this->cultivated_area));
-    $this->date_planted = htmlspecialchars(strip_tags($this->date_planted));
-    $this->estimated_harvest_date = htmlspecialchars(strip_tags($this->estimated_harvest_date));
-    $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
-    $this->modified_at = date("Y-m-d H:i:s");
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->crop_name = htmlspecialchars(strip_tags($this->crop_name));
+        $this->yield = htmlspecialchars(strip_tags($this->yield));
+        $this->cultivated_area = htmlspecialchars(strip_tags($this->cultivated_area));
+        $this->date_planted = htmlspecialchars(strip_tags($this->date_planted));
+        $this->plant_count = htmlspecialchars(strip_tags($this->plant_count));
+        $this->stocks = htmlspecialchars(strip_tags($this->stocks));
+        $this->estimated_harvest_date = htmlspecialchars(strip_tags($this->estimated_harvest_date));
+        $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
+        $this->modified_at = date("Y-m-d H:i:s");
 
-    // Bind parameters
-    $stmt->bindParam(":id", $this->id);
-    $stmt->bindParam(":user_id", $this->user_id);
-    $stmt->bindParam(":crop_name", $this->crop_name);
-    $stmt->bindParam(":yield", $this->yield);
-    $stmt->bindParam(":cultivated_area", $this->cultivated_area);
-    $stmt->bindParam(":date_planted", $this->date_planted);
-    $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
-    $stmt->bindParam(":suggested_price", $this->suggested_price);
-    $stmt->bindParam(":modified_at", $this->modified_at);
+        // Bind parameters
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->bindParam(":crop_name", $this->crop_name);
+        $stmt->bindParam(":yield", $this->yield);
+        $stmt->bindParam(":cultivated_area", $this->cultivated_area);
+        $stmt->bindParam(":date_planted", $this->date_planted);
+        $stmt->bindParam(":plant_count", $this->plant_count);
+        $stmt->bindParam(":stocks", $this->stocks);
+        $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
+        $stmt->bindParam(":suggested_price", $this->suggested_price);
+        $stmt->bindParam(":modified_at", $this->modified_at);
 
-    try {
-        if ($stmt->execute()) {
-            return true;
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (PDOException $e) {
+            echo "Error updating product: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        echo "Error updating product: " . $e->getMessage();
+
+        return false;
     }
 
-    return false;
-}
+        function getMostPlanted() {
+            $query = "
+                SELECT 
+                    crop_name,
+                    SUM(plant_count) AS total_planted
+                FROM " . $this->table_name . "
+                WHERE user_id = :user_id
+                GROUP BY crop_name
+                ORDER BY total_planted DESC
+                LIMIT 5
+            ";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":user_id", $this->user_id);
+            $stmt->execute(); // ⬅️ REQUIRED
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
 
 
 
