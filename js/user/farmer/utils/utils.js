@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
       success: function(response) {
         let rows = '';
         let update_crop_modal = '';
+        let post_crop_modal = '';
         let total_stocks = 0;
         let planted_crops = 0;
         let total_harvest = 0;
@@ -165,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
           rows += `
-            <tr class="text-center">
+            <tr class='text-center'>
               <td style="text-transform: capitalize;">${row.crop_name}</td>
               <td>${row.yield} KG</td>
               <td>${Number(row.cultivated_area).toLocaleString()} SQM</td>
@@ -176,14 +177,18 @@ document.addEventListener('DOMContentLoaded', function() {
               <td>${duration}</td>
               <td>${daysSincePlanted}</td>
               <td>${status}</td>
-              <td>
-                <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#update-crop-modal-${row.id}'>
-                  <i class='bi bi-pencil-square'></i>
+              
+              <td class="text-nowrap">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update-crop-modal-${row.id}">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#post-crop-modal-${row.id}">
+                 <i class="bi bi-cloud-upload-fill"></i>
                 </button>
               </td>
             </tr>
           `;
-
+          post_crop_modal += postFarmCrop(row);
           update_crop_modal += updateFarmCrop(row);
           total_stocks += Number(row.stocks);
           planted_crops += Number(row.plant_count);
@@ -199,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         $('#crop_table').html(rows);
         $('#modalContainer').html(update_crop_modal);
+        $('#modalCropContainer').html(post_crop_modal);
         renderCropPagination(response.current_page, response.total_pages);
       },
       error: function() {

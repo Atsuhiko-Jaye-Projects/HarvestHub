@@ -77,10 +77,10 @@
     </a>
 
     <!-- Feedback -->
-    <a href="<?php echo $base_url;?>user/farmer/review/feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
+    <!-- <a href="<?php echo $base_url;?>user/farmer/review/feedback.php" class="sidebar-btn <?= $page=='feedback.php' ? 'active' : '' ?>">
       <i class="bi bi-chat-left me-2"></i>
       <span>Feedback</span>
-    </a>
+    </a> -->
 
     <!-- Help & Support -->
     <!-- <a href="help.php" class="sidebar-btn <?= $page=='help.php' ? 'active' : '' ?>">

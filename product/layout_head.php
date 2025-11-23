@@ -56,16 +56,16 @@
   }
 
   #addToCartBtn {
-    background-color: #28a745;
+
     border: none;
     border-radius: 30px;
     padding: 10px 25px;
     font-weight: 500;
   }
 
-  #addToCartBtn:hover {
-    background-color: #218838;
-  }
+
+
+
 </style>
 </head>
 <body>

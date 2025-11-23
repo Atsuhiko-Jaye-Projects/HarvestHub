@@ -28,8 +28,8 @@ $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
 $stmt = $harvest_product->readAllProduct($from_record_num, $records_per_page);
-$num = $stmt->rowCount();
-$total_rows = $harvest_product->countAll();
+// $num = $stmt->rowCount();
+// 	
 
 // include the stats cards
 include_once "../statistics/stats.php";

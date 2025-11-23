@@ -49,7 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
     $order->farmer_id = isset($_POST['farmer_id'][$pid]) ? (int)$_POST['farmer_id'][$pid] : 1;
     $order->status = "order placed";
     $order->created_at = $date;
+    $order->product_type = isset($_POST['product_type'][$pid]) 
+    ? strip_tags($_POST['product_type'][$pid]) // sanitize the string
+    : 'unknown'; // fallback if not set
+
     $order->placeOrder();
+    print_r($_POST);
     // Update the products to ORDERED
     $cart_item->product_id = $pid;
     $cart_item->status = "ordered";
@@ -102,28 +107,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
             </div>
 
             <!-- ✅ Product Details -->
-            <div class="flex-grow-1">
-              <h5 class="fw-bold mb-1 text-capitalize"><?php echo htmlspecialchars($product->product_name); ?></h5>
-              <div class="mt-2">
-                <label class="fw-semibold small text-muted">Quantity:</label>
-                <div class="input-group input-group-sm" style="max-width: 120px;">
-                  <button type="button" class="btn btn-outline-secondary btn-sm decrease-qty">−</button>
-                  <input 
-                    type="number" 
-                    class="form-control text-center quantity-input" 
-                    name="quantity[<?php echo $row['product_id']; ?>]" 
-                    value="<?php echo $row['quantity']; ?>" 
-                    min="1"
-                    data-id="<?php echo $row['product_id']; ?>">
-                  <button type="button" class="btn btn-outline-secondary btn-sm increase-qty">+</button>
+            <div class="flex-grow-1 p-3 shadow-sm rounded-3 
+                <?php echo ($product_type=='harvest') ? 'border border-success' : 'border border-warning'; ?>">
+
+                <h5 class="fw-bold mb-2 text-capitalize d-flex justify-content-between align-items-center">
+                    <?php echo htmlspecialchars($product->product_name); ?>
+                    <?php if ($product_type == "harvest"): ?>
+                        <span class="badge bg-success">Harvest</span>
+                    <?php else: ?>
+                        <span class="badge bg-warning text-dark">Pre-Order</span>
+                    <?php endif; ?>
+                </h5>
+
+                <div class="mt-2 mb-2">
+                    <label class="fw-semibold small text-muted mb-1 d-block">Quantity:</label>
+                    <div class="input-group input-group-sm" style="max-width: 140px;">
+                        <button type="button" class="btn btn-outline-secondary btn-sm decrease-qty rounded-start">−</button>
+                        <input 
+                            type="number" 
+                            class="form-control text-center quantity-input border-start-0 border-end-0" 
+                            name="quantity[<?php echo $row['product_id']; ?>]" 
+                            value="<?php echo $row['quantity']; ?>" 
+                            min="1"
+                            data-id="<?php echo $row['product_id']; ?>">
+                        <button type="button" class="btn btn-outline-secondary btn-sm increase-qty rounded-end">+</button>
+                    </div>
                 </div>
-              </div>
-              <div>Unit Price: <span class="fw-bold">₱<?php echo number_format($unit_price, 2); ?></span></div>
-              <div>Total: <span class="fw-bold text-success">₱<?php echo number_format($total_price, 2); ?></span></div>
+
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div>Unit Price: <span class="fw-bold">₱<?php echo number_format($unit_price, 2); ?></span></div>
+                    <div>Total: <span class="fw-bold text-success">₱<?php echo number_format($total_price, 2); ?></span></div>
+                </div>
             </div>
           </div>
 
           <!-- ✅ Hidde xn Inputs -->
+          <input type="text" name="product_type[<?php echo $row['product_id']; ?>]" value="<?php echo $row['product_type']; ?>">
           <input type="hidden" name="farmer_id[<?php echo $row['product_id']; ?>]" value="<?php echo $product->user_id; ?>">
           <input type="hidden" name="quantity[<?php echo $row['product_id']; ?>]" value="<?php echo $row['quantity']; ?>">
           <input type="hidden" name="unit_price[<?php echo $row['product_id']; ?>]" value="<?php echo $unit_price; ?>">

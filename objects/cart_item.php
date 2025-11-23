@@ -29,6 +29,7 @@ class CartItem{
                     amount = :amount,
                     status = :status,
                     farmer_id = :farmer_id,
+                    product_type = :product_type,
                     created = :created";
         
         $stmt=$this->conn->prepare($query);
@@ -39,6 +40,7 @@ class CartItem{
         $this->amount = htmlspecialchars(strip_tags($this->amount));
         $this->status = htmlspecialchars(strip_tags($this->status));
         $this->farmer_id = htmlspecialchars(strip_tags($this->farmer_id));
+        $this->product_type = htmlspecialchars(strip_tags($this->product_type));
         $this->created = date ("Y-m-d H:i:s");
 
         $stmt->bindParam(":product_id", $this->product_id);
@@ -47,6 +49,7 @@ class CartItem{
         $stmt->bindParam(":amount", $this->amount);
         $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->bindParam(":product_type", $this->product_type);
         $stmt->bindParam(":created", $this->created);
 
         if ($stmt->execute()) {

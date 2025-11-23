@@ -135,29 +135,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
     }
 
-    else if ($_POST['action'] == 'product_post') {
+    else if ($_POST['action'] == 'post_crop') {
 
-        $product->product_id = $_POST['product_id']; // Make sure your form has this hidden input
-        $product->product_name = $_POST['product_name'];
+        $product->product_name = $_POST['crop_name'];
+        $product->product_id = $_POST['id']; // Make sure your form has this hidden input
         $product->user_id = $_SESSION['user_id'];
         $product->price_per_unit = $_POST['price_per_unit'];
         $product->category = $_POST['category'];
-        $product->unit = $_POST['unit'];
-        $product->product_description = $_POST['product_description'];
-	    $product->lot_size = $_POST['lot_size'];
-        $product->product_image = $_POST['product_image'] ?? 'default.png';
+        $product->total_stocks = $_POST['stocks'];
+        $product->product_description = "Reserve fresh farm produce ahead of time and get it delivered at peak quality.";
         $product->status = "Active";
+        $product->product_type = "preorder";
 
-        $harvest_product->id = $_POST['product_id'];
-        $harvest_product->is_posted = "Posted";
+        $image=!empty($_FILES["crop_image"]["name"])
+        ? sha1_file($_FILES['crop_image']['tmp_name']) . "-" . basename($_FILES["crop_image"]["name"]) : "";
+        $product->product_image = $image;
 
-        if ($_POST['is_posted'] == "Posted") {
-            echo "<div class='container'><div class='alert alert-warning'>Product is already posted.</div></div>";
+        // $crop->id = $_POST['id'];
+        // $crop->is_posted = "Posted";
+
+        if ($product->postCrop()) {
+            $product->uploadPhoto();
+            echo "<div class='container'><div class='alert alert-success'>Crop has been Posted!</div></div>";
         }else{
-            $product->postProduct();
+           
             //update the item by the status if its posted
-			$harvest_product->postedProduct();
-			echo "<div class='container'><div class='alert alert-success'>Product Posted!</div></div>";
+			// $harvest_product->postedProduct();
+			
         }
     }
 }
@@ -178,5 +182,6 @@ include_once "template/man_crop.php";
 
 <script>
     const UpdatePostURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
+    const PostCropURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
 </script>
 <?php include_once "../layout/layout_foot.php"; ?>

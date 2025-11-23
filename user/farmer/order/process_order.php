@@ -45,7 +45,7 @@ $service_fee = $sub_total * 0.0225;
 
 
 
-if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel'])) {
+if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete'])) {
     $order->id = $_POST['order_id'];
     $order->status = $_POST['action'];
 
@@ -190,30 +190,44 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
         <div class="card-body text-center">
 
           <?php
-            if ($order->status == "order placed") {
+            if ($order->status == "order placed" && $product->product_type == "preorder") {
           ?>
-          <h6 class="fw-bold text-muted mb-3">Confirm This Order?</h6>
-          <button type="submit" name="action" value="accept"class="btn btn-success w-100 mb-2">Accept Order</button>
-          <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline Order</button>
+          <h6 class="fw-bold text-muted mb-3">Confirm This Pre-Order?</h6>
+          <button type="submit" name="action" value="accept-pre-order"class="btn btn-success w-100 mb-2">Accept Pre-Order</button>
+          <button type="submit" name="action" value="decline-pre-order" class="btn btn-outline-danger w-100">Decline Pre-Order</button>
+          
           <?php
-            }elseif($order->status == "accept"){
+            } elseif ($order->status == "order placed"  && $product->product_type == "harvest") {
           ?>
-          <h6 class="fw-bold text-muted mb-3 mt-3">Complete this transaction?</h6>
-          <button type="submit" name="action" value="complete"class="btn btn-success w-100 mb-2">Complete</button>
-          <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
+
+          <h6 class="fw-bold text-muted mb-3 mt-3">Accept this Order?</h6>
+          <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Accept</button>
+          <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline</button>
+
           <?php
-            }elseif($order->status == "complete"){
+            } elseif ($order->status == "complete") {
           ?>
-          <h6 class="fw-bold text-muted mb-3 mt-3"> This transaction is complete</h6>
+
+          <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
           <a href="order.php" class="btn btn-outline-success w-100">Return</a>
-          <?php }else{
-          ?>
-          <h6 class="fw-bold text-muted mb-3 mt-3"> This transaction is cancelled</h6>
-          <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
-          <button type="submit" name="action" value="accept"class="btn btn-success w-100 mb-2">Re-Open</button>
+
+          <?php } elseif ($order->status == "accept") { ?>
+
+          <h6 class="fw-bold text-muted mb-3 mt-3">Complete this transaction?</h6>
+          <button type="submit" name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
+          <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
+
           <?php
-          } ?>
+          } else {
+          ?>
+
+          <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is cancelled</h6>
+          <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
+          <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Re-Open</button>
+
+          <?php } ?>
         </div>
+            <input type="hidden" name="action" id="actionInput">
       </div>
 
 
@@ -247,6 +261,58 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 });
 
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Attach to ALL submit buttons inside this card-body
+    const buttons = document.querySelectorAll('.card-body button[type="submit"]');
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault(); // stop immediate submit
+
+            let action = this.value;
+            let form = this.closest("form");
+            actionInput.value = action;
+            let message = "";
+
+            // Match your button values WITHOUT changing them
+            if (action === "accept-pre-order") {
+                message = "Accept this pre-order?";
+            } else if (action === "decline-pre-order") {
+                message = "Decline this pre-order?";
+            } else if (action === "accept") {
+                message = "Accept this order?";
+            } else if (action === "decline") {
+                message = "Decline this order?";
+            } else if (action === "complete") {
+                message = "Complete this transaction?";
+            } else if (action === "cancel") {
+                message = "Cancel this transaction?";
+            } else if (action === "accept") {
+                message = "Re-open this cancelled order?";
+            } else {
+                message = "Are you sure?";
+            }
+
+            Swal.fire({
+                title: message,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
+
 
 
 

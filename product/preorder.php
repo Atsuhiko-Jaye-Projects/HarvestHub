@@ -35,7 +35,8 @@ if ($_POST) {
   $cart_item->farmer_id = $_POST['farmer_id'];
   $cart_item->amount = $_POST['amount'];
   $cart_item->status = "Pending";
-  $cart_item->product_type = "harvest";
+  $cart_item->product_type = "preorder";
+
   
   if ($cart_item->itemExist()) {
       echo "<div class='alert alert-warning'>Product already added to your cart.</div>";
@@ -143,7 +144,7 @@ if ($_POST) {
         </div>
 
         <div class="d-flex gap-3">
-          <button type="button" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
+          <button type="button" id="addToCartBtn" class="btn btn-warning px-4">Pre-Order</button>
           <input type="hidden" class="btn-check" name="farmer_id" value="<?php echo $product->user_id;?>">
           <!-- <button class="btn btn-outline-dark px-4">Checkout Now</button> -->
         </div>

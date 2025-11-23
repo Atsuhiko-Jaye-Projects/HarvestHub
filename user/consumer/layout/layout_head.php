@@ -72,6 +72,8 @@ $root_path = $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/";
       display: inline-block;
     }
   }
+
+  
   </style>
 </head>
 <body>

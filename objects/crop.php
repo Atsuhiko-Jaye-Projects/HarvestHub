@@ -16,6 +16,7 @@ class Crop{
     public $created_at;
     public $stocks;
     public $modified_at;
+    public $is_posted;
 
     public function __construct($db) {
 	    $this->conn = $db;

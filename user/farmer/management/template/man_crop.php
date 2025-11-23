@@ -1,6 +1,6 @@
 <div class="container py-4">
 
-  <?php include_once "../modal-forms/product/add_product.php"; ?>
+  <?php //include_once "../modal-forms/product/add_product.php"; ?>
 
   <!-- ✅ Summary Cards -->
   <div class="row g-3 mb-4">
@@ -70,6 +70,7 @@
 
   <?php include_once "../modal-forms/crop/add_crop.php"; ?>
   <div id="modalContainer"></div>
+  <div id="modalCropContainer"></div>
 
   <!-- Search and Filter -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">

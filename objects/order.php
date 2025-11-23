@@ -82,6 +82,7 @@ class Order{
                 quantity = :quantity,
                 status = :status,
                 farmer_id = :farmer_id,
+                product_type=:product_type,
                 created_at =:created_at";
 
         $stmt = $this->conn->prepare($query);
@@ -93,6 +94,7 @@ class Order{
         $this->quantity=htmlspecialchars(strip_tags($this->quantity));
         $this->status=htmlspecialchars(strip_tags($this->status));
         $this->farmer_id=htmlspecialchars(strip_tags($this->farmer_id));
+        $this->product_type=htmlspecialchars(strip_tags($this->product_type));
         $this->created_at=htmlspecialchars(strip_tags($this->created_at));
 
         $stmt->bindParam(":product_id", $this->product_id);
@@ -102,6 +104,7 @@ class Order{
         $stmt->bindParam(":quantity", $this->quantity);
         $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->bindParam(":product_type", $this->product_type);
         $stmt->bindParam(":created_at", $this->created_at);
         
         if ($stmt->execute()) {
@@ -133,7 +136,7 @@ class Order{
         $this->mode_of_payment = $row['mode_of_payment'];
         $this->quantity = $row['quantity'];
         $this->created_at = $row['created_at'];
-        $this->customer_id = $row['customer_id'];   
+        $this->customer_id = $row['customer_id'];  
     }
 
     function readOneOrder(){

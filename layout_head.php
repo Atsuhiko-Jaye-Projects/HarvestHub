@@ -32,6 +32,12 @@
       align-items: center;
       margin-bottom: 2rem;
     }
+    .product-card {
+    transition: transform 0.2s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
   </style>
   </head>
   <body>

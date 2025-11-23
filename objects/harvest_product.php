@@ -18,6 +18,7 @@ class HarvestProduct{
     public $created_at;
     public $is_posted;
     public $modified;
+    
 
 
     public function __construct($db) {

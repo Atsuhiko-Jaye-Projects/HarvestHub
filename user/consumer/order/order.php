@@ -62,6 +62,12 @@ $num = $stmt->rowCount();
       
       $product->product_id = $row['product_id'];
       $product->readProductName();
+
+      // get the product image path
+      $raw_img = $product->product_image;
+      $img_owner = $product->user_id;
+      $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
+
   ?>
     <div class="order-card p-3 border">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
@@ -118,14 +124,14 @@ $num = $stmt->rowCount();
       <div class="col-md-4">
         <div class="d-flex justify-content-center align-items-center mb-3">
           <div class="order-images d-flex mr-3">
-              <img src="<?php echo $base_url;?>libs/images/logo.png" alt="item">
+              <img src="<?php echo $img_path;?>" alt="item">
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="me-4">
             <h6 class="mb-0 text-success">
-               <?php 
+               <?php
                   $price = $product->price_per_unit; 
                   $quantity = $row['quantity'];
                   $total = $price * $quantity;
@@ -138,9 +144,9 @@ $num = $stmt->rowCount();
               <?php 
               $row['quantity'];
               if ($row['quantity'] > 0) {
-                echo $row['quantity'] . " QTY.";
+                echo $row['quantity'] . " KG.";
               }else{
-                echo $row['quantity'] . " QTY.";
+                echo $row['quantity'] . " KG.";
               }
               ?>
             </h6>

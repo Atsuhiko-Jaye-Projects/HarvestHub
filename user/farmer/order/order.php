@@ -106,7 +106,14 @@ $total_rows = $order->countAll();
                         };
                     ?>
                     <tr class="align-middle">
-                        <td class="fw-bold text-success"><?php echo $row['invoice_number']; ?></td>
+                        <td class="fw-bold text-success">
+    <?php echo $row['invoice_number']; ?>
+    <?php if ($row['product_type'] === 'preorder'): ?>
+        <span class="badge bg-warning text-dark ms-1">Pre-Order</span>
+    <?php elseif ($row['product_type'] === 'harvest'): ?>
+        <span class="badge bg-success ms-1">Harvest</span>
+    <?php endif; ?>
+</td>
                         <td><?php echo $row['mode_of_payment']; ?></td>
                         <td class="text-truncate" style="max-width: 150px;"><?php echo $row['quantity']; ?> KG</td>
                         <td><?php echo $row['created_at']; ?></td>

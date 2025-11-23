@@ -98,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->product_name = $_POST['product_name'];
         $harvest_product->category = $_POST['category'];
         $harvest_product->total_stocks = $stocks;
+        
         $harvest_product->unit = "KG";
         $harvest_product->product_description = $_POST['product_description'];
         $harvest_product->lot_size = $_POST['lot_size'];
@@ -143,6 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->product_description = $_POST['product_description'];
 		$harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
+        
 
         if ($harvest_product->updateHarvestProduct()) {
 
@@ -164,10 +166,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->category = $_POST['category'];
         $product->unit = $_POST['unit'];
         $product->total_stocks = $_POST['total_stocks'];
+        $product->available_stocks = $_POST['total_stocks'];
         $product->product_description = $_POST['product_description'];
 		$product->lot_size = $_POST['lot_size'];
         $product->product_image = $_POST['product_image'] ?? 'default.png';
         $product->status = "Active";
+        $product->product_type = "harvest";
 
         $harvest_product->id = $_POST['product_id'];
         $harvest_product->is_posted = "Posted";
