@@ -234,12 +234,43 @@ class Order{
         return $row['total_sales'] ?? 0; // 0 if no sales
     }
 
+    function getOrderNotification() {
+
+        $query = "SELECT 
+                    o.customer_id,
+                    o.product_id,
+                    o.quantity,
+                    o.status,
+                    o.created_at,
+                    o.invoice_number,
+
+                    c.lastname, c.firstname AS customer_name,
+                    c.contact_number AS customer_contact,
+
+                    p.product_name,
+                    p.available_stocks,
+                    p.price_per_unit
+
+                FROM " . $this->table_name . " o
+
+                LEFT JOIN users c 
+                ON o.customer_id = c.id
+
+                LEFT JOIN products p 
+                ON o.product_id = p.product_id
+
+                WHERE 
+                    o.farmer_id = :farmer_id AND o.status='order placed'
+                    GROUP BY o.id ASC
+                    ORDER BY o.id DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 }
-
-
-
-
-
 ?>

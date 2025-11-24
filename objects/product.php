@@ -394,6 +394,46 @@ class Product{
         return $result_message;
     }
 
+    function getProductStock(){
+        $query = "SELECT * 
+                    FROM
+                        " . $this->table_name . "
+                    WHERE
+                        user_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->execute();
+
+        $product_stock = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return [
+            "records" => $product_stock
+        ];
+    }
+
+    function getProductStockCount(){
+        $query = "SELECT product_name, available_stocks, total_stocks
+                    FROM
+                        " . $this->table_name . "
+                    WHERE
+                        user_id = :user_id AND available_stocks < 100";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->execute();
+
+        $product_status = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return [
+            "records" => $product_status
+        ];
+    }
+
 }
 
 

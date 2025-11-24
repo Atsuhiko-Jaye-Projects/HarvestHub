@@ -14,7 +14,7 @@ $db = $database->getConnection();
 
 $order = new Order($db);
 
-$page_url = "{$home_url}user/farmer/order.php?";
+$page_url = "{$home_url}user/farmer/order/order.php?";
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
@@ -107,13 +107,13 @@ $total_rows = $order->countAll();
                     ?>
                     <tr class="align-middle">
                         <td class="fw-bold text-success">
-    <?php echo $row['invoice_number']; ?>
-    <?php if ($row['product_type'] === 'preorder'): ?>
-        <span class="badge bg-warning text-dark ms-1">Pre-Order</span>
-    <?php elseif ($row['product_type'] === 'harvest'): ?>
-        <span class="badge bg-success ms-1">Harvest</span>
-    <?php endif; ?>
-</td>
+                            <?php echo $row['invoice_number']; ?>
+                            <?php if ($row['product_type'] === 'preorder'): ?>
+                                <span class="badge bg-warning text-dark ms-1">Pre-Order</span>
+                            <?php elseif ($row['product_type'] === 'harvest'): ?>
+                                <span class="badge bg-success ms-1">Harvest</span>
+                            <?php endif; ?>
+                        </td>
                         <td><?php echo $row['mode_of_payment']; ?></td>
                         <td class="text-truncate" style="max-width: 150px;"><?php echo $row['quantity']; ?> KG</td>
                         <td><?php echo $row['created_at']; ?></td>

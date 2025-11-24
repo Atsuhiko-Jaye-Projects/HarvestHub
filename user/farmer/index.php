@@ -114,8 +114,8 @@ if ($_SESSION['is_farm_registered'] == 0) {
     </div>
     <div class="col-lg-6 col-sm-12">
       <div class="card shadow-sm p-3 h-100">
-        <h5>Order Volume</h5>
-        <p><strong>3K</strong> <span class="text-success">+2.1%</span> vs Last Week</p>
+        <h5>Product Stocks</h5>
+        <!-- <p><strong>3K</strong> <span class="text-success">+2.1%</span> vs Last Week</p> -->
         <canvas id="salesChart2" height="200"></canvas>
       </div>
     </div>
@@ -123,66 +123,75 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
   <!-- Notifications & Top Products -->
   <div class="row mt-4 g-3">
-    <div class="col-lg-6 col-sm-12">
-      <div class="card shadow-sm h-100">
-        <div class="card-header bg-white fw-bold">Notifications</div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <small class="text-muted">Feb 11</small><br>
-            Juan Dela Cruz ordered 10kg of hybrid corn seeds. Please confirm availability.
-          </li>
-          <li class="list-group-item">
-            <small class="text-muted">Feb 11</small><br>
-            [IMPORTANT] Update to API Endpoint Limit
-          </li>
-          <li class="list-group-item">
-            <small class="text-muted">Feb 07</small><br>
-            Juan Dela Cruz ordered 20kg Tomatoes. Prepare for delivery by July 21.
-          </li>
-        </ul>
-        <div class="card-footer d-flex justify-content-between">
-          <button class="btn btn-outline-secondary btn-sm">&lt;</button>
-          <button class="btn btn-outline-secondary btn-sm">&gt;</button>
-        </div>
+  <div class="col-lg-3 col-sm-12">
+    <div class="card shadow-sm h-100 border-0">
+      <div class="card-header text-white fw-bold" style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 0.5rem 0.5rem 0 0;">
+        <i class="bi bi-cart-fill me-2"></i> Order Notifications
+      </div>
+      <ul class="list-group list-group-flush" id="orderNotification">
+      </ul>
+      <div class="card-footer d-flex justify-content-between border-0" style="background-color: #f8f9fa; border-radius: 0 0 0.5rem 0.5rem;">
+        <button class="btn btn-outline-primary btn-sm">&lt;</button>
+        <button class="btn btn-outline-primary btn-sm">&gt;</button>
       </div>
     </div>
+  </div>
 
+<!-- Optional hover effect -->
+<style>
+.list-group-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+</style>
+
+
+
+
+  <div class="col-lg-3 col-sm-12">
+  <div class="card shadow-sm h-100 border-0">
+    <div class="card-header text-white fw-bold" style="background: linear-gradient(135deg, #28a745, #71c784); border-radius: 0.5rem 0.5rem 0 0;">
+      <i class="bi bi-bell-fill me-2"></i> Product Stock Notifications
+    </div>
+    <ul class="list-group list-group-flush" id="notificationList">
+      
+    </ul>
+    <div class="card-footer d-flex justify-content-between border-0" style="background-color: #f8f9fa; border-radius: 0 0 0.5rem 0.5rem;">
+      <button class="btn btn-outline-success btn-sm">&lt;</button>
+      <button class="btn btn-outline-success btn-sm">&gt;</button>
+    </div>
+  </div>
+</div>
+
+<!-- Optional hover effect -->
+<style>
+.list-group-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+</style>
+
+
+  
     <div class="col-lg-6 col-sm-12">
       <div class="card shadow-sm h-100">
         <div class="card-header bg-white fw-bold">Top Products</div>
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th>Rank</th>
-                  <th>Product Name</th>
-                  <th>Total Sold</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="bg-success bg-opacity-10">
-                  <td>1</td>
-                  <td>Carrot</td>
-                  <td>20</td>
-                </tr>
-                <tr class="bg-secondary bg-opacity-10">
-                  <td>2</td>
-                  <td>Eggplant</td>
-                  <td>15</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Potato</td>
-                  <td>10</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Cabbage</td>
-                  <td>5</td>
-                </tr>
-              </tbody>
-            </table>
+          <table class="table mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Rank</th>
+                <th>Product Name</th>
+                <th>Total Planted</th>
+              </tr>
+            </thead>
+            <tbody id="mostPlantedCropTable">
+              <tr><td colspan="3" class="text-center">Loading...</td></tr>
+            </tbody>
+          </table>
           </div>
         </div>
       </div>

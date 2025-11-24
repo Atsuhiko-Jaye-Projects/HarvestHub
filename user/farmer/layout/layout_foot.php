@@ -21,6 +21,8 @@
 
 if ($page_title == "Index") {
   echo "<script src='/Harvesthub/js/user/farmer/statistics/graphs.js'></script>";
+  //echo "<script src='/HarvestHub/js/user/farmer/utils/utils.js'></script>";
+  
 }else{
 echo "<script src='/HarvestHub/js/user/farmer/modals/farm_product/farm_product_modal.js'></script>
 <script src='/HarvestHub/js/user/farmer/modals/farm_crop/farm_crop_modal.js'></script>

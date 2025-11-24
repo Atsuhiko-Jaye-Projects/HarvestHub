@@ -142,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           </div>
 
           <!-- ✅ Hidde xn Inputs -->
-          <input type="text" name="product_type[<?php echo $row['product_id']; ?>]" value="<?php echo $row['product_type']; ?>">
           <input type="hidden" name="farmer_id[<?php echo $row['product_id']; ?>]" value="<?php echo $product->user_id; ?>">
           <input type="hidden" name="quantity[<?php echo $row['product_id']; ?>]" value="<?php echo $row['quantity']; ?>">
           <input type="hidden" name="unit_price[<?php echo $row['product_id']; ?>]" value="<?php echo $unit_price; ?>">

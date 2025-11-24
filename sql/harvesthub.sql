@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2025 at 02:28 PM
+-- Generation Time: Nov 24, 2025 at 02:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -36,18 +36,17 @@ CREATE TABLE `cart_items` (
   `amount` int(11) NOT NULL,
   `status` varchar(15) NOT NULL,
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
-  `farmer_id` int(11) NOT NULL
+  `farmer_id` int(11) NOT NULL,
+  `product_type` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cart_items`
 --
 
-INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`) VALUES
-(35, 108, 21, 5, '2025-11-16 12:19:38', 38, 'Ordered', '2025-11-16 04:19:43', 2),
-(36, 90, 21, 15, '2025-11-16 12:55:33', 90, 'Ordered', '2025-11-16 04:55:40', 2),
-(37, 88, 23, 10, '2025-11-18 08:57:23', 80, 'Pending', '2025-11-18 00:57:23', 2),
-(38, 91, 21, 5, '2025-11-18 09:20:50', 43, 'Pending', '2025-11-18 01:20:50', 2);
+INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
+(68, 113, 21, 30, '2025-11-24 09:18:35', 31, 'ordered', '2025-11-24 01:21:32', 2, 'harvest'),
+(69, 113, 23, 15, '2025-11-24 09:21:24', 31, 'ordered', '2025-11-24 01:21:32', 2, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -90,7 +89,10 @@ CREATE TABLE `crops` (
 
 INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`) VALUES
 (46, 2, 'Strawberry', 2, 512, '2025-11-19', '2026-01-20', 0, '2025-11-19 12:03:41', '2025-11-19 20:03:41', 2472, 1236),
-(47, 2, 'mango', 15, 512, '2025-11-19', '2026-04-18', 0, '2025-11-19 12:05:33', '2025-11-19 20:04:31', 930, 62);
+(47, 2, 'mango', 15, 512, '2025-11-19', '2026-04-18', 0, '2025-11-19 12:05:33', '2025-11-19 20:04:31', 930, 62),
+(48, 2, 'Melon', 2, 500, '2025-11-22', '2026-03-28', 0, '2025-11-22 02:25:00', '2025-11-19 21:47:37', 2400, 1200),
+(49, 2, 'guava', 2, 500, '2025-11-23', '2026-05-08', 0, '2025-11-23 05:46:35', '2025-11-23 13:46:35', 240, 120),
+(50, 2, 'rambutan', 2, 500, '2025-11-24', '2026-04-30', 0, '2025-11-24 01:23:10', '2025-11-24 09:23:10', 200, 100);
 
 -- --------------------------------------------------------
 
@@ -183,7 +185,8 @@ INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `type`, `cost`, `dat
 (13, 2, 'Kubota', 'machine', 5000, '2025-11-18', '2025-11-10 19:04:16', '2025-11-10 11:04:16'),
 (14, 2, 'Kubota', 'machine', 5000, '2025-11-18', '2025-11-10 19:04:19', '2025-11-10 11:04:19'),
 (15, 2, 'asdasd', 'machine', 50002, '2025-11-10', '2025-11-10 19:04:30', '2025-11-10 11:04:30'),
-(16, 2, 'asdasd', 'machine', 50002, '2025-11-10', '2025-11-10 19:04:33', '2025-11-10 11:04:33');
+(16, 2, 'asdasd', 'machine', 50002, '2025-11-10', '2025-11-10 19:04:33', '2025-11-10 11:04:33'),
+(17, 2, 'asdasd', 'machine', 600, '2025-11-23', '2025-11-23 13:45:37', '2025-11-23 05:45:37');
 
 -- --------------------------------------------------------
 
@@ -213,13 +216,8 @@ CREATE TABLE `harvested_products` (
 --
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`) VALUES
-(105, 2, 'Kamatis', 29, 'KG', 'Vegetable', '1000', '', 0, 0, '36fc1f203d6ed26741703fab7790adcbda4abc03-sss number.jpg', '2025-11-15 14:06:05', '2025-11-15 22:06:05', 'Pending'),
-(106, 2, 'Sitaw', 38, 'KG', 'Vegetable', '1000', '', 0, 0, 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png', '2025-11-15 14:10:52', '2025-11-15 22:10:52', 'Pending'),
-(107, 2, 'kalabasa', 25, 'KG', 'Vegetable', '1000', '', 0, 0, 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png', '2025-11-15 14:49:41', '2025-11-15 22:49:41', 'Pending'),
-(108, 2, 'patatas', 38, 'KG', 'Vegetable', '500', 'asdsad', 0, 0, '19f8582993b0eb48f7d2056cb04f6a0c54d96376-1.jpg', '2025-11-16 02:18:10', '2025-11-15 23:05:00', 'Posted'),
-(109, 2, 'New Patatas', 63, 'KG', 'Vegetable', '1000', '', 1, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-19 12:24:54', '2025-11-18 19:17:34', 'Posted'),
-(110, 2, 'Sitaw', 78, 'KG', 'Vegetable', '1000', 'great', 2200, 0, '22b5e0083bf9b56d876756682c4a60946b5e2741-3.jpg', '2025-11-19 12:33:01', '2025-11-18 19:21:07', 'Pending'),
-(111, 2, 'new breed kamatis', 36, 'KG', 'Vegetable', '1000', 'new updates', 4800, 0, 'a36850033c95d1912a366a36403a1c428a1a5a75-b811bd39-815d-4dcb-a7cf-75518f84e0c0.jpg', '2025-11-19 12:32:53', '2025-11-18 19:22:14', 'Pending');
+(112, 2, 'Pakwan', 38, 'KG', 'Vegetable', '500', 'Malakeng pakwan', 1000, 0, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', '2025-11-23 08:59:09', '2025-11-19 21:48:52', 'Posted'),
+(113, 2, 'Kalabasa', 31, 'KG', 'Vegetable', '500', '', 2400, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-23 11:17:18', '2025-11-23 19:17:14', 'Posted');
 
 -- --------------------------------------------------------
 
@@ -250,16 +248,17 @@ CREATE TABLE `orders` (
   `status` varchar(20) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `farmer_id` int(11) NOT NULL
+  `farmer_id` int(11) NOT NULL,
+  `product_type` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`) VALUES
-(43, 108, 'INV-691950DF42E3F', 21, 'COD', 5, 'order placed', '2025-11-16 12:19:43', '2025-11-16 04:19:43', 2),
-(44, 90, 'INV-6919594C9AC8E', 21, 'COD', 15, 'complete', '2025-11-16 12:55:40', '2025-11-16 04:55:40', 2);
+INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`) VALUES
+(85, 113, 'INV-6923B26FC17A6', 21, 'COD', 30, 'complete', '2025-11-24 09:18:39', '2025-11-24 01:18:39', 2, 'harvest'),
+(86, 113, 'INV-6923B31C043BB', 23, 'COD', 17, 'complete', '2025-11-24 09:21:32', '2025-11-24 01:21:32', 2, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -294,17 +293,20 @@ CREATE TABLE `products` (
   `sold_count` int(11) NOT NULL,
   `modified` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` varchar(25) NOT NULL
+  `status` varchar(25) NOT NULL,
+  `product_type` varchar(11) NOT NULL,
+  `available_stocks` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`) VALUES
-(52, 110, 'Sitaw', 78, 2, 'Vegetable', 'KG', 0, '', 1000, 480, '22b5e0083bf9b56d876756682c4a60946b5e2741-3.jpg', 26, '2025-11-18 11:24:05', '2025-11-18 19:24:05', 'Active'),
-(57, 111, 'new breed kamatis', 36, 2, 'Vegetable', 'KG', 0, 'new updates', 1000, 4800, 'a36850033c95d1912a366a36403a1c428a1a5a75-b811bd39-815d-4dcb-a7cf-75518f84e0c0.jpg', 526, '2025-11-18 12:08:16', '2025-11-18 20:08:16', 'Active'),
-(58, 109, 'New Patatas', 63, 2, 'Vegetable', 'KG', 0, '', 1000, 500, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 126, '2025-11-19 12:24:54', '2025-11-19 20:24:54', 'Active');
+INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`) VALUES
+(65, 112, 'Pakwan', 38, 2, 'Vegetable', 'KG', 0, 'Malakeng pakwan', 500, 1000, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', 0, '2025-11-23 08:59:09', '2025-11-23 16:59:09', 'Active', 'harvest', 900),
+(66, 113, 'Kalabasa', 31, 2, 'Vegetable', 'KG', 0, '', 500, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-23 11:17:18', '2025-11-23 19:17:18', 'Active', 'harvest', 9000),
+(67, 112, 'Pakwan', 38, 2, 'Vegetable', 'KG', 0, 'Malakeng pakwan', 500, 1000, 'e329d7f3bccba3a5b668150707ac422c58655116-tomato.jpg', 0, '2025-11-23 08:59:09', '2025-11-23 16:59:09', 'Active', 'harvest', 100),
+(68, 113, 'Guava', 31, 2, 'Vegetable', 'KG', 0, '', 500, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-23 11:17:18', '2025-11-23 19:17:18', 'Active', 'harvest', 1000);
 
 -- --------------------------------------------------------
 
@@ -454,7 +456,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -466,7 +468,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -490,25 +492,25 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `reviews`

@@ -96,7 +96,14 @@
             echo "<td>{$product_name}</td>";
             echo "<td>{$category}</td>";
             echo "<td>₱ " . number_format($price_per_unit, 2) . "</td>";
-            echo "<td>{$total_stocks} kg</td>";
+            echo "<td>
+                <span class='text-primary fw-bold'>
+                  {$available_stocks}
+                </span>
+                <span class='text-success fw-bold'>
+                  / {$total_stocks} kg
+                </span>
+                </td>";
             echo "<td>{$unit}</td>";
             echo "<td>".number_format($lot_size)." sqm</td>";
             echo "<td>". date("m-d-Y", strtotime($created_at))."</td>";

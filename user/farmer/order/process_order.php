@@ -117,12 +117,17 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 
             <div class="d-flex justify-content-between">
                 <span>Contact</span>
-                <span><?php echo $customer->contact_number; ?></span>
+                <span><?php echo !empty($customer->contact_number) ? $customer->contact_number : 'Not Set'; ?></span>
             </div>
 
             <div class="d-flex justify-content-between">
                 <span>Address</span>
-                <span><?php echo $customer->address . " " . $customer->barangay . " " . $customer->municipality; ?></span>
+                <span>
+                    <?php 
+                        $fullAddress = trim($customer->address . ' ' . $customer->barangay . ' ' . $customer->municipality);
+                        echo !empty($fullAddress) ? $fullAddress : 'Not Set'; 
+                    ?>
+                </span>
             </div>
 
             <hr>
