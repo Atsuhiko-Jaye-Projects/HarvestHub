@@ -82,11 +82,11 @@ $num = $stmt->rowCount();
 
       // Map DB status to display text
       switch ($status) {
-          case "Order Placed":
+          case "order Placed":
               $displayStatus = "Order Placed";
               $class = "bg-info text-white"; // blue
               break;
-          case "Accept":
+          case "accept":
               $displayStatus = "Preparing";
               $class = "bg-warning text-dark"; // yellow/orange
               break;
@@ -94,15 +94,15 @@ $num = $stmt->rowCount();
               $displayStatus = "Declined";
               $class = "bg-danger text-white"; // red
               break;
-          case "Complete":
+          case "complete":
               $displayStatus = "Complete";
               $class = "bg-success text-white"; // green
               break;
-          case "In Transit":
+          case "in Transit":
               $displayStatus = "In Transit";
               $class = "bg-primary text-white"; // darker blue
               break;
-          case "Cancelled":
+          case "cancelled":
               $displayStatus = "Cancelled";
               $class = "bg-secondary text-white"; // gray
               break;
@@ -158,9 +158,7 @@ $num = $stmt->rowCount();
         <a href="order_details.php?vod=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm mb-2 w-100">
           View Order Details
         </a>
-        <button class="btn btn-warning btn-sm w-100">
-          Rate Order
-        </button>
+        <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?pid=<?php echo $id; ?>" class="btn btn-warning btn-sm w-100">Rate order</a>
       </div>
     </div>
   </div>
