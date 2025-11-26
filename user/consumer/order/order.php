@@ -63,6 +63,8 @@ $num = $stmt->rowCount();
       $product->product_id = $row['product_id'];
       $product->readProductName();
 
+      
+
       // get the product image path
       $raw_img = $product->product_image;
       $img_owner = $product->user_id;
@@ -158,7 +160,7 @@ $num = $stmt->rowCount();
         <a href="order_details.php?vod=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm mb-2 w-100">
           View Order Details
         </a>
-        <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?pid=<?php echo $id; ?>" class="btn btn-warning btn-sm w-100">Rate order</a>
+        <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $id; ?>" class="btn btn-warning btn-sm w-100">Rate order</a>
       </div>
     </div>
   </div>
