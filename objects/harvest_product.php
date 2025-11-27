@@ -14,9 +14,11 @@ class HarvestProduct{
     public $lot_size;
     public $product_description;
     public $product_image;
+    public $plant_count;
     public $unit;
     public $created_at;
     public $is_posted;
+    public $expense;
     public $modified;
     
 
@@ -40,6 +42,9 @@ class HarvestProduct{
                 product_description=:product_description,
                 product_image=:product_image,
                 is_posted = :is_posted,
+                expense = :expense,
+                kilo_per_plant = :kilo_per_plant,
+                plant_count=:plant_count,
                 created_at=:created_at";
 
         $stmt=$this->conn->prepare($query);
@@ -52,8 +57,11 @@ class HarvestProduct{
         $this->category = htmlspecialchars(strip_tags($this->category));
         $this->total_stocks = htmlspecialchars(strip_tags($this->total_stocks));
         $this->lot_size = htmlspecialchars(strip_tags($this->lot_size));
+        $this->expense = htmlspecialchars(strip_tags($this->expense));
         $this->product_description = htmlspecialchars(strip_tags($this->product_description));
         $this->product_image = htmlspecialchars(strip_tags($this->product_image));
+        $this->plant_count = htmlspecialchars(strip_tags($this->plant_count));
+        $this->kilo_per_plant = htmlspecialchars(strip_tags($this->kilo_per_plant));
         $this->is_posted = htmlspecialchars(strip_tags($this->is_posted));
         $this->created_at = date ("Y-m-d H:i:s");
 
@@ -66,9 +74,13 @@ class HarvestProduct{
         $stmt->bindParam(":category", $this->category);
         $stmt->bindParam(":total_stocks", $this->total_stocks);
         $stmt->bindParam(":lot_size", $this->lot_size);
+        $stmt->bindParam(":expense", $this->expense);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":product_image", $this->product_image);
+        $stmt->bindParam(":plant_count", $this->plant_count);
+        $stmt->bindParam(":kilo_per_plant", $this->kilo_per_plant);
         $stmt->bindParam(":is_posted", $this->is_posted);
+
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {

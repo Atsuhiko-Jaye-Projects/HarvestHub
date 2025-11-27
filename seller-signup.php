@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     else {
         $user->create();
         $alert_message = "<div class='alert alert-success'>
-            Start your account and <a href='{$home_url}login'>continue! </a>
+            Start your account and <a href='{$home_url}signin.php'>continue! </a>
         </div>";
     }
 }

@@ -32,12 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
           rows += `
-              <tr>
+              <tr class='text-center'>
                 <td>${row.product_name}</td>
                 <td>${row.category}</td>
                 <td class='price'>₱${row.price_per_unit}.00</td>
                 <td>${row.unit}</td>
-                <td>${Number(row.total_stocks).toLocaleString()}</td>
+                <td>${Number(row.total_stocks).toLocaleString()} KG</td>
+                <td>${row.plant_count}</td>
                 <td>${row.lot_size}</td>
                 <td><span class='badge ${statusClass} px-3 py-2 text-uppercase'>${row.is_posted}</span></td>
                 <td>

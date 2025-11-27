@@ -21,12 +21,12 @@ function editHarvestProduct(row){
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <Label>Product</Label>
-                    <input type="text" name="product_name" class="form-control" value="${row.product_name}" required placeholder="Product Name">
+                    <input type="text" name="product_name" class="form-control border border-success" value="${row.product_name}" required placeholder="Product Name">
                   </div>
 
                   <div class="col-md-6">
                     <label>Category</label>
-                    <select name="category" class="form-select" required>
+                    <select name="category" class="form-select border border-success" required>
                       <option value="">Select Category...</option>
                       <option value="Vegetable" ${row.category === 'Vegetable' ? 'selected' : ''}>Vegetable</option>
                       <option value="Fruit" ${row.category === 'Fruit' ? 'selected' : ''}>Fruit</option>
@@ -37,29 +37,34 @@ function editHarvestProduct(row){
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <Label>Price</Label>
-                    <input type="text" name="price_per_unit" readonly value="${row.price_per_unit}" class="form-control" required placeholder="Lot Size">
+                    <Label>Price/KG</Label>
+                    <input type="hidden" name="price_per_unit" readonly value="${row.price_per_unit}">
+                    <input type="text" name="" readonly value="${Number(row.price_per_unit).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}
+" class="form-control border border-warning" required placeholder="Lot Size">
                   </div>
                   <div class="col-md-6">
                     <Label>Unit</Label>
-                    <input type="text" name="unit" readonly value="${row.unit}" class="form-control" required placeholder="Lot Size">
+                    <input type="text" name="unit" readonly value="${row.unit}" class="form-control border border-warning" required placeholder="Lot Size">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <Label>Description Price</Label>
-                    <textarea name="product_description" class="form-control" required>${row.product_description}</textarea>
+                    <textarea name="product_description" class="form-control border border-success" required>${row.product_description}</textarea>
                   </div>
 
                   <div class="col-md-6">
-                      <Label>Lot Size</Label>
-                      <input type="text" name="lot_size" readonly value="${row.lot_size}" class="form-control" required placeholder="Lot Size">
+                      <Label>Crop Area (sqm)</Label>
+                      <input type="number" name="lot_size" value="${row.lot_size}" class="form-control border border-warning" required placeholder="Lot Size">
 
-                      <input type="text" hidden name="is_posted" readonly value="${row.is_posted}" class="form-control" required placeholder="Lot Size">
+                      <input type="text" hidden name="is_posted" readonly value="${row.is_posted}" class="form-control border border-warning" required placeholder="Lot Size">
                     </div>
-
                 </div>
+
+                <input type="text"  name="plant_count" value="${row.plant_count}">
+                <input type="text"  name="kilo_per_plant" value="${row.kilo_per_plant}">
+                <input type="text"  name="total_plant_expense" value="${row.expense}">
 
               </div>
             </div>

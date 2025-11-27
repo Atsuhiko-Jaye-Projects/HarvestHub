@@ -74,17 +74,34 @@ if (!isset($_SESSION['logged_in'])) {
 if ($num > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
+        $product_type = $row['product_type'];
+        
         ?>
         <div class="col product-item mb-4" data-type="<?= $product_type ?>">
             <div class="card product-card h-100 shadow-sm">
                 
                 <!-- Image with Pre-Order badge if needed -->
                 <div class="position-relative">
-                    <img src="user/uploads/<?= $user_id ?>/products/<?= $product_image ?>" 
+                    <?php
+                        
+                        $path = "user/uploads/{$user_id}/products/{$product_image}";
+                        $default = "libs/images/logo.png";
+                        $image = ( !empty($product_image) && file_exists($path) ) ? $path : $default;
+                    ?>
+                    <img src="<?= $image ?>" 
                          class="card-img-top" 
                          alt="<?= htmlspecialchars($product_name) ?>" 
                          style="object-fit: cover; height: 180px;">
-                    <?php if ($product_type != "harvest"): ?>
+
+                    <?php 
+                        $discount = ($row['discount'] * 100) * 100;
+                        if (!empty($row['discount'])): 
+                    ?>
+                        <span class="badge bg-danger position-absolute top-0 start-0 m-2">
+                            <?= $discount ?>% OFF
+                        </span>
+                    <?php endif; ?>
+                    <?php if ($product_type != "harvest") : ?>
                         <span class="badge bg-warning position-absolute top-0 end-0 m-2">Pre-Order</span>
                     <?php endif; ?>
                 </div>

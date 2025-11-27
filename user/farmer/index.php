@@ -1,12 +1,25 @@
 <?php
+
 include_once "../../config/core.php";
 include_once "../../config/database.php";
 include_once "../../objects/order.php";
+
+
+
 
 $page_title = "Index";
 $require_login = true;
 include_once "../../login_checker.php";
 include_once "layout/layout_head.php";
+if (isset($_SESSION['success_message'])) {
+    echo "<div class='alert alert-success'><i class='bi bi-clipboard2-check-fill'></i> {$_SESSION['success_message']}</div>";
+    unset($_SESSION['success_message']);
+}
+
+if (isset($_SESSION['error_message'])) {
+    echo "<div class='alert alert-danger'><i class='bi bi-clipboard2-x'></i> {$_SESSION['error_message']}</div>";
+    unset($_SESSION['error_message']);
+}
 
 $database = new Database();
 $db = $database->getConnection();
@@ -37,14 +50,19 @@ if ($_SESSION['is_farm_registered'] == 0) {
         $farm_details = 1;
         $user->farm_details_exists = $farm_details;
 
-        if ($farm->createFarmInfo()) {
-            // $user->user_id = $_SESSION['user_id'];
-            $user->markFarmAsExists();
-            $_SESSION['is_farm_registered'] = 1;
-            echo "<div class='alert alert-success'><i class='bi bi-clipboard2-check-fill'></i> Farm Details saved successfully!</div>";
-        } else {
-            echo "<div class='alert alert-danger'><i class='bi bi-clipboard2-x'></i> Failed to save farm details. Please try again.</div>";
-        }
+      if ($farm->createFarmInfo()) {
+          $user->markFarmAsExists();
+          $_SESSION['is_farm_registered'] = 1;
+
+          $_SESSION['success_message'] = "Farm Details saved successfully!";
+          header("Location: {$base_url}user/farmer/index.php");
+          exit;
+      } else {
+          $_SESSION['error_message'] = "Failed to save farm details. Please try again.";
+          header("Location: {$base_url}user/farmer/index.php");
+          exit;
+      }
+
     }
 
     include_once "farm/farm_detail.php";

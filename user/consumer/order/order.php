@@ -56,120 +56,135 @@ $num = $stmt->rowCount();
 
   <!-- Order Card Example -->
   <?php
-  if ($num>0) {
-			while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			extract($row);
-      
-      $product->product_id = $row['product_id'];
-      $product->readProductName();
+if ($num > 0) {
 
-      
+    // GROUP BY INVOICE
+    $groupedOrders = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $groupedOrders[$row['invoice_number']][] = $row;
+    }
 
-      // get the product image path
-      $raw_img = $product->product_image;
-      $img_owner = $product->user_id;
-      $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
+    // LOOP THROUGH EACH INVOICE GROUP
+    foreach ($groupedOrders as $invoice => $orders) {
 
-  ?>
-    <div class="order-card p-3 border">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <div>
-        <h6 class="mb-0 fw-semibold"><?php echo $row['status']; ?></h6>
-        <h6 class="mb-0 fw-semibold">Invoice NO. <?php echo $row['invoice_number']; ?></h6>
-        <small class="text-muted"><?php echo $row['created_at']; ?></small>
-      </div>
-      <!-- status must be base on the alert box -->
-      <?php
-      $status = $row['status']; // use directly from DB
+        $first = $orders[0];
+        $invoiceID = "invoice_" . $invoice; // unique collapse ID
+?>
+        <div class="order-card p-3 border mb-3">
 
-      // Map DB status to display text
-      switch ($status) {
-          case "order Placed":
-              $displayStatus = "Order Placed";
-              $class = "bg-info text-white"; // blue
-              break;
-          case "accept":
-              $displayStatus = "Preparing";
-              $class = "bg-warning text-dark"; // yellow/orange
-              break;
-          case "Decline":
-              $displayStatus = "Declined";
-              $class = "bg-danger text-white"; // red
-              break;
-          case "complete":
-              $displayStatus = "Complete";
-              $class = "bg-success text-white"; // green
-              break;
-          case "in Transit":
-              $displayStatus = "In Transit";
-              $class = "bg-primary text-white"; // darker blue
-              break;
-          case "cancelled":
-              $displayStatus = "Cancelled";
-              $class = "bg-secondary text-white"; // gray
-              break;
-          default:
-              $displayStatus = $status;
-              $class = "bg-light text-dark"; // default
-              break;
-      }
-      ?>
-      <span class="badge <?php echo $class; ?>">
-    <?php echo $displayStatus; ?>
-</span>
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    
+                    <h6 class="mb-0 fw-semibold">Invoice NO. <?php echo $invoice; ?></h6>
+                    <small class="text-muted"><?php echo $first['created_at']; ?></small>
+                </div>
 
-    </div>
-
-    <hr>
-
-    <div class="row">
-      <div class="col-md-4">
-        <div class="d-flex justify-content-center align-items-center mb-3">
-          <div class="order-images d-flex mr-3">
-              <img src="<?php echo $img_path;?>" alt="item">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="me-4">
-            <h6 class="mb-0 text-success">
-               <?php
-                  $price = $product->price_per_unit; 
-                  $quantity = $row['quantity'];
-                  $total = $price * $quantity;
-
-                  echo "₱" . number_format($total, 2);
+                <!-- STATUS BADGE -->
+                <?php
+                $status = $first['status'];
+                switch ($status) {
+                    case "order placed": $displayStatus = "Order Placed"; $class = "bg-info text-white"; break;
+                    case "accept": $displayStatus = "Preparing"; $class = "bg-warning text-dark"; break;
+                    case "decline": $displayStatus = "Declined"; $class = "bg-danger text-white"; break;
+                    case "complete": $displayStatus = "Complete"; $class = "bg-success text-white"; break;
+                    case "in Transit": $displayStatus = "In Transit"; $class = "bg-primary text-white"; break;
+                    case "cancelled": $displayStatus = "Cancelled"; $class = "bg-secondary text-white"; break;
+                    default: $displayStatus = $status; $class = "bg-light text-dark"; break;
+                }
                 ?>
-            </h6>
-            <small class="text-muted"><strong><?php echo $row['mode_of_payment']; ?></strong></small>
-            <h6 class="mb-0">
-              <?php 
-              $row['quantity'];
-              if ($row['quantity'] > 0) {
-                echo $row['quantity'] . " KG.";
-              }else{
-                echo $row['quantity'] . " KG.";
-              }
-              ?>
-            </h6>
-            <small class="text-muted"><strong><?php echo $product->product_name; ?></strong></small>
-        </div>
-      </div>
+                <span class="badge <?php echo $class; ?>"><?php echo $displayStatus; ?></span>
+            </div>
 
-      <div class="col-md-4 d-flex flex-column align-items-end justify-content-between">
-        <a href="order_details.php?vod=<?php echo $row['id']; ?>" class="btn btn-outline-success btn-sm mb-2 w-100">
-          View Order Details
-        </a>
-        <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $id; ?>" class="btn btn-warning btn-sm w-100">Rate order</a>
-      </div>
-    </div>
-  </div>
+            <hr>
+
+            <!-- COLLAPSIBLE PRODUCTS LIST -->
+            <div id="<?php echo $invoiceID; ?>" class="collapse">
+                <?php foreach ($orders as $row) {
+
+                    $product->product_id = $row['product_id'];
+                    $product->readProductName();
+
+                    $raw_img = $product->product_image;
+                    $img_owner = $product->user_id;
+                    $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
+
+                    $price = $product->price_per_unit;
+                    $qty = $row['quantity'];
+                    $total = $price * $qty;
+                ?>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <img src="<?php echo $img_path; ?>" class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-success">₱<?php echo number_format($total, 2); ?></h6>
+                            <small class="text-muted"><?php echo $row['mode_of_payment']; ?></small>
+                            <h6>Variation: <strong><?php echo $qty; ?> KG</strong></h6>
+                            <small class="text-muted fw-bold"><?php echo $product->product_name; ?></small>
+                        </div>
+                    </div>
+                  <hr>
+                <?php 
+              } 
+              ?>
+            </div>
+            <!-- SEE MORE / SEE LESS BUTTON -->
+            <button class="btn btn-primary btn-sm toggle-btn"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#<?php echo $invoiceID; ?>">
+                See More
+            </button>
+
+
+            <!-- FOOTER BUTTON -->
+            <div class="text-end mt-3">
+                <!-- Order Total -->
+                <div class="mb-3 d-flex justify-content-end align-items-baseline gap-2">
+                    <h6 class="text-primary mb-0">Order Total</h6>
+                    <h4 class="text-success mb-0">₱<?php echo number_format($total, 2); ?></h4>
+                </div>
+
+                <!-- Buttons -->
+                <?php 
+                if ($first['status'] == "complete" && $first['review_status'] != 1) {
+                    // Complete but not yet reviewed
+                ?>
+                    <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $first['id']; ?>" class="btn btn-warning btn-sm">Rate this order</a>
+                <?php 
+                } elseif ($first['status'] != "complete") { 
+                    // Not complete yet
+                ?>
+                    <a href="order_details.php?vod=<?php echo $first['id']; ?>" class="btn btn-outline-success btn-sm">View Order Details</a>
+                <?php 
+                } 
+                // If complete and review_status == 1, no button is shown
+                ?>
+            </div>
+        </div>
+
 <?php
     }
-  }else{
+} else {
     echo "<div class='alert alert-danger'>No Order found</div>";
-  }
+}
 ?>
+
 </div>
+
+<script>
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        setTimeout(() => {
+            if (this.textContent === "See More") {
+                this.textContent = "See Less";
+            } else {
+                this.textContent = "See More";
+            }
+        }, 200);
+    });
+});
+</script>
+
 
 <?php include_once "../layout/layout_foot.php"; ?>

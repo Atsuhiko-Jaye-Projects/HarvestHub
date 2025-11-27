@@ -13,6 +13,7 @@ class Order{
     public $mode_of_payment;
     public $quantity;
     public $status;
+    public $review_status;
     public $created_at;
     public $modified_at;
 
@@ -270,6 +271,22 @@ class Order{
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    function orderReviewStatus() {
+        $query = "SELECT review_status
+                    FROM " . $this->table_name . "
+                    WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $this->id);
+        
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->review_status = $row['review_status'];
+    }
+
 
 
 }

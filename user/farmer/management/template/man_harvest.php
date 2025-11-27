@@ -81,14 +81,15 @@
 
   <!-- ✅ Product Table -->
   <div class="table-responsive shadow-sm rounded">
-    <table class="table table-hover align-middle mb-0" id='userTable'>
+    <table class="table table-hover table-bordered text-center mb-0" id='userTable'>
       <thead class="table-success">
         <tr>
           <th>Product</th>
           <th>Category</th>
           <th>Price (/KG)</th>
           <th>Unit</th>
-          <th>EST Stocks</th>
+          <th>Stocks (est.)</th>
+          <th>No. Plant</th>
           <th>Lot Size</th>
           <th>Status</th>
           <th class="text-center">Action</th>

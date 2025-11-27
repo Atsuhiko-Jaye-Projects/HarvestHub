@@ -45,14 +45,12 @@
             </div>
             
             <div class="mb-3">
-                <input type="number" 
-                  name="lot_size" 
-                  class="form-control" 
-                  required 
-                  placeholder="Farm size (sqm)" 
-                  min="0" 
-                  max="5000"
-                  oninput="if(this.value > 10000) this.value = 10000;">
+                    <input type="number"
+                    name="lot_size"
+                    class="form-control"
+                    onchange="
+                      if (this.value < 50) { alert('Minimum farm area size is 50 sqm'); this.value = 50; }
+                      if (this.value > 50000) { alert('Maximum farm area size is 50,000 sqm'); this.value = 50000; }" value="50">
             </div>
 
 
