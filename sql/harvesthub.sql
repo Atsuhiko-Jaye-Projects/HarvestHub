@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2025 at 02:39 AM
+-- Generation Time: Nov 27, 2025 at 11:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -266,7 +266,7 @@ INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode
 (75, 113, 'INV-69230AD969625', 22, 'COD', 15, 'accept', '2025-11-23 21:23:37', '2025-11-23 13:23:37', 2, 'harvest', 0),
 (76, 113, 'INV-69230AD969624', 21, 'COD', 15, 'accept', '2025-11-23 21:23:37', '2025-11-08 13:23:37', 2, 'harvest', 0),
 (77, 113, 'INV-69230AD969625', 22, 'COD', 15, 'accept', '2025-11-23 21:23:37', '2025-11-23 13:23:37', 2, 'harvest', 0),
-(82, 113, 'INV-692321F5BFE01', 21, 'COD', 20, 'complete', '2025-11-23 23:02:13', '2025-11-23 15:02:13', 2, 'harvest', 0),
+(82, 113, 'INV-692321F5BFE01', 21, 'COD', 20, 'complete', '2025-11-23 23:02:13', '2025-11-23 15:02:13', 2, 'harvest', 1),
 (83, 113, 'INV-69232CAA3228A', 23, 'COD', 15, 'complete', '2025-11-23 23:47:54', '2025-11-23 15:47:54', 2, 'harvest', 0);
 
 -- --------------------------------------------------------
@@ -313,7 +313,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(69, 113, 'Kalabasa', 59, 2, 'Vegetable', 'KG', 0, 'fresh', 516, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-24 04:18:27', '2025-11-24 12:18:27', 'Active', 'harvest', 2400, NULL);
+(69, 113, 'Kalabasa', 59, 2, 'Vegetable', 'KG', 0, 'fresh', 516, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-24 04:18:27', '2025-11-24 12:18:27', 'Active', 'harvest', 2400, 0.0025);
 
 -- --------------------------------------------------------
 
@@ -324,9 +324,9 @@ INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `u
 CREATE TABLE `reviews` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `farmer_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `rate` int(11) NOT NULL,
+  `rating` int(11) NOT NULL,
   `review_text` varchar(500) NOT NULL,
   `reply` varchar(500) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -337,9 +337,9 @@ CREATE TABLE `reviews` (
 -- Dumping data for table `reviews`
 --
 
-INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `customer_id`, `rate`, `review_text`, `reply`, `created_at`, `modified_at`) VALUES
-(1, 12, 2, 1, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43'),
-(2, 12, 2, 2, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43');
+INSERT INTO `reviews` (`id`, `product_id`, `farmer_id`, `customer_id`, `rating`, `review_text`, `reply`, `created_at`, `modified_at`) VALUES
+(10, 113, 2, 0, 4, 'sadasdasdsa', '', '2025-11-27 18:18:46', '2025-11-27 10:18:46'),
+(11, 113, 2, 21, 3, 'asdasd', '', '2025-11-27 18:25:14', '2025-11-27 10:25:14');
 
 -- --------------------------------------------------------
 
@@ -524,7 +524,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
