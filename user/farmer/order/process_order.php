@@ -51,9 +51,48 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 
 
     if ($order->processOrder($_POST['action'])) {
-        echo "<div class='alert alert-success'>
-                Order " . ucfirst($_POST['action']) . "
-              </div>";
+
+        switch ($_POST['action']) {
+            case 'accept':
+                echo "<div class='alert alert-primary text-center'>
+                    <span class='bi bi-check-circle'></span>
+                    Order " . ucfirst($_POST['action']) . "
+                </div>";
+                break;
+
+            case 'decline':
+                echo "<div class='alert alert-danger text-center'>
+                    <span class='bi bi-cross-circle'></span>
+                    Order " . ucfirst($_POST['action']) . "
+                </div>";
+                break;
+
+            case 'Order':
+                echo "<div class='alert alert-danger text-center'>
+                    <span class='bi bi-cross-circle'></span>
+                    Order " . ucfirst($_POST['action']) . "
+                </div>";
+                break;
+
+            case 'accept-pre-order':
+                echo "<div class='alert alert-danger text-center'>
+                    <span class='bi bi-check-circle'></span>
+                    Order " . ucfirst($_POST['action']) . "
+                </div>";
+                break;
+            case 'decline-pre-order':
+                echo "<div class='alert alert-danger text-center'>
+                    <span class='bi bi-cross-circle'></span>
+                    Order " . ucfirst($_POST['action']) . "
+                </div>";
+                break;
+            default:
+                echo "<div class='alert alert-danger text-center'>
+                    <span class='bi bi-cross-circle'></span>
+                    Order " . ucfirst($_POST['action']) . "
+                </div>";
+                break;
+        }
         
         $product_quantity = $_POST['product_quantity'];
         $product->sold_count = $product_quantity;
