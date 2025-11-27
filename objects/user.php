@@ -127,9 +127,12 @@ class User{
         $stmt=$this->conn->prepare($query);
 
         $stmt->bindParam(":farm_details_exists", $this->farm_details_exists);
-        $stmt->bindParam(":id", $this->user_id);
+        $stmt->bindParam(":id", $this->id);
 
-        $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 
     function emailExists(){

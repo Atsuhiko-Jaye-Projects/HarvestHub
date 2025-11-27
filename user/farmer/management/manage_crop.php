@@ -143,6 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->price_per_unit = $_POST['price_per_unit'];
         $product->category = $_POST['category'];
         $product->total_stocks = $_POST['stocks'];
+        $product->available_stocks = $_POST['stocks'];
         $product->product_description = "Reserve fresh farm produce ahead of time and get it delivered at peak quality.";
         $product->status = "Active";
         $product->product_type = "preorder";

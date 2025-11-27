@@ -191,6 +191,27 @@ class Order{
         return false;
     }
 
+    function completeOrder(){
+        $query = "UPDATE " . $this->table_name . "
+                SET 
+                    available_stocks = available_stocks - :quantity,
+                    sold_count = sold_count + :quantity
+                WHERE 
+                    product_id = :product_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":quantity", $this->available_stocks);
+        $stmt->bindParam(":sold_count", $this->sold_count);
+        $stmt->bindParam(":product_id", $this->product_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
     function countPendingOrder(){
         $query = "SELECT COUNT(*) as pending_order
                   FROM " . $this->table_name . "

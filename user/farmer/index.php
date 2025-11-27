@@ -1,16 +1,15 @@
 <?php
-
+ob_start();
 include_once "../../config/core.php";
 include_once "../../config/database.php";
 include_once "../../objects/order.php";
-
-
 
 
 $page_title = "Index";
 $require_login = true;
 include_once "../../login_checker.php";
 include_once "layout/layout_head.php";
+
 if (isset($_SESSION['success_message'])) {
     echo "<div class='alert alert-success'><i class='bi bi-clipboard2-check-fill'></i> {$_SESSION['success_message']}</div>";
     unset($_SESSION['success_message']);
@@ -47,16 +46,21 @@ if ($_SESSION['is_farm_registered'] == 0) {
         $farm->farm_ownership = $_POST['farm_ownership'];
         $farm->lot_size = $_POST['lot_size'];
 
-        $farm_details = 1;
-        $user->farm_details_exists = $farm_details;
+        
 
       if ($farm->createFarmInfo()) {
-          $user->markFarmAsExists();
-          $_SESSION['is_farm_registered'] = 1;
-
-          $_SESSION['success_message'] = "Farm Details saved successfully!";
-          header("Location: {$base_url}user/farmer/index.php");
-          exit;
+        $user->farm_details_exists = 1;
+        $user->id = $_SESSION['user_id'];
+          if ($user->markFarmAsExists()) {
+            $_SESSION['is_farm_registered'] = 1;
+            $_SESSION['success_message'] = "Farm Details saved successfully!";
+            header("Location: {$base_url}user/farmer/index.php");
+            exit;
+          }else{
+            $_SESSION['error_message'] = "Failed to save farm details. Please try again.";
+            header("Location: {$base_url}user/farmer/index.php");
+            exit;
+          }
       } else {
           $_SESSION['error_message'] = "Failed to save farm details. Please try again.";
           header("Location: {$base_url}user/farmer/index.php");
@@ -219,6 +223,6 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
 <?php
 }
-
+ob_end_flush();
 include_once "layout/layout_foot.php";
 ?>

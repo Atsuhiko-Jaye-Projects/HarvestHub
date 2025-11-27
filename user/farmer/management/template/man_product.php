@@ -59,11 +59,11 @@
       </div>
 
       <div class="d-flex align-items-center gap-2">
-        <select id="statusFilter" class="form-select w-auto rounded-pill shadow-sm">
+        <!-- <select id="statusFilter" class="form-select w-auto rounded-pill shadow-sm">
           <option value="">All Status</option>
           <option value="Posted">Posted</option>
           <option value="Pending">Pending</option>
-        </select>
+        </select> -->
         <!-- <button class="btn btn-success px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#new-product-modal">
           <i class="bi bi-plus-circle me-2"></i> Add Product
         </button> -->
@@ -81,9 +81,8 @@
           <th>Product Name</th>
           <th>Category</th>
           <th>Price</th>
-          <th>Available (kg)</th>
-          <th>Unit</th>
-          <th>Lot Size</th>
+          <th>Available Stocks</th>
+          <th>Product Type</th>
           <th>Date</th>
           <th class="text-center">Action</th>
         </tr>
@@ -104,8 +103,14 @@
                   / {$total_stocks} kg
                 </span>
                 </td>";
-            echo "<td>{$unit}</td>";
-            echo "<td>".number_format($lot_size)." sqm</td>";
+            echo "<td>";
+              if ($product_type=="preorder") {
+                echo "<span class='badge bg-warning'>Pre-Order product</span>";
+
+              }else{
+                echo "<span class='badge bg-primary'>Harvest Product</span>";
+              }
+            echo "</td>";
             echo "<td>". date("m-d-Y", strtotime($created_at))."</td>";
             echo "<td class='text-center'>";
               echo "<div class='btn-group' role='group'>";

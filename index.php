@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once "config/core.php";
 include_once "config/database.php";
 include_once "objects/product.php";
@@ -148,6 +149,7 @@ if ($num > 0) {
 </div>
 <?php 
 include_once "layout_foot.php";
+ob_end_flush();
 ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

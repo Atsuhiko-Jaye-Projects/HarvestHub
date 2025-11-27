@@ -99,6 +99,7 @@ class Product{
                 price_per_unit=:price_per_unit,
                 category=:category,
                 total_stocks=:total_stocks,
+                available_stocks=:available_stocks,
                 product_description=:product_description,
                 product_image = :product_image,
                 status=:status,
@@ -116,6 +117,7 @@ class Product{
         $this->status = htmlspecialchars(strip_tags($this->status));
         $this->product_image = htmlspecialchars(strip_tags($this->product_image));
         $this->product_type = htmlspecialchars(strip_tags($this->product_type));
+        $this->available_stocks = htmlspecialchars(strip_tags($this->available_stocks));
         $this->created_at = date ("Y-m-d H:i:s");
 
         
@@ -128,6 +130,7 @@ class Product{
         $stmt->bindParam(":product_image", $this->product_image);
         $stmt->bindParam(":total_stocks", $this->total_stocks);
         $stmt->bindParam(":product_type", $this->product_type);
+        $stmt->bindParam(":available_stocks", $this->available_stocks);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":created_at", $this->created_at);
 
@@ -332,6 +335,8 @@ class Product{
         return $row['total_value'];
     }
 
+
+
     function uploadPhoto() {
         $result_message = "";
 
@@ -432,6 +437,27 @@ class Product{
         return [
             "records" => $product_status
         ];
+    }
+
+    function deductStock(){
+        $query = "UPDATE " . $this->table_name . "
+                SET 
+                    available_stocks = available_stocks - :quantity,
+                    sold_count = sold_count + :quantity
+                WHERE 
+                    product_id = :product_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":quantity", $this->quantity);
+        $stmt->bindParam(":quantity", $this->sold_count);
+        $stmt->bindParam(":product_id", $this->product_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

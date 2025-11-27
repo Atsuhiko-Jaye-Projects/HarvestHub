@@ -45,23 +45,28 @@ $service_fee = $sub_total * 0.0225;
 
 
 
-if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete'])) {
+if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete', 'accept-pre-order', 'decline-pre-order'])) {
     $order->id = $_POST['order_id'];
     $order->status = $_POST['action'];
+
 
     if ($order->processOrder($_POST['action'])) {
         echo "<div class='alert alert-success'>
                 Order " . ucfirst($_POST['action']) . "
               </div>";
+        
+        $product_quantity = $_POST['product_quantity'];
+        $product->sold_count = $product_quantity;
+        $product->quantity = $product_quantity;
+        $product->product_id = $_POST['product_id'];
+        $product->deductStock();
+
     } else {
         echo "<div class='alert alert-danger'>
                 Failed to update order
               </div>";
     }
-}elseif (!empty($_POST['action']) == 'complete') {
 }
-
-
 ?>
 
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . "?pid={$order_id}"; ?>" method="POST" id="checkoutForm">
@@ -71,9 +76,10 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
   <div class="col-md-8">
     <div class="card shadow-sm position-sticky" style="top: 20px;">
         <div class="card-body">
-
+        
+          <input type="hidden" name="product_id" value="<?php echo $order->product_id; ?>">
           <input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
-
+          <input type="hidden" name="product_quantity" value="<?php echo $order->quantity; ?>">
             <!-- PRODUCT SNAPSHOT -->
             <h5 class="fw-bold mb-3">Product Information</h5>
             <div class="d-flex align-items-start mb-3">
