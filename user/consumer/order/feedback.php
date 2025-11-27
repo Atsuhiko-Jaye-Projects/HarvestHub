@@ -1,15 +1,11 @@
 <?php
+ob_start();
 $order_id = isset($_GET['vod']) ? $_GET['vod'] : die('ERROR: missing ID.');
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/product.php";
-
-
-if ($_POST) {
-    header("Location:{$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
-    exit;
-}
+include_once "../../../objects/review.php";
 
 
 $page_title = "Feedback Form";
@@ -23,14 +19,42 @@ $database = new Database();
 $db = $database->getConnection();
 
 $order = new Order($db);
+$review = new Review($db);
 
 // pass the value of what order review will check
 $order->id = $order_id;
 $order->orderReviewStatus();
 
+// pass the value to the variable to look clean
+$productid = $order->product_id;
+$farmerid = $order->farmer_id;
+$customerId = $order->customer_id;
+
+
+if ($_POST) {
+
+    $review->rating = $_POST['rating'];
+    $review->product_id = $productid;
+    $review->farmer_id = $farmerid;
+    $review->customer_id = $customerId;
+    $review->review_text = $_POST['feedback'];
+
+    if ($review->createReview()) {
+        $order->review_status = "1";
+        $order->id = $order_id;
+        $order->markReviewStatus();
+        header("Location:{$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
+        exit;
+    }else{
+        header("Location:{$base_url}user/consumer/order/feedback.php?vod={$order_id}&failed");
+    }
+}
+
+
 
 
 if ($order->review_status == 0) {
+
 ?>
 
 <div class="container mt-5">
@@ -44,12 +68,13 @@ if ($order->review_status == 0) {
             <div class="card shadow-sm border-light">
                 <div class="card-body">
                     <h5 class="card-title fw-bold mb-4 text-center">We'd Love Your Feedback!</h5>
-
+                    <input type="text" value="<?php echo $order->customer_id; ?>">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?vod={$order_id}");?>" method="POST" id="feedbackForm">
 
                         <!-- Rating -->
                         <div class="mb-4">
                             <label class="form-label">How would you rate your experience?</label>
+                            
 
                             <div class="stars">
                                 <input type="radio" id="star5" name="rating" value="5" class="star-input">
@@ -96,16 +121,29 @@ if ($order->review_status == 0) {
     <div class="container mt-5">
         <div class="row justify-content-center">
 
-
             <!-- Feedback Form -->
             <div class="col-md-8">
                 <div class="card shadow-sm border-light">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold mb-4 text-center">You Already rated this product</h5>
+                    <div class="card-body text-center">
 
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-lg px-4 py-2">Submit Feedback</button>
-                            </div>
+                        <div class="mb-3">
+                            <i class="bi bi-emoji-smile-fill text-warning" style="font-size: 3rem;"></i>
+                        </div>
+
+                        <h5 class="card-title fw-bold mb-3">
+                            You Already Rated This Product
+                        </h5>
+
+                        <p class="text-muted mb-4">
+                            <i class="bi bi-info-circle"></i> Thank you for your feedback!
+                        </p>
+
+                        <div class="d-flex justify-content-center">
+                            <a href="order.php" class="btn btn-primary btn-lg px-4 py-2">
+                                <i class="bi bi-arrow-left-circle me-2"></i> Return
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -113,6 +151,7 @@ if ($order->review_status == 0) {
     </div>
 <?php
 }
+ob_end_flush();
 ?>
 
 <!-- Star CSS -->
@@ -169,6 +208,7 @@ document.getElementById('feedbackForm').addEventListener('submit', function(even
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    const oid = "<?php echo $order_id; ?>";
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('success')) {
         Swal.fire({
@@ -182,9 +222,27 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         // Remove ?success=1 from URL without reloading
-        //window.history.replaceState({}, document.title, "feedback.php");
+        window.history.replaceState({}, document.title, `feedback.php?vod=${oid}`);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('failed')) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oh Snap!',
+            text: 'Something went wrong, Please try again later.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Okay'
+        });
+
+        // Remove ?success=1 from URL without reloading
+        window.history.replaceState({}, document.title, `feedback.php?vod=${oid}`);
     }
 });
 </script>
+
+
 
 <?php include_once "../layout/layout_foot.php"; ?>

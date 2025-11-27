@@ -273,7 +273,7 @@ class Order{
     }
 
     function orderReviewStatus() {
-        $query = "SELECT review_status
+        $query = "SELECT *
                     FROM " . $this->table_name . "
                     WHERE id = :id";
 
@@ -285,9 +285,28 @@ class Order{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->review_status = $row['review_status'];
+        $this->product_id = $row['product_id'];
+        $this->farmer_id = $row['farmer_id'];
+        $this->customer_id = $row['customer_id'];
     }
 
+    function markReviewStatus(){
+        $query = "UPDATE
+                " . $this->table_name . "
+                SET
+                review_status = :review_status
+                WHERE 
+                id = :id";
+        $stmt=$this->conn->prepare($query);
 
+        $this->review_status=htmlspecialchars(strip_tags($this->review_status));
+
+        $stmt->bindParam(":review_status", $this->review_status);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+
+    }
 
 }
 ?>
