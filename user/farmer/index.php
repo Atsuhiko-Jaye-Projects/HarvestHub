@@ -40,8 +40,9 @@ if ($_SESSION['is_farm_registered'] == 0) {
         $user = new User($db);
 
         $farm->user_id = $_SESSION['user_id'];
-        $farm->municipality = $_POST['municipality'];
-        $farm->baranggay = $_POST['baranggay'];
+        $farm->province = $_POST['province_name'];
+        $farm->municipality = $_POST['municipality_name'];
+        $farm->baranggay = $_POST['barangay_name'];
         $farm->purok = $_POST['purok'];
         $farm->farm_ownership = $_POST['farm_ownership'];
         $farm->lot_size = $_POST['lot_size'];
