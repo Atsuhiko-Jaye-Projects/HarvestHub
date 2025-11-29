@@ -4,7 +4,7 @@ if ($page_title == "Manage Crop") {
 <div class="container-fluid mt-3">
     <div class="d-flex flex-wrap gap-3">
         <!-- Card 1 -->
-        <div class="card text-white bg-success flex-fill col-12 col-sm-6 col-lg-4 mb-3">
+        <div class="card text-white bg-success flex-fill col-4 col-sm-6 col-lg-4 mb-3">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
@@ -20,7 +20,7 @@ if ($page_title == "Manage Crop") {
         </div>
 
         <!-- Card 2 -->
-        <div class="card flex-fill col-12 col-sm-6 col-lg-4 mb-3">
+        <div class="card flex-fill col-4 col-sm-6 col-lg-4 mb-3">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
@@ -37,9 +37,9 @@ if ($page_title == "Manage Crop") {
         </div>
 
         <!-- Card 3 -->
-        <div class="card flex-fill col-12 col-sm-12 col-lg-4 mb-3">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white fw-bold">Top Crops in This Farm</div>
+        <div class="card flex-fill col-6 col-sm-12 col-lg-4 mb-3">
+             <div class="card shadow-sm" style="background-color: #28a745;">
+                <div class="card-header fw-bold" style="background-color: #28a745; color: white; font-size: 1.1rem;">Top Crops in This Farm</div>
                 <div class="card-body p-0">
                     <table class="table mb-0">
                         <thead class="table-light">
@@ -56,6 +56,25 @@ if ($page_title == "Manage Crop") {
                 </div>
             </div>
         </div>
+        <div class="card flex-fill col-6 col-sm-12 col-lg-4 mb-3">
+            <div class="card shadow-sm" style="background-color: #007bff;">
+                <div class="card-header fw-bold" style="background-color: #007bff; font-size: 1.1rem;">Planted Crops in your Brgy.</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Rank</th>
+                                <th>Product Name</th>
+                                <th>Total Planted</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TopCropsInArea">
+                            <tr><td colspan="3" class="text-center">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <?php } ?>
@@ -64,8 +83,8 @@ if ($page_title == "Manage Crop") {
 <div class="container-fluid mt-3">
     <div class="d-flex flex-wrap gap-3">
         <!-- Card 1 -->
-        <div class="card text-white bg-success flex-fill col-12 col-sm-6 col-lg-3 mb-3">
-            <div class="card-body">
+        <div class="card text-white bg-success flex-fill col-12 col-sm-6 col-lg-3 mb-3" >
+            <div class="card-body" >
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <h6>Rating</h6>

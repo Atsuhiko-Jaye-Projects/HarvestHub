@@ -1,11 +1,11 @@
-<div class="container py-4">
+<div class="container-fluid">
 
   <?php //include_once "../modal-forms/product/add_product.php"; ?>
 
   <!-- ✅ Summary Cards -->
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm h-100 rounded-4">
+      <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-box-seam text-success fs-2 mb-2"></i>
           <h6 class="text-muted">Total Crop Type</h6>
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm h-100 rounded-4">
+      <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-box-seam text-primary fs-2 mb-2"></i>
           <h6 class="text-muted">Crops Stocks (KG)</h6>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm h-100 rounded-4">
+      <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
          <i class="bi bi-tree text-success fs-2 mb-2"></i>
           <h6 class="text-muted">Total Planted Crops</h6>
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm h-100 rounded-4">
+      <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
           <h6 class="text-muted">Avg. Yield (kg)</h6>
@@ -43,7 +43,7 @@
   </div>
 
   <!-- Weather Suggestions -->
-  <div class="alert alert-light border shadow-sm rounded-4 mb-4">
+  <div class="alert alert-light border-1 shadow-sm rounded-4 mb-4">
     <div class="row align-items-center">
       <div class="col-12 col-md-4 mb-2 mb-md-0">
         <h6 class="mb-0"><i class="bi bi-cloud-sun text-warning me-2"></i>Weather-Based Crop Suggestions</h6>

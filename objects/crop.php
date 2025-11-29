@@ -17,6 +17,9 @@ class Crop{
     public $stocks;
     public $modified_at;
     public $is_posted;
+    public $province;
+    public $municipality;
+    public $baranggay;
 
     public function __construct($db) {
 	    $this->conn = $db;
@@ -36,7 +39,10 @@ class Crop{
                 suggested_price=:suggested_price,
                 created_at=:created_at,
                 stocks=:stocks,
-                plant_count = :plant_count";
+                plant_count = :plant_count,
+                province = :province,
+                municipality = :municipality,
+                baranggay = :baranggay";
 
         $stmt=$this->conn->prepare($query);
 
@@ -50,6 +56,9 @@ class Crop{
         $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
         $this->stocks = htmlspecialchars(strip_tags($this->stocks));
         $this->plant_count = htmlspecialchars(strip_tags($this->plant_count));
+        $this->province = htmlspecialchars(strip_tags($this->province));
+        $this->municipality = htmlspecialchars(strip_tags($this->municipality));
+        $this->baranggay = htmlspecialchars(strip_tags($this->baranggay));
         $this->created_at = date ("Y-m-d H:i:s");
 
 
@@ -62,6 +71,9 @@ class Crop{
         $stmt->bindParam(":suggested_price", $this->suggested_price);
         $stmt->bindParam(":stocks", $this->stocks);
         $stmt->bindParam(":plant_count", $this->plant_count);
+        $stmt->bindParam(":province", $this->province);
+        $stmt->bindParam(":municipality", $this->municipality);
+        $stmt->bindParam(":baranggay", $this->baranggay);
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {
@@ -155,7 +167,7 @@ class Crop{
         return false;
     }
 
-        function getMostPlanted() {
+    function getMostPlanted() {
             $query = "
                 SELECT 
                     crop_name,
@@ -172,7 +184,30 @@ class Crop{
             $stmt->execute(); // ⬅️ REQUIRED
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+    }
+
+    function topCropInArea(){
+        $query = "SELECT 
+                    LOWER(crop_name) AS crop_name, 
+                    SUM(plant_count) AS total_planted
+                  FROM 
+                    " . $this->table_name . " 
+                  WHERE 
+                    baranggay =:baranggay 
+                  GROUP BY 
+                    crop_name 
+                  ORDER BY 
+                    total_planted DESC
+                  LIMIT
+                    5";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":baranggay", $this->baranggay);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 
 
