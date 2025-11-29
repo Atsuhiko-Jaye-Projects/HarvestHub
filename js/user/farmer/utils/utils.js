@@ -326,6 +326,42 @@ function loadMostPlanted() {
 document.addEventListener("DOMContentLoaded", loadMostPlanted);
 
 
+function loadTopCropsInArea() {
+  $.ajax({
+    url: "../../../js/user/farmer/api/fetch_top_crops_in_brgy.php",
+    type: "GET",
+    dataType: "json",
+    success: function(response) {
+      if (!response.records || response.records.length === 0) {
+        $("#TopCropsInArea").html(`
+          <tr><td colspan="3" class="text-center">No data found</td></tr>
+        `);
+        return;
+      }
+
+      let rows = "";
+      let rank = 1;
+
+      response.records.forEach(row => {
+        rows += `
+          <tr>
+            <td>${rank}</td>
+
+            <td style="text-transform: capitalize;">${row.crop_name}</td>
+            <td>${Number(row.total_planted).toLocaleString()}</td>
+          </tr>
+        `;
+        rank++;
+      });
+
+      $("#TopCropsInArea").html(rows);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadTopCropsInArea);
+
+
 
 
 
