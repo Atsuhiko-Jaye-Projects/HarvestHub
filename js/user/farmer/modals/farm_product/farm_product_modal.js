@@ -62,9 +62,9 @@ function editHarvestProduct(row){
                     </div>
                 </div>
 
-                <input type="text"  name="plant_count" value="${row.plant_count}">
-                <input type="text"  name="kilo_per_plant" value="${row.kilo_per_plant}">
-                <input type="text"  name="total_plant_expense" value="${row.expense}">
+                <input type="hidden"  name="plant_count" value="${row.plant_count}">
+                <input type="hidden"  name="kilo_per_plant" value="${row.kilo_per_plant}">
+                <input type="hidden"  name="total_plant_expense" value="${row.expense}">
 
               </div>
             </div>

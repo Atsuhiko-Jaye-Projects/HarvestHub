@@ -1,6 +1,6 @@
 <?php
 echo "<nav>";
-echo "<ul class='pagination'>";
+echo "<ul class='pagination mt-3'>";
 
 // button for first page
 if($page > 1){

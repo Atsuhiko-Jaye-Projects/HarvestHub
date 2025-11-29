@@ -16,21 +16,38 @@ document.addEventListener('DOMContentLoaded', function(){
                     className: 'btn-primary'
                 }
             },
-            callback: function (result) {
-
-                if(result==true){
-                    $.post('/HarvestHub/user/farmer/management/delete_product.php', {
-                        object_id: id,
-                    }, function(data){
-                        alert('Product Deleted');
+        callback: function (result) {
+            if(result){
+                $.post('/HarvestHub/user/farmer/management/delete_product.php', {
+                    object_id: id
+                })
+                .done(function(data){
+                    // SweetAlert success
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'The Posted product has been successfully deleted.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // reload the page after Swal closes
                         location.reload();
-                    }).fail(function() {
-                        alert('Unable to delete.');
                     });
-                }
+                })
+                .fail(function() {
+                    // SweetAlert error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Unable to delete the product.',
+                    });
+                });
             }
+        }
+
         });
 
         return false;
     });
 });
+

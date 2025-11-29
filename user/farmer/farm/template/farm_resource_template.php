@@ -3,7 +3,7 @@
   <!-- ✅ Summary Cards -->
   <div class="row g-3 mb-4">
     <div class="col-12 col-sm-12 col-md-3">
-      <div class="card border-0 shadow-sm h-100 rounded-4">
+      <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-journal-text text-success fs-2 mb-2"></i>
           <h6 class="text-muted">Total Resources</h6>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-3">
-      <div class="card border-0 shadow-sm h-100 rounded-4">
+      <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-primary fs-2 mb-2"></i>
           <h6 class="text-muted">Total Cost</h6>
@@ -23,6 +23,7 @@
   </div>
 
   <?php include_once "../modal-forms/resource/add_resource.php"; ?>
+  
 
   <!-- Page Header -->
   <div class="p-3 bg-light rounded shadow-sm d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -30,7 +31,7 @@
       <h5 class="mb-0"><i class="bi bi-journal-text text-success me-2"></i> <?php echo $page_title; ?></h5>
       <small class="text-muted">Update and manage your farm supplies and resources</small>
     </div>
-    <button class="btn btn-success px-4 rounded-pill mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button class="btn btn-success px-4  mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <i class="bi bi-plus-circle me-2"></i> Add Resource
     </button>
   </div>
@@ -42,38 +43,41 @@
   </div>
 
   <?php if($num > 0): ?>
-    <div class="table-responsive shadow-sm rounded-4">
-      <table class="table table-hover align-middle mb-0" id="resourceTable">
+    <div class="table-responsive shadow-sm rounded-2">
+      <table class="table table-hover table-bordered text-center mb-0" id="resourceTable">
         <thead class="table-success text-uppercase">
           <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Cost</th>
-            <th>Date</th>
-            <th class="text-center">Action</th>
+            <th><i class="bi bi-layers text-primary me-1"></i>Resource Type</th>
+            <th><i class="bi bi-tag text-success me-1"></i>Item Name</th>
+            <th><i class="bi bi-cash-stack text-warning me-1"></i>Total Cost</th>
+            <th><i class="bi bi-calendar-event text-danger me-1"></i>Recorded Date</th>
+            <th class="text-center"><i class="bi bi-gear text-secondary me-1"></i>Action</th>
           </tr>
         </thead>
         <tbody>
           <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): 
             extract($row); ?>
             <tr>
-              <td><?php echo $type; ?></td>
-              <td><?php echo $item_name; ?></td>
+              <td><?php echo ucfirst($type); ?></td>
+              <td><?php echo ucfirst($item_name); ?></td>
               <td>₱<?php echo $cost; ?></td>
               <td><?php echo $date; ?></td>
               <td class="text-center">
                 <div class="btn-group" role="group">
-                  <button class="btn btn-outline-primary btn-sm rounded-pill me-2" data-bs-toggle="modal" data-bs-target="#edit-farm-resource-modal-<?php echo $id; ?>" title="Edit">
+                  <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-farm-resource-modal-<?php echo $id; ?>" title="Edit">
                     <i class="bi bi-pencil-square"></i>
                   </button>
-                  <button class="btn btn-outline-warning btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#view-farm-resource-modal-<?php echo $id; ?>" title="View">
-                    <i class="bi bi-eye-fill"></i>
-                  </button>
+                  <a href='#' data-delete-id='<?php echo $id; ?>' class="btn btn-outline-danger delete-resource">
+                    <i class="bi bi-trash-fill"></i>
+                  </a>
                 </div>
               </td>
             </tr>
+            <?php include "../modal-forms/resource/edit_resource.php"; ?>
           <?php endwhile; ?>
+          
         </tbody>
+        
       </table>
     </div>
 
