@@ -50,7 +50,7 @@
             <label class="form-label">Type of farm ownership</label>
             <select name="farm_ownership" class="form-select">
               <option value="" hidden>Please select..</option>
-              <option value="rented">Leased</option>
+              <option value="rented">Rented</option>
               <option value="owned">Owned</option>
             </select>
           </div>
