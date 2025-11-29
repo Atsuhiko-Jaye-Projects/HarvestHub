@@ -1,5 +1,8 @@
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
+    <button class="btn btn-outline-dark d-xl-none m-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
+    <i class="bi bi-list"></i>
+    </button>
     <a class="navbar-brand"></a>
 
         <div class="d-flex align-items-center">

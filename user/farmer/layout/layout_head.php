@@ -46,6 +46,17 @@ body { font-family: "Inter", sans-serif; }
   font-weight: 600;
   color: #198754; /* Bootstrap green */
 }
+
+  /* Smooth slide animation */
+  .offcanvas {
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  }
+
+  /* Smooth backdrop */
+  .offcanvas-backdrop.show {
+    backdrop-filter: blur(4px);
+    transition: backdrop-filter 0.3s ease !important;
+  }
 </style>
 
 
@@ -55,11 +66,12 @@ body { font-family: "Inter", sans-serif; }
 <div class="container-fluid">
   <div class="row" style="height: 100vh">
 
+
     <!-- Sidebar -->
     <?php include $_SERVER['DOCUMENT_ROOT'] . $base_url . "user/farmer/layout/sidebar.php"; ?>
 
     <!-- Main content -->
-    <div class="col-2 col-sm-9 col-xl-10 p-0 m-0">
+    <div class="col-12 col-sm-9 col-xl-10 p-0 m-0">
 
       <!-- Navigation -->
       <?php include $_SERVER['DOCUMENT_ROOT'] . $base_url . "user/farmer/layout/navigation.php"; ?>

@@ -84,15 +84,23 @@ if ($num > 0) {
                 <!-- Image with Pre-Order badge if needed -->
                 <div class="position-relative">
                     <?php
-                        
-                        $path = "user/uploads/{$user_id}/products/{$product_image}";
-                        $default = "libs/images/logo.png";
-                        $image = ( !empty($product_image) && file_exists($path) ) ? $path : $default;
+                    $path = "user/uploads/{$user_id}/products/{$product_image}";
+                    $crops_path = "user/uploads/{$user_id}/posted_crops/{$product_image}";
+                    $default = "libs/images/logo.png";
+
+                    if (!empty($product_image) && file_exists($path)) {
+                        $image = $path;
+                    } elseif (!empty($product_image) && file_exists($crops_path)) {
+                        $image = $crops_path;
+                    } else {
+                        $image = $default;
+                    }
                     ?>
                     <img src="<?= $image ?>" 
-                         class="card-img-top" 
-                         alt="<?= htmlspecialchars($product_name) ?>" 
-                         style="object-fit: cover; height: 180px;">
+                        class="card-img-top"
+                        alt="<?= htmlspecialchars($product_name) ?>" 
+                        style="object-fit: cover; height: 180px;">
+
 
                     <?php 
                         $discount = ($row['discount'] * 100) * 100;

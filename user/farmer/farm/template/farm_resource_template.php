@@ -2,7 +2,7 @@
 
   <!-- ✅ Summary Cards -->
   <div class="row g-3 mb-4">
-    <div class="col-md-3">
+    <div class="col-12 col-sm-12 col-md-3">
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-journal-text text-success fs-2 mb-2"></i>
@@ -11,7 +11,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-12 col-sm-12 col-md-3">
       <div class="card border-0 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-primary fs-2 mb-2"></i>
@@ -25,19 +25,19 @@
   <?php include_once "../modal-forms/resource/add_resource.php"; ?>
 
   <!-- Page Header -->
-  <div class="p-3 bg-light rounded shadow-sm d-flex justify-content-between align-items-center mb-3">
+  <div class="p-3 bg-light rounded shadow-sm d-flex justify-content-between align-items-center mb-3 flex-wrap">
     <div>
       <h5 class="mb-0"><i class="bi bi-journal-text text-success me-2"></i> <?php echo $page_title; ?></h5>
       <small class="text-muted">Update and manage your farm supplies and resources</small>
     </div>
-    <button class="btn btn-success px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button class="btn btn-success px-4 rounded-pill mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <i class="bi bi-plus-circle me-2"></i> Add Resource
     </button>
   </div>
 
   <!-- Search and Filter -->
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <input type="text" id="searchResource" class="form-control w-50 mb-2 mb-md-0" placeholder="Search resources...">
+    <input type="text" id="searchResource" class="form-control w-100 w-md-50 mb-2 mb-md-0" placeholder="Search resources...">
     <!-- Optional: Add status filter here if needed -->
   </div>
 
