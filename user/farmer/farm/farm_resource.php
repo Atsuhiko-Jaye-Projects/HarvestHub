@@ -14,17 +14,6 @@ $require_login=true;
 include_once "../../../login_checker.php";
 include_once "../layout/layout_head.php";
 
-$page_url = "{$home_url}user/farmer/farm/farm_resource.php?";
-
-// page given in URL parameter, default page is one
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-
-// set number of records per page
-$records_per_page = 5;
-
-// calculate for the query LIMIT clause
-$from_record_num = ($records_per_page * $page) - $records_per_page;
-
 $farm_resource->user_id = $_SESSION['user_id'];
 
 $today = date('Y-m-d');
@@ -39,6 +28,20 @@ $filter_to_date   = isset($_GET['to_date'])   ? $_GET['to_date']   : $today;
 // Display labels (pretty format)
 $start_date = date('M d, Y', strtotime($filter_from_date));
 $end_date   = date('M d, Y', strtotime($filter_to_date));
+
+
+$page_url = "{$home_url}user/farmer/farm/farm_resource.php?";
+$page_url .= "from_date={$filter_from_date}&to_date={$filter_to_date}&";
+
+// page given in URL parameter, default page is one
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// set number of records per page
+$records_per_page = 5;
+
+// calculate for the query LIMIT clause
+$from_record_num = ($records_per_page * $page) - $records_per_page;
+
 
 //display the current month farm expense
 

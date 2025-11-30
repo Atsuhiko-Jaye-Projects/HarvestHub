@@ -32,7 +32,7 @@
       <small class="text-muted">Update and manage your farm supplies and resources</small>
     </div>
     <button class="btn btn-success px-4 mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      <i class="bi bi-plus-circle me-2"></i> Add Resource
+      <i class="bi bi-plus-circle me-2"></i> New Farm Input
     </button>
   </div>
 

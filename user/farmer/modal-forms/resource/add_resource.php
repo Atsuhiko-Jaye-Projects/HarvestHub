@@ -5,7 +5,7 @@
         <input type="hidden" name="action" value="create">
         
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New Resource</h5>
+          <h5 class="modal-title" id="exampleModalLabel">New Farm Input</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -17,7 +17,6 @@
                 <option value="machine">Machine</option>
                 <option value="fertilizer">Fertilizer</option>
                 <option value="seeds">Seeds</option>
-                <option value="others">Others</option>
               </select>
             </div>
             <div class="col-md-6">

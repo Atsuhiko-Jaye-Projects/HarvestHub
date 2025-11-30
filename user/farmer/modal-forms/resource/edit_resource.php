@@ -6,7 +6,7 @@
         <input type="hidden" name="item_id" value="<?php echo $id;?>">
         <div class="modal-header">
             <h5 class="modal-title d-flex align-items-center" id="exampleModalLabel">
-                <i class="bi bi-pencil-square me-2"></i> Update Resource Details
+                <i class="bi bi-pencil-square me-2"></i> Update Farm Input
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
@@ -19,7 +19,7 @@
                 <option value="machine" <?php echo ($type == 'machine') ? 'selected' : ''; ?>>Machine</option>
                 <option value="fertilizer" <?php echo ($type == 'fertilizer') ? 'selected' : ''; ?>>Fertilizer</option>
                 <option value="seeds" <?php echo ($type == 'seeds') ? 'selected' : ''; ?>>Seeds</option>
-                <option value="others" <?php echo ($type == 'others') ? 'selected' : ''; ?>>Others</option>
+                
             </select>
             </div>
             <div class="col-md-6">

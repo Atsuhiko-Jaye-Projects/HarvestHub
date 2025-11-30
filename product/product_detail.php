@@ -151,6 +151,63 @@ if ($_POST) {
     </form>
   </div>
 
+
+
+<div class="card p-3 shadow-sm rounded mb-3 mt-3">
+  <div class="d-flex align-items-center flex-wrap">
+    
+    <!-- Shop Logo -->
+    <div class="me-3">
+      <img src="shop-logo.png" alt="Shop Logo" class="rounded-circle" style="width: 70px; height: 70px;">
+    </div>
+
+    <!-- Shop Info -->
+    <div class="flex-grow-0">
+      <h5 class="mb-1">Chuangui Shop</h5>
+      <small class="text-muted">Active 4 Minutes Ago</small>
+      <div class="mt-2">
+        <span class="badge bg-danger">Preferred</span>
+      </div>
+    </div>
+
+    <!-- Shop Metrics -->
+    <div class="d-flex flex-wrap align-items-center ms-auto gap-3 mt-2 mt-md-0">
+      <div>
+        <div class="text-muted small">Ratings</div>
+        <div class="fw-bold text-danger">101.2K</div>
+      </div>
+      <div>
+        <div class="text-muted small">Products</div>
+        <div class="fw-bold">268</div>
+      </div>
+      <div>
+        <div class="text-muted small">Response Rate</div>
+        <div class="fw-bold text-success">100%</div>
+      </div>
+      <div>
+        <div class="text-muted small">Response Time</div>
+        <div class="fw-bold">within minutes</div>
+      </div>
+      <div>
+        <div class="text-muted small">Joined</div>
+        <div class="fw-bold">24 months ago</div>
+      </div>
+      <div>
+        <div class="text-muted small">Follower</div>
+        <div class="fw-bold">54.6K</div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex gap-2 mt-2 mt-md-0 ms-auto">
+      <button class="btn btn-danger"><i class="bi bi-chat-dots me-1"></i> Chat Now</button>
+      <button class="btn btn-outline-secondary">View Shop</button>
+    </div>
+
+  </div>
+</div>
+
+
   
 
   <!-- Related Products -->
