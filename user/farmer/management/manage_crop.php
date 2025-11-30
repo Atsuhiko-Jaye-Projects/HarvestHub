@@ -7,7 +7,6 @@ include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
 include_once "../../../objects/user.php";
-print_r($_SESSION);
 
 $page_title = "Manage Crop";
 include_once "../layout/layout_head.php";

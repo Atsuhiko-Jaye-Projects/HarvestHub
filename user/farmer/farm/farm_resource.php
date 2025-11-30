@@ -26,6 +26,26 @@ $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
 $farm_resource->user_id = $_SESSION['user_id'];
+
+$today = date('Y-m-d');
+
+// First day of the current month
+$month_first_day = date('Y-m-01');
+
+// Default filter dates (for inputs)
+$filter_from_date = isset($_GET['from_date']) ? $_GET['from_date'] : $month_first_day;
+$filter_to_date   = isset($_GET['to_date'])   ? $_GET['to_date']   : $today;
+
+// Display labels (pretty format)
+$start_date = date('M d, Y', strtotime($filter_from_date));
+$end_date   = date('M d, Y', strtotime($filter_to_date));
+
+//display the current month farm expense
+
+$farm_resource->start_date_expense = $filter_from_date;
+$farm_resource->today_expense = $filter_to_date;
+$farm_resource->user_id = $_SESSION['user_id'];
+
 $stmt = $farm_resource->readAllResource($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $farm_resource->countAll();
@@ -82,8 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
 
 }
-// get the farm resource statistics
-$total = $farm_resource->farmStatsTotalCost();
+
+
 //include stats card
 include_once "../statistics/management/management_resource_stats.php";
 include_once "template/farm_resource_template.php";

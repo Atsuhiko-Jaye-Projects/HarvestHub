@@ -3,7 +3,7 @@
     <div class="modal-content">
       <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="action" value="update">
-        
+        <input type="hidden" name="item_id" value="<?php echo $id;?>">
         <div class="modal-header">
             <h5 class="modal-title d-flex align-items-center" id="exampleModalLabel">
                 <i class="bi bi-pencil-square me-2"></i> Update Resource Details

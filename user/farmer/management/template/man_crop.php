@@ -43,7 +43,7 @@
   </div>
 
   <!-- Weather Suggestions -->
-  <div class="alert alert-light border-1 shadow-sm rounded-4 mb-4">
+  <div class="alert alert-light border-1   shadow-sm rounded-4 mb-4">
     <div class="row align-items-center">
       <div class="col-12 col-md-4 mb-2 mb-md-0">
         <h6 class="mb-0"><i class="bi bi-cloud-sun text-warning me-2"></i>Weather-Based Crop Suggestions</h6>
@@ -83,17 +83,17 @@
     <table class="table table-hover table-bordered align-middle mb-0">
       <thead class="table-success text-uppercase text-center ">
         <tr>
-          <th>Crop Name</th>
-          <th>KG/Plant</th>
-          <th>Cultivated Area (sqm)</th>
-          <th>Harvest Stocks (EST.)</th>
-          <th>Planted Crops</th>
-          <th>Date Planted</th>
-          <th>Harvest Est.</th>
-          <th>Duration</th>
-          <th>Crop Age</th>
-          <th>Status</th>
-          <th>Action</th>
+          <th><i class="bi bi-flower1 me-1"></i> </i> Crop Name</th>
+          <th><i class="bi bi-bar-chart-line me-1"></i> KG/Plant</th>
+          <th><i class="bi bi-signpost-split me-1"></i> Cultivated Area (sqm)</th>
+          <th><i class="bi bi-box-seam me-1"></i> Harvest Stocks (EST.)</th>
+          <th><i class="bi bi-clipboard-data me-1"></i> Planted Crops</th>
+          <th><i class="bi bi-calendar-plus me-1"></i> Date Planted</th>
+          <th><i class="bi bi-calendar-check me-1"></i> Harvest Est.</th>
+          <th><i class="bi bi-clock me-1"></i> Duration</th>
+          <th><i class="bi bi-calendar3 me-1"></i> Crop Age</th>
+          <th><i class="bi bi-info-circle me-1"></i> Status</th>
+          <th class="text-center"><i class="bi bi-gear me-1"></i> Action</th>
         </tr>
       </thead>
       <tbody id="crop_table" class="table-group-divider">

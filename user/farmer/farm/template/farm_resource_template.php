@@ -25,21 +25,43 @@
   <?php include_once "../modal-forms/resource/add_resource.php"; ?>
   
 
-  <!-- Page Header -->
+
   <div class="p-3 bg-light rounded shadow-sm d-flex justify-content-between align-items-center mb-3 flex-wrap">
     <div>
       <h5 class="mb-0"><i class="bi bi-journal-text text-success me-2"></i> <?php echo $page_title; ?></h5>
       <small class="text-muted">Update and manage your farm supplies and resources</small>
     </div>
-    <button class="btn btn-success px-4  mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button class="btn btn-success px-4 mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <i class="bi bi-plus-circle me-2"></i> Add Resource
     </button>
   </div>
 
-  <!-- Search and Filter -->
-  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <input type="text" id="searchResource" class="form-control w-100 w-md-50 mb-2 mb-md-0" placeholder="Search resources...">
-    <!-- Optional: Add status filter here if needed -->
+  <!-- Search and Filters -->
+  <div class="row g-2 mb-3 align-items-center">
+    <div class="col-12 col-md-4">
+      <input type="text" id="searchResource" class="form-control" placeholder="Search resources...">
+    </div>
+    
+    <!-- date filter post -->
+    <form action="" method="GET" class="row g-2 align-items-end mb-3">
+      <div class="col-6 col-md-3">
+        <label class="form-label mb-0" for="from_date">From:</label>
+        <input type="date" class="form-control" name="from_date" id="from_date" max="<?php echo date('Y-m-d'); ?>"
+              value="<?php echo isset($_GET['from_date']) ? $_GET['from_date'] : $first_day; ?>">
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label class="form-label mb-0" for="to_date">To:</label>
+        <input type="date" class="form-control" name="to_date" id="to_date" max="<?php echo date('Y-m-d'); ?>" 
+              value="<?php echo isset($_GET['to_date']) ? $_GET['to_date'] : $last_day; ?>">
+      </div>
+
+      <div class="col-12 col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary mt-2 mt-md-0" id="filterBtn">
+          <i class="bi bi-funnel me-2"></i> Filter
+        </button>
+      </div>
+    </form>
   </div>
 
   <?php if($num > 0): ?>
@@ -50,7 +72,7 @@
             <th><i class="bi bi-layers text-primary me-1"></i>Resource Type</th>
             <th><i class="bi bi-tag text-success me-1"></i>Item Name</th>
             <th><i class="bi bi-cash-stack text-warning me-1"></i>Total Cost</th>
-            <th><i class="bi bi-calendar-event text-danger me-1"></i>Recorded Date</th>
+            <th><i class="bi bi-calendar-event text-danger me-1"></i>Date Acquired</th>
             <th class="text-center"><i class="bi bi-gear text-secondary me-1"></i>Action</th>
           </tr>
         </thead>
@@ -60,7 +82,7 @@
             <tr>
               <td><?php echo ucfirst($type); ?></td>
               <td><?php echo ucfirst($item_name); ?></td>
-              <td>₱<?php echo $cost; ?></td>
+              <td>₱ <?php echo number_format($cost, 2); ?></td>
               <td><?php echo $date; ?></td>
               <td class="text-center">
                 <div class="btn-group" role="group">

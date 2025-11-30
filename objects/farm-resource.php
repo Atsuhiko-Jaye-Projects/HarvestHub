@@ -12,6 +12,8 @@ class FarmResource{
     public $date;
     public $created_at;
     public $modified_at;
+    public $start_date_expense;
+    public $today_expense;
 
     public function __construct($db) {
 	    $this->conn = $db;
@@ -56,15 +58,19 @@ class FarmResource{
     function readAllResource($from_record_num, $records_per_page) {
         $query = "SELECT *
                 FROM " . $this->table_name . "
-                WHERE user_id = :user_id
+                WHERE user_id = :user_id AND date BETWEEN :start_date_expense AND :today_expense
                 LIMIT
                 {$from_record_num}, {$records_per_page}";
 
         $stmt = $this->conn->prepare($query);
 
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->start_date_expense = htmlspecialchars(strip_tags($this->start_date_expense));
+        $this->today_expense = htmlspecialchars(strip_tags($this->today_expense));
 
         $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+        $stmt->bindParam(":start_date_expense", $this->start_date_expense);
+        $stmt->bindParam(":today_expense", $this->today_expense);
 
         $stmt->execute();
 
@@ -168,21 +174,31 @@ class FarmResource{
         return false;
     }
 
-    function farmStatsTotalCost() {
-        $query = "SELECT SUM(cost) AS total_cost 
-                FROM " . $this->table_name . " 
-                WHERE user_id = ?";
+    function farmStatsCurrentTotalCost() {
+        $query = "SELECT SUM(cost) AS total_expense 
+                  FROM " . $this->table_name . " 
+                  WHERE 
+                    date BETWEEN :start_date_expense AND :today_expense 
+                  AND user_id = :user_id";
 
         $stmt = $this->conn->prepare($query);
-        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
-        $stmt->bindParam(1, $this->user_id);
+
+
+        $this->user_id=htmlspecialchars(strip_tags($this->user_id));
+        $this->start_date_expense=htmlspecialchars(strip_tags($this->start_date_expense));
+        $this->today_expense=htmlspecialchars(strip_tags($this->today_expense));
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->bindParam(":start_date_expense", $this->start_date_expense);
+        $stmt->bindParam(":today_expense", $this->today_expense);
+
 
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($row && $row['total_cost'] !== null) {
-            return $row['total_cost'];
+        if ($row && $row['total_expense'] !== null) {
+            return $row['total_expense'];
         } else {
             return 0; // No expenses found
         }

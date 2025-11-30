@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2025 at 11:26 AM
+-- Generation Time: Nov 30, 2025 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -57,6 +57,36 @@ CREATE TABLE `categories` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `chat_messages`
+--
+
+CREATE TABLE `chat_messages` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chat_messages`
+--
+
+INSERT INTO `chat_messages` (`id`, `user_id`, `message`, `created_at`) VALUES
+(1, 2, 'hey', '2025-11-30 04:36:42'),
+(2, 1, 'hey', '2025-11-30 04:47:41'),
+(3, 1, 'wassup', '2025-11-30 04:48:08'),
+(4, 1, 'im good', '2025-11-30 04:48:15'),
+(5, 1, 'hey', '2025-11-30 05:01:01'),
+(6, 1, 'sup', '2025-11-30 05:01:10'),
+(7, 1, 'how you doing', '2025-11-30 05:01:24'),
+(8, 1, 'im good', '2025-11-30 05:01:31'),
+(9, 1, 'lets g', '2025-11-30 05:01:41'),
+(10, 1, 'hey', '2025-11-30 05:02:00'),
+(11, 1, 'what?', '2025-11-30 05:02:06');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `crops`
 --
 
@@ -72,21 +102,18 @@ CREATE TABLE `crops` (
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `stocks` int(11) NOT NULL,
-  `plant_count` int(11) NOT NULL
+  `plant_count` int(11) NOT NULL,
+  `province` varchar(255) NOT NULL,
+  `municipality` varchar(255) NOT NULL,
+  `baranggay` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `crops`
 --
 
-INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`) VALUES
-(46, 2, 'Strawberry', 2, 512, '2025-11-19', '2026-01-20', 0, '2025-11-19 12:03:41', '2025-11-19 20:03:41', 2472, 1236),
-(47, 2, 'mango', 15, 512, '2025-11-19', '2026-04-18', 0, '2025-11-19 12:05:33', '2025-11-19 20:04:31', 930, 62),
-(48, 2, 'Melon', 2, 500, '2025-11-22', '2026-03-28', 0, '2025-11-22 02:25:00', '2025-11-19 21:47:37', 2400, 1200),
-(49, 2, 'guava', 2, 500, '2025-11-23', '2026-05-08', 0, '2025-11-23 05:46:35', '2025-11-23 13:46:35', 240, 120),
-(50, 28, 'Kamote', 2, 523, '2025-11-27', '2026-01-31', 0, '2025-11-27 12:33:55', '2025-11-27 20:30:13', 2000, 1000),
-(51, 28, 'okra', 2, 200, '2025-11-29', '2026-02-28', 0, '2025-11-29 03:57:09', '2025-11-29 11:57:09', 1000, 500),
-(52, 30, 'Okra', 1, 75, '2025-11-29', '2026-01-31', 0, '2025-11-29 04:45:53', '2025-11-29 12:45:53', 200, 200);
+INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`) VALUES
+(57, 30, 'okra', 2, 500, '2025-11-29', '2026-01-29', 0, '2025-11-29 13:22:18', '2025-11-29 21:22:18', 652, 326, 'Marinduque', 'Mogpog', 'Anapog-Sibucao');
 
 -- --------------------------------------------------------
 
@@ -147,7 +174,9 @@ CREATE TABLE `farm_details` (
 --
 
 INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`) VALUES
-(42, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'purok2', 'owned', 5000, '2025-11-29 18:24:59', '2025-11-29 10:24:59', 0, '', '');
+(42, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'purok2', 'owned', 5000, '2025-11-29 18:24:59', '2025-11-29 10:24:59', 0, '', ''),
+(43, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok2', 'owned', 5000, '2025-11-29 19:55:29', '2025-11-29 11:55:29', 0, '', ''),
+(44, 28, 'Marinduque', 'Boac', 'Agot', 'purok', 'owned', 5000, '2025-11-29 21:25:01', '2025-11-29 13:25:01', 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -171,9 +200,8 @@ CREATE TABLE `farm_resources` (
 --
 
 INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `type`, `cost`, `date`, `created_at`, `modified_at`) VALUES
-(19, 30, 'Kubota', 'machine', 5000, '2025-12-25', '2025-11-29 12:31:53', '2025-11-29 04:31:53'),
-(20, 30, 'Okra Seed', 'machine', 600, '2025-11-29', '2025-11-29 12:36:44', '2025-11-29 04:36:44'),
-(21, 30, 'Okra Seed', 'machine', 600, '2025-11-29', '2025-11-29 12:37:02', '2025-11-29 04:37:02');
+(30, 30, 'Kubota', 'machine', 4926, '2025-11-30', '2025-11-30 00:39:15', '2025-11-30 05:44:09'),
+(31, 30, 'Kubota', 'machine', 5000, '2025-10-23', '2025-11-08 00:39:15', '2025-11-30 06:08:20');
 
 -- --------------------------------------------------------
 
@@ -206,7 +234,9 @@ CREATE TABLE `harvested_products` (
 --
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
-(1, 28, 'Kalabasa', 16, 'KG', 'Vegetable', '1000', 'Fresh from the farm', 2400, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-29 03:56:36', '2025-11-29 11:56:28', 'Posted', 1200, 25000, 2);
+(1, 28, 'Kalabasa', 16, 'KG', 'Vegetable', '1000', 'Fresh from the farm', 2400, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-29 03:56:36', '2025-11-29 11:56:28', 'Posted', 1200, 25000, 2),
+(2, 30, 'talong', 188, 'KG', 'Vegetable', '1000', 'greate', 400, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-11-29 16:02:15', '2025-11-29 22:20:55', 'Pending', 200, 50000, 2),
+(3, 30, 'Sitaw', 188, 'KG', 'Vegetable', '50', 'great', 400, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-11-30 05:03:52', '2025-11-30 13:03:52', 'Pending', 200, 50000, 2);
 
 -- --------------------------------------------------------
 
@@ -371,6 +401,12 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `crops`
 --
 ALTER TABLE `crops`
@@ -447,10 +483,16 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -468,19 +510,19 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -492,7 +534,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reviews`

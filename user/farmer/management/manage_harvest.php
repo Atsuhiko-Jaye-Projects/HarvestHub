@@ -187,8 +187,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 		$harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
 
-        print_r($_POST);
-
         if ($harvest_product->updateHarvestProduct()) {
 
             // header("location:{$home_url}user/farmer/manage_harvest.php?r=pu");
