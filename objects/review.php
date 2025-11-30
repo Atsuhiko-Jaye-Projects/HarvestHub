@@ -21,21 +21,35 @@ class Review{
         $this->conn = $db;
     }
 
-    function readAllReview() {
-    $query = "SELECT *
-              FROM " . $this->table_name . "
-              WHERE product_id = :product_id";
+    function readAllReview($from_record_num, $records_per_page) {
+        $query = "SELECT r.*, CONCAT(u.firstname, ' ' , u.lastname) AS customer_name
+                FROM " . $this->table_name . " r
+                LEFT JOIN users u ON r.customer_id = u.id
+                WHERE r.product_id = :product_id
+                LIMIT
+                $from_record_num, $records_per_page";
 
-    $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
 
-    $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+        $this->product_id = htmlspecialchars(strip_tags($this->product_id));
 
-    $stmt->bindParam(":product_id", $this->product_id, PDO::PARAM_INT);
+        $stmt->bindParam(":product_id", $this->product_id, PDO::PARAM_INT);
 
-    $stmt->execute();
+        $stmt->execute();
 
-    return $stmt;
-}
+        return $stmt;
+    }
+
+    function countAllReviews() {
+        $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE product_id = :product_id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":product_id", $this->product_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_rows'];
+    }
 
     function createReview(){
         $query = "INSERT INTO

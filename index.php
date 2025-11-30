@@ -133,11 +133,11 @@ if ($num > 0) {
                         </a>
                     <?php else: ?>
                         <?php if ($product_type == "harvest"): ?>
-                            <a class="btn btn-success w-100 mt-auto" href="<?= $home_url ?>product/product_detail.php?pid=<?= $product_id ?>">
+                            <a class="btn btn-success w-100 mt-auto" href="<?= $home_url ?>product/product_detail.php?pid=<?= $product_id ?>&page=1">
                                 Add to Cart
                             </a>
                         <?php else: ?>
-                            <a class="btn btn-warning w-100 mt-2 mt-auto" href="<?= $home_url ?>product/preorder.php?pid=<?= $product_id ?>">
+                            <a class="btn btn-warning w-100 mt-2 mt-auto" href="<?= $home_url ?>product/preorder.php?pid=<?= $product_id ?>&page=1">
                                 Pre-Order
                             </a>
                         <?php endif; ?>

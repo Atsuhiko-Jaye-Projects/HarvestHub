@@ -72,14 +72,14 @@ if ($_POST) {
   <div class="row g-5 align-items-start">
     <!-- Left: Image -->
     <div class="col-md-5">
-    <?php echo "<img src='{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}' class='img-fluid rounded' alt='Petsay'>";?>
+    <?php echo "<img src='{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}' class='img-fluid rounded' alt='Petsay'>";?>
 
       <div class="d-flex gap-2 mt-3 thumbs">
         <?php
-            echo "<img src='{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}'>";
-            echo "<img src='{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}'>";
-            echo "<img src='{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}'>";
-            echo "<img src='{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}'>";
+            echo "<img src='{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}'>";
+            echo "<img src='{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}'>";
+            echo "<img src='{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}'>";
+            echo "<img src='{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}'>";
             // <img src="https://via.placeholder.com/100" alt="">
             // <img src="https://via.placeholder.com/100" alt="">
             // <img src="https://via.placeholder.com/100" alt="">

@@ -15,6 +15,10 @@ class Farm{
     public $lot_size;
     public $farm_type;
     public $used_lot_size;
+    public $farm_name;
+    public $follower_count;
+    public $following_count;
+    public $farm_image;
     public $created_at;
     public $modified;
 
@@ -139,7 +143,30 @@ class Farm{
         $this->municipality = $row['municipality'];
         $this->baranggay = $row['baranggay'];
     }
+    function getFarmInfo(){
+        $query = "SELECT * 
+                  FROM 
+                    " . $this->table_name . " 
+                  WHERE 
+                    user_id = :user_id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $this->follower_count = $row['follower_count'];
+        $this->following_count = $row['following_count'];
+        $this->user_id = $row['user_id'];
+        $this->farm_image = $row['farm_image'] ?? 'logo.png';
+        $this->farm_name = $row['farm_name']  ?? 'Harvest Hub';
+        $this->created_at = $row['created_at'];
+    }
 
 }
+
+
 
 ?>

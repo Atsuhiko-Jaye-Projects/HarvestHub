@@ -215,7 +215,7 @@ class Product{
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($row) {
+
             $this->product_name = $row['product_name'];
             $this->user_id = $row['user_id'];
             $this->price_per_unit = $row['price_per_unit'];
@@ -226,10 +226,6 @@ class Product{
             $this->total_stocks = $row['total_stocks'];
             $this->product_image = $row['product_image'];
             $this->sold_count = $row['sold_count'];
-            return true;
-        }
-
-        return false;
     }
 
 

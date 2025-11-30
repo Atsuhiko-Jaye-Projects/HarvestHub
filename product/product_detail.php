@@ -5,6 +5,8 @@ include_once "../config/core.php";
 include_once "../config/database.php";
 include_once "../objects/product.php";
 include_once "../objects/cart_item.php";
+include_once "../objects/farm.php";
+include_once "../objects/review.php";
 
 $page_title = "HarvestHUB";
 include_once "layout_head.php";
@@ -17,36 +19,93 @@ $db = $database->getConnection();
 
 $product = new Product($db);
 $cart_item = new CartItem($db);
+$farm_info = new Farm($db);
+$product_review = new Review($db);
+
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$records_per_page = 5;
+$from_record_num = ($page - 1) * $records_per_page;
 
 
 // ✅ User is logged in
 $product->id = $product_id;
 $product->readOne();
 
+// get the farm performance details
+$farm_info->user_id = $product->user_id;
+$getFarmInfo = $farm_info->getFarmInfo();
+
+//get the product reviews
+$product_review->product_id = $product_id;
+$getProductReview = $product_review->ReadAllReview($from_record_num, $records_per_page);
+$num = $getProductReview->rowCount();
+
+$raw_image = $farm_info->farm_image;
+$farmer_id = $product->user_id;
+$logo_path = "{$base_url}user/uploads/{$farmer_id}/farm_logo/{$raw_image}";
+$default_logo = "{$base_url}user/uploads/logo.png";
+
+if (empty($raw_image) || !file_exists($img_path)) {
+    $logo = $default_logo;
+} else {
+    $logo = $logo_path;
+}
+
+// get how old the farm is
+$created = new DateTime($farm_info->created_at);
+$now = new DateTime();
+
+$diff = $now->diff($created);
+
+$years = $diff->y;
+$months = $diff->m;
+
+$joined_duration = ($years > 0) 
+    ? $years . " Year" . ($years > 1 ? "s" : "") . " " .
+      $months . " Month" . ($months > 1 ? "s" : "")
+    : $months . " Month" . ($months > 1 ? "s" : "");
+
+
+//convert the follower count
+$farm_info->follower_count;
+
+// Format it directly
+if ($farm_info->follower_count >= 1000000000) {
+    $farm_info->follower_count = round($farm_info->follower_count / 1000000000, 1) . 'B';
+} elseif ($farm_info->follower_count >= 1000000) {
+    $farm_info->follower_count = round($farm_info->follower_count / 1000000, 1) . 'M';
+} elseif ($farm_info->follower_count >= 1000) {
+    $farm_info->follower_count = round($farm_info->follower_count / 1000, 1) . 'K';
+}
+
+//fetch the product Reviews
+
+
+
 $cart_item->user_id = $_SESSION['user_id'];
 $cart_item_count = $cart_item->countItem();
 
 
-if ($_POST) {
+  if ($_POST) {
 
-  $cart_item->product_id = $_POST['product_id'];
-  $cart_item->user_id = $_SESSION['user_id'];
-  $cart_item->quantity = $_POST['kilo'];
-  $cart_item->farmer_id = $_POST['farmer_id'];
-  $cart_item->amount = $_POST['amount'];
-  $cart_item->status = "Pending";
-  $cart_item->product_type = "harvest";
-  
-  if ($cart_item->itemExist()) {
-      echo "<div class='alert alert-warning'>Product already added to your cart.</div>";
-  } else {
-      if ($cart_item->addItem()) {
-          // echo "Product successfully added to cart!";
-      } else {
-          echo "Failed to add product. Please try again later.";
-      }
+    $cart_item->product_id = $_POST['product_id'];
+    $cart_item->user_id = $_SESSION['user_id'];
+    $cart_item->quantity = $_POST['kilo'];
+    $cart_item->farmer_id = $_POST['farmer_id'];
+    $cart_item->amount = $_POST['amount'];
+    $cart_item->status = "Pending";
+    $cart_item->product_type = "harvest";
+    
+    if ($cart_item->itemExist()) {
+        echo "<div class='alert alert-warning'>Product already added to your cart.</div>";
+    } else {
+        if ($cart_item->addItem()) {
+            // echo "Product successfully added to cart!";
+        } else {
+            echo "Failed to add product. Please try again later.";
+        }
+    }
   }
-}
 ?>
 
 <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
@@ -60,9 +119,6 @@ if ($_POST) {
     </div>
   </div>
 </div>
-
-
-
 
 <div class="container py-5">
   
@@ -93,7 +149,7 @@ if ($_POST) {
       <p class="price-range"><?php echo "₱{$product->price_per_unit}.00";?></p>
 
       <div class="d-flex align-items-center mb-3">
-        <span class="me-3 text-muted"><?php echo $product->sold_count; ?> Sold</span>
+        <span class="me-3 text-muted"><?php echo $product->sold_count; ?> KG Sold</span>
         <div class="rating">
           <i class="bi bi-star-fill"></i>
           <i class="bi bi-star-fill"></i>
@@ -151,119 +207,15 @@ if ($_POST) {
     </form>
   </div>
 
+<!-- shop information -->
+<?php include_once "shop_info.php";?>
 
+<!-- Ratings -->
+<?php include_once "product_ratings.php"; ?>
 
-<div class="card p-3 shadow-sm rounded mb-3 mt-3">
-  <div class="d-flex align-items-center flex-wrap">
-    
-    <!-- Shop Logo -->
-    <div class="me-3">
-      <img src="shop-logo.png" alt="Shop Logo" class="rounded-circle" style="width: 70px; height: 70px;">
-    </div>
-
-    <!-- Shop Info -->
-    <div class="flex-grow-0">
-      <h5 class="mb-1">Chuangui Shop</h5>
-      <small class="text-muted">Active 4 Minutes Ago</small>
-      <div class="mt-2">
-        <span class="badge bg-danger">Preferred</span>
-      </div>
-    </div>
-
-    <!-- Shop Metrics -->
-    <div class="d-flex flex-wrap align-items-center ms-auto gap-3 mt-2 mt-md-0">
-      <div>
-        <div class="text-muted small">Ratings</div>
-        <div class="fw-bold text-danger">101.2K</div>
-      </div>
-      <div>
-        <div class="text-muted small">Products</div>
-        <div class="fw-bold">268</div>
-      </div>
-      <div>
-        <div class="text-muted small">Response Rate</div>
-        <div class="fw-bold text-success">100%</div>
-      </div>
-      <div>
-        <div class="text-muted small">Response Time</div>
-        <div class="fw-bold">within minutes</div>
-      </div>
-      <div>
-        <div class="text-muted small">Joined</div>
-        <div class="fw-bold">24 months ago</div>
-      </div>
-      <div>
-        <div class="text-muted small">Follower</div>
-        <div class="fw-bold">54.6K</div>
-      </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="d-flex gap-2 mt-2 mt-md-0 ms-auto">
-      <button class="btn btn-danger"><i class="bi bi-chat-dots me-1"></i> Chat Now</button>
-      <button class="btn btn-outline-secondary">View Shop</button>
-    </div>
-
-  </div>
-</div>
-
-
+<!-- related products -->
+<?php include_once "related_product.php"; ?>
   
-
-  <!-- Related Products -->
-  <div class="mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4>Related Products</h4>
-      <a href="#" class="text-success">View All</a>
-    </div>
-
-    <div class="row row-cols-2 row-cols-md-4 g-3">
-      <div class="col">
-        <div class="card h-100 product-card">
-          <!-- <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Apple"> -->
-          <div class="card-body">
-            <h6 class="card-title mb-1">Apple</h6>
-            <p class="text-success mb-1">₱200.00</p>
-            <p class="text-muted small mb-0">1,218 Sold</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card h-100 product-card">
-          <!-- <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Potato"> -->
-          <div class="card-body">
-            <h6 class="card-title mb-1">Potato</h6>
-            <p class="text-success mb-1">₱200.00</p>
-            <p class="text-muted small mb-0">1,218 Sold</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card h-100 product-card">
-          <!-- <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Carrots"> -->
-          <div class="card-body">
-            <h6 class="card-title mb-1">Carrots</h6>
-            <p class="text-success mb-1">₱200.00</p>
-            <p class="text-muted small mb-0">1,218 Sold</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card h-100 product-card">
-          <!-- <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Petsay"> -->
-          <div class="card-body">
-            <h6 class="card-title mb-1">Petsay</h6>
-            <p class="text-success mb-1">₱200.00</p>
-            <p class="text-muted small mb-0">1,218 Sold</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade" id="cartModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
