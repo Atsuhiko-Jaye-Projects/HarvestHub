@@ -64,13 +64,18 @@ if (!isset($_SESSION['logged_in'])) {
 
   <!-- ⭐ ADDED ONLY THIS BUTTON GROUP (NO OTHER CHANGE) -->
   <div class="d-flex gap-2 mb-4">
-      <button class="btn btn-dark">All Products</button>
-      <button class="btn btn-primary">Harvest Products</button>
-      <button class="btn btn-warning">Pre-Order Products</button>
+      <button class="btn btn-dark" data-filter="all">All Products</button>
+      <button class="btn btn-primary" data-filter="harvest">Harvest Products</button>
+      <button class="btn btn-warning" data-filter="preorder">Pre-Order Products</button>
+        <select class="form-select w-auto" id="sortPrice">
+            <option value="" hidden>Sort by Price</option>
+            <option value="asc">Low to High</option>
+            <option value="desc">High to Low</option>
+        </select>
   </div>
   <!-- ⭐ END OF ADDED BUTTONS -->
 
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+<div id="productContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 <?php
 if ($num > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -78,7 +83,7 @@ if ($num > 0) {
         $product_type = $row['product_type'];
         
         ?>
-        <div class="col product-item mb-4" data-type="<?= $product_type ?>">
+        <div class="col product-item mb-4" data-type="<?= $product_type ?>"  data-price="<?= $price_per_unit ?>" >
             <div class="card product-card h-100 shadow-sm">
                 
                 <!-- Image with Pre-Order badge if needed -->
@@ -160,6 +165,53 @@ include_once "layout_foot.php";
 ob_end_flush();
 ?>
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.d-flex button[data-filter]');
+    const sortSelect = document.getElementById('sortPrice');
+    const container = document.getElementById('productContainer');
+
+    function filterAndSort() {
+        const filter = document.querySelector('.d-flex button.active')?.dataset.filter || 'all';
+        const sort = sortSelect.value;
+
+        let items = Array.from(container.querySelectorAll('.product-item'));
+
+        // Filter
+        items.forEach(item => {
+            item.style.display = (filter === 'all' || item.dataset.type === filter) ? 'block' : 'none';
+        });
+
+        // Sort visible items
+        if(sort) {
+            items.sort((a, b) => {
+                const priceA = parseFloat(a.dataset.price) || 0;
+                const priceB = parseFloat(b.dataset.price) || 0;
+                return sort === 'asc' ? priceA - priceB : priceB - priceA;
+            });
+            items.forEach(item => {
+                if(item.style.display !== 'none') container.appendChild(item);
+            });
+        }
+    }
+
+    // Filter button click
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterAndSort();
+        });
+    });
+
+    // Sort dropdown change
+    sortSelect.addEventListener('change', filterAndSort);
+
+    // Initial filter & sort
+    filterAndSort();
+});
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.d-flex .btn');
     const items = document.querySelectorAll('.product-item');

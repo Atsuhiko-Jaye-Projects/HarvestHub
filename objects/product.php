@@ -456,6 +456,19 @@ class Product{
         return false;
     }
 
+    function getFarmProduct(){
+        $query = "SELECT * FROM " . $this->table_name . "
+                WHERE 
+                status = 'Active' AND user_id = :user_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 
 
