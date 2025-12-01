@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2025 at 03:09 AM
+-- Generation Time: Dec 01, 2025 at 05:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,6 +39,14 @@ CREATE TABLE `cart_items` (
   `farmer_id` int(11) NOT NULL,
   `product_type` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
+(70, 1, 31, 0, '2025-12-01 10:29:59', 16, 'Pending', '2025-12-01 02:29:59', 28, 'harvest'),
+(71, 51, 31, 5, '2025-12-01 10:38:11', 23, 'Pending', '2025-12-01 02:38:11', 28, 'preorder');
 
 -- --------------------------------------------------------
 
@@ -322,7 +330,8 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
 (1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
-(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL);
+(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL),
+(7, 1, 'Kamote', 36, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL);
 
 -- --------------------------------------------------------
 
@@ -490,7 +499,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -550,7 +559,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `reviews`
