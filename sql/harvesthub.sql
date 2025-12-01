@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2025 at 07:09 AM
+-- Generation Time: Dec 01, 2025 at 03:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -166,17 +166,21 @@ CREATE TABLE `farm_details` (
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `used_lot_size` int(11) NOT NULL,
   `farm_name` varchar(255) NOT NULL,
-  `farm_type` varchar(255) NOT NULL
+  `farm_type` varchar(255) NOT NULL,
+  `follower_count` int(11) NOT NULL,
+  `farm_image` varchar(525) NOT NULL,
+  `reputation` int(11) NOT NULL,
+  `following_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `farm_details`
 --
 
-INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`) VALUES
-(42, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'purok2', 'owned', 5000, '2025-11-29 18:24:59', '2025-11-29 10:24:59', 0, '', ''),
-(43, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok2', 'owned', 5000, '2025-11-29 19:55:29', '2025-11-29 11:55:29', 0, '', ''),
-(44, 28, 'Marinduque', 'Boac', 'Agot', 'purok', 'owned', 5000, '2025-11-29 21:25:01', '2025-11-29 13:25:01', 0, '', '');
+INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
+(42, 28, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'purok2', 'owned', 5000, '2025-11-29 18:24:59', '2025-11-29 10:24:59', 0, 'Mondragon Farm and Pigery', '', 1230, '', 0, 47),
+(43, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok2', 'owned', 5000, '2025-11-29 19:55:29', '2025-11-29 11:55:29', 0, '', '', 0, '', 0, 0),
+(44, 28, 'Marinduque', 'Boac', 'Agot', 'purok', 'owned', 5000, '2025-11-29 21:25:01', '2025-11-29 13:25:01', 0, '', '', 0, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -200,8 +204,9 @@ CREATE TABLE `farm_resources` (
 --
 
 INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `type`, `cost`, `date`, `created_at`, `modified_at`) VALUES
-(30, 30, 'Kubota', 'machine', 4926, '2025-11-30', '2025-11-30 00:39:15', '2025-11-30 05:44:09'),
-(31, 30, 'Kubota', 'machine', 5000, '2025-10-23', '2025-11-08 00:39:15', '2025-11-30 06:08:20');
+(31, 30, 'Kubota', 'machine', 5000, '2025-10-23', '2025-11-08 00:39:15', '2025-11-30 06:08:20'),
+(32, 30, 'kubota', 'machine', 5000, '2025-10-22', '2025-11-30 14:16:17', '2025-11-30 06:18:55'),
+(33, 30, 'talong', 'seeds', 500, '2025-11-30', '2025-11-30 14:17:00', '2025-11-30 06:17:00');
 
 -- --------------------------------------------------------
 
@@ -316,7 +321,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 0, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
+(1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
 (2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL);
 
 -- --------------------------------------------------------
@@ -334,16 +339,27 @@ CREATE TABLE `reviews` (
   `review_text` varchar(500) NOT NULL,
   `reply` varchar(500) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `product_rating` double NOT NULL,
+  `farmer_rating` int(11) NOT NULL,
+  `performance_review` varchar(525) NOT NULL,
+  `product_quality_review` varchar(525) NOT NULL,
+  `farmer_response` varchar(526) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reviews`
 --
 
-INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `customer_id`, `rate`, `review_text`, `reply`, `created_at`, `modified_at`) VALUES
-(1, 12, 2, 1, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43'),
-(2, 12, 2, 2, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43');
+INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `customer_id`, `rate`, `review_text`, `reply`, `created_at`, `modified_at`, `product_rating`, `farmer_rating`, `performance_review`, `product_quality_review`, `farmer_response`) VALUES
+(1, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 1.55, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
+(2, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', ''),
+(3, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 4, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
+(4, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', ''),
+(5, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 4, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
+(6, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', ''),
+(7, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 4, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
+(8, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', '');
 
 -- --------------------------------------------------------
 
@@ -382,7 +398,7 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_nu
 (28, 'carlo', 'Dela Cruz', 'carlo@gmail.com', '09707662820', '', '', '', '', 'Farmer', '$2y$10$ADz3Kr95s1Q6gwNVDAwOc.qATpx6r8R2pRY.r.k9/v9JU/xRmueVW', 0, '2025-11-27 20:26:08', 0, '2025-11-27 20:26:08', '1', ''),
 (29, 'James', 'Dela Cruz', 'james123@gmail.com', '09999635031', '', '', '', '', 'consumer', '$2y$10$xpyxvB224SWe.eX9BmSvyOdwA9gJWuBSt.3ed3j2z5LcPDJj2mHwe', 0, '2025-11-29 12:13:29', 0, '2025-11-29 12:13:29', '0', ''),
 (30, 'sheila', 'laurente', 'sheilalaurente@gmail.com', '09123545848', '', '', '', '', 'Farmer', '$2y$10$mhcvgaqYOhFjwQKCLbBJ/uSQXRcSxk2HBXwWbYy4WMmVeSC2pnG5S', 0, '2025-11-29 12:15:55', 0, '2025-11-29 12:15:55', '1', ''),
-(31, 'james', 'deleon', 'james321@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '');
+(31, 'Sheila', 'deleon', 'james321@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '');
 
 --
 -- Indexes for dumped tables
@@ -516,7 +532,7 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
@@ -540,7 +556,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
