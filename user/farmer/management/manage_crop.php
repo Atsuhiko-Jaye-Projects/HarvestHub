@@ -155,10 +155,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 // get the users farm lot_size
 $farm->user_id = $_SESSION['user_id'];
 
-//get the total expense of the farmer
-$farm_resource->user_id = $_SESSION['user_id'];
-$total_farm_expense = $farm_resource->farmStatsTotalCost();
-
 $farm_lot = $farm->getFarmLot();
 // include the stats cards
 include_once "../statistics/stats.php";

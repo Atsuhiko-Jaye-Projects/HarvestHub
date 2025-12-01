@@ -123,7 +123,7 @@ if ($_POST) {
             <input type="text" name="product_id" hidden value="<?php echo $product->id; ?>">
             <input type="text" name="amount" hidden value="<?php echo $product->price_per_unit; ?>">
 
-            <input type="radio" class="btn-check" name="kilo" id="kilo5" value="5" required>
+            <input type="radio" class="btn-check" name="kilo" id="kilo5" value="5" checked>
             <label class="btn btn-outline-secondary" for="kilo5">5</label>
 
             <input type="radio" class="btn-check" name="kilo" id="kilo10" value="10">

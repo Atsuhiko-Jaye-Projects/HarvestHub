@@ -163,6 +163,8 @@ class Farm{
         $this->farm_image = $row['farm_image'] ?? 'logo.png';
         $this->farm_name = $row['farm_name']  ?? 'Harvest Hub';
         $this->created_at = $row['created_at'];
+
+        
     }
 
 }

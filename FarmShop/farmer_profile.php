@@ -3,14 +3,7 @@ $farmer_shop_id = isset($_GET['fid']) ? $_GET['fid'] : die('ERROR: missing ID.')
 include_once "../config/core.php";
 include_once "../config/database.php";
 include_once "../objects/farm.php";
-
-$database = new Database();
-$db = $database->getConnection();
-
-$farm_shop = new Farm($db);
-
-$farm_shop->user_id = $farmer_shop_id;
-$farm_shop->getFarmInfo();
+include_once "../objects/product.php";
 
 $page_title = "HarvestHUB";
 include_once "layout_head.php";
@@ -18,10 +11,19 @@ include_once "layout_head.php";
 $require_login=true;
 include_once "../login_checker.php";
 
-$page_title = "Profile";
-include_once "layout_head.php";
+// initialize the database connection
+$database = new Database();
+$db = $database->getConnection();
 
-//get the details of farmer page
+// initialize the classes object
+$farm_shop = new Farm($db);
+$farm_product = new Product($db);
+
+
+// get the farm info
+$farm_shop->user_id = $farmer_shop_id;
+$farm_shop->getFarmInfo();
+
 
 $raw_image = $farm_shop->farm_image;
 $farmer_id = $farm_shop->user_id;
@@ -138,10 +140,7 @@ if ($farm_shop->follower_count >= 1000000000) {
     <!-- Navigation Tabs -->
     <ul class="nav nav-tabs mt-4" id="myTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" data-bs-toggle="tab" >Home</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" data-bs-toggle="tab">All Products</a>
+            <a class="nav-link active" data-bs-toggle="tab">All Products</a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" >On Sale</a>
@@ -152,11 +151,8 @@ if ($farm_shop->follower_count >= 1000000000) {
     </ul>
 
     <div class="tab-content mt-3">
-        <div class="tab-pane fade show active" id="homeTab">
-            <p>This is the Home tab content.</p>
-        </div>
-        <div class="tab-pane fade" id="allTab">
-            <p>All Products content.</p>
+        <div class="tab-pane fade show active" id="allTab">
+
         </div>
         <div class="tab-pane fade" id="saleTab">
             <p>On Sale items.</p>
