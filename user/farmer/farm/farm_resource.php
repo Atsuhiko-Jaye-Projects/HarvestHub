@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/farm-resource.php";
@@ -73,14 +74,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 		$farm_resource->date = $_POST['date'];
 		
 		if ($farm_resource->createFarmResource()) {
-			echo "<div class='container'>";
-				echo "<div class='alert alert-success'>Resource Info Saved!</div>";
-			echo "</div>";
+			header("LOCATION:{$base_url}user/farmer/farm/farm_resource.php?status=success&");
+			exit;
+			// echo "<div class='container'>";
+			// 	echo "<div class='alert alert-success'>Resource Info Saved!</div>";
+			// echo "</div>";
 
 		}else{
-			echo "<div class='container'>";
-				echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
-			echo "</div>";
+			header("LOCATION:{$base_url}user/farmer/farm/farm_resource.php?status=failed&");
+			exit;
+			// echo "<div class='container'>";
+			// 	echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
+			// echo "</div>";
 		}
 	}
 
@@ -112,6 +117,39 @@ include_once "../statistics/management/management_resource_stats.php";
 include_once "template/farm_resource_template.php";
 ?>
 
+<?php if (isset($_GET['status'])): ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
 
+    <?php if ($_GET['status'] == 'success'): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Resource Info Saved!',
+            showConfirmButton: false,
+            timer: 1800
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'error'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to Save Resource Info',
+            text: 'Please try again.',
+            showConfirmButton: true
+        });
+    <?php endif; ?>
+
+});
+</script>
+<?php endif; ?>
+
+<script>
+if (window.history.replaceState) {
+    const url = new URL(window.location);
+    url.searchParams.delete('status');
+    window.history.replaceState({}, document.title, url.pathname);
+}
+</script>
 
 <?php include_once "../layout/layout_foot.php"; ?>
