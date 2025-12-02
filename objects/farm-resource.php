@@ -59,8 +59,9 @@ class FarmResource{
         $query = "SELECT *
                 FROM " . $this->table_name . "
                 WHERE user_id = :user_id AND date BETWEEN :start_date_expense AND :today_expense
+                ORDER BY created_at DESC
                 LIMIT
-                {$from_record_num}, {$records_per_page}";
+                {$from_record_num}, {$records_per_page} ";
 
         $stmt = $this->conn->prepare($query);
 
