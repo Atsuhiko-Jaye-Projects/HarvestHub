@@ -6,6 +6,7 @@ include_once "../../../objects/harvest_product.php";
 include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
+include_once "../../../objects/product_history.php";
 
 $page_title = "Manage Harvest";
 include_once "../layout/layout_head.php";
@@ -21,6 +22,7 @@ $harvest_product = new HarvestProduct($db);
 $product = new Product($db);
 $farm = new Farm($db);
 $farm_resource = new FarmResource($db);
+$product_history = new ProductHistory($db);
 
 
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
@@ -217,12 +219,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->id = $_POST['product_id'];
         $harvest_product->is_posted = "Posted";
 
+        // record product price history
+        $product_history->product_id = $_POST['product_id'];
+        $product_history->farmer_id = $_SESSION['user_id'];
+        $product_history->price_per_unit = $_POST['price_per_unit'];
+
         if ($_POST['is_posted'] == "Posted") {
             echo "<div class='container'><div class='alert alert-warning'>Product is already posted.</div></div>";
         }else{
             $product->postProduct();
             //update the item by the status if its posted
 			$harvest_product->postedProduct();
+            // record the product price
+            $product_history->recordPriceHistory();
 			echo "<div class='container'><div class='alert alert-success'>Product Posted!</div></div>";
         }
     }

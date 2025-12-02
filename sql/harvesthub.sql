@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2025 at 09:11 AM
+-- Generation Time: Dec 02, 2025 at 10:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -240,8 +240,8 @@ CREATE TABLE `harvested_products` (
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
 (1, 28, 'Kalabasa', 16, 'KG', 'Vegetable', '1000', 'Fresh from the farm', 2400, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-29 03:56:36', '2025-11-29 11:56:28', 'Posted', 1200, 25000, 2),
-(2, 30, 'talong', 188, 'KG', 'Vegetable', '1000', 'greate', 400, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-11-29 16:02:15', '2025-11-29 22:20:55', 'Pending', 200, 50000, 2),
-(3, 30, 'Sitaw', 188, 'KG', 'Vegetable', '50', 'great', 400, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-11-30 05:03:52', '2025-11-30 13:03:52', 'Pending', 200, 50000, 2);
+(2, 30, 'talong', 213, 'KG', 'Vegetable', '1000', 'greate', 400, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-12-02 08:58:41', '2025-11-29 22:20:55', 'Posted', 200, 50000, 2),
+(3, 30, 'Sitaw', 188, 'KG', 'Vegetable', '50', 'great', 400, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-12-02 08:56:58', '2025-11-30 13:03:52', 'Posted', 200, 50000, 2);
 
 -- --------------------------------------------------------
 
@@ -346,7 +346,33 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
 (1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
-(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL);
+(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL),
+(11, 2, 'talong', 213, 30, 'Vegetable', 'KG', 0, 'greate', 1000, 400, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', 0, '2025-12-02 08:58:41', '2025-12-02 16:58:41', 'Active', 'harvest', 400, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_histories`
+--
+
+CREATE TABLE `product_histories` (
+  `id` int(11) NOT NULL,
+  `farmer_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `price_per_unit` double NOT NULL,
+  `recorded_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_histories`
+--
+
+INSERT INTO `product_histories` (`id`, `farmer_id`, `product_id`, `price_per_unit`, `recorded_at`) VALUES
+(1, 30, 3, 0, '2025-12-02 16:12:36'),
+(2, 30, 3, 188, '2025-12-02 16:12:58'),
+(3, 30, 3, 188, '2025-12-02 16:12:58'),
+(4, 30, 2, 200, '2025-12-02 16:12:35'),
+(5, 30, 2, 213, '2025-12-02 16:12:41');
 
 -- --------------------------------------------------------
 
@@ -501,6 +527,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `product_histories`
+--
+ALTER TABLE `product_histories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -586,7 +618,13 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `product_histories`
+--
+ALTER TABLE `product_histories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `reviews`
