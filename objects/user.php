@@ -377,8 +377,36 @@ class User{
         $this->province = $row['province'];
 
     }
+    // forgot password checking
+    function emailAddressExists(){
+        $query = "SELECT id 
+                FROM ". $this->table_name ." 
+                WHERE email_address = :email_address 
+                LIMIT 0,1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->email_address = htmlspecialchars(strip_tags($this->email_address));
+
+        $stmt->bindParam(":email_address", $this->email_address);
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    function updatePassword() {
+        $query = "UPDATE " . $this->table_name . " SET password=:password WHERE email_address=:email_address";
+
+        $stmt = $this->conn->prepare($query);
+
+        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+        
+        $stmt->bindParam(":password", $password_hash);
+        $stmt->bindParam(":email_address", $this->email_address);
+        return $stmt->execute();
+    }
 
 
 }
-
 ?>

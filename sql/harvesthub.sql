@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2025 at 05:22 AM
+-- Generation Time: Dec 02, 2025 at 09:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,14 +39,6 @@ CREATE TABLE `cart_items` (
   `farmer_id` int(11) NOT NULL,
   `product_type` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart_items`
---
-
-INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
-(70, 1, 31, 0, '2025-12-01 10:29:59', 16, 'Pending', '2025-12-01 02:29:59', 28, 'harvest'),
-(71, 51, 31, 5, '2025-12-01 10:38:11', 23, 'Pending', '2025-12-01 02:38:11', 28, 'preorder');
 
 -- --------------------------------------------------------
 
@@ -288,6 +280,30 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `id` int(11) NOT NULL,
+  `email_address` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expires_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`id`, `email_address`, `token`, `expires_at`) VALUES
+(10, 'alexisdumale@gmail.com', '255f19b16c12f21a0d5e97df8fad0235a06f758732e1f751a727a7bcf96054a9', '2025-12-02 09:40:09'),
+(11, 'alexisdumale@gmail.com', '1bbfa35f039ca739bdf417f84d7bc71e839d442c4edcfa9a62a9a852fd9fd7cc', '2025-12-02 09:40:51'),
+(12, 'alexisdumale@gmail.com', '252923f1a397e74f6ff4004bbe1a512f12cb0ea73933efe59e5c97b869a670fa', '2025-12-02 09:44:56'),
+(13, 'alexisdumale@gmail.com', 'a9583068d09552bff05528b9fd5d8817afe35627578c3753d7b85ff8f5e3cb30', '2025-12-02 16:46:40'),
+(14, 'alexisdumale@gmail.com', '89de4b7399e55351aee6d6c4aa9fbd29190fa88571274fa9db2d60dce93ef6d4', '2025-12-02 16:47:11');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pre-orders`
 --
 
@@ -330,8 +346,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
 (1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
-(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL),
-(7, 1, 'Kamote', 36, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL);
+(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL);
 
 -- --------------------------------------------------------
 
@@ -406,8 +421,8 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_nu
 (27, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '09533307696', 'purok 2', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$Wsx28p66./9jttxIfw.UP.rRIeB0UAnA6r2LS7NDT9GI4DlsTNZnm', 0, '2025-11-27 20:23:17', 0, '2025-11-27 20:24:57', '0', ''),
 (28, 'carlo', 'Dela Cruz', 'carlo@gmail.com', '09707662820', '', '', '', '', 'Farmer', '$2y$10$ADz3Kr95s1Q6gwNVDAwOc.qATpx6r8R2pRY.r.k9/v9JU/xRmueVW', 0, '2025-11-27 20:26:08', 0, '2025-11-27 20:26:08', '1', ''),
 (29, 'James', 'Dela Cruz', 'james123@gmail.com', '09999635031', '', '', '', '', 'consumer', '$2y$10$xpyxvB224SWe.eX9BmSvyOdwA9gJWuBSt.3ed3j2z5LcPDJj2mHwe', 0, '2025-11-29 12:13:29', 0, '2025-11-29 12:13:29', '0', ''),
-(30, 'sheila', 'laurente', 'sheilalaurente@gmail.com', '09123545848', '', '', '', '', 'Farmer', '$2y$10$mhcvgaqYOhFjwQKCLbBJ/uSQXRcSxk2HBXwWbYy4WMmVeSC2pnG5S', 0, '2025-11-29 12:15:55', 0, '2025-11-29 12:15:55', '1', ''),
-(31, 'Sheila', 'deleon', 'james321@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '');
+(30, 'sheila', 'laurente', 'alexisdumale@gmail.com', '09123545848', '', '', '', '', 'Farmer', '$2y$10$HMmeL8emnEixXqiz9nMg9uaRZRDFpDAc0DTwO9tOdig5fS99ZmpY.', 0, '2025-11-29 12:15:55', 0, '2025-11-29 12:15:55', '1', ''),
+(31, 'Sheila', 'deleon', 'maemagante31@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '');
 
 --
 -- Indexes for dumped tables
@@ -474,6 +489,12 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -499,7 +520,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -556,10 +577,16 @@ ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `reviews`
