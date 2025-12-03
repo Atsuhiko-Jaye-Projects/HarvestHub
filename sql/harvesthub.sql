@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2025 at 08:09 AM
+-- Generation Time: Dec 03, 2025 at 08:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -67,23 +67,6 @@ CREATE TABLE `chat_messages` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `chat_messages`
---
-
-INSERT INTO `chat_messages` (`id`, `user_id`, `message`, `created_at`) VALUES
-(1, 2, 'hey', '2025-11-30 04:36:42'),
-(2, 1, 'hey', '2025-11-30 04:47:41'),
-(3, 1, 'wassup', '2025-11-30 04:48:08'),
-(4, 1, 'im good', '2025-11-30 04:48:15'),
-(5, 1, 'hey', '2025-11-30 05:01:01'),
-(6, 1, 'sup', '2025-11-30 05:01:10'),
-(7, 1, 'how you doing', '2025-11-30 05:01:24'),
-(8, 1, 'im good', '2025-11-30 05:01:31'),
-(9, 1, 'lets g', '2025-11-30 05:01:41'),
-(10, 1, 'hey', '2025-11-30 05:02:00'),
-(11, 1, 'what?', '2025-11-30 05:02:06');
-
 -- --------------------------------------------------------
 
 --
@@ -107,13 +90,6 @@ CREATE TABLE `crops` (
   `municipality` varchar(255) NOT NULL,
   `baranggay` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `crops`
---
-
-INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`) VALUES
-(57, 30, 'okra', 2, 500, '2025-11-29', '2026-01-29', 0, '2025-11-29 13:22:18', '2025-11-29 21:22:18', 652, 326, 'Marinduque', 'Mogpog', 'Anapog-Sibucao');
 
 -- --------------------------------------------------------
 
@@ -173,15 +149,6 @@ CREATE TABLE `farm_details` (
   `following_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `farm_details`
---
-
-INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
-(42, 28, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'purok2', 'owned', 5000, '2025-11-29 18:24:59', '2025-11-29 10:24:59', 0, 'Mondragon Farm and Pigery', '', 1230, '', 0, 47),
-(43, 30, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok2', 'owned', 5000, '2025-11-29 19:55:29', '2025-11-29 11:55:29', 0, '', '', 0, '', 0, 0),
-(44, 28, 'Marinduque', 'Boac', 'Agot', 'purok', 'owned', 5000, '2025-11-29 21:25:01', '2025-11-29 13:25:01', 0, '', '', 0, '', 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -198,15 +165,6 @@ CREATE TABLE `farm_resources` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `farm_resources`
---
-
-INSERT INTO `farm_resources` (`id`, `user_id`, `item_name`, `type`, `cost`, `date`, `created_at`, `modified_at`) VALUES
-(31, 30, 'Kubota', 'machine', 5000, '2025-10-23', '2025-11-08 00:39:15', '2025-11-30 06:08:20'),
-(32, 30, 'kubota', 'machine', 5000, '2025-10-22', '2025-11-30 14:16:17', '2025-11-30 06:18:55'),
-(33, 30, 'talong', 'seeds', 500, '2025-11-30', '2025-11-30 14:17:00', '2025-11-30 06:17:00');
 
 -- --------------------------------------------------------
 
@@ -233,15 +191,6 @@ CREATE TABLE `harvested_products` (
   `expense` double NOT NULL,
   `kilo_per_plant` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `harvested_products`
---
-
-INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
-(1, 28, 'Kalabasa', 16, 'KG', 'Vegetable', '1000', 'Fresh from the farm', 2400, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-29 03:56:36', '2025-11-29 11:56:28', 'Posted', 1200, 25000, 2),
-(2, 30, 'talong', 213, 'KG', 'Vegetable', '1000', 'greate', 400, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-12-02 08:58:41', '2025-11-29 22:20:55', 'Posted', 200, 50000, 2),
-(3, 30, 'Sitaw', 188, 'KG', 'Vegetable', '50', 'great', 400, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-12-02 08:56:58', '2025-11-30 13:03:52', 'Posted', 200, 50000, 2);
 
 -- --------------------------------------------------------
 
@@ -290,17 +239,6 @@ CREATE TABLE `password_resets` (
   `expires_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `password_resets`
---
-
-INSERT INTO `password_resets` (`id`, `email_address`, `token`, `expires_at`) VALUES
-(10, 'alexisdumale@gmail.com', '255f19b16c12f21a0d5e97df8fad0235a06f758732e1f751a727a7bcf96054a9', '2025-12-02 09:40:09'),
-(11, 'alexisdumale@gmail.com', '1bbfa35f039ca739bdf417f84d7bc71e839d442c4edcfa9a62a9a852fd9fd7cc', '2025-12-02 09:40:51'),
-(12, 'alexisdumale@gmail.com', '252923f1a397e74f6ff4004bbe1a512f12cb0ea73933efe59e5c97b869a670fa', '2025-12-02 09:44:56'),
-(13, 'alexisdumale@gmail.com', 'a9583068d09552bff05528b9fd5d8817afe35627578c3753d7b85ff8f5e3cb30', '2025-12-02 16:46:40'),
-(14, 'alexisdumale@gmail.com', '89de4b7399e55351aee6d6c4aa9fbd29190fa88571274fa9db2d60dce93ef6d4', '2025-12-02 16:47:11');
-
 -- --------------------------------------------------------
 
 --
@@ -340,15 +278,6 @@ CREATE TABLE `products` (
   `discount` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
-(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL),
-(11, 2, 'talong', 213, 30, 'Vegetable', 'KG', 0, 'greate', 1000, 400, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', 0, '2025-12-02 08:58:41', '2025-12-02 16:58:41', 'Active', 'harvest', 400, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -362,17 +291,6 @@ CREATE TABLE `product_histories` (
   `price_per_unit` double NOT NULL,
   `recorded_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `product_histories`
---
-
-INSERT INTO `product_histories` (`id`, `farmer_id`, `product_id`, `price_per_unit`, `recorded_at`) VALUES
-(1, 30, 3, 0, '2025-12-02 16:12:36'),
-(2, 30, 3, 188, '2025-12-02 16:12:58'),
-(3, 30, 3, 188, '2025-12-02 16:12:58'),
-(4, 30, 2, 200, '2025-12-02 16:12:35'),
-(5, 30, 2, 213, '2025-12-02 16:12:41');
 
 -- --------------------------------------------------------
 
@@ -396,20 +314,6 @@ CREATE TABLE `reviews` (
   `product_quality_review` varchar(525) NOT NULL,
   `farmer_response` varchar(526) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reviews`
---
-
-INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `customer_id`, `rate`, `review_text`, `reply`, `created_at`, `modified_at`, `product_rating`, `farmer_rating`, `performance_review`, `product_quality_review`, `farmer_response`) VALUES
-(1, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 1.55, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
-(2, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', ''),
-(3, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 4, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
-(4, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', ''),
-(5, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 4, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
-(6, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', ''),
-(7, 1, 2, 29, 2, 'ganda ng sitaw', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 4, 0, 'So Fresh from the farm', 'BEST Product', 'Thansk for your support'),
-(8, 1, 2, 31, 3, 'ganda ng siopao', '', '2025-08-10 18:52:43', '2025-08-10 10:52:43', 3, 0, 'Will buy again', 'Good', '');
 
 -- --------------------------------------------------------
 
@@ -438,20 +342,6 @@ CREATE TABLE `users` (
   `is_verified` tinyint(4) NOT NULL,
   `verification_token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`) VALUES
-(2, 'Richard updated', 'farmer', 'farmer@farm.com', '09772639814', 'Purok 2', 'Anapog-Sibucao', 'Anapog', 'Marinduque', 'Farmer', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', 0, '2025-11-13 17:56:29', '1', 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg', 0, ''),
-(21, 'Alexis Jaye', 'Dumales', 'don@gmail.com', '09533307696', 'Anapog-Sibucao', 'Anapog', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$wGotL4R6eNsz03aTF8hFLu2cWtfYNwsIRekLjJCU8LkbMiYpf0kDO', 0, '2025-11-08 18:42:11', 0, '2025-11-15 11:02:21', '0', 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png', 0, ''),
-(27, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '09533307696', 'purok 2', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$Wsx28p66./9jttxIfw.UP.rRIeB0UAnA6r2LS7NDT9GI4DlsTNZnm', 0, '2025-11-27 20:23:17', 0, '2025-11-27 20:24:57', '0', '', 0, ''),
-(28, 'carlo', 'Dela Cruz', 'carlo@gmail.com', '09707662820', '', '', '', '', 'Farmer', '$2y$10$ADz3Kr95s1Q6gwNVDAwOc.qATpx6r8R2pRY.r.k9/v9JU/xRmueVW', 0, '2025-11-27 20:26:08', 0, '2025-11-27 20:26:08', '1', '', 0, ''),
-(29, 'James', 'Dela Cruz', 'james123@gmail.com', '09999635031', '', '', '', '', 'consumer', '$2y$10$xpyxvB224SWe.eX9BmSvyOdwA9gJWuBSt.3ed3j2z5LcPDJj2mHwe', 0, '2025-11-29 12:13:29', 0, '2025-11-29 12:13:29', '0', '', 0, ''),
-(30, 'sheila', 'laurente', 'dasdas', '09123545848', '', '', '', '', 'Farmer', '$2y$10$HMmeL8emnEixXqiz9nMg9uaRZRDFpDAc0DTwO9tOdig5fS99ZmpY.', 0, '2025-11-29 12:15:55', 0, '2025-11-29 12:15:55', '1', '', 0, ''),
-(31, 'Sheila', 'deleon', 'maemagante31@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '', 0, ''),
-(42, 'AlexisJaye', 'Dumale', 'alexisdumale@gmail.com', '+639533307696', '', '', '', '', 'Farmer', '$2y$10$gE32UzltjRNTE1dEZ1CRaetp0IPBgjvhanc1NusI2siLmDjdfYKAa', 0, '2025-12-03 15:08:40', 0, '2025-12-03 15:08:40', '0', '', 1, '');
 
 --
 -- Indexes for dumped tables
@@ -555,7 +445,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -567,13 +457,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `chat_messages`
 --
 ALTER TABLE `chat_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -591,19 +481,19 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -615,31 +505,31 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product_histories`
 --
 ALTER TABLE `product_histories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
