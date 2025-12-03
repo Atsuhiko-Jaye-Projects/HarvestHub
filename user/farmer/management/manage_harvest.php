@@ -65,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $markup = 0.015 * 100;
 
         // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
-        
 
         // Prevent division by zero
         if ($planted_area > 0 && $farm_expense > 0 && $total_farm_size > 0) {
@@ -84,10 +83,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             // Cost per kg
             $cost_per_kg = $farm_expense / $kilo_harvested_product;
 
-            
 
             // Selling price with markup
-            $selling_price = $cost_per_kg * $markup;
+            $selling_price = $cost_per_kg;
 
             // Rounded price (currency format)
             $harvest_product->price_per_unit = round($selling_price, 2);

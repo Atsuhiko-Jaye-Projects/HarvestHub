@@ -35,7 +35,7 @@ if ($_POST) {
 
     $review->rating = $_POST['rating'];
     $review->product_id = $productid;
-    $review->farmer_id = $farmerid;
+    $review->user_id = $farmerid;
     $review->customer_id = $customerId;
     $review->review_text = $_POST['feedback'];
 

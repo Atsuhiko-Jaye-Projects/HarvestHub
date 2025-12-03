@@ -58,14 +58,14 @@ class Review{
                     review_text = :review_text,
                     rating = :rating,
                     product_id = :product_id,
-                    farmer_id = :farmer_id,
+                    user_id = :user_id,
                     customer_id = :customer_id,
                     created_at = :created_at";
         
         $stmt = $this->conn->prepare($query);
 
         $this->product_id = htmlspecialchars(strip_tags($this->product_id));
-        $this->farmer_id = htmlspecialchars(strip_tags($this->farmer_id));
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
         $this->rating = htmlspecialchars(strip_tags($this->rating));
         $this->review_text = htmlspecialchars(strip_tags($this->review_text));
         $this->created_at = date("Y-m-d H:i:s");
@@ -73,7 +73,7 @@ class Review{
         
         $stmt->bindParam(":product_id", $this->product_id);
         $stmt->bindParam(":customer_id", $this->customer_id);
-        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->bindParam(":user_id", $this->user_id);
         $stmt->bindParam(":rating", $this->rating);
         $stmt->bindParam(":review_text", $this->review_text);
         $stmt->bindParam(":created_at", $this->created_at);
