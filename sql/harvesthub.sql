@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2025 at 09:11 AM
+-- Generation Time: Dec 03, 2025 at 08:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -240,8 +240,8 @@ CREATE TABLE `harvested_products` (
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
 (1, 28, 'Kalabasa', 16, 'KG', 'Vegetable', '1000', 'Fresh from the farm', 2400, 0, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', '2025-11-29 03:56:36', '2025-11-29 11:56:28', 'Posted', 1200, 25000, 2),
-(2, 30, 'talong', 188, 'KG', 'Vegetable', '1000', 'greate', 400, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-11-29 16:02:15', '2025-11-29 22:20:55', 'Pending', 200, 50000, 2),
-(3, 30, 'Sitaw', 188, 'KG', 'Vegetable', '50', 'great', 400, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-11-30 05:03:52', '2025-11-30 13:03:52', 'Pending', 200, 50000, 2);
+(2, 30, 'talong', 213, 'KG', 'Vegetable', '1000', 'greate', 400, 0, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', '2025-12-02 08:58:41', '2025-11-29 22:20:55', 'Posted', 200, 50000, 2),
+(3, 30, 'Sitaw', 188, 'KG', 'Vegetable', '50', 'great', 400, 0, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', '2025-12-02 08:56:58', '2025-11-30 13:03:52', 'Posted', 200, 50000, 2);
 
 -- --------------------------------------------------------
 
@@ -346,7 +346,33 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
 (1, 1, 'Kalabasa', 16, 28, 'Vegetable', 'KG', 0, 'Fresh from the farm', 1000, 2400, '976d0884a7b2312d9c460490f6459da9aa3990f3-squash.jpg', 20, '2025-11-29 03:56:36', '2025-11-29 11:56:36', 'Active', 'harvest', 2400, NULL),
-(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL);
+(2, 51, 'okra', 23, 28, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1000, '5e2c7a9d3e7c0110d4f7f9349f4f6743c4419dd2-okra.jpg', 0, '2025-11-29 03:57:47', '2025-11-29 11:57:47', 'Active', 'preorder', 1000, NULL),
+(11, 2, 'talong', 213, 30, 'Vegetable', 'KG', 0, 'greate', 1000, 400, '74e6f0f1275cc642225f1c94937cb77e6a46e3f2-eggplant.jpg', 0, '2025-12-02 08:58:41', '2025-12-02 16:58:41', 'Active', 'harvest', 400, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_histories`
+--
+
+CREATE TABLE `product_histories` (
+  `id` int(11) NOT NULL,
+  `farmer_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `price_per_unit` double NOT NULL,
+  `recorded_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_histories`
+--
+
+INSERT INTO `product_histories` (`id`, `farmer_id`, `product_id`, `price_per_unit`, `recorded_at`) VALUES
+(1, 30, 3, 0, '2025-12-02 16:12:36'),
+(2, 30, 3, 188, '2025-12-02 16:12:58'),
+(3, 30, 3, 188, '2025-12-02 16:12:58'),
+(4, 30, 2, 200, '2025-12-02 16:12:35'),
+(5, 30, 2, 213, '2025-12-02 16:12:41');
 
 -- --------------------------------------------------------
 
@@ -408,21 +434,24 @@ CREATE TABLE `users` (
   `first_time_logged_in` int(11) NOT NULL,
   `modified` datetime NOT NULL DEFAULT current_timestamp(),
   `farm_details_exists` varchar(11) DEFAULT NULL,
-  `profile_pic` varchar(255) NOT NULL
+  `profile_pic` varchar(255) NOT NULL,
+  `is_verified` tinyint(4) NOT NULL,
+  `verification_token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`) VALUES
-(2, 'Richard updated', 'farmer', 'farmer@farm.com', '09772639814', 'Purok 2', 'Anapog-Sibucao', 'Anapog', 'Marinduque', 'Farmer', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', 0, '2025-11-13 17:56:29', '1', 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg'),
-(21, 'Alexis Jaye', 'Dumales', 'don@gmail.com', '09533307696', 'Anapog-Sibucao', 'Anapog', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$wGotL4R6eNsz03aTF8hFLu2cWtfYNwsIRekLjJCU8LkbMiYpf0kDO', 0, '2025-11-08 18:42:11', 0, '2025-11-15 11:02:21', '0', 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png'),
-(27, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '09533307696', 'purok 2', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$Wsx28p66./9jttxIfw.UP.rRIeB0UAnA6r2LS7NDT9GI4DlsTNZnm', 0, '2025-11-27 20:23:17', 0, '2025-11-27 20:24:57', '0', ''),
-(28, 'carlo', 'Dela Cruz', 'carlo@gmail.com', '09707662820', '', '', '', '', 'Farmer', '$2y$10$ADz3Kr95s1Q6gwNVDAwOc.qATpx6r8R2pRY.r.k9/v9JU/xRmueVW', 0, '2025-11-27 20:26:08', 0, '2025-11-27 20:26:08', '1', ''),
-(29, 'James', 'Dela Cruz', 'james123@gmail.com', '09999635031', '', '', '', '', 'consumer', '$2y$10$xpyxvB224SWe.eX9BmSvyOdwA9gJWuBSt.3ed3j2z5LcPDJj2mHwe', 0, '2025-11-29 12:13:29', 0, '2025-11-29 12:13:29', '0', ''),
-(30, 'sheila', 'laurente', 'alexisdumale@gmail.com', '09123545848', '', '', '', '', 'Farmer', '$2y$10$HMmeL8emnEixXqiz9nMg9uaRZRDFpDAc0DTwO9tOdig5fS99ZmpY.', 0, '2025-11-29 12:15:55', 0, '2025-11-29 12:15:55', '1', ''),
-(31, 'Sheila', 'deleon', 'maemagante31@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '');
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`) VALUES
+(2, 'Richard updated', 'farmer', 'farmer@farm.com', '09772639814', 'Purok 2', 'Anapog-Sibucao', 'Anapog', 'Marinduque', 'Farmer', '$2a$12$3/rLxv7G3eZUpBll/80TVeEYO8/N4HyynnxGph57KHrOHvDtyxlcS', 0, '2025-03-10 05:49:38', 0, '2025-11-13 17:56:29', '1', 'b6a48d68350a9324abb08733845caad15ffbd27a-kangkong.jpg', 0, ''),
+(21, 'Alexis Jaye', 'Dumales', 'don@gmail.com', '09533307696', 'Anapog-Sibucao', 'Anapog', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$wGotL4R6eNsz03aTF8hFLu2cWtfYNwsIRekLjJCU8LkbMiYpf0kDO', 0, '2025-11-08 18:42:11', 0, '2025-11-15 11:02:21', '0', 'f400ddc95293fa115b74463f002ea790964a9ec0-cics logo.png', 0, ''),
+(27, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '09533307696', 'purok 2', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$Wsx28p66./9jttxIfw.UP.rRIeB0UAnA6r2LS7NDT9GI4DlsTNZnm', 0, '2025-11-27 20:23:17', 0, '2025-11-27 20:24:57', '0', '', 0, ''),
+(28, 'carlo', 'Dela Cruz', 'carlo@gmail.com', '09707662820', '', '', '', '', 'Farmer', '$2y$10$ADz3Kr95s1Q6gwNVDAwOc.qATpx6r8R2pRY.r.k9/v9JU/xRmueVW', 0, '2025-11-27 20:26:08', 0, '2025-11-27 20:26:08', '1', '', 0, ''),
+(29, 'James', 'Dela Cruz', 'james123@gmail.com', '09999635031', '', '', '', '', 'consumer', '$2y$10$xpyxvB224SWe.eX9BmSvyOdwA9gJWuBSt.3ed3j2z5LcPDJj2mHwe', 0, '2025-11-29 12:13:29', 0, '2025-11-29 12:13:29', '0', '', 0, ''),
+(30, 'sheila', 'laurente', 'dasdas', '09123545848', '', '', '', '', 'Farmer', '$2y$10$HMmeL8emnEixXqiz9nMg9uaRZRDFpDAc0DTwO9tOdig5fS99ZmpY.', 0, '2025-11-29 12:15:55', 0, '2025-11-29 12:15:55', '1', '', 0, ''),
+(31, 'Sheila', 'deleon', 'maemagante31@gmail.com', '09999963979', '', '', '', '', 'consumer', '$2y$10$tWynlH6uZApytP.44NVyWOCo4tBaWYecIrwdKFRdl5StWuV50RyfG', 0, '2025-11-29 12:24:56', 0, '2025-11-29 12:24:56', '0', '', 0, ''),
+(42, 'AlexisJaye', 'Dumale', 'alexisdumale@gmail.com', '+639533307696', '', '', '', '', 'Farmer', '$2y$10$gE32UzltjRNTE1dEZ1CRaetp0IPBgjvhanc1NusI2siLmDjdfYKAa', 0, '2025-12-03 15:08:40', 0, '2025-12-03 15:08:40', '0', '', 1, '');
 
 --
 -- Indexes for dumped tables
@@ -498,6 +527,12 @@ ALTER TABLE `password_resets`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_histories`
+--
+ALTER TABLE `product_histories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -586,7 +621,13 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `product_histories`
+--
+ALTER TABLE `product_histories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -598,7 +639,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

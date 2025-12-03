@@ -80,35 +80,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Send email
         $reset_link = "http://localhost/harvesthub/reset_password.php?token=$token";
         $subject = "HarvestHub Password Reset";
-$body = "
-<div style='font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 40px 0;'>
-    <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;'>
-        <div style='background-color: #4CAF50; color: white; text-align: center; padding: 30px 20px;'>
-            <h1 style='margin: 0;'>HarvestHub</h1>
+        $body = "
+        <div style='font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 40px 0;'>
+            <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;'>
+                <div style='background-color: #4CAF50; color: white; text-align: center; padding: 30px 20px;'>
+                    <h1 style='margin: 0;'>HarvestHub</h1>
+                </div>
+                <div style='padding: 30px 20px; color: #333; line-height: 1.6;'>
+                    <h2 style='color: #4CAF50;'>Hello!</h2>
+                    <p>We received a request to reset your HarvestHub password. Don’t worry, we’ve got you covered!</p>
+                    <p style='text-align: center; margin: 30px 0;'>
+                        <a href='$reset_link' 
+                        style='background-color: #FFA500; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;'>
+                            Reset Password
+                        </a>
+                    </p>
+                    <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
+                    <p style='word-break: break-all;'><a href='$reset_link' style='color: #4CAF50;'>$reset_link</a></p>
+                    <p style='font-size: 0.9em; color: #777; margin-top: 20px;'>
+                        This password reset link is valid for 1 hour. If you did not request a password reset, please ignore this email.
+                    </p>
+                </div>
+                <div style='background-color: #f4f6f8; text-align: center; padding: 20px; font-size: 0.8em; color: #aaa;'>
+                    © " . date('Y') . " HarvestHub. All rights reserved.
+                </div>
+            </div>
         </div>
-        <div style='padding: 30px 20px; color: #333; line-height: 1.6;'>
-            <h2 style='color: #4CAF50;'>Hello!</h2>
-            <p>We received a request to reset your HarvestHub password. Don’t worry, we’ve got you covered!</p>
-            <p style='text-align: center; margin: 30px 0;'>
-                <a href='$reset_link' 
-                   style='background-color: #FFA500; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;'>
-                    Reset Password
-                </a>
-            </p>
-            <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
-            <p style='word-break: break-all;'><a href='$reset_link' style='color: #4CAF50;'>$reset_link</a></p>
-            <p style='font-size: 0.9em; color: #777; margin-top: 20px;'>
-                This password reset link is valid for 1 hour. If you did not request a password reset, please ignore this email.
-            </p>
-        </div>
-        <div style='background-color: #f4f6f8; text-align: center; padding: 20px; font-size: 0.8em; color: #aaa;'>
-            © " . date('Y') . " HarvestHub. All rights reserved.
-        </div>
-    </div>
-</div>
-";
-
-
+        ";
 
         $result = $mailer->send($email, $subject, $body);
         if ($result !== true) throw new Exception($result);

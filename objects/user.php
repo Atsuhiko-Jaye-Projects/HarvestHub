@@ -17,6 +17,8 @@ class User{
     public $rating;
     public $first_time_logged_in;
     public $farm_details_exists;
+    public $verification_token;
+    public $is_verified;
     public $created;
     public $modified;
 
@@ -37,7 +39,9 @@ class User{
                     contact_number=:contact_number,
                     farm_details_exists=:farm_details_exists,
                     user_type = :user_type,
-                    created = :created";
+                    created = :created,
+                    is_verified = 0,
+                    verification_token = :verification_token";
         
         $stmt=$this->conn->prepare($query);
 
@@ -60,6 +64,7 @@ class User{
         $stmt->bindParam(":email_address", $this->email_address);
         $stmt->bindParam(":farm_details_exists", $this->farm_details_exists);
         $stmt->bindParam(":user_type", $this->user_type);
+        $stmt->bindParam(":verification_token", $this->verification_token);
         $stmt->bindParam(":created", $this->created);
 
         if ($stmt->execute()) {
@@ -82,7 +87,7 @@ class User{
 
     function credentialExists(){
 
-        $query = "SELECT id, firstname, barangay, address, user_type, password, first_time_logged_in, farm_details_exists, contact_number, lastname
+        $query = "SELECT id, firstname, barangay, address, user_type, password, first_time_logged_in, farm_details_exists, contact_number, lastname, is_verified
                 FROM " . $this->table_name . "
                 WHERE email_address=:email_address
                 LIMIT 0, 1";
@@ -110,10 +115,12 @@ class User{
             $this->password = $row['password'];
             $this->first_time_logged_in = $row['first_time_logged_in'];
             $this->farm_details_exists = $row['farm_details_exists'];
+            $this->is_verified = $row['is_verified'];
 
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
     function markFarmAsExists(){
@@ -405,6 +412,33 @@ class User{
         $stmt->bindParam(":password", $password_hash);
         $stmt->bindParam(":email_address", $this->email_address);
         return $stmt->execute();
+    }
+
+    public function verifyAccount() {
+        // Clean the token
+        $this->verification_token = htmlspecialchars(strip_tags($this->verification_token));
+
+        // Check if token exists and account is not verified yet
+        $query = "SELECT id, is_verified FROM " . $this->table_name . " WHERE verification_token = :token LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":token", $this->verification_token);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row && $row['is_verified'] == 0) {
+            // Token valid, update account to verified
+            $update_query = "UPDATE " . $this->table_name . " 
+                             SET is_verified = 1, verification_token = NULL 
+                             WHERE id = :id";
+            $update_stmt = $this->conn->prepare($update_query);
+            $update_stmt->bindParam(":id", $row['id']);
+            if ($update_stmt->execute()) {
+                return true;
+            }
+        }
+
+        return false; // token invalid, expired, or already verified
     }
 
 

@@ -7,6 +7,7 @@ include_once "login_checker.php";
 //include classes
 include_once "config/database.php";
 include_once "objects/user.php";
+include_once "objects/util.php";
 
 //include page header html
 include_once "layout_head.php";
@@ -18,10 +19,12 @@ $alert_message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $database = new Database();
+    
     $db = $database->getConnection();
 
     // initialize the objects
     $user = new User($db);
+    $mailer = new Mailer($db);
     
     $user->firstname = $_POST['firstname'];
     $user->lastname = $_POST['lastname'];
@@ -30,6 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user->contact_number = $_POST['contact_number'];
     $user->farm_details_exists = "0";
     $user->user_type = "Farmer";
+    $user->is_verified = 0;
+
+    // generate token for verification
+    $user->verification_token = bin2hex(random_bytes(32));
 
     $_POST['confirm_password'];
 
@@ -54,10 +61,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // no errors to inputs, proceed to account creation
     else {
-        $user->create();
-        $alert_message = "<div class='alert alert-success'>
-            Start your account and <a href='{$home_url}signin.php'>continue! </a>
-        </div>";
+        // send an email verification
+        $verify_link = "{$home_url}verification.php?token=" . $user->verification_token;
+        
+        $subject = "Verify Your HarvestHub Account";
+
+        $body = "
+                <div style='font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 40px 0;'>
+                    <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden;'>
+                        <div style='background-color: #4CAF50; color: white; text-align: center; padding: 30px 20px;'>
+                            <h1 style='margin: 0;'>HarvestHub Digital Marketplace</h1>
+                        </div>
+                        <div style='padding: 30px 20px; color: #333; line-height: 1.6;'>
+                            <h2 style='color: #4CAF50;'>Hello $user->firstname! Welcome to HarvestHub Digital Marketplace!</h2>
+                            <p>Please click the link below to confirm your account and start exploring HarvestHub Digital Marketplace.</p>
+                            <p style='text-align: center; margin: 30px 0;'>
+                                <a href='$verify_link' 
+                                style='background-color: #FFA500; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;'>
+                                    Verify Email
+                                </a>
+                            </p>
+                            <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
+                            <p style='word-break: break-all;'><a href='$verify_link' style='color: #4CAF50;'>$verify_link</a></p>
+                            <p style='font-size: 0.9em; color: #777; margin-top: 20px;'>
+                                This link is valid for 1 hour. If you did not request a verification link, please ignore this email.
+                            </p>
+                        </div>
+                        <div style='background-color: #f4f6f8; text-align: center; padding: 20px; font-size: 0.8em; color: #aaa;'>
+                            © " . date('Y') . " HarvestHub. All rights reserved.
+                        </div>
+                    </div>
+                </div>
+                ";
+        if ($mailer->send($user->email_address, $subject, $body)) {
+            $user->create();
+            $alert_message = "<div class='alert alert-success'>
+                Please verify you account to start exploring HarvestHub!
+            </div>";
+            json_encode(["status" => "success", "message" => "Registration successful. Check your email to verify."]);
+        }else{
+            $alert_message = "<div class='alert alert-danger'>
+                Something went wrong please try again later.
+            </div>";
+            json_encode(["status" => "Failed", "message" => "Registration failed."]);
+        }
     }
 }
 ?>

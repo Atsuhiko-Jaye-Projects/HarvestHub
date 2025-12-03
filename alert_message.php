@@ -13,11 +13,13 @@ else if($action=='please_login'){
     echo "</div>";
 }
 
-elseif ($action=='email_verified') {
-    echo "<div class='alert alert-success'>";
-        echo "<strong>Email address has been validated</strong>";
+elseif ($action=='please_verify') {
+    echo "<div class='alert alert-warning'>";
+        echo "<strong>Please Verify your account to continue.</strong>";
     echo "</div>";
 }
+
+
 
 if ($access_denied) {
     echo "<div class='alert alert-danger margin-top-40' role='alert'>";
@@ -25,4 +27,5 @@ if ($access_denied) {
         echo "Contact No. or Last Name is incorrect.";
     echo "</div>";
 }
+
 ?>

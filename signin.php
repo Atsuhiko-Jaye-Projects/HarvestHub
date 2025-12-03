@@ -22,26 +22,34 @@ if ($_POST) {
 	$user->email_address = $_POST['email_address'];
 	//check if the contact number is exists and last name is exists
 	$credential_exists = $user->credentialExists();
-	if ($credential_exists && $user->first_time_logged_in >= 0 && password_verify($_POST['password'], $user->password)) {
-		
-		$_SESSION['logged_in'] = true;
-		$_SESSION['user_type'] = $user->user_type;
-		$_SESSION['user_id'] = $user->id;
-		$_SESSION['firstname'] = $user->firstname;
-		$_SESSION['lastname'] = $user->lastname;
-		$_SESSION['is_farm_registered'] = $user->farm_details_exists;
 
-		if ($user->user_type=='Admin') {
-			header("Location:{$home_url}admin/index.php?action=login_success");
-		}
-		else if($user->user_type=='Farmer') {
-			header("Location:{$home_url}user/farmer/index.php?action=login_success");
-		}else{
-			header("Location:{$home_url}index.php?action=browse_products");
-		}
-	}else{
-		$access_denied = true;
-	}
+	if ($credential_exists && $user->first_time_logged_in >= 0 && password_verify($_POST['password'], $user->password)) {
+
+
+    if ($user->is_verified == 0) {
+      header("Location:{$home_url}signin.php?action=please_verify");
+      exit();
+    }else{
+      $_SESSION['logged_in'] = true;
+      $_SESSION['user_type'] = $user->user_type;
+      $_SESSION['user_id'] = $user->id;
+      $_SESSION['firstname'] = $user->firstname;
+      $_SESSION['lastname'] = $user->lastname;
+      $_SESSION['is_farm_registered'] = $user->farm_details_exists;
+
+      if ($user->user_type=='Admin') {
+        header("Location:{$home_url}admin/index.php?action=login_success");
+      }
+      else if($user->user_type=='Farmer') {
+        header("Location:{$home_url}user/farmer/index.php?action=login_success");
+      }else{
+        header("Location:{$home_url}index.php?action=browse_products");
+      }
+    }
+
+  }else{
+      $access_denied = true;
+  }
 
 }
 // include page header HTML
