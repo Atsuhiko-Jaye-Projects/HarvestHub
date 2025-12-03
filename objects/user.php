@@ -441,6 +441,29 @@ class User{
         return false; // token invalid, expired, or already verified
     }
 
+    function verifyShippingInfo(){
+        $query = "SELECT 
+                    address, barangay, municipality, province
+                   FROM
+                     " . $this->table_name . "
+                     WHERE 
+                        id = :id
+                        LIMIT 0,1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->address = $row['address'];
+        $this->barangay = $row['barangay'];
+        $this->municipality = $row['municipality'];
+        $this->province = $row['province'];
+    }
+
 
 }
 ?>

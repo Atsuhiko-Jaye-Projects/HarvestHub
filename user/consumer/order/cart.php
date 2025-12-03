@@ -5,6 +5,7 @@ include_once "../../../config/database.php";
 include_once "../../../objects/cart_item.php";
 include_once "../../../objects/product.php";
 include_once "../../../objects/order.php";
+include_once "../../../objects/user.php";
 
 
 $database = new Database();
@@ -13,6 +14,7 @@ $db = $database->getConnection();
 $cart_item = new CartItem($db);
 $product = new Product($db);
 $order = new Order($db);
+$user = new User($db);
 
 $cart_item->user_id = $_SESSION['user_id'];
 
@@ -20,11 +22,14 @@ $stmt = $cart_item->countCartItem();
 $num = $stmt->rowCount();
 
 
+
+
 $page_title = "Order";
 include_once "../layout/layout_head.php";
 
 $require_login=true;
 include_once "../../../login_checker.php";
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
@@ -192,20 +197,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           <h5 class="fw-bold mb-3">Select Payment Method</h5>
 
           <div class="btn-group w-100" role="group" aria-label="Payment methods">
-            <input type="radio" class="btn-check" disabled name="payment_method" id="gcash" value="GCash" autocomplete="off" required>
-            <label class="btn btn-outline-primary w-100" for="gcash">
-              <i class="bi bi-phone"></i> GCash
-            </label>
 
-            <input type="radio" class="btn-check" disabled  name="payment_method" id="maya" value="Maya" autocomplete="off">
-            <label class="btn btn-outline-success w-100" for="maya">
-              <i class="bi bi-wallet2"></i> Maya
-            </label>
+          <!-- Cash on Pick-Up -->
+          <input type="radio" class="btn-check" name="payment_method" id="COP" value="COP" autocomplete="off" required>
+          <label class="btn btn-outline-success w-100 mb-2" for="COP">
+            <i class="bi bi-box-seam"></i> Cash on Pick-Up
+          </label>
 
-            <input type="radio" class="btn-check" name="payment_method" id="cod" value="COD" autocomplete="off" checked>
-            <label class="btn btn-outline-secondary w-100" for="cod">
-              <i class="bi bi-truck"></i> Cash on Delivery
-            </label>
+          <!-- Cash on Delivery -->
+          <input type="radio" class="btn-check" name="payment_method" id="COD" value="COD" autocomplete="off" required>
+          <label class="btn btn-outline-warning w-100 mb-2" for="COD">
+            <i class="bi bi-truck"></i> Cash on Delivery
+          </label>
 
           </div>
 

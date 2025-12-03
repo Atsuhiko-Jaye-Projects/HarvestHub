@@ -19,7 +19,11 @@ elseif ($action=='please_verify') {
     echo "</div>";
 }
 
-
+elseif ($action=='not_set_shipping_address') {
+    echo "<div class='alert alert-warning'>";
+        echo "<strong>Please Setup your Shipping address to continue checking out. <a href='{$base_url}user/consumer/profile/profile.php'>Here</a></strong>";
+    echo "</div>";
+}
 
 if ($access_denied) {
     echo "<div class='alert alert-danger margin-top-40' role='alert'>";

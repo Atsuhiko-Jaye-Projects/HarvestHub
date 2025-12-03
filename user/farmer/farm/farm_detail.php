@@ -75,7 +75,7 @@
 </div>
 
 
-  <script>
+<script>
 document.addEventListener("DOMContentLoaded", function () {
   const provinceSelect = document.getElementById("province");
   const municipalitySelect = document.getElementById("municipality");
