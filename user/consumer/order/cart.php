@@ -6,6 +6,7 @@ include_once "../../../objects/cart_item.php";
 include_once "../../../objects/product.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/user.php";
+include_once "../../../objects/order_status_history.php";
 
 
 $database = new Database();
@@ -15,6 +16,7 @@ $cart_item = new CartItem($db);
 $product = new Product($db);
 $order = new Order($db);
 $user = new User($db);
+$order_history = new OrderHistory($db);
 
 $cart_item->user_id = $_SESSION['user_id'];
 
@@ -46,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
   foreach($_POST['product_id'] as $pid){
 
     $order->product_id = $pid;
-    
     $order->invoice_number = $invoice_no;
     $order->customer_id = $user_id;
     $order->mode_of_payment = $_POST['payment_method'];
@@ -59,7 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
     : 'unknown'; // fallback if not set
 
     $order->placeOrder();
-    print_r($_POST);
+    // record order history
+    $order_history->product_id = $pid;
+    $order_history->invoice_number = $invoice_no;
+    $order_history->status = "order placed";
+    $order_history->timestamp = $date;
+    $order_history->recordStatus();
+
     // Update the products to ORDERED
     $cart_item->product_id = $pid;
     $cart_item->status = "ordered";

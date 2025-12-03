@@ -6,6 +6,7 @@ include_once "../../../config/database.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/user.php";
 include_once "../../../objects/product.php";
+include_once "../../../objects/order_status_history.php";
 
 $page_title = "Order";
 include_once "../layout/layout_head.php";
@@ -20,6 +21,7 @@ $order = new Order($db);
 $product = new Product($db);
 $user = new User($db);
 $farmer = new User($db);
+$order_status = new OrderHistory($db);
 
 
 $order->id = $order_id;
@@ -48,14 +50,21 @@ $grand_total = $total + $shipping_fee;
 $farmer->id = $product->user_id;
 $farmer->getFarmerInfo();
 
+//get order history
+$order_status->invoice_number = $order->invoice_number;
+$order_status->product_id = $order->product_id;
+$stmt = $order_status->getOrderStatus();
+$num = $stmt->rowCount();
+
+$date = date('Y-m-d');
+
 $farmer_address = "{$farmer->address}, {$farmer->barangay}, {$farmer->municipality}, {$farmer->province}";
 $farmer_contact = $farmer->contact_number;
 ?>
 
-
     <div class="row mt-4">
-      <!-- Left side: Order Details -->
       <div class="col-md-8">
+
         <div class="card shadow-sm mb-3">
           <div class="card-body">
             <h5 class="card-title fw-bold">Order Details</h5>
@@ -89,6 +98,7 @@ $farmer_contact = $farmer->contact_number;
                 <img src="<?php echo $base_url;?>libs/images/logo.png" alt="Product">
                 <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width:60px; height:60px;">+12</div>
               </div>
+              <?php include_once "tracking_status.php"; ?>
             </div>
           </div>
         </div>
