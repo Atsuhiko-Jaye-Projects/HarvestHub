@@ -180,7 +180,21 @@ class CartItem{
         }
         return false;
     }
+    
+    function deleteCartItem(){
 
+        $query = "DELETE FROM " . $this->table_name . " 
+                    WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+
+        $this->status=htmlspecialchars(strip_tags($this->status));
+
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
 
 
 }

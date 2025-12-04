@@ -151,6 +151,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                     <div>Total: <span class="fw-bold text-success">₱<?php echo number_format($total_price, 2); ?></span></div>
                 </div>
             </div>
+              <div>
+                <button class="btn btn-danger ms-2 delete_cart_item" data-id="<?php echo $row['id']; ?>">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
           </div>
 
           <!-- ✅ Hidde xn Inputs -->
@@ -206,13 +211,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           <div class="btn-group w-100" role="group" aria-label="Payment methods">
 
           <!-- Cash on Pick-Up -->
-          <input type="radio" class="btn-check" name="payment_method" id="COP" value="COP" autocomplete="off" required>
+          <input type="radio" class="btn-check" name="payment_method" id="COP" value="COP" autocomplete="off" >
           <label class="btn btn-outline-success w-100 mb-2" for="COP">
             <i class="bi bi-box-seam"></i> Cash on Pick-Up
           </label>
 
           <!-- Cash on Delivery -->
-          <input type="radio" class="btn-check" name="payment_method" id="COD" value="COD" autocomplete="off" required>
+          <input type="radio" class="btn-check" name="payment_method" id="COD" value="COD" autocomplete="off" >
           <label class="btn btn-outline-warning w-100 mb-2" for="COD">
             <i class="bi bi-truck"></i> Cash on Delivery
           </label>
@@ -220,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           </div>
 
           <!-- ✅ Submit Button -->
-          <button type="submit" class="btn btn-success w-100 mt-3">Checkout</button>
+          <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
         </div>
       </div>
 
@@ -236,3 +241,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
 
 <?php 
 include_once "../layout/layout_foot.php"; ?>
+
+<script>
+document.addEventListener("click", function(e) {
+    if (e.target.closest(".delete-cart-item")) {
+        const btn = e.target.closest(".delete-cart-item");
+        const id = btn.dataset.id;
+        const card = btn.closest(".card");
+
+        fetch("delete_cart_item.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `id=${id}`
+        })
+        .then(res => res.text())
+        .then(res => {
+            if (res.trim() === "success") {
+                card.remove();
+            } else {
+                alert("Failed to delete");
+            }
+        })
+        .catch(err => console.error(err));
+    }
+});
+
+
+
+</script>

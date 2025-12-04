@@ -61,10 +61,10 @@ $date = date('Y-m-d');
 $farmer_address = "{$farmer->address}, {$farmer->barangay}, {$farmer->municipality}, {$farmer->province}";
 $farmer_contact = $farmer->contact_number;
 ?>
-
+  
     <div class="row mt-4">
       <div class="col-md-8">
-
+          <?php include_once "modal/cancel_order_modal.php"; ?>
         <div class="card shadow-sm mb-3">
           <div class="card-body">
             <h5 class="card-title fw-bold">Order Details</h5>
@@ -122,6 +122,7 @@ $farmer_contact = $farmer->contact_number;
               <span>Total</span>
               <span>₱<?php echo number_format($grand_total,2)?></span>
             </div>
+            <button type="submit" class="btn btn-outline-danger w-100 mt-3" data-bs-toggle="modal" data-bs-target="#cancel-order-modal"><i class="bi bi-x-lg"></i> Cancel Order</button>
           </div>
         </div>
       </div>

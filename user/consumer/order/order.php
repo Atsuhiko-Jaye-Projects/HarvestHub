@@ -166,7 +166,7 @@ if ($num > 0) {
 <?php
     }
 } else {
-    echo "<div class='alert alert-danger'>No Order found</div>";
+    echo "<div class='alert alert-danger'>It looks like you haven't ordered anything yet. Explore our products <a href='{$home_url}index.php?action=browse_products'>here</a>.</div>";
 }
 ?>
 

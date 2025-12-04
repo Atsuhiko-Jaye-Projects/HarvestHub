@@ -68,7 +68,6 @@ if ($order->review_status == 0) {
             <div class="card shadow-sm border-light">
                 <div class="card-body">
                     <h5 class="card-title fw-bold mb-4 text-center">We'd Love Your Feedback!</h5>
-                    <input type="text" value="<?php echo $order->customer_id; ?>">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?vod={$order_id}");?>" method="POST" id="feedbackForm">
 
                         <!-- Rating -->
