@@ -76,7 +76,7 @@ include_once "layout_head.php";
           </div>
           <button type="submit" class="btn btn-success w-100">Sign in</button>
         </form>
-        <p class="small mt-3">Forgot your Password? <a  class="text-decoration-none" href="signin.php">HERE</a></p>
+        <p class="small mt-3">Forgot your Password? <a  class="text-decoration-none" href="forgot_password.php">HERE</a></p>
         <hr>
         <div>
             <p class="small">By signing up, you agree to the HarvestHub.com Service <a href="">Terms & Conditions</a> and the <a href="">Privacy Policy.</a></p>
