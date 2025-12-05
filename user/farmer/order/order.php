@@ -100,8 +100,14 @@ $total_rows = $order->countAll();
                         $statusClass = match (strtolower($status)) {
                             'order placed' => 'bg-warning text-dark',
                             'accept' => 'bg-primary',
-                            'completed' => 'bg-success',
+                            'complete' => 'bg-success',
+                            'accept pre-order' => 'bg-success',
+                            'decline pre-order' => 'bg-danger',
+                            'pre-order shipout' => 'bg-primary',
+                            'order confirmed' => 'bg-success',
+                            'order received' => 'bg-success',
                             'decline' => 'bg-danger',
+                            'order cancelled' => 'bg-danger',
                             default => 'bg-secondary'
                         };
                     ?>

@@ -5,6 +5,7 @@ include_once '../../../config/database.php';
 include_once '../../../objects/order.php'; 
 include_once '../../../objects/product.php';
 include_once '../../../objects/user.php';
+include_once '../../../objects/order_status_history.php';
 
 $page_title = "Process Order";
 include_once "../layout/layout_head.php";
@@ -18,6 +19,7 @@ $db = $database->getConnection();
 $order = new Order($db);
 $product = new Product($db);
 $customer = new User($db);
+$order_status_history = new OrderHistory($db);
 
 
 // get order info to accept or decline
@@ -45,7 +47,7 @@ $service_fee = $sub_total * 0.0225;
 
 
 
-if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete', 'accept-pre-order', 'decline-pre-order'])) {
+if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete', 'accept pre-order', 'decline pre-order', 'pre-order shipout', 'order shipout'])) {
     $order->id = $_POST['order_id'];
     $order->status = $_POST['action'];
 
@@ -54,7 +56,7 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 
         switch ($_POST['action']) {
             case 'accept':
-                echo "<div class='alert alert-primary text-center'>
+                echo "<div class='alert alert-success text-center'>
                     <span class='bi bi-check-circle'></span>
                     Order " . ucfirst($_POST['action']) . "
                 </div>";
@@ -74,20 +76,20 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
                 </div>";
                 break;
 
-            case 'accept-pre-order':
-                echo "<div class='alert alert-danger text-center'>
+            case 'accept pre-order':
+                echo "<div class='alert alert-success text-center'>
                     <span class='bi bi-check-circle'></span>
                     Order " . ucfirst($_POST['action']) . "
                 </div>";
                 break;
-            case 'decline-pre-order':
+            case 'decline pre-order':
                 echo "<div class='alert alert-danger text-center'>
                     <span class='bi bi-cross-circle'></span>
                     Order " . ucfirst($_POST['action']) . "
                 </div>";
                 break;
             default:
-                echo "<div class='alert alert-danger text-center'>
+                echo "<div class='alert alert-success text-center'>
                     <span class='bi bi-cross-circle'></span>
                     Order " . ucfirst($_POST['action']) . "
                 </div>";
@@ -99,6 +101,13 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
         $product->quantity = $product_quantity;
         $product->product_id = $_POST['product_id'];
         $product->deductStock();
+
+        // add record to the order history
+        $order_status_history->product_id = $order->product_id;
+        $order_status_history->status = $_POST['action'];
+        $order_status_history->invoice_number = $order->invoice_number;
+        $order_status_history->timestamp = date("Y-m-d H:m:s");
+        $order_status_history->recordStatus();
 
     } else {
         echo "<div class='alert alert-danger'>
@@ -115,7 +124,6 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
   <div class="col-md-8">
     <div class="card shadow-sm position-sticky" style="top: 20px;">
         <div class="card-body">
-        
           <input type="hidden" name="product_id" value="<?php echo $order->product_id; ?>">
           <input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
           <input type="hidden" name="product_quantity" value="<?php echo $order->quantity; ?>">
@@ -239,44 +247,99 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
       <div class="card shadow-sm position-sticky mt-3" style="top: 20px;">
         <div class="card-body text-center">
 
-          <?php
-            if ($order->status == "order placed" && $product->product_type == "preorder") {
-          ?>
-          <h6 class="fw-bold text-muted mb-3">Confirm This Pre-Order?</h6>
-          <button type="submit" name="action" value="accept-pre-order"class="btn btn-success w-100 mb-2">Accept Pre-Order</button>
-          <button type="submit" name="action" value="decline-pre-order" class="btn btn-outline-danger w-100">Decline Pre-Order</button>
-          
-          <?php
-            } elseif ($order->status == "order placed"  && $product->product_type == "harvest") {
-          ?>
+<?php
 
-          <h6 class="fw-bold text-muted mb-3 mt-3">Accept this Order?</h6>
-          <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Accept</button>
-          <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline</button>
+$status = $order->status;
+$type   = $product->product_type;
 
-          <?php
-            } elseif ($order->status == "complete") {
-          ?>
+switch (true) {
+    case ($status == "order placed" && $type == "preorder"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3">Confirm This Pre-Order?</h6>
+        <button type="submit" name="action" value="accept pre-order" class="btn btn-success w-100 mb-2">Accept Pre-Order</button>
+        <button type="submit" name="action" value="decline pre-order" class="btn btn-outline-danger w-100">Decline Pre-Order</button>
+        <?php
+        break;
 
-          <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
-          <a href="order.php" class="btn btn-outline-success w-100">Return</a>
+    case ($status == "accept pre-order" && $type == "preorder"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">Mark this pre-order as ready to ship?</h6>
+        <button type="submit" name="action" value="pre-order shipout" class="btn btn-success w-100 mb-2">Yes</button>
+        <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">No</button>
+        <?php
+        break;
 
-          <?php } elseif ($order->status == "accept") { ?>
+    case ($status == "decline pre-order" && $type == "preorder"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This Pre-order is cancelled</h6>
+        <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
+        <?php
+        break;
 
-          <h6 class="fw-bold text-muted mb-3 mt-3">Complete this transaction?</h6>
-          <button type="submit" name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
-          <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
 
-          <?php
-          } else {
-          ?>
+    case ($status == "order placed" && $type == "harvest"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">Accept this Order?</h6>
+        <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Accept</button>
+        <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline</button>
+        <?php
+        break;
 
-          <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is cancelled</h6>
-          <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
-          <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Re-Open</button>
 
-          <?php } ?>
-        </div>
+    case ($status == "complete"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
+        <a href="order.php" class="btn btn-outline-success w-100">Return</a>
+        <?php
+        break;
+
+    case ($status == "order confirmed"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
+        <a href="order.php" class="btn btn-outline-success w-100">Return</a>
+        <?php
+        break;
+
+    case ($status == "accept" && $type == "harvest"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">Mark this order as ready to ship?</h6>
+        <button type="submit" name="action" value="order shipout" class="btn btn-success w-100 mb-2">Yes</button>
+        <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">No</button>
+        <?php
+        break;
+
+    case ($status == "pre-order shipout"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This Pre-order is in transit</h6>
+        <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
+        <button type="submit" disabled name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
+        <?php
+        break;
+
+    case ($status == "order shipout"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This Order is in transit</h6>
+        <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
+        <button type="submit" disabled name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
+        <?php
+        break;
+
+    case ($status == "order received"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This Pre-order is complete</h6>
+        <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
+        <?php
+        break;
+
+    default:
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is cancelled</h6>
+        <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
+        <?php
+        break;
+}
+?>
+
             <input type="hidden" name="action" id="actionInput">
       </div>
 

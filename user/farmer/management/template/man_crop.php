@@ -73,7 +73,7 @@
   <div id="modalCropContainer"></div>
 
   <!-- Search and Filter -->
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+  <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center mb-3 gap-2">
     <input type="text" id="searchCrop" class="form-control w-100 w-md-50" placeholder="Search crop...">
 
   </div>

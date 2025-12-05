@@ -1,125 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shipping Tracker</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" 
+          content="IE=edge">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+    <title>Order Tracker Bootstrap Template</title>
 
-    <style>
-        /* Container for the progress bar */
-        .progress-bar-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 50px;
-            position: relative;
-        }
+    <!-- Font-awesome CSS -->
+    <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity=
+"sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer" />
 
-        /* Circle icon for each step */
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: white;
-            margin: 0 auto;
-            z-index: 2;
-        }
-
-        /* Connecting lines between steps */
-        .step-line {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background-color: #ddd;
-            z-index: 1;
-            transform: translateY(-50%);
-        }
-
-        /* Style for active and completed steps */
-        .active .step-icon {
-            background-color: #28a745;
-        }
-        .completed .step-icon {
-            background-color: #007bff;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .progress-bar-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .step-line {
-                position: absolute;
-                top: 50%;
-                width: 100%;
-                transform: translateY(-50%);
-            }
-        }
-
-        /* Styling for the step text */
-        .step-text {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .step-time {
-            font-size: 12px;
-            color: #777;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+          integrity=
+"sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+          crossorigin="anonymous">
 </head>
-<body>
-    <div class="container">
-        <h3 class="text-center">Shipping Status Tracker</h3>
-        
-        <div class="progress-bar-container">
-            <div class="step completed">
-                <div class="step-icon">1</div>
-                <div class="step-text">Order Placed</div>
-                <div class="step-time">15/06/2022 11:46</div>
-                <div class="step-line"></div>
-            </div>
 
-            <div class="step completed">
-                <div class="step-icon">2</div>
-                <div class="step-text">Order Paid</div>
-                <div class="step-time">15/06/2022 11:46</div>
-                <div class="step-line"></div>
-            </div>
+<body class="d-flex flex-column overflow-auto
+             h-100 bg-success text-dark">
 
-            <div class="step completed">
-                <div class="step-icon">3</div>
-                <div class="step-text">Order Shipped Out</div>
-                <div class="step-time">15/06/2022 16:30</div>
-                <div class="step-line"></div>
+    <div class="container h-50 px-4 
+                py-5 mx-auto">
+        <div class="card bg-light shadow-lg 
+                    border border-dark 
+                    rounded-lg py-3 px-5
+                    my-5">
+            <div class="row d-flex 
+                        justify-content-between
+                        mx-5 pt-3 my-3">
+                <div class="container 
+                            text-center">
+                    <p class="h3 text-success
+                              mb-3">
+                      GeeksforGeeks
+                      </p>
+                </div>
+                <div class="d-flex">
+                    <p class="h5 text-dark">
+                      <i class="text-primary fa-solid
+                                fa-cart-shopping 
+                                fa-lg mr-1">
+                      </i>
+                        Order ID : 
+                      <span class="text-success 
+                                   font-weight-bold">
+                            <i class="text-secondary 
+                                      fa-solid fa-hashtag
+                                      mr-1">
+                            </i>ZMJ82D9
+                      </span>
+                      </p>
+                </div>
+                <div class="d-flex flex-column 
+                            text-sm-right h5">
+                    <p class="mb-0 font-weight-bolder 
+                              text-monospace">
+                      Expected Arrival
+                        <span class="badge badge-pill 
+                                     badge-primary border
+                                     border-secondary 
+                                     text-light 
+                                     font-weight-bold 
+                                     px-2 py-2 shadow">
+                          01/05/204
+                          </span>
+                    </p>
+                    <p class="font-weight-bold 
+                              text-monospace 
+                              pt-3 ml-5">
+                      Tracking ID
+                        <span class="badge badge-pill 
+                                     badge-danger border 
+                                     border-secondary 
+                                     text-light font-weight-bold
+                                     mx-1 px-2 py-2 shadow">
+                          23458039
+                          </span>
+                    </p>
+                </div>
             </div>
-
-            <div class="step active">
-                <div class="step-icon">4</div>
-                <div class="step-text">Order Received</div>
-                <div class="step-time">30/06/2022 12:01</div>
-                <div class="step-line"></div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="container-fluid 
+                                    p-2 align-items-center">
+                            <div class="d-flex 
+                                        justify-content-around">
+                                <button class="btn bg-success 
+                                               text-white 
+                                               rounded-circle" 
+                                        data-bs-toggle="tooltip"
+                                        title="Order Confirmed">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <span class="bg-success w-50 p-1
+                                             mx-n1 rounded mt-auto
+                                             mb-auto">
+                                </span>
+                                <button class="btn bg-success 
+                                               text-white 
+                                               rounded-circle" 
+                                        data-bs-toggle="tooltip"
+                                        title="Order Shipped">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <span class="bg-success w-50 
+                                             p-1 mx-n1 rounded
+                                             mt-auto mb-auto">
+                                </span>
+                                <button class="btn bg-success 
+                                               text-white 
+                                               rounded-circle" 
+                                        data-bs-toggle="tooltip"
+                                        title="Out for delivery" 
+                                        style="z-index:1">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <span class="bg-secondary w-50 p-1 
+                                             mx-n1 rounded mt-auto 
+                                             mb-auto">
+                                </span>
+                                <button class="btn bg-secondary 
+                                               text-white rounded-circle" 
+                                        data-bs-toggle="tooltip"
+                                        title="Order Delivered">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="step">
-                <div class="step-icon">5</div>
-                <div class="step-text">Order Completed</div>
-                <div class="step-time">30/07/2022 23:59</div>
+            <div class="row d-inline-flex 
+                        justify-content-around 
+                        my-3 py-4 mx-n2">
+                <div class="row d-inline-flex 
+                            align-items-center">
+                    <i class="text-primary fa-solid 
+                              fa-clipboard-check 
+                              fa-2xl mx-4 mb-3">
+                      </i>
+                    <p class="text-dark font-weight-bolder 
+                              py-1 px-1 mx-n2">
+                      Order
+                      <br>
+                      Confirmed
+                      </p>
+                </div>
+                <div class="row d-inline-flex
+                            align-items-center">
+                    <i class="text-warning fa-solid
+                              fa-solid fa-boxes-packing
+                              fa-2xl mx-4 mb-3">
+                      </i>
+                    <p class="text-dark  
+                              font-weight-bolder
+                              py-1 px-1 mx-n2">
+                      Order
+                      <br>
+                      Shipped
+                      </p>
+                </div>
+                <div class="row d-inline-flex 
+                            align-items-center">
+                    <i class="text-info fa-solid 
+                              fa-truck-arrow-right
+                              fa-2xl mx-4 mb-3">
+                      </i>
+                    <p class="text-dark 
+                              font-weight-bolder
+                              py-1 px-1 mx-n2">
+                      Out for
+                      <br>
+                      Delivery
+                      </p>
+                </div>
+                <div class="row d-inline-flex 
+                            align-items-center">
+                    <i class="text-success fa-solid
+                              fa-house-chimney 
+                              fa-2xl mx-4 mb-3">
+                      </i>
+                    <p class="text-dark font-weight-bolder
+                              py-1 px-1 mx-n2">
+                      Order
+                      <br>
+                      Delivered
+                      </p>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap 5 JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

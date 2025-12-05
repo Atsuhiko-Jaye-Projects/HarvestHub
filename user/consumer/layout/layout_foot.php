@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.4/bootbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Enable Bootstrap Tooltips -->
 <script>
@@ -128,6 +129,187 @@ $(function() {
       updateItemTotal(card);
     })
     .on('change', '.product-checkbox', updateSummary);
+});
+</script>
+
+
+<script>
+
+$("#confirmCancelOrder").on("click", function () {
+
+    let reason = $("input[name='cancelReason']:checked").val(); // GET SELECTED RADIO
+    let order_id = $("input[name='order_id']").val();
+    let invoice_number = $("input[name='invoice_number']").val();
+    let product_id = $("input[name='product_id']").val();
+    let action = "cancel order"
+
+    if (!reason) {
+        Swal.fire({
+            icon: "warning",
+            title: "Please select a reason!"
+        });
+        return;
+    }
+
+    $.ajax({
+        url: "/HarvestHub/user/consumer/order/order_action.php",
+        type: "POST",
+        data: { 
+          reason: reason,
+          order_id: order_id,
+          invoice_number: invoice_number,
+          action: action,
+          product_id: product_id
+          
+         },     // ← POST VALUE SENT HERE
+        success: function (res) {
+            if (res.trim() === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Order Cancelled!"
+                });
+
+                // Close modal
+                $("#cancelOrderModal").modal("hide");
+
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to cancel, try again!"
+                });
+            }
+            console.log(res);
+        }
+    });
+});
+</script>
+
+<script>
+
+$("#confirmOrder").on("click", function () {
+
+    let order_id = $("input[name='order_id']").val();
+    let invoice_number = $("input[name='invoice_number']").val();
+    let product_id = $("input[name='product_id']").val();
+    let action = "confirmed";
+
+    $.ajax({
+        url: "/HarvestHub/user/consumer/order/order_action.php",
+        type: "POST",
+        data: { 
+          order_id: order_id,
+          action: action,
+          invoice_number: invoice_number,
+          product_id: product_id
+          
+         },     // ← POST VALUE SENT HERE
+        success: function (res) {
+            if (res.trim() === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Order Confirmed!",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to cancel, try again!"
+                });
+            }
+            console.log(res);
+        }
+    });
+});
+</script>
+
+
+<script>
+
+$("#confirmPreOrder").on("click", function () {
+
+    let order_id = $("input[name='order_id']").val();
+    let invoice_number = $("input[name='invoice_number']").val();
+    let product_id = $("input[name='product_id']").val();
+    let action = "received order";
+
+    $.ajax({
+        url: "/HarvestHub/user/consumer/order/order_action.php",
+        type: "POST",
+        data: { 
+          order_id: order_id,
+          action: action,
+          invoice_number: invoice_number,
+          product_id: product_id
+          
+         },     // ← POST VALUE SENT HERE
+        success: function (res) {
+            if (res.trim() === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Order Recieved!",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to recieve, try again!"
+
+                });
+            }
+            console.log(res);
+        }
+    });
+});
+</script>
+
+<script>
+
+$("#confirmOrderProduct").on("click", function () {
+
+    let order_id = $("input[name='order_id']").val();
+    let invoice_number = $("input[name='invoice_number']").val();
+    let product_id = $("input[name='product_id']").val();
+    let action = "received order";
+
+    $.ajax({
+        url: "/HarvestHub/user/consumer/order/order_action.php",
+        type: "POST",
+        data: { 
+          order_id: order_id,
+          action: action,
+          invoice_number: invoice_number,
+          product_id: product_id
+          
+         },     // ← POST VALUE SENT HERE
+        success: function (res) {
+            if (res.trim() === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Order Recieved!",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to recieve, try again!"
+
+                });
+            }
+            console.log(res);
+        }
+    });
 });
 </script>
 

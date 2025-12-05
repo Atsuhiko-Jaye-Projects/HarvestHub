@@ -36,7 +36,7 @@ include_once "../../../login_checker.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
   $user_id = $_SESSION['user_id'] ?? 1;
-  $invoice_no = 'INV-' . strtoupper(uniqid());
+  // $invoice_no = 'INV-' . strtoupper(uniqid());
   $date = date("Y-m-d H:i:s");
 
   $user_id = $_SESSION['user_id'] ?? null;
@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
 
   foreach($_POST['product_id'] as $pid){
 
+    $invoice_no = 'INV-' . strtoupper(uniqid());
     $order->product_id = $pid;
     $order->invoice_number = $invoice_no;
     $order->customer_id = $user_id;
@@ -162,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           <input type="hidden" name="farmer_id[<?php echo $row['product_id']; ?>]" value="<?php echo $product->user_id; ?>">
           <input type="hidden" name="quantity[<?php echo $row['product_id']; ?>]" value="<?php echo $row['quantity']; ?>">
           <input type="hidden" name="unit_price[<?php echo $row['product_id']; ?>]" value="<?php echo $unit_price; ?>">
+          <input type="hidden" name="product_type[<?php echo $row['product_id']; ?>]" value="<?php echo $product_type; ?>">
         </div>
       <?php
         }
@@ -211,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           <div class="btn-group w-100" role="group" aria-label="Payment methods">
 
           <!-- Cash on Pick-Up -->
-          <input type="radio" class="btn-check" name="payment_method" id="COP" value="COP" autocomplete="off" >
+          <input type="radio" class="btn-check" name="payment_method" id="COP" value="COP" autocomplete="off" required>
           <label class="btn btn-outline-success w-100 mb-2" for="COP">
             <i class="bi bi-box-seam"></i> Cash on Pick-Up
           </label>
@@ -225,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           </div>
 
           <!-- ✅ Submit Button -->
-          <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
+          <button type="submit" id="placeorderbtn" class="btn btn-success w-100 mt-3">Place Order</button>
         </div>
       </div>
 

@@ -44,7 +44,7 @@
           <div class="form-check">
             <input class="form-check-input" type="radio" name="cancelReason" id="reason4" value="payment_troublesome">
             <label class="form-check-label" for="reason4">
-              Payment procedure too troublesome
+              Out of stock
             </label>
           </div>
 

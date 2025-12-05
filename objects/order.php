@@ -15,6 +15,7 @@ class Order{
     public $status;
     public $review_status;
     public $created_at;
+    public $reason;
     public $modified_at;
 
     public function __construct($db){
@@ -117,7 +118,7 @@ class Order{
 
     function readOrderDetails(){
         $query = "SELECT 
-                product_id, invoice_number, customer_id, mode_of_payment, quantity, created_at
+                product_id, invoice_number, customer_id, mode_of_payment, quantity, created_at, status, reason
                 FROM " . $this->table_name . "
                 where id = :id
                 LIMIT
@@ -137,7 +138,9 @@ class Order{
         $this->mode_of_payment = $row['mode_of_payment'];
         $this->quantity = $row['quantity'];
         $this->created_at = $row['created_at'];
-        $this->customer_id = $row['customer_id'];  
+        $this->customer_id = $row['customer_id']; 
+        $this->status = $row['status'];  
+        $this->reason = $row['reason'];
     }
 
     function readOneOrder(){
@@ -228,8 +231,10 @@ class Order{
 
     function countCompletedOrder(){
         $query = "SELECT COUNT(*) as completed_order
-                  FROM " . $this->table_name . "
-                  WHERE farmer_id = :farmer_id AND status='complete'";
+                FROM " . $this->table_name . "
+                WHERE farmer_id = :farmer_id 
+                AND (status = 'order confirmed' OR status = 'complete')";
+
         
         $stmt=$this->conn->prepare($query);
 
@@ -246,7 +251,7 @@ class Order{
                 FROM " . $this->table_name . " o
                 JOIN products p ON o.product_id = p.product_id
                 WHERE o.farmer_id = :farmer_id
-                AND o.status = 'Complete'";
+                AND o.status = 'complete'";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":farmer_id", $this->farmer_id);
@@ -282,7 +287,7 @@ class Order{
                 ON o.product_id = p.product_id
 
                 WHERE 
-                    o.farmer_id = :farmer_id AND o.status='order placed'
+                    o.farmer_id = :farmer_id AND o.status='order placed' OR  o.status='order cancelled'
                     GROUP BY o.id ASC
                     ORDER BY o.id DESC";
 
@@ -327,6 +332,56 @@ class Order{
 
         return $stmt->execute();
 
+    }
+    
+    function cancelOrder(){
+        
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                reason = :reason,
+                status = :status
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":reason", $this->reason);
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    function confirmOrder(){
+        
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                status = :status
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    function recievedPreOrder(){
+        
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                status = :status
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
     }
 
 }

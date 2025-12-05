@@ -84,13 +84,40 @@ if ($num > 0) {
                 <?php
                 $status = $first['status'];
                 switch ($status) {
-                    case "order placed": $displayStatus = "Order Placed"; $class = "bg-info text-white"; break;
-                    case "accept": $displayStatus = "Preparing"; $class = "bg-warning text-dark"; break;
-                    case "decline": $displayStatus = "Declined"; $class = "bg-danger text-white"; break;
-                    case "complete": $displayStatus = "Complete"; $class = "bg-success text-white"; break;
-                    case "in Transit": $displayStatus = "In Transit"; $class = "bg-primary text-white"; break;
-                    case "cancelled": $displayStatus = "Cancelled"; $class = "bg-secondary text-white"; break;
-                    default: $displayStatus = $status; $class = "bg-light text-dark"; break;
+                    case "order placed": 
+                        $displayStatus = "Order Placed"; 
+                        $class = "bg-info text-white"; 
+                        break;
+                    case "accept": 
+                        $displayStatus = "Preparing"; 
+                        $class = "bg-warning text-dark"; 
+                        break;
+                    case "decline": 
+                        $displayStatus = "Declined"; 
+                        $class = "bg-danger text-white"; 
+                        break;
+                    case "complete": 
+                        $displayStatus = "Complete"; 
+                        $class = "bg-success text-white"; 
+                        break;
+                    case "in Transit": 
+                        $displayStatus = "In Transit"; 
+                        $class = "bg-primary text-white"; 
+                        break;
+                    case "cancelled": 
+                        $displayStatus = "Cancelled"; 
+                        $class = "bg-secondary text-white"; 
+                        break;
+
+
+                    case "accept pre-order": 
+                        $displayStatus = "Pre-Order Placed"; 
+                        $class = "bg-info text-white"; 
+                        break;
+                    default: 
+                    $displayStatus = $status; 
+                    $class = "bg-light text-dark"; 
+                    break;
                 }
                 ?>
                 <span class="badge <?php echo $class; ?>"><?php echo $displayStatus; ?></span>

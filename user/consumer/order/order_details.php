@@ -33,8 +33,6 @@ $user->getShippingAddress();
 $shipping_address = "{$user->address},{$user->barangay},{$user->municipality}";
 
 
-
-
 //get the product total price
 $product->product_id = $order->product_id;
 $product->getProductInfo();
@@ -65,6 +63,9 @@ $farmer_contact = $farmer->contact_number;
     <div class="row mt-4">
       <div class="col-md-8">
           <?php include_once "modal/cancel_order_modal.php"; ?>
+          <?php include_once "modal/confirm_order_modal.php"; ?>
+          <?php include_once "modal/receive_pre_order_product.php"; ?>
+          <?php include_once "modal/receive_order.php"; ?>
         <div class="card shadow-sm mb-3">
           <div class="card-body">
             <h5 class="card-title fw-bold">Order Details</h5>
@@ -122,7 +123,71 @@ $farmer_contact = $farmer->contact_number;
               <span>Total</span>
               <span>₱<?php echo number_format($grand_total,2)?></span>
             </div>
-            <button type="submit" class="btn btn-outline-danger w-100 mt-3" data-bs-toggle="modal" data-bs-target="#cancel-order-modal"><i class="bi bi-x-lg"></i> Cancel Order</button>
+            <?php
+
+            switch ($order->status) {
+
+              case 'order cancelled':
+                  echo "<button disabled class='btn btn-danger w-100 mt-3'>
+                          <i class='bi bi-x-lg'></i> Order Cancelled
+                        </button>";
+              break;
+
+              // case 'complete':
+              //     echo "<button type='submit' class='btn btn-outline-success w-100 mt-3'
+              //             data-bs-toggle='modal' data-bs-target='#confirm-order-modal'>
+              //             <i class='bi bi-check-lg'></i> Confirm Order
+              //           </button>";
+              // break;
+
+              // cancel order
+              case 'order placed':
+                  echo "<button type='submit' class='btn btn-outline-danger w-100 mt-3'
+                          data-bs-toggle='modal' data-bs-target='#cancel-order-modal'>
+                          <i class='bi bi-x-lg'></i> Cancel Order
+                        </button>";    
+              break;
+
+              case 'accept pre-order':
+                  echo "<button disabled class='btn btn-success w-100 mt-3'>
+                          <i class='bi bi-check-lg'></i> Pre-Order Placed
+                        </button>";    
+              break;
+
+              case 'decline pre-order':
+                  echo "<button disabled class='btn btn-success w-100 mt-3'>
+                          <i class='bi bi-check-lg'></i> Pre-Order Placed
+                        </button>";    
+                  echo "Reason: {$order->reason}"; 
+              break;
+
+              case 'pre-order shipout':
+                  echo "
+                  <h6 class='fw-bold text-muted mb-3 mt-3'>Did you recevied your pre-order product?</h6>";
+                  echo "<button type='submit' class='btn btn-outline-success w-100 mt-3'
+                          data-bs-toggle='modal' data-bs-target='#recieve-pre-order-modal'>
+                          <i class='bi bi-check-lg'></i> Recieve your pre-order product
+                        </button>";  
+              break;
+
+              case 'order shipout':
+                  echo "
+                  <h6 class='fw-bold text-muted mb-3 mt-3'>Did you recevied your ordered product?</h6>";
+                  echo "<button type='submit' class='btn btn-outline-success w-100 mt-3'
+                          data-bs-toggle='modal' data-bs-target='#recieve-order-modal'>
+                          <i class='bi bi-check-lg'></i> Recieve your order product
+                        </button>";  
+              break;
+              
+              default:
+                  echo "<button class=' disabled btn btn-success w-100 mt-3'>
+                          <i class='bi bi-check-lg'></i> Order Completed
+                        </button>";
+                break;
+            }
+
+            ?>
+            
           </div>
         </div>
       </div>

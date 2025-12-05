@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
           li.classList.add('list-group-item');
           li.innerHTML = `
             <small class="text-muted">${note.created_at}</small><br>
-            <strong>${note.customer_name}</strong> ordered  
+            <strong>${note.customer_name}</strong> ${note.status} 
             <strong>${note.quantity}</strong> kg of <strong>${note.product_name}</strong> 📦<span class="badge bg-success ms-2">New Order</span> 
           `;
           listBox.appendChild(li);
