@@ -95,16 +95,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 	}
 
 	if ($_POST["action"]=="update") {
-		$farm_resource->id = $_POST['item_id'];
-		$farm_resource->item_name = $_POST['item_name'];
-		$farm_resource->type = $_POST['type'];
-		$farm_resource->cost = $_POST['cost'];
+		$farm_resource->id = $_POST['record_id'];
+		$farm_resource->record_name = $_POST['record_name'];
+		$farm_resource->land_prep_expense_cost = $_POST['land_prep_expense_cost'];
+		$farm_resource->nursery_seedling_prep_cost = $_POST['nursery_seedling_prep_cost'];
+		$farm_resource->transplanting_cost = $_POST['transplanting_cost'];
+		$farm_resource->crop_maintenance_cost = $_POST['crop_maintenance_cost'];
+		$farm_resource->harvesting_cost = $_POST['harvesting_cost'];
+		$farm_resource->input_seed_fertilizer_cost = $_POST['input_seed_fertilizer_cost'];
+		$farm_resource->post_harvest_transport_cost = $_POST['post_harvest_transport_cost'];
 		$farm_resource->date = $_POST['date'];
 		
 		if ($farm_resource->updateFarmResource()) {
-			echo "<div class='container'>";
-				echo "<div class='alert alert-success'>Resource Info update!</div>";
-			echo "</div>";
+			header("LOCATION:{$base_url}user/farmer/farm/farm_resource.php?status=update_success&");
+			exit;
 			
 		}else{
 			echo "<div class='container'>";
@@ -140,6 +144,24 @@ document.addEventListener("DOMContentLoaded", function() {
         Swal.fire({
             icon: 'error',
             title: 'Failed to Save Resource Info',
+            text: 'Please try again.',
+            showConfirmButton: true
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'update_success'): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Resource Info Updated!',
+            showConfirmButton: false,
+            timer: 1800
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'error'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to Update Resource Info',
             text: 'Please try again.',
             showConfirmButton: true
         });

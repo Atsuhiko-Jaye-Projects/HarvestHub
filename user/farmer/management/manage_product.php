@@ -1,7 +1,8 @@
 <?php 
-include '../../../config/core.php';
+include_once '../../../config/core.php';
 include_once "../../../config/database.php";
 include_once "../../../objects/product.php";
+
 
 $page_title = "Manage Product";
 include_once "../layout/layout_head.php";
@@ -13,6 +14,8 @@ $database = new Database();
 $db = $database->getConnection();
 
 $product = new Product($db);
+
+
 
 // get the search term
 $page_url = "{$home_url}user/farmer/management/manage_product.php?";
@@ -27,7 +30,6 @@ $num = $stmt->rowCount();
 $total_rows = $product->countAll();
 
 // set the login require to to true
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

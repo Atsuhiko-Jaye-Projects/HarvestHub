@@ -5,15 +5,22 @@
         <input type="hidden" name="action" value="create">
         
         <div class="modal-header d-block">
-          <h5 class="modal-title" id="exampleModalLabel">New Farm Input</h5>
-          <small class="text-muted">Enter all information needed to record this expense.</small>
+          <h5 class="modal-title" id="exampleModalLabel">
+            <i class="bi bi-plus-square me-2"></i> <!-- add icon -->
+            New Farm Input
+          </h5>
+          <small class="text-muted">
+            <i class="bi bi-info-circle me-1"></i> <!-- optional info icon -->
+            Enter all information needed to record this expense.
+          </small>
         </div>
+
 
 
         <div class="modal-body">
           <div class="mb-3 row">
             <div class="col-md-12">
-              <label class="form-label">Expense Record Title:</label>
+              <label class="form-label">Expense Record Title</label>
               <input type="text" name="record_name" id="item_name" class="form-control" required>
               <hr>
               

@@ -8,13 +8,16 @@ return `
       <!-- Form starts here and wraps the modal content -->
       <form action="${PostCropURL}" method="POST" enctype="multipart/form-data" id="cropForm" onsubmit="return confirmPost(this)">
 
-
-
-
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Post this crop details to Pre-Order?</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header d-block">
+          <h5 class="modal-title" id="exampleModalLabel">
+            <i class="bi bi-check2-square me-2"></i> <!-- optional icon -->
+            Post this crop details to Pre-Order?
+          </h5>
+          <small class="text-muted">
+            Confirm the crop information before sending it to the pre-order list.
+          </small>
         </div>
+
 
         <div class="modal-body">
           <div class="card-body">
@@ -160,10 +163,10 @@ document.addEventListener("input", function (e) {
   // ----------------------
   // SAME FORMULA AS PHP
   // ----------------------
-  const markup = 0.015 * 100; // SAME EXACT BACKEND VALUE
+  //const markup = 0.015 * 100; // SAME EXACT BACKEND VALUE
 
   const costPerKg = totalKilos > 0 ? exp / totalKilos : 0;
-  const sellingPrice = costPerKg * markup; // SAME AS YOUR PHP
+  const sellingPrice = costPerKg; // SAME AS YOUR PHP
 
   // Update the fields
   if (pricePerUnit) pricePerUnit.value = sellingPrice.toFixed(2);

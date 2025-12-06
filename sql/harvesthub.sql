@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2025 at 03:32 PM
+-- Generation Time: Dec 06, 2025 at 06:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -203,7 +203,7 @@ INSERT INTO `farm_resources` (`id`, `user_id`, `date`, `created_at`, `modified_a
 (3, 2, '2025-03-01', '2025-12-06 20:50:10', '2025-12-06 12:50:10', '', 0, 0, 0, 0, 0, 0, 0),
 (4, 2, '2025-12-06', '2025-12-06 22:01:07', '2025-12-06 14:01:07', 'Kalabas and kamatis expense', 2300, 2660, 23, 3666, 3000, 3666, 2366),
 (5, 2, '2025-12-06', '2025-12-06 22:23:52', '2025-12-06 14:23:52', 'kamote expenses', 6000, 6000, 60, 0, 0, 0, 0),
-(6, 2, '2025-12-06', '2025-12-06 22:28:52', '2025-12-06 14:28:52', '100sqm expsnese for kamatis', 2500, 16830, 2562, 3000, 31500, 18000, 0);
+(6, 2, '2025-12-06', '2025-12-06 22:28:52', '2025-12-06 15:01:11', '100sqm expsnese for kamatis ahah', 2500, 16830, 2562, 3000, 31500, 18000, 0);
 
 -- --------------------------------------------------------
 
@@ -237,7 +237,8 @@ CREATE TABLE `harvested_products` (
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
 (6, 2, 'Kalabasa', 19, 'KG', 'Vegetable', '1000', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 11:55:17', '2025-12-06 19:55:17', 'Pending', 200, 5000, 2),
-(7, 2, 'Kalabasa', 19, 'KG', 'Fruit', '50', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 12:48:49', '2025-12-06 20:48:49', 'Pending', 200, 5000, 2);
+(7, 2, 'Kalabasa', 19, 'KG', 'Fruit', '50', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 12:48:49', '2025-12-06 20:48:49', 'Pending', 200, 5000, 2),
+(8, 2, 'Bangus', 66, 'KG', 'Vegetable', '50', '', 400, 0, '250a1561bac83ac86b2ae48565c04e7e060c2661-SweetPotato.jpg', '2025-12-06 16:25:17', '2025-12-07 00:25:17', 'Pending', 200, 17681, 2);
 
 -- --------------------------------------------------------
 
@@ -617,7 +618,7 @@ ALTER TABLE `farm_resources`
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `orders`

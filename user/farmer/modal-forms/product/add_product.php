@@ -68,16 +68,28 @@
               </div>
 
               <div class="mb-3">
-                <label for="">Overall Plant Expense</label>
-                
-                <input type="Number" 
-                name="total_plant_expense" 
-                class="form-control danger" 
-                placeholder= "₱0.00" 
-                min="1000" max="200000"
-                onchange=
-                "if (this.value < 1000) { alert('Minimum expense amount is ₱1,000'); this.value = 1000; }
-                if (this.value > 200000) { alert('Maximum expense amount is ₱200,000'); this.value = 200000; }">
+                <label for=""> Expense</label>
+                  <select id="overall_expense" name="total_plant_expense" class="form-select">
+                    <option value="">-- Select Expense --</option>
+                    <?php
+                      $farm_expense = new FarmResource($db);
+                      $farm_expense->user_id = $_SESSION['user_id'];
+
+                      // Get the records
+                      $stmt = $farm_expense->getRecordExpense(); // make sure this returns a PDOStatement or array
+
+                      if ($stmt && $stmt->rowCount() > 0) {
+                          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                              // Assuming the table has 'id' and 'expense_name' fields
+                             echo "<option value='{$row['total_expense']}' style='color: red; font-weight: bold;'>{$row['record_name']} | ₱" . number_format($row['total_expense']) . "</option>";
+
+
+                          }
+                      } else {
+                          echo '<option value="">No expenses found</option>';
+                      }
+                    ?>
+                  </select>
               </div>
 
               <div class="mb-3">
