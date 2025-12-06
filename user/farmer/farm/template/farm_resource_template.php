@@ -69,10 +69,9 @@
       <table class="table table-hover table-bordered text-center mb-0" id="resourceTable">
         <thead class="table-success text-uppercase">
           <tr>
-            <th><i class="bi bi-layers text-primary me-1"></i>Resource Type</th>
-            <th><i class="bi bi-tag text-success me-1"></i>Item Name</th>
-            <th><i class="bi bi-cash-stack text-warning me-1"></i>Total Cost</th>
-            <th><i class="bi bi-calendar-event text-danger me-1"></i>Date Acquired</th>
+            <th><i class="bi bi-layers text-primary me-1"></i>Record</th>
+            <th><i class="bi bi-tag text-success me-1"></i>Total Expense</th>
+            <th><i class="bi bi-calendar-event text-danger me-1"></i>Date</th>
             <th class="text-center"><i class="bi bi-gear text-secondary me-1"></i>Action</th>
           </tr>
         </thead>
@@ -80,9 +79,8 @@
           <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): 
             extract($row); ?>
             <tr>
-              <td><?php echo ucfirst($type); ?></td>
-              <td><?php echo ucfirst($item_name); ?></td>
-              <td>₱ <?php echo number_format($cost, 2); ?></td>
+              <td><?php echo ucfirst($record_name); ?></td>
+              <td><?php echo "₱ " . number_format($total_expense, 2); ?></td>
               <td><?php echo $date; ?></td>
               <td class="text-center">
                 <div class="btn-group" role="group">

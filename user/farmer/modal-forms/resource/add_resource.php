@@ -4,39 +4,58 @@
       <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="action" value="create">
         
-        <div class="modal-header">
+        <div class="modal-header d-block">
           <h5 class="modal-title" id="exampleModalLabel">New Farm Input</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <small class="text-muted">Enter all information needed to record this expense.</small>
         </div>
+
 
         <div class="modal-body">
           <div class="mb-3 row">
             <div class="col-md-12">
-              <label for="item_name" class="form-label">Expense Record Title:</label>
-              <input type="text" name="item_name" id="item_name" class="form-control" required placeholder="">
+              <label class="form-label">Expense Record Title:</label>
+              <input type="text" name="record_name" id="item_name" class="form-control" required>
               <hr>
+              
             </div>
             <div class="col-md-6">
-              <label for="type" class="form-label">Resource Type</label>
-              <select name="type" id="type" class="form-select">
-                <option value="machine">Machine</option>
-                <option value="fertilizer">Fertilizer</option>
-                <option value="seeds">Seeds</option>
-              </select>
+              <label class="form-label">Land Prep. Expense</label>
+              <input type="number"  step="0.1"name="land_prep_expense_cost" id="item_name" class="form-control" value="0">
             </div>
             <div class="col-md-6">
-              <label for="item_name" class="form-label">Item</label>
-              <input type="text" name="item_name" id="item_name" class="form-control" required placeholder="">
+              <label class="form-label">Nursery / Seedling Prep.</label>
+              <input type="number" step="0.1" name="nursery_seedling_prep_cost" id="item_name" class="form-control" value="0">
             </div>
           </div>
 
           <div class="mb-3 row">
-            <div class="col-md-6">
-              <label for="cost1" class="form-label">Resource Cost</label>
-              <input type="number" name="cost" class="form-control" required min="0" max="200000" onchange="if(this.value > 200000) this.value = 200000;">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Transplanting</label>
+              <input type="number" step="0.1" name="transplanting_cost" class="form-control" value="0">
             </div>
-            <div class="col-md-6">
-              <label for="cost2" class="form-label">Date Acquired</label>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Crop Care & Maintenance</label>
+              <input type="number" step="0.1" name="crop_maintenance_cost" class="form-control" value="0">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Input(Seeds, Fertilizer, etc)</label>
+              <input type="number" step="0.1" name="input_seed_fertilizer_cost" class="form-control" value="0">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label  class="form-label">Harvesting</label>
+              <input type="number"  step="0.1" name="harvesting_cost" class="form-control" value="0">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Post-Harvest / Transport</label>
+              <input type="number" step="0.1" name="post_harvest_transport_cost" class="form-control" value="0">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="cost2" class="form-label">Date</label>
               <input
                 type="date"
                 name="date"

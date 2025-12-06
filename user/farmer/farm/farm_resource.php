@@ -68,9 +68,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
 	if ($_POST["action"]=="create") {
 		$farm_resource->user_id = $_SESSION['user_id'];
-		$farm_resource->item_name = $_POST['item_name'];
-		$farm_resource->type = $_POST['type'];
-		$farm_resource->cost = $_POST['cost'];
+		$farm_resource->record_name = $_POST['record_name'];
+		$farm_resource->land_prep_expense_cost = $_POST['land_prep_expense_cost'];
+		$farm_resource->nursery_seedling_prep_cost = $_POST['nursery_seedling_prep_cost'];
+		$farm_resource->transplanting_cost = $_POST['transplanting_cost'];
+		$farm_resource->crop_maintenance_cost = $_POST['crop_maintenance_cost'];
+		$farm_resource->harvesting_cost = $_POST['harvesting_cost'];
+		$farm_resource->input_seed_fertilizer_cost = $_POST['input_seed_fertilizer_cost'];
+		$farm_resource->post_harvest_transport_cost = $_POST['post_harvest_transport_cost'];
 		$farm_resource->date = $_POST['date'];
 		
 		if ($farm_resource->createFarmResource()) {

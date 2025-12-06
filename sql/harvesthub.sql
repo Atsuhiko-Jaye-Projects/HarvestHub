@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2025 at 01:28 PM
+-- Generation Time: Dec 06, 2025 at 03:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -85,7 +85,7 @@ CREATE TABLE `crops` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `crop_name` varchar(250) NOT NULL,
-  `yield` int(11) NOT NULL,
+  `yield` double NOT NULL,
   `cultivated_area` int(11) NOT NULL,
   `date_planted` varchar(250) NOT NULL,
   `estimated_harvest_date` varchar(255) NOT NULL,
@@ -104,7 +104,9 @@ CREATE TABLE `crops` (
 --
 
 INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`) VALUES
-(1, 2, 'Kalabasa', 2, 56, '2025-12-05', '2026-04-25', 0, '2025-12-05 05:56:53', '2025-12-05 13:56:53', 600, 300, 'Marinduque', 'Mogpog', 'Bintakay');
+(1, 2, 'Kalabasa', 2, 56, '2025-12-05', '2026-04-25', 0, '2025-12-05 05:56:53', '2025-12-05 13:56:53', 600, 300, 'Marinduque', 'Mogpog', 'Bintakay'),
+(2, 2, 'Kalabasa', 2, 50, '2025-12-06', '2026-05-23', 0, '2025-12-06 10:26:22', '2025-12-06 18:26:22', 534, 300, 'Marinduque', 'Mogpog', 'Bintakay'),
+(3, 2, 'mango', 1.8, 50, '2025-12-06', '2026-05-30', 0, '2025-12-06 10:27:42', '2025-12-06 18:27:42', 540, 300, 'Marinduque', 'Mogpog', 'Bintakay');
 
 -- --------------------------------------------------------
 
@@ -180,13 +182,28 @@ INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `barang
 CREATE TABLE `farm_resources` (
   `id` int(11) NOT NULL,
   `user_id` int(10) NOT NULL,
-  `item_name` varchar(50) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `cost` int(10) NOT NULL,
   `date` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `record_name` varchar(255) NOT NULL,
+  `land_prep_expense_cost` double NOT NULL,
+  `nursery_seedling_prep_cost` double NOT NULL,
+  `transplanting_cost` double NOT NULL,
+  `crop_maintenance_cost` double NOT NULL,
+  `input_seed_fertilizer_cost` double NOT NULL,
+  `harvesting_cost` double NOT NULL,
+  `post_harvest_transport_cost` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `farm_resources`
+--
+
+INSERT INTO `farm_resources` (`id`, `user_id`, `date`, `created_at`, `modified_at`, `record_name`, `land_prep_expense_cost`, `nursery_seedling_prep_cost`, `transplanting_cost`, `crop_maintenance_cost`, `input_seed_fertilizer_cost`, `harvesting_cost`, `post_harvest_transport_cost`) VALUES
+(3, 2, '2025-03-01', '2025-12-06 20:50:10', '2025-12-06 12:50:10', '', 0, 0, 0, 0, 0, 0, 0),
+(4, 2, '2025-12-06', '2025-12-06 22:01:07', '2025-12-06 14:01:07', 'Kalabas and kamatis expense', 2300, 2660, 23, 3666, 3000, 3666, 2366),
+(5, 2, '2025-12-06', '2025-12-06 22:23:52', '2025-12-06 14:23:52', 'kamote expenses', 6000, 6000, 60, 0, 0, 0, 0),
+(6, 2, '2025-12-06', '2025-12-06 22:28:52', '2025-12-06 14:28:52', '100sqm expsnese for kamatis', 2500, 16830, 2562, 3000, 31500, 18000, 0);
 
 -- --------------------------------------------------------
 
@@ -219,7 +236,8 @@ CREATE TABLE `harvested_products` (
 --
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
-(1, 2, 'Kalabasa', 188, 'KG', 'Vegetable', '1000', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-05 11:19:29', '2025-12-05 19:19:26', 'Posted', 200, 50000, 2);
+(6, 2, 'Kalabasa', 19, 'KG', 'Vegetable', '1000', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 11:55:17', '2025-12-06 19:55:17', 'Pending', 200, 5000, 2),
+(7, 2, 'Kalabasa', 19, 'KG', 'Fruit', '50', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 12:48:49', '2025-12-06 20:48:49', 'Pending', 200, 5000, 2);
 
 -- --------------------------------------------------------
 
@@ -365,8 +383,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(1, 1, 'Kalabasa', 125, 2, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 600, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 460, '2025-12-05 05:59:04', '2025-12-05 13:59:04', 'Active', 'preorder', 140, NULL),
-(2, 2, 'Kalabasa', 188, 2, 'Vegetable', 'KG', 0, '', 1000, 400, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 130, '2025-12-05 11:19:29', '2025-12-05 19:19:29', 'Active', 'harvest', 270, NULL);
+(5, 3, 'talong', 89, 2, '', 'KG', 0, '', 1000, 400, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 0, '2025-12-06 11:41:56', '2025-12-06 19:41:56', 'Active', 'harvest', 400, NULL),
+(6, 5, 'talongPAs', 20, 2, 'Vegetable', 'KG', 0, '', 1000, 400, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 0, '2025-12-06 11:54:29', '2025-12-06 19:54:29', 'Active', 'harvest', 400, NULL);
 
 -- --------------------------------------------------------
 
@@ -569,7 +587,7 @@ ALTER TABLE `chat_messages`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -593,13 +611,13 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -623,7 +641,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_histories`
