@@ -11,6 +11,11 @@
 
         <div class="modal-body">
           <div class="mb-3 row">
+            <div class="col-md-12">
+              <label for="item_name" class="form-label">Expense Record Title:</label>
+              <input type="text" name="item_name" id="item_name" class="form-control" required placeholder="">
+              <hr>
+            </div>
             <div class="col-md-6">
               <label for="type" class="form-label">Resource Type</label>
               <select name="type" id="type" class="form-select">

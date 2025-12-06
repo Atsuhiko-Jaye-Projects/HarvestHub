@@ -84,8 +84,8 @@ function editHarvestProduct(row){
   `;
 }
 
-function postHarvestProduct(row){
-  return`
+function postHarvestProduct(row) {
+  return `
   <!-- Modal -->
   <div class="modal fade" id="post-harvest-modal-${row.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -102,6 +102,7 @@ function postHarvestProduct(row){
           <div class="modal-body">
             <div class="card-body">
               <div class="container">
+
                 <input type="hidden" name="product_id" value="${row.id}">
                 <input type="hidden" name="action" value="product_post">
 
@@ -119,7 +120,7 @@ function postHarvestProduct(row){
                 <div class="row mb-3">
                   <div class="col-md-4">
                     <label>Price</label>
-                    <input type="text" name="price_per_unit" value="${row.price_per_unit}" class="form-control" readonly>
+                    <input type="number" step="0.01" name="price" class="form-control" id="cost-${row.id}" value="${row.price_per_unit}" readonly>
                   </div>
                   <div class="col-md-4">
                     <label>EST Stocks (KG)</label>
@@ -143,27 +144,86 @@ function postHarvestProduct(row){
                 </div>
 
                 <div class="row mb-3">
+                  <label>Image</label>
                   <div class="col-md-6">
-                    <label>Image</label>
-                    <img  class="img-fluid border rounded" src="${row.product_image_path}" alt="Product Image">
-                    <input name = "product_image" type="text" value = "${row.product_image}" hidden>
-                    <input type="text" name="is_posted" value="${row.is_posted}" class="form-control" hidden>
+                    <img class="img-fluid border rounded" src="${row.product_image_path}" alt="Product Image" style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                    <input name="product_image" type="text" value="${row.product_image}" hidden>
+                    <input type="text" name="is_posted" value="${row.is_posted}" hidden>
                   </div>
                 </div>
+                  <hr>
+                <!-- BREAK EVEN SECTION -->
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label>Cost per KG (Base Cost)</label>
+                    <input type="number" step="0.01" name="cost_per_kg" class="form-control" id="cost-${row.id}" value="${row.price_per_unit}" readonly>
+
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Your Selling Price per KG</label>
+                    <input type="number" step="0.01" name="selling_price" class="form-control" id="selling-price-${row.id}" placeholder="Enter selling price" required>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <label>Break-even</label>
+                    <div id="breakeven-result-${row.id}" class="alert alert-info">Enter values above…</div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-success">Post</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" id='postButton'>Post</button>
           </div>
 
         </form>
-        <!-- Form ends here -->
-
       </div>
     </div>
   </div>
-`
+
+  <!-- INLINE SCRIPT FOR THIS SPECIFIC MODAL -->
+  <script>
+    document.addEventListener("input", function(e) {
+      if (e.target.id === "cost-${row.id}" || e.target.id === "selling-price-${row.id}") {
+
+        let cost = parseFloat(document.getElementById("cost-${row.id}").value) || 0;
+        let price = parseFloat(document.getElementById("selling-price-${row.id}").value) || 0;
+        let resultBox = document.getElementById("breakeven-result-${row.id}");
+        const postButton = document.getElementById('postButton');
+
+        if (cost === 0 || price === 0) {
+          resultBox.className = "alert alert-info";
+          resultBox.innerHTML = "Enter values above…";
+          return;
+        }
+
+        if (price < cost) {
+          let loss = (cost - price).toFixed(2);
+          var markup = ((price - cost) / cost * 100).toFixed(2);
+          resultBox.className = "alert alert-danger";
+          resultBox.innerHTML = "⚠️ You are selling at a loss! <br> Loss per KG: ₱" + loss + "<br>Markup: " + markup + "%";
+        } else {
+          var markup = ((price - cost) / cost * 100).toFixed(2);
+          resultBox.className = "alert alert-success";
+          resultBox.innerHTML = "✔️ Profit per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
+
+              if (markup > 15.00) {
+                resultBox.innerHTML += "<br>⚠️ Markup is too high: " + markup + "%";
+                postButton.disabled = true;
+              }else{
+                postButton.disabled = false;
+              }
+        }
+      }
+    });
+  </script>
+  `;
 }
+
+

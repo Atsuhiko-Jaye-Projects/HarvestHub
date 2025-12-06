@@ -203,7 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->product_id = $_POST['product_id']; // Make sure your form has this hidden input
         $product->product_name = $_POST['product_name'];
         $product->user_id = $_SESSION['user_id'];
-        $product->price_per_unit = $_POST['price_per_unit'];
+        $product->price_per_unit = $_POST['selling_price'];
         $product->category = $_POST['category'];
         $product->unit = $_POST['unit'];
         $product->total_stocks = $_POST['total_stocks'];

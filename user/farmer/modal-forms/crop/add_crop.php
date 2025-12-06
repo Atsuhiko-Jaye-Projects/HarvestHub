@@ -35,9 +35,9 @@
                 </div>
                 <div class="col-md-6">
                     <label>
-                      KG/Plant (Estimated)
+                      KG/Plant (Average)
                     </label>
-                    <input type="number" name="kilo_per_plant" class="form-control">
+                    <input type="number" step="0.01" name="kilo_per_plant" class="form-control">
                 </div>
               </div>
               <div class="row mb-3">

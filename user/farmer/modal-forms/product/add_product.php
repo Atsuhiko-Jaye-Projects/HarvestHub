@@ -17,7 +17,7 @@
               
               <div class="row mb-3">
                 <div class="col-md-6">    
-                  
+                  <label for="">Product Type</label>
                   <select name="category" class='form-select' id="" required>
                     <option value="">Select Category...</option>
                     <option value="Vegetable">Vegetable</option>
@@ -26,18 +26,22 @@
                   <input type="hidden" name="action" value="create">
                 </div>
                 <div class="col-md-6">
+                  <label for="">Product Name</label>
                   <input type="text" name="product_name" class="form-control" required placeholder="Product Name">
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-4">
+                  <label for="">No. of plants</label>
                   <input type="number" name="plant_count" class="form-control" required placeholder="No. of Plants">
                 </div>
                 <div class="col-md-4">
-                  <input type="number" name="kilo_per_plant" class="form-control" required placeholder="KG/Plant">
+                  <label for="">KG/Plant (Avg.)</label>
+                  <input type="number" step="0.1" name="kilo_per_plant" class="form-control" required placeholder="KG/Plant">
                 </div>
                   <div class="col-md-4">
+                    <label for="">Lot Size (sqm)</label>
                     <input 
                       type="number" 
                       name="lot_size" 
