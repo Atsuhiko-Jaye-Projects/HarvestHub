@@ -48,7 +48,11 @@
 
     <!-- Buttons -->
     <div class="d-flex gap-2 mt-2 mt-md-0 ms-auto">
-      <button class="btn btn-success"><i class="bi bi-chat-dots me-1"></i> Chat Now</button>
+       <?php
+        if ($_SESSION['logged_in'] == true) {
+          echo "<a href='../user/consumer/message/message.php?fid={$farm_info->user_id}' class='btn btn-success'><i class='bi bi-chat-dots me-1'></i> Chat Now</a>";
+        }
+       ?>
       <a href="../FarmShop/farmer_profile.php?fid=<?php echo $farm_info->user_id; ?>" class="btn btn-outline-secondary">View Shop</a>
     </div>
 

@@ -18,12 +18,57 @@ $base_url = "/HarvestHub/"; // Root URL for links
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 <style>
+  
 body { font-family: "Inter", sans-serif; }
 /* Darker backdrop with smooth opacity */
 .modal-backdrop.show {
   opacity: 0.6 !important;
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
+
+
+
+.summary-card {
+  border-radius: 1.2rem;
+  box-shadow: 
+    0 2px 6px rgba(0,0,0,0.05),
+    0 10px 20px rgba(0,0,0,0.06);
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* fake 2D layered border effect */
+.summary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(255,255,255,0.35);
+  pointer-events: none;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 6px 15px rgba(0,0,0,0.08),
+    0 14px 28px rgba(0,0,0,0.12);
+}
+
+/* icon bubble */
+.icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.4),
+    0 4px 10px rgba(0,0,0,0.1);
+}
+
 
 /* Center Bootbox horizontally and vertically */
 .bootbox .modal-dialog {

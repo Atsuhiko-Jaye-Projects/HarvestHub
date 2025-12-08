@@ -40,6 +40,11 @@
     </div>
 
     <a href="<?= $base_url ?>user/farmer/order/order.php" class="sidebar-btn <?= $page=='order.php' || $page=='process_order.php' ? 'active' : '' ?>"><i class="bi bi-archive me-2"></i> Orders</a>
+    <!-- messaging feature -->
+    <a href="<?= $base_url ?>user/farmer/message/message.php" 
+    class="sidebar-btn <?= $page=='message.php' ? 'active' : '' ?>">
+    <i class="bi bi-envelope me-2"></i> Messages
+    </a>
 
     <?php } ?>
   </nav>

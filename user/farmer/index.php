@@ -84,65 +84,115 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
 <div class="container-fluid mt-3">
   <!-- Summary Cards -->
-  <div class="row g-3">
+  <div class="row g-3 bg-light p-3 rounded-4">
+
+    <!-- Total Sales -->
     <div class="col-md-4 col-sm-6">
-      <div class="card text-white bg-success shadow-sm h-100">
+      <div class="card summary-card bg-success text-white h-100">
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
-            <h6>Total Sales</h6>
-            <h3><?php echo "₱" . number_format($total,2);?></h3>
+            <h6 class="fw-semibold text-uppercase small opacity-75">Total Sales</h6>
+            <h3 class="fw-bold mb-0">
+              <?php echo "₱" . number_format($total,2);?>
+            </h3>
           </div>
-          <i class="bi bi-clipboard fs-2"></i>
+          <div class="icon-box bg-white text-success">
+            <i class="bi bi-clipboard fs-3"></i>
+          </div>
         </div>
-        <div class="card-footer text-white-50 small">0% From last month</div>
+        <div class="card-footer border-0 bg-transparent text-white-50 small">
+        </div>
       </div>
     </div>
+
+    <!-- Pending Orders -->
     <div class="col-md-4 col-sm-6">
-      <div class="card shadow-sm h-100">
+      <div class="card summary-card h-100 border-0 bg-white">
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
-            <h6>Pending Orders</h6>
-            <h3><?php echo $pending_order_count;?></h3>
-            <small>Order</small>
+            <h6 class="fw-semibold text-uppercase small text-muted">Pending Orders</h6>
+            <h3 class="fw-bold mb-0 text-dark"><?php echo $pending_order_count;?></h3>
           </div>
-          <i class="bi bi-hourglass-split fs-2 text-warning"></i>
+          <div class="icon-box bg-warning text-white">
+            <i class="bi bi-hourglass-split fs-3"></i>
+          </div>
         </div>
-        <div class="card-footer text-success small">0% From last month</div>
+        <div class="card-footer border-0 bg-transparent text-success small">
+        </div>
       </div>
     </div>
+
+    <!-- Completed Orders -->
     <div class="col-md-4 col-sm-6">
-      <div class="card shadow-sm h-100">
+      <div class="card summary-card h-100 border-0 bg-white">
         <div class="card-body d-flex justify-content-between align-items-center">
           <div>
-            <h6>Completed Orders</h6>
-            <h3><?php echo $completed_order_count;?></h3>
+            <h6 class="fw-semibold text-uppercase small text-muted">Completed Orders</h6>
+            <h3 class="fw-bold mb-0 text-dark"><?php echo $completed_order_count;?></h3>
           </div>
-          <i class="bi bi-check-circle fs-2 text-primary"></i>
+          <div class="icon-box bg-primary text-white">
+            <i class="bi bi-check-circle fs-3"></i>
+          </div>
         </div>
-        <div class="card-footer text-success small">0% From last month</div>
+        <div class="card-footer border-0 bg-transparent text-success small">
+        </div>
       </div>
     </div>
+
   </div>
 
-  <?php include_once "modal-forms/product/add_product.php"; ?>
+
+
 
   <!-- Charts -->
-  <div class="row mt-4 g-3">
-    <div class="col-lg-6 col-sm-12">
-      <div class="card shadow-sm p-3 h-100">
-        <h5>Sales Summary</h5>
-        <p><strong>3K</strong> <span class="text-success">+2.1%</span> vs Last Week</p>
-        <canvas id="salesChart" height="200"></canvas>
+<div class="row mt-4 g-3 bg-light p-3 rounded-4">
+
+  <!-- Sales Summary Chart -->
+  <div class="col-lg-6 col-sm-12">
+    <div class="card shadow-sm p-3 h-100 two-d-border">
+
+      <!-- Header with icon -->
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2">
+          <div class="icon-badge text-success">
+            <i class="bi bi-bar-chart-fill"></i>
+          </div>
+          <h5 class="mb-0">Sales Summary</h5>
+        </div>
+        <span class="badge bg-success-subtle text-success">Live</span>
       </div>
-    </div>
-    <div class="col-lg-6 col-sm-12">
-      <div class="card shadow-sm p-3 h-100">
-        <h5>Product Stocks</h5>
-        <!-- <p><strong>3K</strong> <span class="text-success">+2.1%</span> vs Last Week</p> -->
-        <canvas id="salesChart2" height="200"></canvas>
-      </div>
+
+      <p class="mb-2">
+        <strong>3K</strong>
+        <span class="text-success ms-1">+2.1%</span>
+        <small class="text-muted ms-1">vs Last Week</small>
+      </p>
+
+      <canvas id="salesChart" height="200"></canvas>
     </div>
   </div>
+
+  <!-- Product Stocks Chart -->
+  <div class="col-lg-6 col-sm-12">
+    <div class="card shadow-sm p-3 h-100 two-d-border">
+
+      <!-- Header with icon -->
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2">
+          <div class="icon-badge text-primary">
+            <i class="bi bi-box-seam-fill"></i>
+          </div>
+          <h5 class="mb-0">Product Stocks</h5>
+        </div>
+        <span class="badge bg-primary-subtle text-primary">Updated</span>
+      </div>
+
+      <canvas id="salesChart2" height="200"></canvas>
+    </div>
+  </div>
+
+</div>
+
 
   <!-- Notifications & Top Products -->
   <div class="row mt-4 g-3">
@@ -198,27 +248,45 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
 
   
-    <div class="col-lg-6 col-sm-12">
-      <div class="card shadow-sm h-100">
-        <div class="card-header bg-white fw-bold">Top Products</div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-          <table class="table mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Rank</th>
-                <th>Product Name</th>
-                <th>Total Planted</th>
-              </tr>
-            </thead>
-            <tbody id="mostPlantedCropTable">
-              <tr><td colspan="3" class="text-center">Loading...</td></tr>
-            </tbody>
-          </table>
-          </div>
+<div class="col-lg-6 col-sm-12">
+  <div class="card shadow-sm h-100 two-d-border">
+
+    <!-- Enhanced Header -->
+    <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
+         style="background: linear-gradient(135deg, #198754, #20c997);">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon-badge">
+          <i class="bi bi-bar-chart-fill"></i>
         </div>
+        <span>Top Products</span>
+      </div>
+      <span class="badge bg-light text-success small">Live</span>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Rank</th>
+              <th>Product Name</th>
+              <th>Total Planted</th>
+            </tr>
+          </thead>
+          <tbody id="mostPlantedCropTable">
+            <tr>
+              <td colspan="3" class="text-center text-muted py-3">
+                Loading...
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+
+  </div>
+</div>
+
   </div>
 </div>
 

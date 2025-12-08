@@ -218,7 +218,7 @@ class Order{
     function countPendingOrder(){
         $query = "SELECT COUNT(*) as pending_order
                   FROM " . $this->table_name . "
-                  WHERE farmer_id = :farmer_id AND status='pending'";
+                  WHERE farmer_id = :farmer_id AND status='order placed'";
         
         $stmt=$this->conn->prepare($query);
 
@@ -357,12 +357,14 @@ class Order{
         $query = "UPDATE 
                 " . $this->table_name . "
                 SET
-                status = :status
+                status = :status,
+                modified_at =:modified_at
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":modified_at", $this->modified_at);
         $stmt->bindParam(":id", $this->id);
 
         return $stmt->execute();
@@ -373,12 +375,14 @@ class Order{
         $query = "UPDATE 
                 " . $this->table_name . "
                 SET
-                status = :status
+                status = :status,
+                modified_at = :modified_at
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":modified_at", $this->modified_at);
         $stmt->bindParam(":id", $this->id);
 
         return $stmt->execute();

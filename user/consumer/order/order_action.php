@@ -41,6 +41,8 @@ if (!empty($_POST['action']) && in_array($_POST['action'],['cancel order', 'conf
             case 'confirmed':
                 $order->id = $_POST['order_id'] ?? null;
                 $order->status = "order confirmed";
+                $order->modified_at = date("Y-m-d H:i:s");
+                
 
                 // record the order history
                 $order_status_history->invoice_number = $_POST['invoice_number'];
@@ -61,6 +63,7 @@ if (!empty($_POST['action']) && in_array($_POST['action'],['cancel order', 'conf
             case 'received order':
                 $order->id = $_POST['order_id'] ?? null;
                 $order->status = "complete";
+                $order->modified_at = date("Y-m-d H:i:s");
 
                 // record the order history
                 $order_status_history->invoice_number = $_POST['invoice_number'];

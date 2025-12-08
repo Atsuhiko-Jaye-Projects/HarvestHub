@@ -36,6 +36,13 @@
         <i class="bi bi-question-circle-fill me-2"></i> Help & Support
       </a>
     </li>
+
+    <li class="nav-item">
+      <a href="<?php echo $base_url; ?>user/consumer/message/message.php"
+         class="nav-link text-white <?= ($page=='support.php') ? 'active' : '' ?>">
+        <i class="bi bi-envelope me-2"></i> Messages
+      </a>
+    </li>
   </ul>
 </nav>
 
