@@ -85,7 +85,7 @@
             extract($row); ?>
             <tr>
               <td><?php echo ucfirst($record_name); ?></td>
-              <td><?php echo "₱ " . number_format($total_expense, 2); ?></td>
+              <td><?php echo "₱ " . number_format($grand_total, 2); ?></td>
               <td><?php echo $date; ?></td>
               <td class="text-center">
                 <div class="btn-group" role="group">

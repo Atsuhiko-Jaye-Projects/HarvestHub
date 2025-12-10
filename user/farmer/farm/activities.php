@@ -3,170 +3,310 @@ ob_start();
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/farm-resource.php";
+include_once "../../../objects/farm_activities.php";
 
 $database = new Database();
 $db = $database->getConnection();
 
 $farm_resource = new FarmResource($db);
+$farm_activity = new FarmActivity($db);
 
-
-$page_title = "Farm Resources & supplies";
-$require_login=true;
+$page_title = "Farm Inputs";
+$require_login = true;
 include_once "../../../login_checker.php";
 include_once "../layout/layout_head.php";
+
+// --- POST handler ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {
+  include_once "../../../config/database.php";
+	include_once "../../../objects/farm-resource.php";
+
+	$database = new Database();
+	$db = $database->getConnection();
+
+	$farm_resource = new FarmResource($db);
+
+	if ($_POST["action"]=="create") {
+		$resource_id = 'FID' . preg_replace('/[^0-9]/', '', uniqid());
+		
+
+		// bind the values first to variable
+		$activity_names = $_POST['activity_name'];
+		$farm_activity_type = $_POST['farm_activity_type'];
+		$other_farm_activity = $_POST['other_activity'];
+		$activity_cost = $_POST['activity_cost'] ?? [];
+		$additional_info = $_POST['additional_info'];
+		$activity_date = $_POST['activity_date'];
+
+    // compute total expense
+    $activity_cost = array_map('floatval', $activity_cost);
+
+    $grand_total = array_sum($activity_cost);
+
+    for ($i = 0; $i < count($activity_names); $i++) {
+
+        // Skip empty rows
+        if (
+            empty($activity_names[$i]) &&
+            empty($farm_activity_type[$i]) &&
+            empty($activity_cost[$i])
+        ) {
+            continue;
+        }
+
+        $farm_activity->record_name = $_POST['record_name'];
+        $farm_activity->activity_name = $activity_names[$i] ?? '';
+        $farm_activity->farm_activity_type = $farm_activity_type[$i] ?? '';
+        $farm_activity->activity_cost = $activity_cost[$i] ?? 0;
+        $farm_activity->additional_info = !empty($additional_info[$i]) 
+        ? $other_farm_activity[$i] 
+        : null;
+        $farm_activity->additional_info = !empty($additional_info[$i]) ? $additional_info[$i] : null;
+        $farm_activity->activity_date = $activity_date[$i] ?? null;
+        $farm_activity->farm_resource_id = $resource_id;
+
+        $farm_activity->createFarmActivity();
+    }
+    $farm_resource->farm_resource_id = $resource_id;
+    $farm_resource->record_name = $_POST['record_name'];
+    $farm_resource->grand_total = $grand_total;
+    $farm_resource->user_id = $_SESSION['user_id'];
+    $farm_resource->date = $_POST['activity_date'];
+
+    if ($farm_resource->createFarmResource()) {
+        header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=success");
+        exit;
+    }
+  }
+}
 ?>
 
-
-<div class="">
-  <div class="modal-dialog">
+<div class="modal-dialog">
     <div class="modal-content">
-      <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="action" value="create">
-        
-        <div class="modal-header d-block">
-          <h4 class="modal-title mb-3 ">
-            <i class="bi bi-plus-square mb-3"></i> <!-- add icon -->
-            New Farm Input
-          </h4>
-          <small class="text-muted">
-            <i class="bi bi-info-circle me-1"></i> <!-- optional info icon -->
-            Enter all activities information needed to record this expense.
-          </small>
-        </div>
-        <hr>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="create">
 
-
-        <div class="modal-body">
-          <div class="mb-3 row">
-            <div class="col-md-12 mt-3">
-              <label class="form-label fw-bold">Expense Record Title:</label>
-              <input type="text" name="record_name" id="item_name" class="form-control border border-2 border-dark" required>
-              <hr>
-              
+            <div class="modal-header d-block">
+                <h4 class="modal-title mb-3">
+                    <i class="bi bi-plus-square mb-3"></i>
+                    New Farm Input
+                </h4>
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Enter all activities information needed to record this expense.
+                </small>
             </div>
-            <div id="dynamic-fields">
+            <hr>
+
+            <div class="modal-body">
+                <div class="mb-3 row">
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4">Expense Record Title:</label>
+                    <input type="text" name="record_name" id="record_name" class="form-control border border-3 border-dark" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4">Date of Activity:</label>
+                    
+                    <input type="date" name="activity_date" id="activity_date" value="<?php echo date('Y-m-d'); ?>"
+                          class="form-control border border-3 border-dark"
+                          max="<?php echo date('Y-m-d'); ?>"
+                          required>
+
+                  </div>
+                  <hr>
+                </div>
+
+                <div id="dynamic-fields-frame" class="frame bg-light">
+                    <div id="dynamic-fields"></div>
+                </div>
+
+              <div class="row align-items-center mt-3">
+                  <div class="col-md-6 col-sm-6">
+                      <button type="button" class="btn btn-primary" onclick="addDynamicField()">+ Add Field</button>
+                  </div>
+
+                  <div class="col-md-6 col-sm-6 text-end">
+                      <div id="total-cost" class="floating-total d-inline-block">
+                          Total Cost: ₱<span id="total-value">0.00</span>
+                      </div>
+                  </div>
+              </div>
             </div>
-          </div>
 
-          <div class="col-md-12">
-            <button type="button" class="btn btn-primary" onclick="addDynamicField()">+ Add Field</button>
-          </div>
-        </div>
+            <div class="modal-footer">
+              <a href="farm_resource.php" class="btn btn-secondary m-2">
+                  <i class="bi bi-x-circle me-1"></i> Cancel
+              </a>
+
+              <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-circle me-1"></i> Save
+              </button>
+            </div>
+        </form>
     </div>
 
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-    </div>
-      </form>
-    </div>
-    <div id="total-cost" class="floating-total">
-    Total Cost: ₱<span id="total-value">0.00</span>
+
 </div>
-</div>
-
-
 
 <?php include_once "../layout/layout_foot.php"; ?>
 
 <script>
+let activityCount = 0;
 
-
-function addDynamicField(){
+function addDynamicField() {
+    activityCount++;
     const frame = document.getElementById("dynamic-fields");
+
     const div = document.createElement("div");
-    div.className = "dynamic-row";
+    div.className = "item-block mb-3 border-bottom pb-2";
     div.innerHTML = `
-        <div id="items-container">
+        <div class="d-flex align-items-center justify-content-between p-2 mb-2">
+            <h5 class="mb-0">Activity No. ${activityCount}</h5>
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">
+                <i class="bi bi-x-circle"></i>
+            </button>
+        </div>
 
-        <div class="item-block">
-            <h4 class="item-label">Activity No. 1</h4>
-
-            <div class="row mb-3 align-items-center">
-                <div class="col-3 col-md-3 mt-3">
-                    <label class="l">Activity Name:</label>
-                    <input type="text" name="record_name[]" class="form-control border border-2 border-dark" required>
-                </div>
-                <div class="col-3 col-md-3 mt-3">
-                    <label class="">Activity No. 1</label>
-                      <select name="farm_activity[]" class="form-select border border-2 border-dark" required onchange="toggleOtherInput(this)" >
-                        <option value="" disabled selected>Select activity</option>
-                        <option value="land_prep">Land Prep. Expense</option>
-                        <option value="nursery_seedling">Nursery / Seedling Prep.</option>
-                        <option value="transplanting">Transplanting</option>
-                        <option value="crop_maintenance">Crop Care & Maintenance</option>
-                        <option value="input_seed_fertilizer">Input (Seeds, Fertilizer, etc.)</option>
-                        <option value="harvesting">Harvesting</option>
-                        <option value="post_harvest_transport">Post-Harvest / Transport</option>
-                        <option value="irrigation">Irrigation / Watering</option>
-                        <option value="pest_control">Pest / Disease Control</option>
-                        <option value="pruning">Pruning / Trimming</option>
-                        <option value="mulching">Mulching</option>
-                        <option value="fertilizer_application">Fertilizer Application</option>
-                        <option value="soil_testing">Soil Testing / Analysis</option>
-                        <option value="weeding">Weeding / Grass Removal</option>
-                        <option value="packing">Packing / Grading</option>
-
-                        <option value="others">Others</option>
-                    </select>
-                    <input type="text" name="other_activity[]" class="form-control mt-2 d-none" placeholder="Enter other activity">
-                </div>
-                <div class="col-3 col-md-3 mt-3">
-                    <label class="">Cost</label>
-                    <input type="number" name="activity_cost[]" class="form-control border border-2 border-dark activity-cost" required>
-                </div>
-                <div class="col-2 col-md-2 mt-3">
-                    <label class="">Date</label>
-                    <input type="date" name="record_name[]" class="form-control border border-2 border-dark" required>
-                </div>
-
-                <div class="col-1 col-md-1 mt-3 d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-danger" onclick="removeItem(this)">X</button>
-                </div>
+        <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+                <label>Activity Name</label>
+                <input type="text" name="activity_name[]" class="form-control border border-2 border-dark" >
+            </div>
+            <div class="col-md-4">
+                <label>Activity Type</label>
+                <select name="farm_activity_type[]" class="form-select border border-2 border-dark" onchange="toggleOtherInput(this)">
+                    <option value="" disabled selected>Select activity</option>
+                    <option value="land_prep">Land Prep. Expense</option>
+                    <option value="nursery_seedling">Nursery / Seedling Prep.</option>
+                    <option value="transplanting">Transplanting</option>
+                    <option value="crop_maintenance">Crop Care & Maintenance</option>
+                    <option value="input_seed_fertilizer">Input (Seeds, Fertilizer, etc.)</option>
+                    <option value="harvesting">Harvesting</option>
+                    <option value="post_harvest_transport">Post-Harvest / Transport</option>
+                    <option value="irrigation">Irrigation / Watering</option>
+                    <option value="pest_control">Pest / Disease Control</option>
+                    <option value="pruning">Pruning / Trimming</option>
+                    <option value="mulching">Mulching</option>
+                    <option value="fertilizer_application">Fertilizer Application</option>
+                    <option value="soil_testing">Soil Testing / Analysis</option>
+                    <option value="weeding">Weeding / Grass Removal</option>
+                    <option value="packing">Packing / Grading</option>
+                    <option value="others">Others</option>
+                </select>
+                <input type="text" name="other_activity[]" class="form-control mt-2 d-none border border-2 border-dark" placeholder="Enter other activity">
+            </div>
+            <div class="col-md-4">
+                <label>Cost (₱)</label>
+                <input type="number" name="activity_cost[]" class="form-control activity-cost border border-2 border-dark">
             </div>
 
-            <hr class="mt-3">
-        </div>
+            <div class="col-md-4">
+              <label>Additional Details or Other Information</label>
+              <textarea name="additional_info[]" class="form-control border border-2 border-dark" rows="3" placeholder="Enter additional details"></textarea>
+            </div>
 
+            <div class="col-md-4">
+                <label>Date Done (or Date Performed)</label>
+                <input type="date" name="activity_date[]" class="form-control border border-2 border-dark" >
+            </div>
         </div>
     `;
+
     frame.appendChild(div);
-    updateItemNumbers();
+
+    // Add event listener for cost calculation
     div.querySelector('.activity-cost').addEventListener('input', updateTotal);
+
+    updateItemNumbers();
 }
 
-    function updateTotal() {
-    const costInputs = document.querySelectorAll('.activity-cost');
-    let total = 0;
-    costInputs.forEach(input => {
-        total += parseFloat(input.value) || 0;
-    });
-    document.getElementById('total-value').textContent = total.toFixed(2);
+function removeItem(button) {
+    button.closest('.item-block').remove();
+    updateItemNumbers();
+    updateTotal();
 }
 
 function updateItemNumbers() {
-    const items = document.querySelectorAll(".item-block .item-label");
-    items.forEach((label, index) => {
+    const labels = document.querySelectorAll('.item-block h5');
+    labels.forEach((label, index) => {
         label.textContent = "Activity No. " + (index + 1);
     });
 }
 
-function removeItem(button) {
-    button.closest(".item-block").remove();
-    updateItemNumbers();
-}
-
-/* Auto-number existing items on page load */
-document.addEventListener("DOMContentLoaded", updateItemNumbers);
-
 function toggleOtherInput(selectElement) {
     const otherInput = selectElement.nextElementSibling;
-    if (selectElement.value === "others") { // "Others" selected
+    if (selectElement.value === "others") {
         otherInput.classList.remove("d-none");
         otherInput.required = true;
     } else {
         otherInput.classList.add("d-none");
         otherInput.required = false;
     }
+}
+
+function updateTotal() {
+    const costInputs = document.querySelectorAll('.activity-cost');
+    let total = 0;
+    costInputs.forEach(input => total += parseFloat(input.value) || 0);
+    document.getElementById('total-value').textContent = total.toFixed(2);
+}
+
+// Add 5 default rows
+document.addEventListener("DOMContentLoaded", () => {
+    for (let i = 0; i < 2; i++) addDynamicField();
+});
+</script>
+
+<?php if (isset($_GET['status'])): ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    <?php if ($_GET['status'] == 'success'): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Resource Info Saved!',
+            showConfirmButton: false,
+            timer: 1800
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'error'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to Save Resource Info',
+            text: 'Please try again.',
+            showConfirmButton: true
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'update_success'): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Resource Info Updated!',
+            showConfirmButton: false,
+            timer: 1800
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'error'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to Update Resource Info',
+            text: 'Please try again.',
+            showConfirmButton: true
+        });
+    <?php endif; ?>
+
+});
+</script>
+<?php endif; ?>
+
+<script>
+if (window.history.replaceState) {
+    const url = new URL(window.location);
+    url.searchParams.delete('status');
+    window.history.replaceState({}, document.title, url.pathname);
 }
 </script>

@@ -8,15 +8,8 @@ class FarmResource{
     public $id;
     public $user_id;
     public $record_name;
-    public $land_prep_expense_cost;
-    public $nursery_seedling_prep_cost;
-    public $transplanting_cost;
-    public $crop_maintenance_cost;
-    public $input_fertilizer_cost;
-    public $harvesting_cost;
-    public $post_harvest_transport_cost;
-    public $overall_expense;
-    public $date;
+    public $farm_resource_id;
+    public $grand_total;
     public $created_at;
     public $modified_at;
     public $start_date_expense;
@@ -33,39 +26,23 @@ class FarmResource{
                 SET
                 user_id=:user_id,
                 record_name=:record_name,
-                land_prep_expense_cost=:land_prep_expense_cost,
-                nursery_seedling_prep_cost = :nursery_seedling_prep_cost,
-                transplanting_cost = :transplanting_cost,
-                crop_maintenance_cost = :crop_maintenance_cost,
-                input_seed_fertilizer_cost =:input_seed_fertilizer_cost,
-                harvesting_cost=:harvesting_cost,
-                post_harvest_transport_cost=:post_harvest_transport_cost,
+                farm_resource_id = :farm_resource_id,
+                grand_total=:grand_total,
                 date=:date,
                 created_at=:created_at";
         
         $stmt=$this->conn->prepare($query);
 
         $this->record_name = htmlspecialchars(strip_tags($this->record_name));
-        $this->land_prep_expense_cost = htmlspecialchars(strip_tags($this->land_prep_expense_cost));
-        $this->nursery_seedling_prep_cost = htmlspecialchars(strip_tags($this->nursery_seedling_prep_cost));
-        $this->transplanting_cost = htmlspecialchars(strip_tags($this->transplanting_cost));
-        $this->crop_maintenance_cost = htmlspecialchars(strip_tags($this->crop_maintenance_cost));
-        $this->input_seed_fertilizer_cost = htmlspecialchars(strip_tags($this->input_seed_fertilizer_cost));
-        $this->harvesting_cost = htmlspecialchars(strip_tags($this->harvesting_cost));
-        $this->post_harvest_transport_cost = htmlspecialchars(strip_tags($this->post_harvest_transport_cost));
-        $this->date = htmlspecialchars(strip_tags($this->date));
-
+        $this->farm_resource_id = htmlspecialchars(strip_tags($this->farm_resource_id));
+        $this->grand_total=htmlspecialchars(strip_tags($this->grand_total));
+        $this->date=date ("Y-m-d");
         $this->created_at = date ("Y-m-d H:i:s");
 
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->bindParam(":record_name", $this->record_name);
-        $stmt->bindParam(":land_prep_expense_cost", $this->land_prep_expense_cost);
-        $stmt->bindParam(":nursery_seedling_prep_cost", $this->nursery_seedling_prep_cost);
-        $stmt->bindParam(":transplanting_cost", $this->transplanting_cost);
-        $stmt->bindParam(":crop_maintenance_cost", $this->crop_maintenance_cost);
-        $stmt->bindParam(":input_seed_fertilizer_cost", $this->input_seed_fertilizer_cost);
-        $stmt->bindParam(":harvesting_cost", $this->harvesting_cost);
-        $stmt->bindParam(":post_harvest_transport_cost", $this->post_harvest_transport_cost);
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
+        $stmt->bindParam(":grand_total", $this->grand_total);
         $stmt->bindParam(":date", $this->date);
         $stmt->bindParam(":created_at", $this->created_at);
 
@@ -77,16 +54,7 @@ class FarmResource{
     }
 
     function readAllResource($from_record_num, $records_per_page) {
-        $query = "SELECT *,
-                    (
-                        land_prep_expense_cost +
-                        nursery_seedling_prep_cost +
-                        transplanting_cost +
-                        crop_maintenance_cost +
-                        input_seed_fertilizer_cost +
-                        harvesting_cost +
-                        post_harvest_transport_cost
-                    ) AS total_expense
+        $query = "SELECT *
                 FROM " . $this->table_name . "
                 WHERE user_id = :user_id 
                 AND date BETWEEN :start_date_expense AND :today_expense
@@ -218,16 +186,7 @@ class FarmResource{
     }
 
     function farmStatsCurrentTotalCost() {
-        $query = "SELECT 
-                    (
-                        SUM(land_prep_expense_cost) +
-                        SUM(nursery_seedling_prep_cost) +
-                        SUM(transplanting_cost) +
-                        SUM(crop_maintenance_cost) +
-                        SUM(input_seed_fertilizer_cost) +
-                        SUM(harvesting_cost) +
-                        SUM(post_harvest_transport_cost)
-                    ) AS total_expense
+        $query = "SELECT grand_total
                 FROM " . $this->table_name . " 
                   WHERE 
                     date BETWEEN :start_date_expense AND :today_expense 
@@ -249,8 +208,8 @@ class FarmResource{
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($row && $row['total_expense'] !== null) {
-            return $row['total_expense'];
+        if ($row && $row['grand_total'] !== null) {
+            return $row['grand_total'];
         } else {
             return 0; // No expenses found
         }

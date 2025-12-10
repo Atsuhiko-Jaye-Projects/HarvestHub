@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
       data: { page: page },
       dataType: 'json',
       success: function(response) {
+        console.log(response);
         let rows = '';
         let edit_modal = '';
         let postProduct_modal = '';
@@ -61,9 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       error: function() {
         alert('Failed to load product data');
+        console.log(error);
       }
+
     });
+
   };
+
+             console.log(response);
 
   function renderProductPagination(current, total) {
     let paginationHTML = '';
@@ -99,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Load product data when page opens
   loadProductTable();
+ 
 });
 
 

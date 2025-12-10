@@ -104,16 +104,26 @@ body { font-family: "Inter", sans-serif; }
   }
 
   .floating-total {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
     background-color: #198754; /* Bootstrap green */
     color: #fff;
     padding: 12px 18px;
     border-radius: 8px;
     font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);;
+}
+
+.frame {
+    padding: 15px;
+    max-height: 450px; /* adjust height as needed */
+    overflow-y: auto;  /* vertical scroll */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa; /* optional */
+}
+
+/* Optional: style for individual dynamic rows */
+.dynamic-row {
+    margin-bottom: 10px;
 }
 
 </style>
