@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2025 at 03:00 AM
+-- Generation Time: Dec 10, 2025 at 12:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -77,13 +77,6 @@ CREATE TABLE `conversations` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `conversations`
---
-
-INSERT INTO `conversations` (`id`, `farmer_id`, `user_id`, `created_at`) VALUES
-(4, 2, 1, '2025-12-07 17:31:08');
-
 -- --------------------------------------------------------
 
 --
@@ -153,6 +146,41 @@ CREATE TABLE `deleted_products` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `farm_activities`
+--
+
+CREATE TABLE `farm_activities` (
+  `id` int(11) NOT NULL,
+  `farm_resource_id` varchar(25) NOT NULL,
+  `activity_name` varchar(255) NOT NULL,
+  `activity_cost` double NOT NULL,
+  `farm_activity_type` varchar(25) NOT NULL,
+  `activity_date` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `modified_at` datetime NOT NULL,
+  `farmer_id` int(11) NOT NULL,
+  `additional_info` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `farm_activities`
+--
+
+INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activity_cost`, `farm_activity_type`, `activity_date`, `created_at`, `modified_at`, `farmer_id`, `additional_info`) VALUES
+(24, 'FID693932082', 'harrowing', 6000, 'land_prep', '2025-12-11 00:00:00', '2025-12-10 16:44:45', '0000-00-00 00:00:00', 0, 'distribution ng pataba'),
+(25, 'FID693932082', 'cropping', 5000, 'crop_maintenance', '2025-12-29 00:00:00', '2025-12-10 16:44:45', '0000-00-00 00:00:00', 0, 'planting'),
+(26, 'FID693933683280', 'harrowing', 5000, 'transplanting', '2025-12-21 00:00:00', '2025-12-10 16:46:32', '0000-00-00 00:00:00', 0, 'great'),
+(27, 'FID693933683280', 'test planting', 7000, '', '2025-12-31 00:00:00', '2025-12-10 16:46:32', '0000-00-00 00:00:00', 0, 'tst'),
+(28, 'FID693940758149', 'harrowing', 5000, 'land_prep', '2025-11-01 00:00:00', '2025-12-10 17:42:13', '0000-00-00 00:00:00', 0, 'harrowing '),
+(29, 'FID693940887299', 'harrowing', 5000, 'land_prep', '2025-11-01 00:00:00', '2025-12-10 17:42:32', '0000-00-00 00:00:00', 0, 'harrowing '),
+(30, 'FID693941156', 'harrowing', 5000, 'land_prep', '2025-11-01 00:00:00', '2025-12-10 17:45:01', '0000-00-00 00:00:00', 0, 'graet'),
+(31, 'FID69395592403', 'Kamayan', 5000, 'nursery_seedling', '0000-00-00 00:00:00', '2025-12-10 19:36:57', '0000-00-00 00:00:00', 0, ''),
+(32, 'FID6939573799', 'Kamayan', 5000, 'nursery_seedling', '0000-00-00 00:00:00', '2025-12-10 19:37:23', '0000-00-00 00:00:00', 0, ''),
+(33, 'FID693956220', 'harrowing', 822, 'transplanting', '2025-12-05 00:00:00', '2025-12-10 19:38:46', '0000-00-00 00:00:00', 0, 'great');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `farm_details`
 --
 
@@ -197,24 +225,21 @@ CREATE TABLE `farm_resources` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `record_name` varchar(255) NOT NULL,
-  `land_prep_expense_cost` double NOT NULL,
-  `nursery_seedling_prep_cost` double NOT NULL,
-  `transplanting_cost` double NOT NULL,
-  `crop_maintenance_cost` double NOT NULL,
-  `input_seed_fertilizer_cost` double NOT NULL,
-  `harvesting_cost` double NOT NULL,
-  `post_harvest_transport_cost` double NOT NULL
+  `grand_total` double NOT NULL,
+  `farm_resource_id` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `farm_resources`
 --
 
-INSERT INTO `farm_resources` (`id`, `user_id`, `date`, `created_at`, `modified_at`, `record_name`, `land_prep_expense_cost`, `nursery_seedling_prep_cost`, `transplanting_cost`, `crop_maintenance_cost`, `input_seed_fertilizer_cost`, `harvesting_cost`, `post_harvest_transport_cost`) VALUES
-(3, 2, '2025-03-01', '2025-12-06 20:50:10', '2025-12-06 12:50:10', '', 0, 0, 0, 0, 0, 0, 0),
-(4, 2, '2025-12-06', '2025-12-06 22:01:07', '2025-12-06 14:01:07', 'Kalabas and kamatis expense', 2300, 2660, 23, 3666, 3000, 3666, 2366),
-(5, 2, '2025-12-06', '2025-12-06 22:23:52', '2025-12-06 14:23:52', 'kamote expenses', 6000, 6000, 60, 0, 0, 0, 0),
-(6, 2, '2025-12-06', '2025-12-06 22:28:52', '2025-12-06 15:01:11', '100sqm expsnese for kamatis ahah', 2500, 16830, 2562, 3000, 31500, 18000, 0);
+INSERT INTO `farm_resources` (`id`, `user_id`, `date`, `created_at`, `modified_at`, `record_name`, `grand_total`, `farm_resource_id`) VALUES
+(11, 2, '', '2025-12-10 16:44:45', '2025-12-10 08:44:45', '100sqm expsnese for kamatis', 11000, 'FID693932082'),
+(12, 2, '', '2025-12-10 16:46:32', '2025-12-10 08:46:32', 'kamote expenses', 12000, 'FID693933683280'),
+(13, 2, '', '2025-12-10 17:42:32', '2025-12-10 09:42:32', 'record for kamatis prep', 5000, 'FID693940887299'),
+(14, 2, '', '2025-12-10 17:45:01', '2025-12-10 09:45:01', 'land prep last nov', 5000, 'FID693941156'),
+(15, 2, 'Array', '2025-12-10 19:37:23', '2025-12-10 11:37:23', '100sqm expsnese for kamatis', 5000, 'FID6939573799'),
+(16, 2, '2025-12-10', '2025-12-10 19:38:46', '2025-12-10 11:38:46', '100sqm expsnese for kamatis updated', 822, 'FID693956220');
 
 -- --------------------------------------------------------
 
@@ -280,93 +305,6 @@ CREATE TABLE `messages` (
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `conversation_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`id`, `farmer_id`, `message`, `user_id`, `timestamp`, `created`, `conversation_id`) VALUES
-(1, 2, 'hey', 1, '2025-12-07 10:34:46', '2025-12-07 18:34:46', 4),
-(2, 2, 'wassaup', 1, '2025-12-07 10:36:06', '2025-12-07 18:36:06', 4),
-(3, 2, 'he', 1, '2025-12-07 10:36:11', '2025-12-07 18:36:11', 4),
-(4, 2, 'wasst', 1, '2025-12-07 10:36:13', '2025-12-07 18:36:13', 4),
-(5, 2, 'ye', 1, '2025-12-07 10:37:31', '2025-12-07 18:37:31', 4),
-(6, 2, 'qwewq', 1, '2025-12-07 10:39:17', '2025-12-07 18:39:17', 4),
-(7, 2, '231321', 1, '2025-12-07 10:41:15', '2025-12-07 18:41:15', 4),
-(8, 2, '231321', 1, '2025-12-07 10:41:17', '2025-12-07 18:41:17', 4),
-(9, 2, 'sadasd', 1, '2025-12-07 10:44:50', '2025-12-07 18:44:50', 4),
-(10, 2, 'asdasda', 1, '2025-12-07 10:45:33', '2025-12-07 18:45:33', 4),
-(11, 2, 'qweqw', 1, '2025-12-07 10:45:37', '2025-12-07 18:45:37', 4),
-(12, 2, 'qwewqe', 1, '2025-12-07 10:46:38', '2025-12-07 18:46:38', 4),
-(13, 2, 'qwe', 1, '2025-12-07 10:46:39', '2025-12-07 18:46:39', 4),
-(14, 2, 'qwewqewq', 1, '2025-12-07 10:46:39', '2025-12-07 18:46:39', 4),
-(15, 2, 'qweqw', 1, '2025-12-07 10:46:40', '2025-12-07 18:46:40', 4),
-(16, 2, 'eqweqw', 1, '2025-12-07 10:46:40', '2025-12-07 18:46:40', 4),
-(17, 2, 'eqw', 1, '2025-12-07 10:46:40', '2025-12-07 18:46:40', 4),
-(18, 2, 'qweq', 1, '2025-12-07 10:46:41', '2025-12-07 18:46:41', 4),
-(19, 2, 'eqwe', 1, '2025-12-07 10:46:41', '2025-12-07 18:46:41', 4),
-(20, 2, 'qwe', 1, '2025-12-07 10:46:41', '2025-12-07 18:46:41', 4),
-(21, 2, 'asd\'lmad;lasmd;alsm', 1, '2025-12-07 10:46:42', '2025-12-07 18:46:42', 4),
-(22, 2, 'lamd;lasmd;aslmd', 1, '2025-12-07 10:46:44', '2025-12-07 18:46:44', 4),
-(23, 2, 'hey', 1, '2025-12-07 10:46:48', '2025-12-07 18:46:48', 4),
-(24, 2, 'asdas', 1, '2025-12-07 10:47:35', '2025-12-07 18:47:35', 4),
-(25, 2, 'qwe', 1, '2025-12-07 10:47:41', '2025-12-07 18:47:41', 4),
-(26, 2, 'qwe', 1, '2025-12-07 10:47:41', '2025-12-07 18:47:41', 4),
-(27, 2, 'qweqw', 1, '2025-12-07 10:47:42', '2025-12-07 18:47:42', 4),
-(28, 2, 'eqwe', 1, '2025-12-07 10:47:42', '2025-12-07 18:47:42', 4),
-(29, 2, 'wqe', 1, '2025-12-07 10:47:42', '2025-12-07 18:47:42', 4),
-(30, 2, 'qweqwewq', 1, '2025-12-07 10:49:43', '2025-12-07 18:49:43', 4),
-(31, 2, 'qwewq', 1, '2025-12-07 10:49:44', '2025-12-07 18:49:44', 4),
-(32, 2, 'qwewqewq', 1, '2025-12-07 10:49:47', '2025-12-07 18:49:47', 4),
-(33, 2, 'qwewqewq', 1, '2025-12-07 10:49:49', '2025-12-07 18:49:49', 4),
-(34, 2, 'qweqw', 1, '2025-12-07 10:49:50', '2025-12-07 18:49:50', 4),
-(35, 2, 'qweqw', 1, '2025-12-07 10:49:50', '2025-12-07 18:49:50', 4),
-(36, 2, 'qweqw', 1, '2025-12-07 10:49:50', '2025-12-07 18:49:50', 4),
-(37, 2, 'qweqw', 1, '2025-12-07 10:49:51', '2025-12-07 18:49:51', 4),
-(38, 2, 'qweqw', 1, '2025-12-07 10:49:51', '2025-12-07 18:49:51', 4),
-(39, 2, 'eqw', 1, '2025-12-07 10:49:51', '2025-12-07 18:49:51', 4),
-(40, 2, 'qe', 1, '2025-12-07 10:49:52', '2025-12-07 18:49:52', 4),
-(41, 2, 'qweqw', 1, '2025-12-07 10:49:52', '2025-12-07 18:49:52', 4),
-(42, 2, 'asd', 1, '2025-12-07 10:49:52', '2025-12-07 18:49:52', 4),
-(43, 2, 'fasdsas3d1asdasdfasf1a', 1, '2025-12-07 10:49:54', '2025-12-07 18:49:54', 4),
-(44, 2, 'qwqweqw', 1, '2025-12-07 10:51:40', '2025-12-07 18:51:40', 4),
-(45, 2, 'eqweqw', 1, '2025-12-07 10:51:40', '2025-12-07 18:51:40', 4),
-(46, 2, 'eqwe', 1, '2025-12-07 10:51:41', '2025-12-07 18:51:41', 4),
-(47, 2, 'weqwe', 1, '2025-12-07 10:51:41', '2025-12-07 18:51:41', 4),
-(48, 2, 'qweqw', 1, '2025-12-07 10:51:41', '2025-12-07 18:51:41', 4),
-(49, 2, 'awdea', 1, '2025-12-07 10:51:42', '2025-12-07 18:51:42', 4),
-(50, 2, 'das', 1, '2025-12-07 10:51:42', '2025-12-07 18:51:42', 4),
-(51, 2, 'asdas', 1, '2025-12-07 10:51:42', '2025-12-07 18:51:42', 4),
-(52, 2, 'qeqweqw', 1, '2025-12-07 10:51:47', '2025-12-07 18:51:47', 4),
-(53, 2, 'qweqweqw', 1, '2025-12-07 10:51:48', '2025-12-07 18:51:48', 4),
-(54, 2, 'wqewqewq', 1, '2025-12-07 10:52:00', '2025-12-07 18:52:00', 4),
-(55, 2, 'qeqweqw', 1, '2025-12-07 10:52:02', '2025-12-07 18:52:02', 4),
-(56, 2, 'potanginam o', 1, '2025-12-07 10:52:04', '2025-12-07 18:52:04', 4),
-(57, 2, 'haidaslkdnaskldnaslndlkasdna', 1, '2025-12-07 10:52:06', '2025-12-07 18:52:06', 4),
-(58, 2, 'hahahah', 1, '2025-12-07 10:52:07', '2025-12-07 18:52:07', 4),
-(59, 2, 'ge tra', 1, '2025-12-07 10:52:09', '2025-12-07 18:52:09', 4),
-(60, 2, 'a;dadnas,.dna.s', 1, '2025-12-07 10:52:10', '2025-12-07 18:52:10', 4),
-(61, 2, 'tra', 1, '2025-12-07 10:52:11', '2025-12-07 18:52:11', 4),
-(62, 2, 'g na', 1, '2025-12-07 10:52:12', '2025-12-07 18:52:12', 4),
-(63, 2, 'HAHAHHA', 1, '2025-12-07 10:52:13', '2025-12-07 18:52:13', 4),
-(64, 2, 'dasdasdas', 1, '2025-12-07 10:54:28', '2025-12-07 18:54:28', 4),
-(65, 2, 'asdas', 1, '2025-12-07 10:54:28', '2025-12-07 18:54:28', 4),
-(66, 2, 'dasd', 1, '2025-12-07 10:54:28', '2025-12-07 18:54:28', 4),
-(67, 2, 'asd', 1, '2025-12-07 10:54:29', '2025-12-07 18:54:29', 4),
-(68, 2, 'asd', 1, '2025-12-07 10:54:29', '2025-12-07 18:54:29', 4),
-(69, 2, 'asd', 1, '2025-12-07 10:54:29', '2025-12-07 18:54:29', 4),
-(70, 2, 'asd', 1, '2025-12-07 10:54:29', '2025-12-07 18:54:29', 4),
-(71, 2, 'qweqwewq', 1, '2025-12-07 10:54:48', '2025-12-07 18:54:48', 4),
-(72, 2, 'asdas', 1, '2025-12-07 10:54:51', '2025-12-07 18:54:51', 4),
-(73, 2, 'qweqweqw', 1, '2025-12-07 10:59:48', '2025-12-07 18:59:48', 4),
-(74, 2, 'ahdhahdahaha', 1, '2025-12-07 11:04:15', '2025-12-07 19:04:15', 4),
-(75, 2, 'asdasdas', 1, '2025-12-07 11:04:34', '2025-12-07 19:04:34', 4),
-(76, 2, 'dasdasd', 1, '2025-12-07 11:04:34', '2025-12-07 19:04:34', 4),
-(77, 2, 'asdas', 1, '2025-12-07 11:04:35', '2025-12-07 19:04:35', 4),
-(78, 2, 'dasdas', 1, '2025-12-07 11:04:35', '2025-12-07 19:04:35', 4),
-(79, 2, 'wqeqweq', 1, '2025-12-07 11:04:43', '2025-12-07 19:04:43', 4),
-(80, 2, 'game', 1, '2025-12-07 11:05:07', '2025-12-07 19:05:07', 4),
-(81, 2, 'game', 1, '2025-12-07 11:05:08', '2025-12-07 19:05:08', 4);
 
 -- --------------------------------------------------------
 
@@ -612,6 +550,12 @@ ALTER TABLE `deleted_products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `farm_activities`
+--
+ALTER TABLE `farm_activities`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `farm_details`
 --
 ALTER TABLE `farm_details`
@@ -699,7 +643,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `crops`
@@ -720,6 +664,12 @@ ALTER TABLE `deleted_products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `farm_activities`
+--
+ALTER TABLE `farm_activities`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
@@ -729,7 +679,7 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
@@ -741,7 +691,7 @@ ALTER TABLE `harvested_products`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
