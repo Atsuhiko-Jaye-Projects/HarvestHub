@@ -22,8 +22,8 @@
       <div><i class="bi bi-tools me-2"></i> Dashboard</div>
       <i class="bi <?= in_array($page, ['farm_resource.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
-    <div class="collapse ps-3 mt-3 <?= in_array($page, ['farm_resource.php', 'search.php']) ? 'show' : '' ?>" id="collapseHarvest">
-      <a href="<?= $base_url ?>user/farmer/farm/farm_resource.php" class="sidebar-btn <?= ($page=='farm_resource.php' || $page=='search.php') ? 'active' : '' ?>">
+    <div class="collapse ps-3 mt-3 <?= in_array($page, ['farm_resource.php', 'search.php', 'activities.php']) ? 'show' : '' ?>" id="collapseHarvest">
+      <a href="<?= $base_url ?>user/farmer/farm/farm_resource.php" class="sidebar-btn <?= ($page=='farm_resource.php' || $page=='search.php' || $page=='activities.php') ? 'active' : '' ?>">
         <i class="bi bi-box-seam me-2"></i> Farm Inputs
       </a>
     </div>

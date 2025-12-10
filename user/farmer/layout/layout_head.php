@@ -102,6 +102,20 @@ body { font-family: "Inter", sans-serif; }
     backdrop-filter: blur(4px);
     transition: backdrop-filter 0.3s ease !important;
   }
+
+  .floating-total {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #198754; /* Bootstrap green */
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+}
+
 </style>
 
 
