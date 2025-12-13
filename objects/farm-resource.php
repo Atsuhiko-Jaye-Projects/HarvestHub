@@ -138,44 +138,17 @@ class FarmResource{
         $query = "UPDATE 
                 " . $this->table_name . "
                 SET
-                record_name=:record_name,
-                land_prep_expense_cost=:land_prep_expense_cost,
-                nursery_seedling_prep_cost = :nursery_seedling_prep_cost,
-                transplanting_cost = :transplanting_cost,
-                crop_maintenance_cost = :crop_maintenance_cost,
-                input_seed_fertilizer_cost =:input_seed_fertilizer_cost,
-                harvesting_cost=:harvesting_cost,
-                post_harvest_transport_cost=:post_harvest_transport_cost,
-                date=:date,
+                grand_total = :grand_total,
                 modified_at=:modified_at
                 WHERE 
-                id=:id";
+                farm_resource_id=:farm_resource_id";
         
         $stmt=$this->conn->prepare($query);
 
-        
-        $this->record_name = htmlspecialchars(strip_tags($this->record_name));
-        $this->land_prep_expense_cost = htmlspecialchars(strip_tags($this->land_prep_expense_cost));
-        $this->nursery_seedling_prep_cost = htmlspecialchars(strip_tags($this->nursery_seedling_prep_cost));
-        $this->transplanting_cost = htmlspecialchars(strip_tags($this->transplanting_cost));
-        $this->crop_maintenance_cost = htmlspecialchars(strip_tags($this->crop_maintenance_cost));
-        $this->input_seed_fertilizer_cost = htmlspecialchars(strip_tags($this->input_seed_fertilizer_cost));
-        $this->harvesting_cost = htmlspecialchars(strip_tags($this->harvesting_cost));
-        $this->post_harvest_transport_cost = htmlspecialchars(strip_tags($this->post_harvest_transport_cost));
-        $this->date = htmlspecialchars(strip_tags($this->date));
-
         $this->modified_at = date ("Y-m-d H:i:s");
 
-        $stmt->bindParam(":id", $this->id);
-        $stmt->bindParam(":record_name", $this->record_name);
-        $stmt->bindParam(":land_prep_expense_cost", $this->land_prep_expense_cost);
-        $stmt->bindParam(":nursery_seedling_prep_cost", $this->nursery_seedling_prep_cost);
-        $stmt->bindParam(":transplanting_cost", $this->transplanting_cost);
-        $stmt->bindParam(":crop_maintenance_cost", $this->crop_maintenance_cost);
-        $stmt->bindParam(":input_seed_fertilizer_cost", $this->input_seed_fertilizer_cost);
-        $stmt->bindParam(":harvesting_cost", $this->harvesting_cost);
-        $stmt->bindParam(":post_harvest_transport_cost", $this->post_harvest_transport_cost);
-        $stmt->bindParam(":date", $this->date);
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
+        $stmt->bindParam(":grand_total", $this->grand_total);
         $stmt->bindParam(":modified_at", $this->modified_at);
 
         if ($stmt->execute()) {
@@ -252,6 +225,23 @@ class FarmResource{
         $stmt->execute();
 
         return $stmt;
+    }
+
+    function getRecordTitle(){
+        $query = "SELECT *
+                  FROM
+                  " . $this->table_name . "
+                  WHERE 
+                  farm_resource_id=:farm_resource_id";
+
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->record_name = $row['record_name'];
+        $this->date = $row['date'];
+
     }
 
 

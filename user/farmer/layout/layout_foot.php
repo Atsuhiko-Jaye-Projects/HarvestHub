@@ -19,7 +19,7 @@
 
 <?php
 
-if ($page_title == "Index") {
+if ($page_title == "Index" || $page_title == "Edit Activities") {
   echo "<script src='/Harvesthub/js/user/farmer/statistics/graphs.js'></script>";
   //echo "<script src='/HarvestHub/js/user/farmer/utils/utils.js'></script>";
   
