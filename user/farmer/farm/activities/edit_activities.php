@@ -42,38 +42,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
 
     $existing_activities = $farm_activity->readActivity();
     $existing_count = $existing_activities->rowCount();
-    $i = 0;
+    $activity_ids = $_POST['activity_id'] ?? [];
 
     foreach ($activity_names as $key => $name) {
 
         if (empty($name) && empty($activity_costs[$key])) continue;
 
-        $farm_activity->farm_resource_id   = $farm_resource_id;
-        $farm_activity->activity_name       = $name;
+        $farm_activity->farm_resource_id = $farm_resource_id;
+        $farm_activity->activity_name = $name;
         $farm_activity->farm_activity_type = $activity_types[$key] ?? '';
-        $farm_activity->activity_cost       = $activity_costs[$key] ?? 0;
+        $farm_activity->activity_cost = $activity_costs[$key] ?? 0;
+        $farm_activity->activity_date = substr($activity_dates[$key], 0, 10);
 
-        // Use "other_activity" if type = others
-        if (($activity_types[$key] ?? '') === 'others') {
+        if ($farm_activity->farm_activity_type === 'others') {
             $farm_activity->additional_info = $other_activity[$key] ?? '';
         } else {
             $farm_activity->additional_info = $additional_info[$key] ?? null;
         }
 
-        $farm_activity->activity_date = substr($activity_dates[$key],0,10);
+        if (!empty($activity_ids[$key])) {
+            // Update
+            $farm_activity->id = $activity_ids[$key];
+            if ($farm_activity->updateFarmActivity()) {                     ;
+                echo "Update Success";
 
-        // Decide: update existing row or create new
-        if ($i < $existing_count) {
-            // Update existing activity
-            $row = $existing_activities->fetch(PDO::FETCH_ASSOC);
-            $farm_activity->farm_resource_id = $row['farm_resource_id'];
-            $farm_activity->updateFarmActivity();
+            }else{
+                echo "Update Failed";
+            }
+
         } else {
-            // Insert new activity
+            // Insert
+            
             $farm_activity->createFarmActivity();
+            echo "Inserted Data";
         }
-
-        $i++;
     }
 
     // Update farm resource record
@@ -90,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
     <div class="modal-content">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?fid={$farm_resource_id}");?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="update">
-            <input type="text" name="farm_resource_id" value="<?= $farm_resource_id ?>">
+            
 
             <div class="modal-header d-block">
                 <h4 class="modal-title mb-3">
@@ -127,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
                         ?>
                         <div class="item-block mb-3 border-bottom pb-2">
                             <div class="d-flex align-items-center justify-content-between p-2 mb-2">
-                                <input type="text" name="farm_resource_id" value="<?= $row['id']; ?>">
+                                <input type="hidden" name="activity_id[]" value="<?= $row['id']; ?>">
                                 <h5 class="mb-0">Activity No. <?= $activityCount ?></h5>
                             </div>
 
@@ -206,8 +208,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
     </div>
 </div>
 
+</div>
+</div>
+</div>
+</div>
+
+<!-- CORE js Libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.4/bootbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 let activityCount = <?= $record_num>0 ? $record_num : 0 ?>;
+const params = new URLSearchParams(window.location.search);
+const farm_resource_id = params.get('fid'); // STRING
+
+console.log('FID:', farm_resource_id);
 
 function addDynamicField() {
     activityCount++;

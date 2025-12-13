@@ -20,9 +20,9 @@ $db = $database->getConnection();
 $harvest_product = new HarvestProduct($db);
 $product = new Product($db);
 $farm = new Farm($db);
-// $farm_resource = new FarmResource($db);
-// $farm_resource->user_id = $_SESSION['user_id'];
-// $farm_resource->getRecordExpense();
+$farm_resource = new FarmResource($db);
+$farm_resource->user_id = $_SESSION['user_id'];
+$farm_resource->getRecordExpense();
 
 
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";

@@ -92,9 +92,6 @@
                   <a href="activities/edit_activities.php?fid=<?php echo $farm_resource_id; ?>" class="btn btn-outline-primary">
                     <i class="bi bi-pencil-fill"></i>
                   </a>
-                  <a href="farm_resource.php?fid=<?php echo $farm_resource_id; ?>" class="btn btn-outline-warning">
-                    <i class="bi bi-eye-fill"></i>
-                  </a>
                   <a href='#' data-delete-id='<?php echo $id; ?>' class="btn btn-outline-danger delete-resource">
                     <i class="bi bi-trash-fill"></i>
                   </a>

@@ -205,16 +205,7 @@ class FarmResource{
     }
 
     function getRecordExpense(){
-        $query = "SELECT *,
-                    (
-                        land_prep_expense_cost +
-                        nursery_seedling_prep_cost +
-                        transplanting_cost +
-                        crop_maintenance_cost +
-                        input_seed_fertilizer_cost +
-                        harvesting_cost +
-                        post_harvest_transport_cost
-                    ) AS total_expense
+        $query = "SELECT grand_total
                 FROM " . $this->table_name . "
                 WHERE user_id = :user_id ";
         
