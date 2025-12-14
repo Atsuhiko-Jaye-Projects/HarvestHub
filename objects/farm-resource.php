@@ -205,7 +205,7 @@ class FarmResource{
     }
 
     function getRecordExpense(){
-        $query = "SELECT grand_total
+        $query = "SELECT *
                 FROM " . $this->table_name . "
                 WHERE user_id = :user_id ";
         

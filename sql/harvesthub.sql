@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2025 at 12:55 PM
+-- Generation Time: Dec 14, 2025 at 06:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -162,22 +162,6 @@ CREATE TABLE `farm_activities` (
   `additional_info` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `farm_activities`
---
-
-INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activity_cost`, `farm_activity_type`, `activity_date`, `created_at`, `modified_at`, `farmer_id`, `additional_info`) VALUES
-(24, 'FID693932082', 'harrowing', 6000, 'land_prep', '2025-12-11 00:00:00', '2025-12-10 16:44:45', '0000-00-00 00:00:00', 0, 'distribution ng pataba'),
-(25, 'FID693932082', 'cropping', 5000, 'crop_maintenance', '2025-12-29 00:00:00', '2025-12-10 16:44:45', '0000-00-00 00:00:00', 0, 'planting'),
-(26, 'FID693933683280', 'harrowing', 5000, 'transplanting', '2025-12-21 00:00:00', '2025-12-10 16:46:32', '0000-00-00 00:00:00', 0, 'great'),
-(27, 'FID693933683280', 'test planting', 7000, '', '2025-12-31 00:00:00', '2025-12-10 16:46:32', '0000-00-00 00:00:00', 0, 'tst'),
-(28, 'FID693940758149', 'harrowing', 5000, 'land_prep', '2025-11-01 00:00:00', '2025-12-10 17:42:13', '0000-00-00 00:00:00', 0, 'harrowing '),
-(29, 'FID693940887299', 'harrowing', 5000, 'land_prep', '2025-11-01 00:00:00', '2025-12-10 17:42:32', '0000-00-00 00:00:00', 0, 'harrowing '),
-(30, 'FID693941156', 'harrowing', 5000, 'land_prep', '2025-11-01 00:00:00', '2025-12-10 17:45:01', '0000-00-00 00:00:00', 0, 'graet'),
-(31, 'FID69395592403', 'Kamayan', 5000, 'nursery_seedling', '0000-00-00 00:00:00', '2025-12-10 19:36:57', '0000-00-00 00:00:00', 0, ''),
-(32, 'FID6939573799', 'Kamayan', 5000, 'nursery_seedling', '0000-00-00 00:00:00', '2025-12-10 19:37:23', '0000-00-00 00:00:00', 0, ''),
-(33, 'FID693956220', 'harrowing', 822, 'transplanting', '2025-12-05 00:00:00', '2025-12-10 19:38:46', '0000-00-00 00:00:00', 0, 'great');
-
 -- --------------------------------------------------------
 
 --
@@ -228,18 +212,6 @@ CREATE TABLE `farm_resources` (
   `grand_total` double NOT NULL,
   `farm_resource_id` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `farm_resources`
---
-
-INSERT INTO `farm_resources` (`id`, `user_id`, `date`, `created_at`, `modified_at`, `record_name`, `grand_total`, `farm_resource_id`) VALUES
-(11, 2, '', '2025-12-10 16:44:45', '2025-12-10 08:44:45', '100sqm expsnese for kamatis', 11000, 'FID693932082'),
-(12, 2, '', '2025-12-10 16:46:32', '2025-12-10 08:46:32', 'kamote expenses', 12000, 'FID693933683280'),
-(13, 2, '', '2025-12-10 17:42:32', '2025-12-10 09:42:32', 'record for kamatis prep', 5000, 'FID693940887299'),
-(14, 2, '', '2025-12-10 17:45:01', '2025-12-10 09:45:01', 'land prep last nov', 5000, 'FID693941156'),
-(15, 2, 'Array', '2025-12-10 19:37:23', '2025-12-10 11:37:23', '100sqm expsnese for kamatis', 5000, 'FID6939573799'),
-(16, 2, '2025-12-10', '2025-12-10 19:38:46', '2025-12-10 11:38:46', '100sqm expsnese for kamatis updated', 822, 'FID693956220');
 
 -- --------------------------------------------------------
 
@@ -667,7 +639,7 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `farm_details`

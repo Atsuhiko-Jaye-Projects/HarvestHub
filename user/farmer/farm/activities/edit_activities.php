@@ -92,7 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
     <div class="modal-content">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?fid={$farm_resource_id}");?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="update">
-            
+            <input type="hidden" name="farm_resource_id" value="<?= htmlspecialchars($farm_resource_id) ?>">
+
 
             <div class="modal-header d-block">
                 <h4 class="modal-title mb-3">
@@ -221,10 +222,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
 
 <script>
 let activityCount = <?= $record_num>0 ? $record_num : 0 ?>;
-const params = new URLSearchParams(window.location.search);
-const farm_resource_id = params.get('fid'); // STRING
+// // const params = new URLSearchParams(window.location.search);
+// // const farm_resource_id = params.get('fid'); // STRING
 
-console.log('FID:', farm_resource_id);
+// console.log('FID:', farm_resource_id);
 
 function addDynamicField() {
     activityCount++;
@@ -292,9 +293,24 @@ function toggleOtherInput(sel){
         inp.required=false;
 }}
 function updateTotal(){ 
-    let t=0; document.querySelectorAll('.activity-cost').forEach(i=>t+=parseFloat(i.value)||0); 
-    document.getElementById('total-value').textContent=t.toFixed(2);
+    let t = 0;
+    document.querySelectorAll('.activity-cost').forEach(i => {
+        t += parseFloat(i.value) || 0;
+    });
+    document.getElementById('total-value').textContent = t.toFixed(2);
 }
+
+// auto-detect any cost change (existing + new)
+document.addEventListener('input', function (e) {
+    if (e.target.classList.contains('activity-cost')) {
+        updateTotal();
+    }
+});
+
+// initial scan
+document.addEventListener('DOMContentLoaded', function () {
+    updateTotal();
+});
 </script>
 
 <?php if (isset($_GET['status'])): ?>

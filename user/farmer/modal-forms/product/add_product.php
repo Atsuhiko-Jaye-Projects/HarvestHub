@@ -81,7 +81,7 @@
                       if ($stmt && $stmt->rowCount() > 0) {
                           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                               // Assuming the table has 'id' and 'expense_name' fields
-                             echo "<option value='{$row['total_expense']}' style='color: red; font-weight: bold;'>{$row['record_name']} | ₱" . number_format($row['total_expense']) . "</option>";
+                             echo "<option value='{$row['grand_total']}' style='color: red; font-weight: bold;'>{$row['record_name']} | ₱" . number_format($row['grand_total']) . "</option>";
 
 
                           }
