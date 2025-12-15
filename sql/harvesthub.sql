@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2025 at 07:34 AM
+-- Generation Time: Dec 15, 2025 at 06:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,16 +39,6 @@ CREATE TABLE `cart_items` (
   `farmer_id` int(11) NOT NULL,
   `product_type` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart_items`
---
-
-INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
-(10, 1, 1, 10, '2025-12-05 20:07:44', 125, 'ordered', '2025-12-05 12:08:00', 2, 'preorder'),
-(11, 2, 1, 20, '2025-12-05 20:07:52', 188, 'ordered', '2025-12-05 12:08:00', 2, 'harvest'),
-(12, 5, 1, 25, '2025-12-07 10:31:49', 20, 'ordered', '2025-12-07 02:31:54', 2, 'harvest'),
-(13, 3, 1, 10, '2025-12-07 11:23:44', 89, 'ordered', '2025-12-07 03:23:50', 2, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -100,16 +90,6 @@ CREATE TABLE `crops` (
   `municipality` varchar(255) NOT NULL,
   `baranggay` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `crops`
---
-
-INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`) VALUES
-(1, 2, 'Kalabasa', 2, 56, '2025-12-05', '2026-04-25', 0, '2025-12-05 05:56:53', '2025-12-05 13:56:53', 600, 300, 'Marinduque', 'Mogpog', 'Bintakay'),
-(2, 2, 'Kalabasa', 2, 50, '2025-12-06', '2026-05-23', 0, '2025-12-06 10:26:22', '2025-12-06 18:26:22', 534, 300, 'Marinduque', 'Mogpog', 'Bintakay'),
-(3, 2, 'mango', 1.8, 50, '2025-12-06', '2026-05-30', 0, '2025-12-06 10:27:42', '2025-12-06 18:27:42', 540, 300, 'Marinduque', 'Mogpog', 'Bintakay'),
-(4, 2, 'Melon', 1.8, 5000, '2025-12-07', '2026-06-27', 0, '2025-12-07 03:05:57', '2025-12-07 11:05:57', 360, 200, 'Marinduque', 'Mogpog', 'Bintakay');
 
 -- --------------------------------------------------------
 
@@ -188,14 +168,6 @@ CREATE TABLE `farm_details` (
   `following_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `farm_details`
---
-
-INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
-(1, 2, 'Marinduque', 'Mogpog', 'Bintakay', 'purok quatro', 'owned', 50000, '2025-12-05 13:55:43', '2025-12-05 05:55:43', 0, '', '', 0, '', 0, 0),
-(2, 3, 'Marinduque', 'Boac', 'Agot', 'Purok2, anapog-sibucao', 'owned', 50000, '2025-12-07 10:14:48', '2025-12-07 02:14:48', 0, '', '', 0, '', 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -238,16 +210,6 @@ CREATE TABLE `harvested_products` (
   `expense` double NOT NULL,
   `kilo_per_plant` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `harvested_products`
---
-
-INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
-(6, 2, 'Kalabasa', 19, 'KG', 'Vegetable', '1000', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 11:55:17', '2025-12-06 19:55:17', 'Pending', 200, 5000, 2),
-(7, 2, 'Kalabasa', 19, 'KG', 'Fruit', '50', '', 400, 0, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', '2025-12-06 12:48:49', '2025-12-06 20:48:49', 'Pending', 200, 5000, 2),
-(8, 2, 'Bangus', 66, 'KG', 'Vegetable', '50', '', 400, 0, '250a1561bac83ac86b2ae48565c04e7e060c2661-SweetPotato.jpg', '2025-12-06 16:25:17', '2025-12-07 00:25:17', 'Pending', 200, 17681, 2),
-(9, 2, 'Okra', 74, 'KG', 'Vegetable', '200', '', 360, 0, '4dbc856221c23e1ea0c18bc08ac1b2fa5bc27ccb-6.jpg', '2025-12-07 02:27:54', '2025-12-07 10:27:54', 'Pending', 200, 17681, 1.8);
 
 -- --------------------------------------------------------
 
@@ -300,14 +262,6 @@ CREATE TABLE `orders` (
   `reason` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`) VALUES
-(14, 5, 'INV-6934E71A99904', 1, 'COD', 25, 'complete', '2025-12-07 10:31:54', '2025-12-07 03:34:18', 2, 'harvest', 1, ''),
-(15, 3, 'INV-6934F3465ECDF', 1, 'COP', 10, 'complete', '2025-12-07 11:23:50', '2025-12-07 03:26:58', 2, 'harvest', 1, '');
-
 -- --------------------------------------------------------
 
 --
@@ -321,23 +275,6 @@ CREATE TABLE `order_status_history` (
   `timestamp` datetime NOT NULL,
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_status_history`
---
-
-INSERT INTO `order_status_history` (`id`, `invoice_number`, `status`, `timestamp`, `product_id`) VALUES
-(46, 'INV-6934E71A99904', 'order placed', '2025-12-07 10:31:54', 5),
-(47, 'INV-6934E71A99904', 'accept', '2025-12-07 10:12:06', 5),
-(48, 'INV-6934E71A99904', 'order shipout', '2025-12-07 10:12:08', 5),
-(49, 'INV-6934E71A99904', 'order recieved', '2025-12-07 10:12:28', 5),
-(50, 'INV-6934F3465ECDF', 'order placed', '2025-12-07 11:23:50', 3),
-(51, 'INV-6934E71A99904', 'accept', '2025-12-07 11:12:14', 5),
-(52, 'INV-6934F3465ECDF', 'accept', '2025-12-07 11:12:20', 3),
-(53, 'INV-6934F3465ECDF', 'order shipout', '2025-12-07 11:12:25', 3),
-(54, 'INV-6934E71A99904', 'order shipout', '2025-12-07 11:12:33', 5),
-(55, 'INV-6934F3465ECDF', 'order recieved', '2025-12-07 11:12:58', 3),
-(56, 'INV-6934E71A99904', 'order recieved', '2025-12-07 11:12:18', 5);
 
 -- --------------------------------------------------------
 
@@ -391,14 +328,6 @@ CREATE TABLE `products` (
   `discount` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(5, 3, 'talong', 89, 2, '', 'KG', 0, '', 1000, 400, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 20, '2025-12-06 11:41:56', '2025-12-06 19:41:56', 'Active', 'harvest', 380, NULL),
-(6, 5, 'talongPAs', 20, 2, 'Vegetable', 'KG', 0, '', 1000, 400, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 100, '2025-12-06 11:54:29', '2025-12-06 19:54:29', 'Active', 'harvest', 300, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -435,14 +364,6 @@ CREATE TABLE `reviews` (
   `product_quality_review` varchar(525) NOT NULL,
   `farmer_response` varchar(526) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reviews`
---
-
-INSERT INTO `reviews` (`id`, `product_id`, `farmer_id`, `customer_id`, `rating`, `review_text`, `reply`, `created_at`, `modified_at`, `product_rating`, `farmer_rating`, `performance_review`, `product_quality_review`, `farmer_response`) VALUES
-(1, 3, 2, 1, 5, 'test', '', '2025-12-07 11:28:49', '2025-12-07 03:28:49', 0, 0, '', '', ''),
-(2, 5, 2, 1, 5, 'great', '', '2025-12-07 11:34:30', '2025-12-07 03:34:30', 0, 0, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -603,7 +524,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -621,7 +542,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -639,25 +560,25 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -669,13 +590,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
@@ -687,7 +608,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product_histories`
@@ -699,7 +620,7 @@ ALTER TABLE `product_histories`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

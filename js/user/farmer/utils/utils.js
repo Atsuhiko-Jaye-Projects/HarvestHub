@@ -69,8 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   };
 
-             console.log(response);
-
   function renderProductPagination(current, total) {
     let paginationHTML = '';
 

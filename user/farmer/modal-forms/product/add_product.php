@@ -63,8 +63,8 @@
 
 
               <div class="mb-3">
-                <label for="">Owned Farm Land (SQM)</label>
-                <input type="text" name="farm_size_sqm" class="form-control" value="<?php echo number_format($farm_lot);?>" readonly>
+                <!-- <label for="">Owned Farm Land (SQM)</label> -->
+                <input type="hidden" name="farm_size_sqm" class="form-control" value="<?php echo number_format($farm_lot);?>" readonly>
               </div>
 
               <div class="mb-3">

@@ -21,7 +21,7 @@
 
 if ($page_title == "Index" || $page_title == "Edit Activities") {
   echo "<script src='/Harvesthub/js/user/farmer/statistics/graphs.js'></script>";
-  //echo "<script src='/HarvestHub/js/user/farmer/utils/utils.js'></script>";
+  // echo "<script src='/HarvestHub/js/user/farmer/utils/utils.js'></script>";
   
 }else{
 echo "<script src='/HarvestHub/js/user/farmer/modals/farm_product/farm_product_modal.js'></script>

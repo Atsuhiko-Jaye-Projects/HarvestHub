@@ -37,7 +37,7 @@ $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
 $harvest_product->user_id = $_SESSION['user_id'];
-//$stmt = $harvest_product->readAllProduct($from_record_num, $records_per_page);
+// $stmt = $harvest_product->readAllProduct($from_record_num, $records_per_page);
 // $num;
 // $total_rows = $harvest_product->countAll();
 

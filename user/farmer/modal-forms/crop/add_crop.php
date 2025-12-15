@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-6">
                     <label>
-                      KG/Plant (Average)
+                      KG/Plant (Average Yield) 
                     </label>
                     <input type="number" step="0.01" name="kilo_per_plant" class="form-control">
                 </div>

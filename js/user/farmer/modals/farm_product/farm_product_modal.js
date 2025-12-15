@@ -213,7 +213,7 @@ function postHarvestProduct(row) {
           resultBox.className = "alert alert-success";
           resultBox.innerHTML = "✔️ Profit per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
 
-              if (markup > 15.00) {
+              if (markup > 25.00) {
                 resultBox.innerHTML += "<br>⚠️ Markup is too high: " + markup + "%";
                 postButton.disabled = true;
               }else{
