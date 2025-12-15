@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2025 at 06:49 AM
+-- Generation Time: Dec 15, 2025 at 09:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -142,6 +142,19 @@ CREATE TABLE `farm_activities` (
   `additional_info` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `farm_activities`
+--
+
+INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activity_cost`, `farm_activity_type`, `activity_date`, `created_at`, `modified_at`, `farmer_id`, `additional_info`) VALUES
+(1, 'FID69301004', 'harrowings', 2500, 'land_prep', '2025-12-15 00:00:00', '2025-12-15 14:52:13', '0000-00-00 00:00:00', 0, 'none'),
+(2, 'FID69301004', 'test planting', 16830, 'nursery_seedling', '2025-12-15 00:00:00', '2025-12-15 14:53:26', '0000-00-00 00:00:00', 0, ''),
+(3, 'FID69301004', 'transplanting', 2562, 'transplanting', '2025-12-17 00:00:00', '2025-12-15 14:54:17', '0000-00-00 00:00:00', 0, ''),
+(4, 'FID69301004', 'Maintenance', 30000, 'others', '2026-01-28 00:00:00', '2025-12-15 14:55:04', '0000-00-00 00:00:00', 0, 'Maintenance'),
+(5, 'FID6930355', 'harrowings', 2500, 'land_prep', '2025-12-15 00:00:00', '2025-12-15 14:55:40', '0000-00-00 00:00:00', 0, ''),
+(6, 'FID69301004', 'Construction and Release', 1000, 'pruning', '2026-01-30 00:00:00', '2025-12-15 14:57:23', '0000-00-00 00:00:00', 0, ''),
+(7, 'FID6930355', 'anihan', 5000, 'harvesting', '2025-12-16 00:00:00', '2025-12-15 16:05:14', '0000-00-00 00:00:00', 0, '');
+
 -- --------------------------------------------------------
 
 --
@@ -184,6 +197,14 @@ CREATE TABLE `farm_resources` (
   `grand_total` double NOT NULL,
   `farm_resource_id` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `farm_resources`
+--
+
+INSERT INTO `farm_resources` (`id`, `user_id`, `date`, `created_at`, `modified_at`, `record_name`, `grand_total`, `farm_resource_id`) VALUES
+(1, 2, '2025-12-15', '2025-12-15 14:52:13', '2025-12-15 06:57:23', '100sqm expsnese for kamatis', 52892, 'FID69301004'),
+(2, 2, '2025-12-15', '2025-12-15 14:55:40', '2025-12-15 08:05:14', 'Kalabas and kamatis expense', 7500, 'FID6930355');
 
 -- --------------------------------------------------------
 
@@ -560,7 +581,7 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `farm_details`
@@ -572,7 +593,7 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`

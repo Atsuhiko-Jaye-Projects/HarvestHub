@@ -32,7 +32,7 @@ class Crop{
                 SET
                 user_id=:user_id,
                 crop_name=:crop_name,
-                yield=:yield,
+                yield=:yield,asdasdasdknasdklnasldkans
                 cultivated_area=:cultivated_area,
                 date_planted=:date_planted,
                 estimated_harvest_date=:estimated_harvest_date,
