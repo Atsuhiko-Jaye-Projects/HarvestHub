@@ -100,20 +100,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
             <div class="modal-body">
                 <div class="mb-3 row">
-                  
-                  <div class="col-md-6 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4">Expense Record Title:</label>
+                  <div class="col-md-4 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4">Record Title:</label>
                     <input type="text" name="record_name" id="record_name" class="form-control border border-3 border-dark" required>
                   </div>
-                  <div class="col-md-6 mb-3">
+                  <div class="col-md-4 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4">Crop Name:</label>
+                    
+                    <input type="text" name="crop_name" id=""
+                          class="form-control border border-3 border-dark"
+                          required>
+                  </div>
+                  <div class="col-md-4 mb-3">
                     <label for="record_name" class="form-label fw-bold col-md-4">Date of Activity:</label>
                     
                     <input type="date" name="activity_date" id="activity_date" value="<?php echo date('Y-m-d'); ?>"
                           class="form-control border border-3 border-dark"
                           max="<?php echo date('Y-m-d'); ?>"
                           required>
-
                   </div>
+
                   <hr>
                 </div>
 
