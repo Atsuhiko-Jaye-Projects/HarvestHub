@@ -26,7 +26,135 @@ body { font-family: "Inter", sans-serif; }
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
 
+/* === MODERN FARM INPUT UI === */
 
+
+
+.modal-content {
+  border-radius: 18px;
+  border: none;
+  box-shadow: 0 20px 40px rgba(0,0,0,.12);
+  overflow: hidden;
+}
+
+/* Header */
+.modal-header {
+  background: linear-gradient(135deg, #198754, #20c997);
+  color: #fff;
+  padding: 1.5rem 2rem;
+}
+
+.modal-header h4 {
+  font-weight: 700;
+}
+
+.modal-header small {
+  opacity: .9;
+}
+
+/* Body */
+.modal-body {
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  font-size: .9rem;
+  margin-bottom: .35rem;
+}
+
+/* Inputs */
+.form-control,
+.form-select,
+textarea {
+  border-radius: 12px !important;
+  border: 1.8px solid #d1d5db !important;
+  padding: .65rem .85rem;
+  font-size: .9rem;
+  transition: all .2s ease;
+  background: #fff;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  border-color: #198754 !important;
+  box-shadow: 0 0 0 .2rem rgba(25,135,84,.15);
+}
+
+/* Activity block */
+.item-block {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+}
+
+/* Activity header */
+.item-block h5 {
+  font-weight: 700;
+  color: #198754;
+}
+
+/* Frame */
+.frame {
+  border-radius: 16px;
+  padding: 1rem;
+  background: #eef2f7;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 12px;
+  font-weight: 600;
+  padding: .55rem 1.1rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #198754, #20c997);
+  border: none;
+}
+
+.btn-danger {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.btn-danger i {
+  font-size: 1.1rem;
+}
+
+/* Floating total */
+.floating-total {
+  background: #fff;
+  padding: .6rem 1.1rem;
+  border-radius: 14px;
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgba(0,0,0,.08);
+}
+
+#total-cost {
+  color: white;
+  
+}
+
+/* Footer */
+.modal-footer {
+  background: #f1f5f9;
+  padding: 1.2rem 2rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .modal-body {
+    padding: 1.25rem;
+  }
+}
 
 .summary-card {
   border-radius: 1.2rem;

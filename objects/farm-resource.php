@@ -9,7 +9,10 @@ class FarmResource{
     public $user_id;
     public $record_name;
     public $farm_resource_id;
+    public $crop_name;
     public $grand_total;
+    public $plant_count;
+    public $average_yield_per_plant;
     public $created_at;
     public $modified_at;
     public $start_date_expense;
@@ -28,6 +31,9 @@ class FarmResource{
                 record_name=:record_name,
                 farm_resource_id = :farm_resource_id,
                 grand_total=:grand_total,
+                average_yield_per_plant=:average_yield_per_plant,
+                plant_count=:plant_count,
+                crop_name = :crop_name,
                 date=:date,
                 created_at=:created_at";
         
@@ -36,6 +42,9 @@ class FarmResource{
         $this->record_name = htmlspecialchars(strip_tags($this->record_name));
         $this->farm_resource_id = htmlspecialchars(strip_tags($this->farm_resource_id));
         $this->grand_total=htmlspecialchars(strip_tags($this->grand_total));
+        $this->crop_name=htmlspecialchars(strip_tags($this->crop_name));
+        $this->average_yield_per_plant=htmlspecialchars(strip_tags($this->average_yield_per_plant));
+        $this->plant_count=htmlspecialchars(strip_tags($this->plant_count));
         $this->date=date ("Y-m-d");
         $this->created_at = date ("Y-m-d H:i:s");
 
@@ -44,6 +53,9 @@ class FarmResource{
         $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
         $stmt->bindParam(":grand_total", $this->grand_total);
         $stmt->bindParam(":date", $this->date);
+        $stmt->bindParam(":average_yield_per_plant", $this->average_yield_per_plant);
+        $stmt->bindParam(":plant_count", $this->plant_count);
+        $stmt->bindParam(":crop_name", $this->crop_name);
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {
@@ -139,16 +151,25 @@ class FarmResource{
                 " . $this->table_name . "
                 SET
                 grand_total = :grand_total,
+                crop_name = :crop_name,
+                plant_count =:plant_count,
+                average_yield_per_plant=:average_yield_per_plant,
+                planted_area_sqm=:planted_area_sqm,
                 modified_at=:modified_at
                 WHERE 
                 farm_resource_id=:farm_resource_id";
         
         $stmt=$this->conn->prepare($query);
 
+        $this->crop_name = htmlspecialchars(strip_tags($this->crop_name));
         $this->modified_at = date ("Y-m-d H:i:s");
 
         $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
         $stmt->bindParam(":grand_total", $this->grand_total);
+        $stmt->bindParam(":crop_name", $this->crop_name);
+        $stmt->bindParam(":plant_count", $this->plant_count);
+        $stmt->bindParam(":planted_area_sqm", $this->planted_area_sqm);
+        $stmt->bindParam(":average_yield_per_plant", $this->average_yield_per_plant);
         $stmt->bindParam(":modified_at", $this->modified_at);
 
         if ($stmt->execute()) {
@@ -232,7 +253,40 @@ class FarmResource{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $this->record_name = $row['record_name'];
         $this->date = $row['date'];
+        $this->crop_name = $row['crop_name'];
+        $this->average_yield_per_plant = $row['average_yield_per_plant'];
+        $this->plant_count = $row['plant_count'];
+        $this->planted_area_sqm = $row['planted_area_sqm'];
+    }
 
+    function getCropName(){
+        $query = "SELECT *
+                    FROM
+                    " . $this->table_name . "
+                    WHERE 
+                    user_id=:user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function readCropDetails(){
+        $query = "SELECT * 
+                  FROM 
+                    " . $this->table_name . " 
+                  WHERE 
+                     id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        return $stmt;
     }
 
 

@@ -69,9 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     $farm_resource->farm_resource_id = $resource_id;
     $farm_resource->record_name = $_POST['record_name'];
+    $farm_resource->crop_name = $_POST['crop_name'];
     $farm_resource->grand_total = $grand_total;
     $farm_resource->user_id = $_SESSION['user_id'];
     $farm_resource->date = $_POST['activity_date'];
+    $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
+    $farm_resource->plant_count = $_POST['plant_count'];
 
     if ($farm_resource->createFarmResource()) {
         header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=success");
@@ -100,27 +103,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
             <div class="modal-body">
                 <div class="mb-3 row">
-                  <div class="col-md-4 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4">Record Title:</label>
+                  <div class="col-md-6 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-6">Record Title:</label>
                     <input type="text" name="record_name" id="record_name" class="form-control border border-3 border-dark" required>
                   </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4">Crop Name:</label>
-                    
-                    <input type="text" name="crop_name" id=""
-                          class="form-control border border-3 border-dark"
-                          required>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4">Date of Activity:</label>
-                    
+                
+                  <div class="col-md-6 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-6">Date of Activity:</label>                    
                     <input type="date" name="activity_date" id="activity_date" value="<?php echo date('Y-m-d'); ?>"
                           class="form-control border border-3 border-dark"
                           max="<?php echo date('Y-m-d'); ?>"
                           required>
                   </div>
-
                   <hr>
+                  <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4">Crop Name:</label>
+                    <input type="text" name="crop_name" id=""
+                          class="form-control border border-3 border-dark"
+                          required>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4 text-nowrap">Total Plants Planted:</label>
+                    <input type="number" name="plant_count" id="" class="form-control border border-3 border-dark" required>
+                  </div>
+
+                    <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold text-nowrap">
+                        Average Yield per Plant (kg)
+                    </label>
+                    <input type="number" step="0.1" name="average_yield_per_plant" class="form-control border border-3 border-dark" required>
+                    </div> 
+
+                    <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold text-nowrap">
+                       Total Planted Area (sqm) 
+                    </label>
+                    <input type="number" step="0.1" name="planted_area_sqm" class="form-control border border-3 border-dark" required>
+                    </div>  
                 </div>
 
                 <div id="dynamic-fields-frame" class="frame bg-light">

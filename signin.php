@@ -9,7 +9,7 @@ $require_login=false;
 include_once "login_checker.php";
 // default to false
 $access_denied=false;
-if ($_POST) {
+if ($_POST) { 
 	include_once 'config/database.php';
 	include_once 'objects/user.php';
 

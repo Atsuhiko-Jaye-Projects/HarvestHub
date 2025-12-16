@@ -81,6 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
     // Update farm resource record
     $farm_resource->farm_resource_id = $farm_resource_id;
     $farm_resource->grand_total      = $grand_total;
+    $farm_resource->crop_name = $_POST['crop_name'];
+    $farm_resource->plant_count = $_POST['plant_count'];
+    $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
+    $farm_resource->planted_area_sqm = $_POST['planted_area_sqm'];
     $farm_resource->updateFarmResource();
 
     header("Location: edit_activities.php?fid={$farm_resource_id}&status=update_success");
@@ -118,6 +122,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
                         <label class="form-label fw-bold col-md-4">Date of Activity:</label>
                         <input type="date" name="activity_date" class="form-control border border-3 border-warning" max="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d', strtotime($farm_resource->date)) ?>" required>
                     </div>
+                  <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4">Crop Name:</label>
+                    <input type="text" name="crop_name" id=""
+                          class="form-control border border-3 border-dark"
+                          required value="<?php echo $farm_resource->crop_name;?>">
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold col-md-4 text-nowrap">Total Plants Planted:</label>
+                    <input type="number" name="plant_count" id="" class="form-control border border-3 border-dark" required value="<?php echo $farm_resource->plant_count;?>">
+                  </div>
+
+                    <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold text-nowrap">
+                        Average Yield per Plant (kg)
+                    </label>
+                    <input type="number" step="0.1" name="average_yield_per_plant" class="form-control border border-3 border-dark" required value="<?php echo $farm_resource->average_yield_per_plant;?>">
+                    </div> 
+
+                    <div class="col-md-3 mb-3">
+                    <label for="record_name" class="form-label fw-bold text-nowrap">
+                       Total Planted Area (sqm) 
+                    </label>
+                    <input type="number" step="0.1" name="planted_area_sqm" class="form-control border border-3 border-dark" required value="<?php echo $farm_resource->planted_area_sqm;?>">
+                    </div>  
                     <hr>
                 </div>
 

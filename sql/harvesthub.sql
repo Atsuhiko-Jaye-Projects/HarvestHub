@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2025 at 06:49 AM
+-- Generation Time: Dec 16, 2025 at 02:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -91,6 +91,15 @@ CREATE TABLE `crops` (
   `baranggay` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `crops`
+--
+
+INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`) VALUES
+(1, 1, '1', 2.1, 0, '2025-12-16', '2026-01-30', 0, '2025-12-16 12:55:37', '2025-12-16 20:55:37', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao'),
+(2, 1, '2', 2.1, 9, '2025-12-16', '2026-01-30', 0, '2025-12-16 12:59:05', '2025-12-16 20:59:05', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao'),
+(3, 1, 'Kalabasa Hybrid', 2.1, 300, '2025-12-16', '2026-01-30', 0, '2025-12-16 13:13:36', '2025-12-16 21:12:14', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao');
+
 -- --------------------------------------------------------
 
 --
@@ -142,6 +151,17 @@ CREATE TABLE `farm_activities` (
   `additional_info` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `farm_activities`
+--
+
+INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activity_cost`, `farm_activity_type`, `activity_date`, `created_at`, `modified_at`, `farmer_id`, `additional_info`) VALUES
+(1, 'FID6933689450', 'harrowings', 5000, 'mulching', '2025-12-18 00:00:00', '2025-12-15 17:23:50', '0000-00-00 00:00:00', 0, 'none'),
+(2, 'FID69413822959', 'Kamayan', 5000, 'transplanting', '2025-12-17 00:00:00', '2025-12-16 19:03:30', '0000-00-00 00:00:00', 0, 'great'),
+(3, 'FID69413969081', 'Kamayan', 5000, 'transplanting', '2025-12-17 00:00:00', '2025-12-16 19:03:50', '0000-00-00 00:00:00', 0, 'great'),
+(4, 'FID6941312505', 'Kamayan', 5000, 'transplanting', '2025-12-17 00:00:00', '2025-12-16 19:04:01', '0000-00-00 00:00:00', 0, 'great'),
+(5, 'FID694131376', 'Kamayan', 5000, 'transplanting', '2025-12-17 00:00:00', '2025-12-16 19:05:05', '0000-00-00 00:00:00', 0, 'great');
+
 -- --------------------------------------------------------
 
 --
@@ -168,6 +188,13 @@ CREATE TABLE `farm_details` (
   `following_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `farm_details`
+--
+
+INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
+(1, 1, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok2, anapog-sibucao', 'rented', 50000, '2025-12-15 17:20:42', '2025-12-15 09:20:42', 0, '', '', 0, '', 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -177,13 +204,25 @@ CREATE TABLE `farm_details` (
 CREATE TABLE `farm_resources` (
   `id` int(11) NOT NULL,
   `user_id` int(10) NOT NULL,
-  `date` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `farm_resource_id` varchar(25) NOT NULL,
   `record_name` varchar(255) NOT NULL,
+  `crop_name` varchar(25) NOT NULL,
+  `plant_count` int(11) NOT NULL,
+  `average_yield_per_plant` double NOT NULL,
   `grand_total` double NOT NULL,
-  `farm_resource_id` varchar(25) NOT NULL
+  `date` varchar(255) NOT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `planted_area_sqm` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `farm_resources`
+--
+
+INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`, `crop_name`, `plant_count`, `average_yield_per_plant`, `grand_total`, `date`, `modified_at`, `created_at`, `planted_area_sqm`) VALUES
+(1, 1, 'FID6933689450', '100sqm expsnese for kamatis', 'Kalabasa Hybrid', 200, 2.1, 5000, '2025-12-15', '2025-12-16 11:21:21', '2025-12-15 17:23:50', 0),
+(2, 1, 'FID694131376', 'kamote expenses', 'Kamote Hybrid', 205, 2.1, 5000, '2025-12-16', '2025-12-16 13:13:09', '2025-12-16 19:05:05', 500);
 
 -- --------------------------------------------------------
 
@@ -398,9 +437,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`) VALUES
-(1, 'testconsumer', 'testfirstname', 'testconsumer@gmail.com', '12345678911', 'purok 3 tres', 'bintakay', 'mogpog', 'marinduque', 'consumer', '$2y$10$CGg4Y5imBoKMZXAOu1janOtaNJ.MhNRarBT/OSK2W7k8E85DQOHYC', 0, '2025-12-05 13:53:02', 0, '2025-12-05 13:53:02', '0', '', 1, ''),
-(2, 'test', 'testfarmer', 'testfarmer@gmail.com', '09533307696', 'purok 4 quatro', 'laon', 'mogpog', 'marinduque', 'Farmer', '$2y$10$nZ.RXNQn588vcTARnQNUCeu7MCP9ttDpRCChhCqL8fZ8tO54Y8xV6', 0, '2025-12-05 13:53:44', 0, '2025-12-05 13:53:44', '1', '', 1, ''),
-(3, 'AlexisJaye', 'Dumale', 'alexisdumale@gmail.com', '+639533307696', '', '', '', '', 'Farmer', '$2y$10$cPjZcN/NRSnKPhBAWS6YQuMqtLOceEybufg1G21WF5dZjZlo6O5Ie', 0, '2025-12-07 10:14:07', 0, '2025-12-07 10:14:07', '1', '', 1, '2bc90d07eb1c0cf263f94be40646c600fbde93ec1013da5fd2439ea9aed316f1');
+(1, 'testfarmer', 'testfarmer', 'testfarmer@gmail.com', '09533307696', 'Not Set', 'Not Set', 'Not Set', 'Not Set', 'Farmer', '$2y$10$0O7tjs8Au0gZp6JiiOVhLeL7d3Meaj9Fe/zEvO17gvahRty0/WPbC', 0, '2025-12-15 17:19:26', 0, '2025-12-16 19:36:13', '1', '15426a483f1dec0b02102a181e58ba4d908c48d3-download.png', 1, '');
 
 --
 -- Indexes for dumped tables
@@ -542,7 +579,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -560,19 +597,19 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
@@ -626,7 +663,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

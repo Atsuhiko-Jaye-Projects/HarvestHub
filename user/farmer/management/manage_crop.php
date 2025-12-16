@@ -28,6 +28,7 @@ $farmer = new Farm($db);
 $farmer->user_id = $_SESSION['user_id'];
 $fetch_farm_location = $farmer->getFarmerLocation();
 
+// get Farm input crops
 
 
 

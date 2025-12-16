@@ -18,11 +18,30 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Crop Name</label>
-                  <input type="text" name="crop_name" class="form-control" required placeholder="">
+                    <select name="crop_name" id="cropSelect" class="form-select">
+                        <?php
+                        $farm_resource->user_id = $_SESSION['user_id'];
+                        $stmt = $farm_resource->getCropName();
+                        $num = $stmt->rowCount();
+
+                        if ($num > 0) {
+                            // show once
+                            echo "<option value=''>-- Select Crop --</option>";
+
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$row['id']}' data-name='{$row['crop_name']}'>{$row['crop_name']}</option>";
+                            }
+                        } else {
+                            echo "<option value=''>No Crop found</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
 
 
+
                 <div class="col-md-6">
+                  <input type="hidden" name="crop_name" id="crop_name" class="form-control">
                   <label>Date Planted</label>
                   <input type="date" id="date_planted" name="date_planted" class="form-control" required placeholder="" value="<?php echo date('Y-m-d'); ?>">
                 </div>
@@ -31,13 +50,14 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Estimated Harvest Date</label>
-                    <input type="date" id="estimated_harvest_date" name="estimated_harvest_date" class="form-control" required placeholder="">
+                    <?php $futureDate = date('Y-m-d', strtotime('+45 days')); ?>
+                    <input type="date" id="estimated_harvest_date" name="estimated_harvest_date" class="form-control"  value="<?php echo $futureDate; ?>">
                 </div>
                 <div class="col-md-6">
                     <label>
                       KG/Plant (Average Yield) 
                     </label>
-                    <input type="number" step="0.01" name="kilo_per_plant" class="form-control">
+                    <input type="number" step="0.01" name="kilo_per_plant" id="avgyeild" class="form-control">
                 </div>
               </div>
               <div class="row mb-3">
@@ -45,6 +65,7 @@
                     <label>Cultivated Area</label>
                     <input type="number"
                     name="cultivated_area"
+                    id="area"
                     class="form-control"
                     onchange="
                       if (this.value < 50) { alert('Minimum cultivated area size is 50 sqm'); this.value = 50; }
@@ -54,7 +75,7 @@
                     <label>
                       No. of plants (Estimated)
                     </label>
-                    <input type="number" name="plant_count" class="form-control">
+                    <input type="number" name="plant_count" id="plantCount" class="form-control">
                 </div>
               </div>
             </div>
@@ -72,3 +93,29 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.getElementById("cropSelect").addEventListener("change", function(){
+    const cropId = this.value;
+    const selectedOption = this.options[this.selectedIndex];
+    const cropName = selectedOption.dataset.name;
+    
+
+    if(!cropId){
+      document.getElementById("avgyeild").value = "";
+      document.getElementById("plantCount").value = "";
+      document.getElementById("area").value = "";
+      return;
+    } 
+
+    fetch("../../../js/user/farmer/api/fetch_crop_details.php?id=" + cropId)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("avgyeild").value = data.average_yield_per_plant;
+      document.getElementById("plantCount").value = data.plant_count;
+      document.getElementById("area").value = data.planted_area_sqm;
+    });
+    
+    document.getElementById("crop_name").value = cropName;
+  });
+</script>

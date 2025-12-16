@@ -31,7 +31,6 @@ class Crop{
                 " . $this->table_name . "
                 SET
                 user_id=:user_id,
-                sasdasdasdasd
                 crop_name=:crop_name,
                 yield=:yield,
                 cultivated_area=:cultivated_area,
