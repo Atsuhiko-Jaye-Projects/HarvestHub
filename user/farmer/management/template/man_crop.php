@@ -69,6 +69,7 @@
   </div>
 
   <?php include_once "../modal-forms/crop/add_crop.php"; ?>
+  <?php include_once "../modal-forms/crop/post_harvest.php"; ?>
   <div id="modalContainer"></div>
   <div id="modalCropContainer"></div>
 
@@ -81,7 +82,7 @@
   <!-- Crop Table -->
   <div class="table-responsive shadow-sm rounded-4">
     <table class="table table-hover table-bordered align-middle mb-0">
-      <thead class="table-success text-uppercase text-center ">
+      <thead class="table-success text-uppercase text-center">
         <tr>
           <th><i class="bi bi-flower1 me-1"></i> </i> Crop Name</th>
           <th><i class="bi bi-bar-chart-line me-1"></i> KG/Plant</th>
@@ -92,17 +93,52 @@
           <th><i class="bi bi-calendar-check me-1"></i> Harvest Est.</th>
           <th><i class="bi bi-clock me-1"></i> Duration</th>
           <th><i class="bi bi-calendar3 me-1"></i> Crop Age</th>
-          <th><i class="bi bi-info-circle me-1"></i> Status</th>
           <th class="text-center"><i class="bi bi-gear me-1"></i> Action</th>
         </tr>
       </thead>
-      <tbody id="crop_table" class="table-group-divider">
-        <tr>
-          <td colspan="9" class="text-center py-5 text-muted" id="loadingState">
-            <div class="spinner-border text-success" role="status"></div>
-            <div class="mt-2">Loading data...</div>
-          </td>
-        </tr>
+      <tbody id="crop_table" class="table-group-divider text-center">
+        <?php
+        if ($num>0) {
+          while ($row = $crop_stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $datePlanted = new DateTime($row['date_planted']);
+            $harvestEst  = new DateTime($row['estimated_harvest_date']);
+            $today       = new DateTime(); // current date
+
+            // Duration: from planted to estimated harvest
+            $duration = $datePlanted->diff($harvestEst);
+            $durationDays = $duration->days;
+
+            // Crop Age: from planted to today
+            $age = $datePlanted->diff($today);
+            $ageDays = $age->days;
+            echo "<tr>";
+              echo "<td>{$row['crop_name']}</td>";
+              echo "<td>{$row['yield']}</td>";
+              echo "<td>{$row['cultivated_area']}</td>";
+              echo "<td>{$row['stocks']}</td>";
+              echo "<td>{$row['plant_count']}</td>";
+              echo "<td>{$row['date_planted']}</td>";
+              echo "<td>{$row['estimated_harvest_date']}</td>";
+              echo "<td>{$durationDays} days</td>";
+              echo "<td>{$ageDays} days</td>";
+              echo "<td class='text-nowrap'>
+                <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-'>
+                    <i class='bi bi-pencil-square'></i>
+                </button>
+                <button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-'>
+                  <i class='bi bi-cloud-upload-fill'></i>
+                </button>
+                  </td>";
+            echo "</tr>";
+          }
+
+        }else{
+          echo "<tr>
+            <td colspan='11' class='text-center'>No Crop found</td>
+          </tr>";
+        }
+        ?>
       </tbody>
     </table>
   </div>
@@ -118,21 +154,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Simulate fetching data
   setTimeout(() => {
-    document.getElementById("loadingState").outerHTML = `
-      <tr>
-        <td>Tomato</td>
-        <td>150</td>
-        <td>250</td>
-        <td>2025-10-01</td>
-        <td>2025-11-15</td>
-        <td>45 days</td>
-        <td>20 days</td>
-        <td><span class="badge bg-success">Posted</span></td>
-        <td class="text-center">
-          <button class="btn btn-sm btn-primary me-2"><i class="bi bi-pencil-square"></i></button>
-          <button class="btn btn-sm btn-success"><i class="bi bi-upload"></i></button>
-        </td>
-      </tr>`;
+    const loading = document.getElementById("loadingState");
+    if (loading) loading.outerHTML = ``;
     
     document.getElementById("totalCrops").innerText = "14";
     document.getElementById("postedCrops").innerText = "8";
@@ -142,27 +165,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Search functionality
   const searchInput = document.getElementById("searchCrop");
-  searchInput.addEventListener("input", () => {
-    const filter = searchInput.value.toLowerCase();
-    document.querySelectorAll("#crop_table tr").forEach(row => {
-      const match = row.innerText.toLowerCase().includes(filter);
-      row.style.display = match ? "" : "none";
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      const filter = searchInput.value.toLowerCase();
+      document.querySelectorAll("#crop_table tr").forEach(row => {
+        const match = row.innerText.toLowerCase().includes(filter);
+        row.style.display = match ? "" : "none";
+      });
     });
-  });
+  }
 
   // Status filter
   const statusSelect = document.getElementById("statusFilter");
-  statusSelect.addEventListener("change", () => {
-    const status = statusSelect.value.toLowerCase();
-    document.querySelectorAll("#crop_table tr").forEach(row => {
-      if (!status) {
-        row.style.display = "";
-      } else {
-        const rowStatus = row.cells[7]?.innerText.toLowerCase();
-        row.style.display = rowStatus === status ? "" : "none";
-      }
+  if (statusSelect) {
+    statusSelect.addEventListener("change", () => {
+      const status = statusSelect.value.toLowerCase();
+      document.querySelectorAll("#crop_table tr").forEach(row => {
+        if (!status) {
+          row.style.display = "";
+        } else {
+          const rowStatus = row.cells[9]?.innerText.toLowerCase(); // correct index
+          row.style.display = rowStatus === status ? "" : "none";
+        }
+      });
     });
-  });
+  }
 });
 </script>
 

@@ -110,190 +110,190 @@ document.addEventListener('DOMContentLoaded', function() {
 // =====================
 // CROP TABLE SECTION
 // =====================
-document.addEventListener('DOMContentLoaded', function() {
-  // Helper function: calculate days since planted
-  function getDaysSincePlanted(datePlanted) {
-    if (!datePlanted) return '-';
-    const planted = new Date(datePlanted);
-    const today = new Date();
-    const diffTime = today - planted;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    diffDays === 1 ? " Day" : " Days"
-    return diffDays + (diffDays === 1 ? " Day" : " Days");
-  }
+// document.addEventListener('DOMContentLoaded', function() {
+//   // Helper function: calculate days since planted
+//   function getDaysSincePlanted(datePlanted) {
+//     if (!datePlanted) return '-';
+//     const planted = new Date(datePlanted);
+//     const today = new Date();
+//     const diffTime = today - planted;
+//     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+//     diffDays === 1 ? " Day" : " Days"
+//     return diffDays + (diffDays === 1 ? " Day" : " Days");
+//   }
 
-  // Helper function: determine crop status based on days
-  function getCropStatus(datePlanted) {
-    const days = getDaysSincePlanted(datePlanted);
-    if (days === 0) return 'Planted';
-    if (days <= 4) return 'Germinating';
-    if (days <= 10) return 'Cultivating';
-    return 'Growing';
-  }
+//   // Helper function: determine crop status based on days
+//   function getCropStatus(datePlanted) {
+//     const days = getDaysSincePlanted(datePlanted);
+//     if (days === 0) return 'Planted';
+//     if (days <= 4) return 'Germinating';
+//     if (days <= 10) return 'Cultivating';
+//     return 'Growing';
+//   }
 
-  window.loadCropTable = function(page = 1) {
-    $.ajax({
-      url: '../../../js/user/farmer/api/fetch_farm_crop.php',
-      type: 'GET',
-      data: { page: page },
-      dataType: 'json',
-      success: function(response) {
-        let rows = '';
-        let update_crop_modal = '';
-        let post_crop_modal = '';
-        let total_stocks = 0;
-        let planted_crops = 0;
-        let total_harvest = 0;
-        let cultivatedArea = 0;
-        let avgYield = 0;
-        let plantCount = 0;
+//   window.loadCropTable = function(page = 1) {
+//     $.ajax({
+//       url: '../../../js/user/farmer/api/fetch_farm_crop.php',
+//       type: 'GET',
+//       data: { page: page },
+//       dataType: 'json',
+//       success: function(response) {
+//         let rows = '';
+//         let update_crop_modal = '';
+//         let post_crop_modal = '';
+//         let total_stocks = 0;
+//         let planted_crops = 0;
+//         let total_harvest = 0;
+//         let cultivatedArea = 0;
+//         let avgYield = 0;
+//         let plantCount = 0;
 
-        if (!response.records || response.records.length === 0) {
-          $('#crop_table').html("<tr><td colspan='8' class='text-center'>No crops found.</td></tr>");
-          $('#crop_pagination').html('');
-          return;
-        }
+//         if (!response.records || response.records.length === 0) {
+//           $('#crop_table').html("<tr><td colspan='8' class='text-center'>No crops found.</td></tr>");
+//           $('#crop_pagination').html('');
+//           return;
+//         }
 
-        response.records.forEach(row => {
-          const daysSincePlanted = getDaysSincePlanted(row.date_planted);
-          const status = getCropStatus(row.date_planted);
+//         response.records.forEach(row => {
+//           const daysSincePlanted = getDaysSincePlanted(row.date_planted);
+//           const status = getCropStatus(row.date_planted);
 
-          // duration until estimated harvest
-          let duration = '-';
-          if (row.estimated_harvest_date) {
-            const diffTime = new Date(row.estimated_harvest_date) - new Date(row.date_planted);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+//           // duration until estimated harvest
+//           let duration = '-';
+//           if (row.estimated_harvest_date) {
+//             const diffTime = new Date(row.estimated_harvest_date) - new Date(row.date_planted);
+//             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            duration = diffDays + (diffDays === 1 ? " Day" : " Days"); // adds space and singular/plural
-          }
+//             duration = diffDays + (diffDays === 1 ? " Day" : " Days"); // adds space and singular/plural
+//           }
           
-        response.records.forEach(row=>{
-        let total_stocks = 0;
-        });
+//         response.records.forEach(row=>{
+//         let total_stocks = 0;
+//         });
 
-          rows += `
-            <tr class='text-center'>
-              <td style="text-transform: capitalize;">${row.crop_name}</td>
-              <td>${row.yield} KG</td>
-              <td>${Number(row.cultivated_area).toLocaleString()} SQM</td>
-              <td>${Number(row.stocks).toLocaleString()} KG</td>
-              <td>${row.plant_count} Planted</td>
-              <td>${row.date_planted}</td>
-              <td>${row.estimated_harvest_date || '-'}</td>
-              <td>${duration}</td>
-              <td>${daysSincePlanted}</td>
-              <td>${status}</td>
+//           rows += `
+//             <tr class='text-center'>
+//               <td style="text-transform: capitalize;">${row.crop_name}</td>
+//               <td>${row.yield} KG</td>
+//               <td>${Number(row.cultivated_area).toLocaleString()} SQM</td>
+//               <td>${Number(row.stocks).toLocaleString()} KG</td>
+//               <td>${row.plant_count} Planted</td>
+//               <td>${row.date_planted}</td>
+//               <td>${row.estimated_harvest_date || '-'}</td>
+//               <td>${duration}</td>
+//               <td>${daysSincePlanted}</td>
+//               <td>${status}</td>
               
-              <td class="text-nowrap">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update-crop-modal-${row.id}">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#post-crop-modal-${row.id}">
-                 <i class="bi bi-cloud-upload-fill"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-          post_crop_modal += postFarmCrop(row);
-          update_crop_modal += updateFarmCrop(row);
-          total_stocks += Number(row.stocks);
-          planted_crops += Number(row.plant_count);
-          total_harvest = parseFloat(row.stocks);
-          cultivatedArea = parseFloat(row.cultivated_area);
-          avgYield = cultivatedArea > 0 ? (total_harvest / cultivatedArea) : 0;
-        });
-        document.getElementById('recordCount').textContent = response.total_rows;
-        document.getElementById('recordCounts').textContent = response.total_rows;
-        document.getElementById('crop_stocks').textContent = total_stocks.toLocaleString();
-        document.getElementById('planted_crop_count').textContent = planted_crops.toLocaleString();
-        document.getElementById('avg_Yields').textContent = avgYield.toFixed(2)  + " kg";
+//               <td class="text-nowrap">
+//                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update-crop-modal-${row.id}">
+//                   <i class="bi bi-pencil-square"></i>
+//                 </button>
+//                 <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#post-crop-modal-${row.id}">
+//                  <i class="bi bi-cloud-upload-fill"></i>
+//                 </button>
+//               </td>
+//             </tr>
+//           `;
+//           post_crop_modal += postFarmCrop(row);
+//           update_crop_modal += updateFarmCrop(row);
+//           total_stocks += Number(row.stocks);
+//           planted_crops += Number(row.plant_count);
+//           total_harvest = parseFloat(row.stocks);
+//           cultivatedArea = parseFloat(row.cultivated_area);
+//           avgYield = cultivatedArea > 0 ? (total_harvest / cultivatedArea) : 0;
+//         });
+//         document.getElementById('recordCount').textContent = response.total_rows;
+//         document.getElementById('recordCounts').textContent = response.total_rows;
+//         document.getElementById('crop_stocks').textContent = total_stocks.toLocaleString();
+//         document.getElementById('planted_crop_count').textContent = planted_crops.toLocaleString();
+//         document.getElementById('avg_Yields').textContent = avgYield.toFixed(2)  + " kg";
         
-        $('#crop_table').html(rows);
-        $('#modalContainer').html(update_crop_modal);
-        $('#modalCropContainer').html(post_crop_modal);
-        renderCropPagination(response.current_page, response.total_pages);
-      },
-      error: function() {
-        alert('Failed to load crop data');
-      }
-    });
-  };
+//         $('#crop_table').html(rows);
+//         $('#modalContainer').html(update_crop_modal);
+//         $('#modalCropContainer').html(post_crop_modal);
+//         renderCropPagination(response.current_page, response.total_pages);
+//       },
+//       error: function() {
+//         alert('Failed to load crop data');
+//       }
+//     });
+//   };
 
-  function renderCropPagination(current, total) {
-    let paginationHTML = '';
+//   function renderCropPagination(current, total) {
+//     let paginationHTML = '';
 
-    if (total > 1) {
-      paginationHTML += `
-        <nav>
-          <ul class="pagination">
-            <li class="page-item ${current === 1 ? 'disabled' : ''}">
-              <a class="page-link" href="#" onclick="loadCropTable(${current - 1})">Prev</a>
-            </li>
-      `;
+//     if (total > 1) {
+//       paginationHTML += `
+//         <nav>
+//           <ul class="pagination">
+//             <li class="page-item ${current === 1 ? 'disabled' : ''}">
+//               <a class="page-link" href="#" onclick="loadCropTable(${current - 1})">Prev</a>
+//             </li>
+//       `;
 
-      for (let i = 1; i <= total; i++) {
-        paginationHTML += `
-          <li class="page-item ${i === current ? 'active' : ''}">
-            <a class="page-link" href="#" onclick="loadCropTable(${i})">${i}</a>
-          </li>
-        `;
-      }
+//       for (let i = 1; i <= total; i++) {
+//         paginationHTML += `
+//           <li class="page-item ${i === current ? 'active' : ''}">
+//             <a class="page-link" href="#" onclick="loadCropTable(${i})">${i}</a>
+//           </li>
+//         `;
+//       }
 
-      paginationHTML += `
-            <li class="page-item ${current === total ? 'disabled' : ''}">
-              <a class="page-link" href="#" onclick="loadCropTable(${current + 1})">Next</a>
-            </li>
-          </ul>
-        </nav>
-      `;
-    }
+//       paginationHTML += `
+//             <li class="page-item ${current === total ? 'disabled' : ''}">
+//               <a class="page-link" href="#" onclick="loadCropTable(${current + 1})">Next</a>
+//             </li>
+//           </ul>
+//         </nav>
+//       `;
+//     }
 
-    $('#crop_pagination').html(paginationHTML);
-  }
+//     $('#crop_pagination').html(paginationHTML);
+//   }
 
-  // Load crop data when page opens
-  loadCropTable();
-});
+//   // Load crop data when page opens
+//   loadCropTable();
+// });
 
 
-// // check the estimation of plant Date
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('cropForm').addEventListener('submit', function(e) {
-    const datePlanted = new Date(document.getElementById('date_planted').value);
-    const harvestDate = new Date(document.getElementById('estimated_harvest_date').value);
+// // // check the estimation of plant Date
+// document.addEventListener('DOMContentLoaded', function(){
+//   document.getElementById('cropForm').addEventListener('submit', function(e) {
+//     const datePlanted = new Date(document.getElementById('date_planted').value);
+//     const harvestDate = new Date(document.getElementById('estimated_harvest_date').value);
 
-    if (harvestDate <= datePlanted) {
-      e.preventDefault();
-      bootbox.alert({
-        title: "Invalid Dates ❌",
-        message: "Estimated harvest date must be after the date planted.",
-        backdrop: false
-      });
-      return;
-    }
+//     if (harvestDate <= datePlanted) {
+//       e.preventDefault();
+//       bootbox.alert({
+//         title: "Invalid Dates ❌",
+//         message: "Estimated harvest date must be after the date planted.",
+//         backdrop: false
+//       });
+//       return;
+//     }
 
-    const diffTime = harvestDate - datePlanted;
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+//     const diffTime = harvestDate - datePlanted;
+//     const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
-    if (diffDays < 45) {
-      e.preventDefault();
-      bootbox.alert({
-        title: "Too Soon 🌱",
-        message: "The estimated harvest date must be at least 45 days after planting.",
-      });
-      return;
-    }
+//     if (diffDays < 45) {
+//       e.preventDefault();
+//       bootbox.alert({
+//         title: "Too Soon 🌱",
+//         message: "The estimated harvest date must be at least 45 days after planting.",
+//       });
+//       return;
+//     }
 
-    if (diffDays > 365) {
-      e.preventDefault();
-      bootbox.alert({
-        title: "Too Far ⚠️",
-        message: "The harvest date seems too far. Please check the date.",
-      });
-      return;
-    }
-  });
-});
+//     if (diffDays > 365) {
+//       e.preventDefault();
+//       bootbox.alert({
+//         title: "Too Far ⚠️",
+//         message: "The harvest date seems too far. Please check the date.",
+//       });
+//       return;
+//     }
+//   });
+// });
 
 function loadMostPlanted() {
   $.ajax({

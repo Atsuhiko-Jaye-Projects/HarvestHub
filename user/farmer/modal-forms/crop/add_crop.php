@@ -29,7 +29,11 @@
                             echo "<option value=''>-- Select Crop --</option>";
 
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo "<option value='{$row['id']}' data-name='{$row['crop_name']}'>{$row['crop_name']}</option>";
+                              echo "<option value='{$row['id']}'
+                                    data-name='{$row['crop_name']}'
+                                    data-farmresource-id='{$row['farm_resource_id']}'>
+                                    {$row['crop_name']}
+                                  </option>";
                             }
                         } else {
                             echo "<option value=''>No Crop found</option>";
@@ -42,6 +46,7 @@
 
                 <div class="col-md-6">
                   <input type="hidden" name="crop_name" id="crop_name" class="form-control">
+                  <input type="hidden" name="farm_resource_id" id="farmresourceid">
                   <label>Date Planted</label>
                   <input type="date" id="date_planted" name="date_planted" class="form-control" required placeholder="" value="<?php echo date('Y-m-d'); ?>">
                 </div>
@@ -99,12 +104,14 @@
     const cropId = this.value;
     const selectedOption = this.options[this.selectedIndex];
     const cropName = selectedOption.dataset.name;
+    const farmResourceId = selectedOption.dataset.farmresourceId;
     
 
     if(!cropId){
       document.getElementById("avgyeild").value = "";
       document.getElementById("plantCount").value = "";
       document.getElementById("area").value = "";
+      document.getElementById("farmresourceid").value = "";
       return;
     } 
 
@@ -117,5 +124,6 @@
     });
     
     document.getElementById("crop_name").value = cropName;
+    document.getElementById("farmresourceid").value = farmResourceId;
   });
 </script>

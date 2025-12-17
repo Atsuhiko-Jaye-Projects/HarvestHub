@@ -16,6 +16,7 @@ class FarmResource{
     public $created_at;
     public $modified_at;
     public $start_date_expense;
+    public $crop_status;
     public $today_expense;
 
     public function __construct($db) {
@@ -264,7 +265,8 @@ class FarmResource{
                     FROM
                     " . $this->table_name . "
                     WHERE 
-                    user_id=:user_id";
+                    user_id=:user_id 
+                    AND (crop_status = '' OR crop_status = 'harvested')";
         
         $stmt = $this->conn->prepare($query);
 
@@ -279,7 +281,7 @@ class FarmResource{
                   FROM 
                     " . $this->table_name . " 
                   WHERE 
-                     id = :id";
+                     id = :id ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $this->id);
@@ -289,9 +291,28 @@ class FarmResource{
         return $stmt;
     }
 
+    function MarkCropAsPlanted(){
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                    SET
+                    crop_status = :crop_status,
+                    modified_at = :modified_at
+                    WHERE
+                    farm_resource_id = :farm_resource_id";
+        
+        $stmt = $this->conn->prepare($query);
 
+        $this->modified_at = date("Y-m-d H-i-s");
 
+        $stmt->bindParam(":crop_status", $this->crop_status);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
 
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;   
+    }
 }
 
 

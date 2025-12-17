@@ -29,9 +29,6 @@ $farmer->user_id = $_SESSION['user_id'];
 $fetch_farm_location = $farmer->getFarmerLocation();
 
 // get Farm input crops
-
-
-
 $page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
 
 // page given in URL parameter, default page is one
@@ -44,7 +41,8 @@ $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 $crop->user_id = $_SESSION['user_id'];
 
-
+$crop_stmt = $crop->readAllCrop($from_record_num, $records_per_page);
+$num = $crop_stmt->rowCount();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
@@ -83,12 +81,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->plant_count = $_POST['plant_count'];
         $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
+        $crop->farm_resource_id = $_POST['farm_resource_id'];
         // we bind values from farmer to crop 
         $crop->province = $farmer->province;
         $crop->municipality = $farmer->municipality;
         $crop->baranggay = $farmer->baranggay;
+        $crop->crop_status = "crop planted";
+
+        // also bind a values for farm-resource to update the crop status
+        $farm_resource->farm_resource_id = $_POST['farm_resource_id'];
+        $farm_resource->crop_status = "crop planted";
+
 
         if ($crop->createCrop()) {
+            // mark the crop as planted and the farm resource
+
+            $crop->MarkCropAsPlanted();
+            $farm_resource->MarkCropAsPlanted();
+
             echo "<div class='container'><div class='alert alert-success'>Crop Info Saved!</div></div>";
         } else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";

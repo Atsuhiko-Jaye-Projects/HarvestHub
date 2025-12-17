@@ -10,6 +10,7 @@ class Crop{
     public $crop_name;
     public $date_planted;
     public $estimated_harvest_date;
+    public $farm_resource_id;
     public $yield;
     public $suggested_price;
     public $plant_count;
@@ -19,6 +20,7 @@ class Crop{
     public $is_posted;
     public $province;
     public $municipality;
+    public $crop_status;
     public $baranggay;
 
     public function __construct($db) {
@@ -37,6 +39,7 @@ class Crop{
                 date_planted=:date_planted,
                 estimated_harvest_date=:estimated_harvest_date,
                 suggested_price=:suggested_price,
+                farm_resource_id=:farm_resource_id,
                 created_at=:created_at,
                 stocks=:stocks,
                 plant_count = :plant_count,
@@ -52,6 +55,7 @@ class Crop{
         $this->yield = htmlspecialchars(strip_tags($this->yield));
         $this->cultivated_area = htmlspecialchars(strip_tags($this->cultivated_area));
         $this->date_planted = htmlspecialchars(strip_tags($this->date_planted));
+        $this->farm_resource_id = htmlspecialchars(strip_tags($this->farm_resource_id));
         $this->estimated_harvest_date = htmlspecialchars(strip_tags($this->estimated_harvest_date));
         $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
         $this->stocks = htmlspecialchars(strip_tags($this->stocks));
@@ -70,6 +74,7 @@ class Crop{
         $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
         $stmt->bindParam(":suggested_price", $this->suggested_price);
         $stmt->bindParam(":stocks", $this->stocks);
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
         $stmt->bindParam(":plant_count", $this->plant_count);
         $stmt->bindParam(":province", $this->province);
         $stmt->bindParam(":municipality", $this->municipality);
@@ -86,32 +91,29 @@ class Crop{
         $query = "SELECT * FROM " . $this->table_name . "
                   WHERE user_id = :user_id
                   ORDER BY id DESC
-                  LIMIT :from_record_num, :records_per_page";
+                  LIMIT $from_record_num, $records_per_page";
 
         $stmt = $this->conn->prepare($query);
 
         // IMPORTANT: Use bindValue() instead of bindParam() for LIMIT (avoids reference issues)
-        $stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
-        $stmt->bindValue(":from_record_num", (int)$from_record_num, PDO::PARAM_INT);
-        $stmt->bindValue(":records_per_page", (int)$records_per_page, PDO::PARAM_INT);
-
+        $stmt->bindParam(":user_id", $this->user_id);
         $stmt->execute();
 
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt;
 
-        // Count total rows for pagination
-        $count_query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE user_id = :user_id";
-        $count_stmt = $this->conn->prepare($count_query);
-        $count_stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
-        $count_stmt->execute();
+        // // Count total rows for pagination
+        // $count_query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE user_id = :user_id";
+        // $count_stmt = $this->conn->prepare($count_query);
+        // $count_stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
+        // $count_stmt->execute();
 
-        $count_row = $count_stmt->fetch(PDO::FETCH_ASSOC);
-        $total_rows = $count_row['total_rows'];
+        // $count_row = $count_stmt->fetch(PDO::FETCH_ASSOC);
+        // $total_rows = $count_row['total_rows'];
 
-        return [
-            "records" => $products,
-            "total_rows" => $total_rows
-        ];
+        // return [
+        //     "records" => $products,
+        //     "total_rows" => $total_rows
+        // ];
     }
 
     function updateFarmProduct() {
@@ -208,11 +210,28 @@ class Crop{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    function MarkCropAsPlanted(){
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                    SET
+                    crop_status = :crop_status,
+                    modified_at = :modified_at
+                    WHERE
+                    farm_resource_id = :farm_resource_id";
+        
+        $stmt = $this->conn->prepare($query);
 
+        $this->modified_at = date("Y-m-d H-i-s");
 
+        $stmt->bindParam(":crop_status", $this->crop_status);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
 
-
-
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;   
+    }
 }
 
 
