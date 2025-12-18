@@ -69,7 +69,6 @@
   </div>
 
   <?php include_once "../modal-forms/crop/add_crop.php"; ?>
-  <?php include_once "../modal-forms/crop/post_harvest.php"; ?>
   <div id="modalContainer"></div>
   <div id="modalCropContainer"></div>
 
@@ -81,11 +80,11 @@
 
   <!-- Crop Table -->
   <div class="table-responsive shadow-sm rounded-4">
-    <table class="table table-hover table-bordered align-middle mb-0">
+    <table class="table table-hover table-bordered align-middle mb-0 ">
       <thead class="table-success text-uppercase text-center">
         <tr>
           <th><i class="bi bi-flower1 me-1"></i> </i> Crop Name</th>
-          <th><i class="bi bi-bar-chart-line me-1"></i> KG/Plant</th>
+          <th><i class="bi bi-bar-chart-line me-1"></i> Yield/Plant (kg)</th>
           <th><i class="bi bi-signpost-split me-1"></i> Cultivated Area (sqm)</th>
           <th><i class="bi bi-box-seam me-1"></i> Harvest Stocks (EST.)</th>
           <th><i class="bi bi-clipboard-data me-1"></i> Planted Crops</th>
@@ -112,8 +111,9 @@
             // Crop Age: from planted to today
             $age = $datePlanted->diff($today);
             $ageDays = $age->days;
+
             echo "<tr>";
-              echo "<td>{$row['crop_name']}</td>";
+              echo "<td class='text-nowrap'>{$row['crop_name']}</td>";
               echo "<td>{$row['yield']}</td>";
               echo "<td>{$row['cultivated_area']}</td>";
               echo "<td>{$row['stocks']}</td>";
@@ -123,16 +123,16 @@
               echo "<td>{$durationDays} days</td>";
               echo "<td>{$ageDays} days</td>";
               echo "<td class='text-nowrap'>
-                <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-'>
+                <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-{$row['id']}'>
                     <i class='bi bi-pencil-square'></i>
                 </button>
-                <button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-'>
+                <button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
                   <i class='bi bi-cloud-upload-fill'></i>
                 </button>
                   </td>";
             echo "</tr>";
+            include "../modal-forms/crop/post_crop.php";
           }
-
         }else{
           echo "<tr>
             <td colspan='11' class='text-center'>No Crop found</td>

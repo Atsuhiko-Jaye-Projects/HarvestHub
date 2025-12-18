@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2025 at 02:14 PM
+-- Generation Time: Dec 18, 2025 at 12:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -76,6 +76,7 @@ CREATE TABLE `conversations` (
 CREATE TABLE `crops` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `farm_resource_id` varchar(255) NOT NULL,
   `crop_name` varchar(250) NOT NULL,
   `yield` double NOT NULL,
   `cultivated_area` int(11) NOT NULL,
@@ -88,17 +89,21 @@ CREATE TABLE `crops` (
   `plant_count` int(11) NOT NULL,
   `province` varchar(255) NOT NULL,
   `municipality` varchar(255) NOT NULL,
-  `baranggay` varchar(250) NOT NULL
+  `baranggay` varchar(250) NOT NULL,
+  `crop_status` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `crops`
 --
 
-INSERT INTO `crops` (`id`, `user_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`) VALUES
-(1, 1, '1', 2.1, 0, '2025-12-16', '2026-01-30', 0, '2025-12-16 12:55:37', '2025-12-16 20:55:37', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao'),
-(2, 1, '2', 2.1, 9, '2025-12-16', '2026-01-30', 0, '2025-12-16 12:59:05', '2025-12-16 20:59:05', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao'),
-(3, 1, 'Kalabasa Hybrid', 2.1, 300, '2025-12-16', '2026-01-30', 0, '2025-12-16 13:13:36', '2025-12-16 21:12:14', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao');
+INSERT INTO `crops` (`id`, `user_id`, `farm_resource_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`, `crop_status`) VALUES
+(7, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 500, '2025-12-17', '2026-01-31', 0, '2025-12-18 11:02:33', '2025-12-17 15:39:05', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(8, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-17', '2026-01-31', 0, '2025-12-18 11:02:44', '2025-12-17 15:49:19', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(9, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 5000, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:33', '2025-12-18 17:32:19', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(10, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:44', '2025-12-18 18:59:26', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(11, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 0, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:33', '2025-12-18 19:02:33', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(12, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 5000, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:44', '2025-12-18 19:02:44', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted');
 
 -- --------------------------------------------------------
 
@@ -213,16 +218,17 @@ CREATE TABLE `farm_resources` (
   `date` varchar(255) NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `planted_area_sqm` double NOT NULL
+  `planted_area_sqm` double NOT NULL,
+  `crop_status` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `farm_resources`
 --
 
-INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`, `crop_name`, `plant_count`, `average_yield_per_plant`, `grand_total`, `date`, `modified_at`, `created_at`, `planted_area_sqm`) VALUES
-(1, 1, 'FID6933689450', '100sqm expsnese for kamatis', 'Kalabasa Hybrid', 200, 2.1, 5000, '2025-12-15', '2025-12-16 11:21:21', '2025-12-15 17:23:50', 0),
-(2, 1, 'FID694131376', 'kamote expenses', 'Kamote Hybrid', 205, 2.1, 5000, '2025-12-16', '2025-12-16 13:13:09', '2025-12-16 19:05:05', 500);
+INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`, `crop_name`, `plant_count`, `average_yield_per_plant`, `grand_total`, `date`, `modified_at`, `created_at`, `planted_area_sqm`, `crop_status`) VALUES
+(1, 1, 'FID6933689450', '100sqm expsnese for kamatis', 'Kalabasa Hybrid', 200, 2.1, 10000, '2025-12-15', '2025-12-18 11:02:33', '2025-12-15 17:23:50', 0, ''),
+(2, 1, 'FID694131376', 'kamote expenses', 'Kamote Hybrid', 205, 2.1, 5000, '2025-12-16', '2025-12-18 11:02:44', '2025-12-16 19:05:05', 500, '');
 
 -- --------------------------------------------------------
 
@@ -328,6 +334,13 @@ CREATE TABLE `password_resets` (
   `expires_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`id`, `email_address`, `token`, `expires_at`) VALUES
+(1, 'testfarmer@gmail.com', '0ecab87109898778a5fdf468511afb3f3d7bd0f1f28159ba39c3587173cf9e0c', '2025-12-17 14:10:14');
+
 -- --------------------------------------------------------
 
 --
@@ -366,6 +379,13 @@ CREATE TABLE `products` (
   `available_stocks` int(11) NOT NULL,
   `discount` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
+(1, 8, 'Kamote Hybrid', 12, 1, 'fruit', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 431, 'ffc3f68e12fc6042dae63fc117f61f18fa48be0b-avaneesh.gif', 0, '2025-12-17 16:08:27', '2025-12-18 00:08:27', 'Active', 'preorder', 431, NULL);
 
 -- --------------------------------------------------------
 
@@ -579,7 +599,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -639,13 +659,13 @@ ALTER TABLE `order_status_history`
 -- AUTO_INCREMENT for table `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `product_histories`

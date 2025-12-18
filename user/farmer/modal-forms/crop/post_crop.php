@@ -4,7 +4,7 @@
     <div class="modal-content">
 
       <!-- Form starts here and wraps the modal content -->
-      <form action="${PostCropURL}" method="POST" enctype="multipart/form-data" id="cropForm" onsubmit="return confirmPost(this)">
+      <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data" id="cropForm" onsubmit="return confirmPost(this)">
 
         <div class="modal-header d-block">
           <h5 class="modal-title" id="exampleModalLabel">
@@ -21,36 +21,37 @@
           <div class="card-body">
             <div class="container">
               <input type="hidden" name="action" value='post_crop'>
-              <input type="hidden" name="id" value='${row.id}'>
+              <input type="hidden" name="id" value='<?php echo $row['id']; ?>'>
+              <input type="hidden" class="fri" value='<?php echo $row['farm_resource_id']; ?>'>
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Crop Name:</label>
-                  <input type="text" name="crop_name" class="form-control" required value="${row.crop_name}">
+                  <input type="text" name="crop_name" class="form-control" required value='<?php echo $row['crop_name']; ?>'>
                 </div>
 
 
                 <div class="col-md-6">
                     <label>Estimated Harvest Date:</label>
-                    <input type="date" id="estimated_harvest_date" name="estimated_harvest_date" class="form-control" value="${row.estimated_harvest_date}">
+                    <input type="date" id="estimated_harvest_date" name="estimated_harvest_date" class="form-control" value='<?php echo $row['estimated_harvest_date']; ?>'>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Stocks:</label>
-                    <input type="text" name="stocks" value='${row.stocks}' class="form-control" readonly>
+                    <input type="text" name="stocks" value='<?php echo $row['stocks']; ?>' class="form-control" readonly>
                 </div>
                 <div class="col-md-6">
                     <label>
                       KG/Plant (Estimated):
                     </label>
-                    <input type="text" name="kilo_per_plant" value='${row.yield}' class="form-control" >
+                    <input type="text" name="kilo_per_plant" value='<?php echo $row['yield']; ?>' class="form-control" >
                 </div>
               </div>
               <div class="row mb-3">
                     <div class="col-md-6">
                         <label>No. of plants (Estimated):</label>
-                        <input type="number"  name="plant_count" class="form-control" value="${row.plant_count}">
+                        <input type="number"  name="plant_count" class="form-control" value='<?php echo $row['plant_count']; ?>'>
                     </div>
 
                     <div class="col-md-6">
@@ -75,7 +76,7 @@
                 <div class="row mb-3">
                   <div class="col-md-12">
                         <label>Crop expense</label>
-                        <input type="number" name="crop_expense" class="form-control" 
+                        <input type="number" id="expense" name="crop_expense" class="form-control" 
                         style="border: 2px solid red; outline: none; box-shadow: none;" 
                         value="" required placeholder='₱ 0.00'>
                   </div>
@@ -113,6 +114,42 @@
 
 
 <script>
+
+document.addEventListener("input", function (e) {
+  const modal = e.target.closest(".modal");
+  if (!modal) return;
+
+  computeModal(modal);
+});
+
+document.addEventListener("shown.bs.modal", function (e) {
+    console.log("MODAL OPENED", e.target.id);
+    const modal = e.target;
+    const friInput = modal.querySelector(".fri");
+    const expenseInput = modal.querySelector("input[name='crop_expense']");
+
+    if (!friInput || !expenseInput) return;
+
+    const resource_id = friInput.value;
+    if (!resource_id) return;
+
+    fetch("../../../js/user/farmer/api/fetch_crop_expense.php?id=" + resource_id)
+        .then(res => res.json())
+        .then(data => {
+            
+            expenseInput.value = data.grand_total ?? 0;
+             document.getElementById("expense").value = data.grand_total;
+            // trigger recalculation after fetch
+            computeModal(modal);
+
+  
+        })
+
+        
+});
+
+
+
 function confirmPost(form) {
   // Prevent default submission
   event.preventDefault();
@@ -135,10 +172,7 @@ function confirmPost(form) {
   return false; // prevent default submission until user confirms
 }
 
-
-
-document.addEventListener("input", function (e) {
-  const modal = e.target.closest(".modal");
+function computeModal(modal){
   if (!modal) return;
 
   const kiloPerPlant = modal.querySelector("input[name='kilo_per_plant']");
@@ -165,8 +199,8 @@ document.addEventListener("input", function (e) {
   const costPerKg = totalKilos > 0 ? exp / totalKilos : 0;
   const sellingPrice = costPerKg; // SAME AS YOUR PHP
 
-  // Update the fields
+  // Update the fields 
   if (pricePerUnit) pricePerUnit.value = sellingPrice.toFixed(2);
   if (productValue) productValue.value = (sellingPrice * totalKilos).toFixed(2);
-});
+}
 </script>

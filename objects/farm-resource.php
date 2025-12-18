@@ -313,6 +313,21 @@ class FarmResource{
         }
         return false;   
     }
+
+    function getResourceExpense(){
+        $query = "SELECT grand_total 
+                  FROM
+                  " . $this->table_name . "
+                  WHERE 
+                  farm_resource_id =:farm_resource_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
+        $stmt->execute();
+        
+        return $stmt;
+    }
 }
 
 

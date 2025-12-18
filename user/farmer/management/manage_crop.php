@@ -95,9 +95,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
         if ($crop->createCrop()) {
             // mark the crop as planted and the farm resource
-
             $crop->MarkCropAsPlanted();
             $farm_resource->MarkCropAsPlanted();
+            // $_SESSION['flash'] = [
+            //     'title' => 'Success!',
+            //     'text'  => 'Crop has been updated successfully.',
+            //     'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+            // ];
+            // header("Location: manage_crop.php");
 
             echo "<div class='container'><div class='alert alert-success'>Crop Info Saved!</div></div>";
         } else {
