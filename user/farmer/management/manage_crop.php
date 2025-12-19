@@ -8,7 +8,6 @@ include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
 include_once "../../../objects/user.php";
-
 $page_title = "Manage Crop";
 include_once "../layout/layout_head.php";
 
@@ -30,7 +29,7 @@ $farmer->user_id = $_SESSION['user_id'];
 $fetch_farm_location = $farmer->getFarmerLocation();
 
 // get Farm input crops
-$page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
+$page_url = "{$home_url}user/farmer/management/manage_crop.php?";
 
 // page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -144,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 'text'  => 'Crop has been updated successfully.',
                 'icon'  => 'success' // 'success', 'error', 'warning', 'info'
             ];
-            header("Location: manage_crop.php");
+            // header("Location: manage_crop.php");
 		     echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
 
         } else {
@@ -190,4 +189,18 @@ include_once "template/man_crop.php";
     const UpdatePostURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
     const PostCropURL = "<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
 </script>
+
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+Swal.fire({
+    title: <?= json_encode($_SESSION['flash']['title']) ?>,
+    text: <?= json_encode($_SESSION['flash']['text']) ?>,
+    icon: <?= json_encode($_SESSION['flash']['icon']) ?>,
+    showConfirmButton: false, // ❌ no OK button
+}).then(() => {
+   window.location.href = window.location.pathname;
+});
+
+</script>
+<?php unset($_SESSION['flash']); ?>
 <?php include_once "../layout/layout_foot.php"; ?>

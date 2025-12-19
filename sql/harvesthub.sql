@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2025 at 12:37 PM
+-- Generation Time: Dec 19, 2025 at 08:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -98,12 +98,14 @@ CREATE TABLE `crops` (
 --
 
 INSERT INTO `crops` (`id`, `user_id`, `farm_resource_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`, `crop_status`) VALUES
-(7, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 500, '2025-12-17', '2026-01-31', 0, '2025-12-18 11:02:33', '2025-12-17 15:39:05', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
-(8, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-17', '2026-01-31', 0, '2025-12-18 11:02:44', '2025-12-17 15:49:19', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
-(9, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 5000, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:33', '2025-12-18 17:32:19', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
-(10, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:44', '2025-12-18 18:59:26', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
-(11, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 0, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:33', '2025-12-18 19:02:33', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
-(12, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 5000, '2025-12-18', '2026-02-01', 0, '2025-12-18 11:02:44', '2025-12-18 19:02:44', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted');
+(7, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 500, '2025-12-17', '2026-01-31', 0, '2025-12-19 05:57:55', '2025-12-17 15:39:05', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(8, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-17', '2026-01-31', 0, '2025-12-19 06:24:59', '2025-12-17 15:49:19', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(9, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 5000, '2025-12-18', '2026-02-01', 0, '2025-12-19 05:57:55', '2025-12-18 17:32:19', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(10, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-18', '2026-02-01', 0, '2025-12-19 06:24:59', '2025-12-18 18:59:26', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(11, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 0, '2025-12-18', '2026-02-01', 0, '2025-12-19 05:57:55', '2025-12-18 19:02:33', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(12, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 5000, '2025-12-18', '2026-02-01', 0, '2025-12-19 06:24:59', '2025-12-18 19:02:44', 431, 205, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(13, 1, 'FID6933689450', 'Kalabasa Hybrid', 2.1, 62, '2025-12-19', '2026-02-02', 0, '2025-12-19 07:11:01', '2025-12-19 13:57:55', 420, 200, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted'),
+(14, 1, 'FID694131376', 'Kamote Hybrid', 2.1, 500, '2025-12-19', '2026-02-02', 0, '2025-12-19 07:20:34', '2025-12-19 14:24:59', 5256, 2503, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted');
 
 -- --------------------------------------------------------
 
@@ -227,8 +229,8 @@ CREATE TABLE `farm_resources` (
 --
 
 INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`, `crop_name`, `plant_count`, `average_yield_per_plant`, `grand_total`, `date`, `modified_at`, `created_at`, `planted_area_sqm`, `crop_status`) VALUES
-(1, 1, 'FID6933689450', '100sqm expsnese for kamatis', 'Kalabasa Hybrid', 200, 2.1, 10000, '2025-12-15', '2025-12-18 11:02:33', '2025-12-15 17:23:50', 0, ''),
-(2, 1, 'FID694131376', 'kamote expenses', 'Kamote Hybrid', 205, 2.1, 5000, '2025-12-16', '2025-12-18 11:02:44', '2025-12-16 19:05:05', 500, '');
+(1, 1, 'FID6933689450', '100sqm expsnese for kamatis', 'Kalabasa Hybrid', 200, 2.1, 10000, '2025-12-15', '2025-12-19 05:57:55', '2025-12-15 17:23:50', 0, 'crop planted'),
+(2, 1, 'FID694131376', 'kamote expenses', 'Kamote Hybrid', 205, 2.1, 5000, '2025-12-16', '2025-12-19 06:24:59', '2025-12-16 19:05:05', 500, 'crop planted');
 
 -- --------------------------------------------------------
 
@@ -599,7 +601,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`

@@ -115,7 +115,7 @@
 
             echo "<tr>";
               echo "<td class='text-nowrap'>{$row['crop_name']}</td>";
-              echo "<td>{$row['yield']}/Plant</td>";
+              echo "<td>{$row['yield']} KG/Plant</td>";
               echo "<td>{$row['cultivated_area']}</td>";
               echo "<td>{$row['stocks']}</td>";
               echo "<td>{$row['plant_count']}</td>";
@@ -135,10 +135,9 @@
             include "../modal-forms/crop/edit_crop.php";
             include "../modal-forms/crop/post_crop.php";
           }
+        
         }else{
-          print_r($crop_stmt);
           echo "<tr>
-          
             <td colspan='11' class='text-center'>No Crop found</td>
           </tr>";
         }
@@ -146,10 +145,10 @@
       </tbody>
     </table>
   </div>
-
+  <?php include_once "../../../paging.php"; ?>
   <!-- Pagination -->
   <!-- <div id="crop_pagination" class="mt-4 d-flex justify-content-center"></div> -->
-   <?php include_once "../../../paging.php"; ?>
+   
 </div>
 
 
