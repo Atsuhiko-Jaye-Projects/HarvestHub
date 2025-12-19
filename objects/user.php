@@ -384,6 +384,38 @@ class User{
         $this->province = $row['province'];
 
     }
+    function getConsumerInfo(){
+        $query = "SELECT
+                firstname,
+                lastname,
+                address,
+                barangay,
+                email_address,
+                contact_number,
+                municipality,
+                profile_pic,
+                province FROM " . $this->table_name . "
+                WHERE 
+                id=:id LIMIT 0, 1";
+        
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
+        $this->address = $row['address'];
+        $this->email_address = $row['email_address'];
+        $this->profile_pic = $row['profile_pic'];
+        $this->contact_number = $row['contact_number'];
+        $this->barangay = $row['barangay'];
+        $this->municipality = $row['municipality'];
+        $this->province = $row['province'];
+
+    }
     // forgot password checking
     function emailAddressExists(){
         $query = "SELECT id 

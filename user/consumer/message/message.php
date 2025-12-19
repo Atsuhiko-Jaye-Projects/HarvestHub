@@ -1,11 +1,11 @@
 <?php 
-
 $farmer_id = isset($_GET['fid']) ? intval($_GET['fid']) : 0;
 
 include_once '../../../config/core.php';
 include_once '../../../config/database.php';
 include_once '../../../objects/user.php';
 $user_id = $_SESSION['user_id'];
+
 
 $page_title = "Messages";
 include_once "../layout/layout_head.php";
@@ -95,7 +95,6 @@ if (!empty($image) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/user/uploads/pro
           <!-- Sample conversation -->
           <li class="list-group-item d-flex align-items-center cursor-pointer">
             <div class="avatar bg-purple text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width:40px; height:40px;">
-              J
             </div>
             <div>
               <strong>Sadiwa, Jessi</strong><br>
@@ -123,8 +122,9 @@ include_once "../layout/layout_foot.php";
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-let loggedUser = <?= intval($user_id); ?>;
-let farmer_id  = <?= intval($farmer_id); ?>;
+let sender_id = <?= intval($user_id); ?>; //logged user
+let receiver_id  = <?= intval($farmer_id); ?>; //farmer id
+let farmer_id = <?= intval($farmer_id); ?>;
 let currentConversation = 0;
 
 // -----------------------------------------------------
@@ -135,19 +135,25 @@ function openChat(conversation_id, name) {
 
     $("#chatName").text(name); // set chat header
 
-    loadMessages(); // load messages
+    loadMessages();
+    
 }
+
+
 
 // -----------------------------------------------------
 // LOAD MESSAGES FOR CURRENT CONVERSATION
 // -----------------------------------------------------
+let lastMessageId = 0; // Track last message loaded
+
 function loadMessages() {
     if (!currentConversation) return;
+    if ($("#messages").length === 0) return;
 
-    $.get("getMessage.php", { cid: currentConversation }, function(response) {
-        
-        console.log("Messages:", response);
-
+    $.get("getMessage.php", { 
+        cid: currentConversation,
+        last_id: lastMessageId // Only get messages newer than this
+    }, function(response) {
         let msgs;
         try {
             msgs = JSON.parse(response);
@@ -156,41 +162,50 @@ function loadMessages() {
             return;
         }
 
-        $("#messages").empty();
+        if(msgs.length === 0) return; // Nothing new
 
         msgs.forEach(msg => {
             const bubble = $('<div>')
                 .addClass("message")
-                .addClass(Number(msg.sender_id) === Number(loggedUser) ? "me" : "other") // force numeric comparison
+                .addClass(Number(msg.sender_id) === Number(sender_id) ? "me" : "other")
                 .text(msg.message)
                 .css({
                     border: '1px solid',
-                    borderColor: Number(msg.sender_id) === Number(loggedUser) ? '#28a745' : '#dc3545',
+                    borderColor: Number(msg.sender_id) === Number(sender_id) ? '#28a745' : '#dc3545',
                     borderRadius: '10px',
                     padding: '8px 12px',
                     margin: '5px 0',
                     maxWidth: '70%',
                     wordBreak: 'break-word',
-                    backgroundColor: Number(msg.sender_id) === Number(loggedUser) ? '#e6ffed' : '#ffe6e6',
-                    alignSelf: Number(msg.sender_id) === Number(loggedUser) ? 'flex-end' : 'flex-start'
+                    backgroundColor: Number(msg.sender_id) === Number(sender_id) ? '#e6ffed' : '#ffe6e6',
+                    alignSelf: Number(msg.sender_id) === Number(sender_id) ? 'flex-end' : 'flex-start'
                 });
 
             $("#messages").append(bubble);
+
+            // Update lastMessageId
+            lastMessageId = Math.max(lastMessageId, msg.id);
         });
 
-        // Auto-scroll
+        // Auto-scroll to bottom
         $("#messages")[0].scrollTop = $("#messages")[0].scrollHeight;
     });
 }
+
+// Start polling every 2 seconds
+setInterval(loadMessages, 2000);
+
 // Send message function
 function sendMessage() {
-     const msg = $("#messageInput").val().trim();
-    if (!msg || !currentConversation) return;
+    const msg = $("#messageInput").val().trim();
+    
+    console.log("MSG:", msg, "CONV:", currentConversation);
+    // if (!msg || !currentConversation) return;
 
     $.post("sendMessage.php", {
         message: msg,
-        farmer_id: farmer_id,
-        sender_id: loggedUser,
+        receiver_id: receiver_id,
+        sender_id: sender_id,
         conversation_id: currentConversation
     }, function(response) {
         if (response.trim() === "message sent") {
@@ -234,7 +249,7 @@ $("#messageInput").keypress(function(e){
 function loadConversationsSidebar() {
     $.get("getConversation.php", function(data) {
         
-        console.log("Raw response:", data);
+        console.log("Raw response Conversation list:", data);
 
         let convs;
         try {
@@ -246,6 +261,7 @@ function loadConversationsSidebar() {
 
         const list = $("#conversationList");
         list.empty();
+        
 
         if (convs.length === 0) {
             list.html('<li class="list-group-item text-center text-muted">No conversations</li>');
@@ -256,6 +272,7 @@ function loadConversationsSidebar() {
             const li = $('<li>')
                 .addClass('list-group-item d-flex align-items-center cursor-pointer mt-2')
                 .attr('data-conversation-id', c.conversation_id)
+                .attr('data-receiver-id', c.receiver_id)
                 .attr('data-name', c.name)
                 .css({
                     border: '1px solid #dee2e6',
@@ -281,7 +298,9 @@ function loadConversationsSidebar() {
 
             li.append(avatar).append(info);
             list.append(li);
+            
         });
+        
     });
 }
 
@@ -291,13 +310,15 @@ function loadConversationsSidebar() {
   $("#conversationList").on("click", "li", function () {
       const convId = $(this).data("conversation-id");
       const name   = $(this).data("name");
+      const receiver_id   = $(this).data("receiver-id");
 
       currentConversation = convId;
 
-      const newUrl = window.location.pathname + "?fid=" + farmer_id + "&cid=" + convId;
+      const newUrl = window.location.pathname + "?fid=" + receiver_id + "&cid=" + convId;
       window.history.pushState({}, "", newUrl);
 
       openChat(convId, name);
+      location.reload();
   });
 
 // -----------------------------------------------------
