@@ -69,6 +69,7 @@
   </div>
 
   <?php include_once "../modal-forms/crop/add_crop.php"; ?>
+  
   <div id="modalContainer"></div>
   <div id="modalCropContainer"></div>
 
@@ -79,7 +80,7 @@
   </div>
 
   <!-- Crop Table -->
-  <div class="table-responsive shadow-sm rounded-4">
+  <div class="table-responsive shadow-sm rounded-2">
     <table class="table table-hover table-bordered align-middle mb-0 ">
       <thead class="table-success text-uppercase text-center">
         <tr>
@@ -97,7 +98,7 @@
       </thead>
       <tbody id="crop_table" class="table-group-divider text-center">
         <?php
-        if ($num>0) {
+        if ($crop_num > 0) {
           while ($row = $crop_stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
             $datePlanted = new DateTime($row['date_planted']);
@@ -114,7 +115,7 @@
 
             echo "<tr>";
               echo "<td class='text-nowrap'>{$row['crop_name']}</td>";
-              echo "<td>{$row['yield']}</td>";
+              echo "<td>{$row['yield']}/Plant</td>";
               echo "<td>{$row['cultivated_area']}</td>";
               echo "<td>{$row['stocks']}</td>";
               echo "<td>{$row['plant_count']}</td>";
@@ -131,10 +132,13 @@
                 </button>
                   </td>";
             echo "</tr>";
+            include "../modal-forms/crop/edit_crop.php";
             include "../modal-forms/crop/post_crop.php";
           }
         }else{
+          print_r($crop_stmt);
           echo "<tr>
+          
             <td colspan='11' class='text-center'>No Crop found</td>
           </tr>";
         }
@@ -144,8 +148,8 @@
   </div>
 
   <!-- Pagination -->
-  <div id="crop_pagination" class="mt-4 d-flex justify-content-center"></div>
-
+  <!-- <div id="crop_pagination" class="mt-4 d-flex justify-content-center"></div> -->
+   <?php include_once "../../../paging.php"; ?>
 </div>
 
 

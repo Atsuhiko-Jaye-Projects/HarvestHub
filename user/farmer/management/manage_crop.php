@@ -1,5 +1,6 @@
 <?php
 ob_start();
+
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/crop.php";
@@ -42,7 +43,8 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
 $crop->user_id = $_SESSION['user_id'];
 
 $crop_stmt = $crop->readAllCrop($from_record_num, $records_per_page);
-$num = $crop_stmt->rowCount();
+$crop_num = $crop_stmt->rowCount();
+$total_rows = $crop->countAll();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
@@ -97,12 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             // mark the crop as planted and the farm resource
             $crop->MarkCropAsPlanted();
             $farm_resource->MarkCropAsPlanted();
-            // $_SESSION['flash'] = [
-            //     'title' => 'Success!',
-            //     'text'  => 'Crop has been updated successfully.',
-            //     'icon'  => 'success' // 'success', 'error', 'warning', 'info'
-            // ];
-            // header("Location: manage_crop.php");
+            $_SESSION['flash'] = [
+                'title' => 'Success!',
+                'text'  => 'Crop has been updated successfully.',
+                'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+            ];
+            header("Location: manage_crop.php");
 
             echo "<div class='container'><div class='alert alert-success'>Crop Info Saved!</div></div>";
         } else {
@@ -137,6 +139,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->is_posted = "Pending";
 
         if ($crop->updateFarmProduct()) {
+            $_SESSION['flash'] = [
+                'title' => 'Success!',
+                'text'  => 'Crop has been updated successfully.',
+                'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+            ];
+            header("Location: manage_crop.php");
 		     echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
 
         } else {
