@@ -1,39 +1,44 @@
-document.addEventListener('DOMContentLoaded', function(){
-const ctx = document.getElementById('salesChart');
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesChart');
 
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      datasets: [
-        {
-          label: 'This Week',
-          data: [300, 250, 400, 320, 500, 450, 600],
-          borderColor: '#16a34a',
-          backgroundColor: 'rgba(22,163,74,0.1)',
-          tension: 0.4,
-          fill: true
-        },
-        {
-          label: 'Last Week',
-          data: [400, 300, 350, 420, 480, 400, 550],
-          borderColor: '#b45309',
-          backgroundColor: 'rgba(180,83,9,0.1)',
-          tension: 0.4,
-          fill: true
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: 'bottom' } },
-      scales: {
-        y: { beginAtZero: true },
-        x: { grid: { display: false } }
-      }
-    }
-  });
+    fetch('../../js/user/farmer/api/fetch_farm_sale.php')
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') throw new Error('Failed to fetch sales data');
+
+            const results = data.expense.result; // array of objects
+
+            // Map the results to arrays for Chart.js
+            const labels = results.map(r => r.date_sales);
+            const sales = results.map(r => parseFloat(r.total_sales));
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Sales',
+                        data: sales,
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(22,163,74,0.2)', // slightly stronger fill
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        })
+        .catch(err => console.error('Error fetching sales data:', err));
 });
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     fetch('../../js/user/farmer/api/fetch_product_stock.php')

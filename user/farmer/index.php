@@ -163,9 +163,9 @@ if ($_SESSION['is_farm_registered'] == 0) {
       </div>
 
       <p class="mb-2">
-        <strong>3K</strong>
+        <!-- <strong>3K</strong>
         <span class="text-success ms-1">+2.1%</span>
-        <small class="text-muted ms-1">vs Last Week</small>
+        <small class="text-muted ms-1">vs Last Week</small> -->
       </p>
 
       <canvas id="salesChart" height="200"></canvas>

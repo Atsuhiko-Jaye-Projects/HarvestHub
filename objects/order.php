@@ -247,7 +247,7 @@ class Order{
 
     // get the completed order to display the sales
     function totalSales() {
-        $query = "SELECT SUM(o.quantity * p.price_per_unit) AS total_sales
+        $query = "SELECT SUM(o.quantity * p.price_per_unit) AS total_sales, o.modified_at AS date_sales
                 FROM " . $this->table_name . " o
                 JOIN products p ON o.product_id = p.product_id
                 WHERE o.farmer_id = :farmer_id
@@ -258,8 +258,33 @@ class Order{
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['total_sales'] ?? 0; // 0 if no sales
+        return $row['total_sales'] ?? 0;
     }
+
+    public function totalGraphSales() {
+
+        $query = "
+            SELECT DATE(modified_at) AS date_sales, SUM(o.quantity * p.price_per_unit) AS total_sales
+            FROM orders o
+            JOIN products p ON o.product_id = p.product_id
+            WHERE o.farmer_id = :farmer_id
+            AND o.status = 'complete'
+            AND modified_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) -- last 7 days
+            GROUP BY DATE(modified_at)
+            ORDER BY DATE(modified_at)
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        // Fetch all rows as array
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Ensure we return an array of rows, each with total_sales and date_sales
+        return $rows;
+    }
+
 
     function getOrderNotification() {
 
