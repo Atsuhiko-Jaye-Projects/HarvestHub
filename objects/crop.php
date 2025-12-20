@@ -241,6 +241,24 @@ class Crop{
 
         return $num;
     }
+
+    function getFarmStats(){
+        $query = "SELECT COUNT(id) AS crop_plant_count,
+                  AVG(yield) AS avg_yield,
+                  SUM(stocks) AS plant_stocks,
+                  SUM(plant_count) AS planted_crops
+                  FROM
+                  " . $this->table_name . "
+                  WHERE
+                  user_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return  $row;
+    }
 }
 
 

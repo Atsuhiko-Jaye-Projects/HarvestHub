@@ -46,6 +46,12 @@ $crop_num = $crop_stmt->rowCount();
 $total_rows = $crop->countAll();
 
 
+//
+$crop->user_id = $_SESSION['user_id'];
+$farm_stats = $crop->getFarmStats();
+
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     include_once "../../../config/database.php";

@@ -1,12 +1,7 @@
 <!-- Show the latest expense current month -->
 <?php
 // get the farm resource statistics
-
-
 $total = $farm_resource->farmStatsCurrentTotalCost();
-
-
-
 ?>
 
 <div class="container-xl mt-3">

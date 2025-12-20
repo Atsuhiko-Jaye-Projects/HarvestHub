@@ -148,54 +148,13 @@ document.addEventListener('DOMContentLoaded', function() {
 //         let avgYield = 0;
 //         let plantCount = 0;
 
-//         if (!response.records || response.records.length === 0) {
-//           $('#crop_table').html("<tr><td colspan='8' class='text-center'>No crops found.</td></tr>");
-//           $('#crop_pagination').html('');
-//           return;
-//         }
 
 //         response.records.forEach(row => {
-//           const daysSincePlanted = getDaysSincePlanted(row.date_planted);
-//           const status = getCropStatus(row.date_planted);
-
-//           // duration until estimated harvest
-//           let duration = '-';
-//           if (row.estimated_harvest_date) {
-//             const diffTime = new Date(row.estimated_harvest_date) - new Date(row.date_planted);
-//             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-//             duration = diffDays + (diffDays === 1 ? " Day" : " Days"); // adds space and singular/plural
-//           }
           
 //         response.records.forEach(row=>{
 //         let total_stocks = 0;
 //         });
 
-//           rows += `
-//             <tr class='text-center'>
-//               <td style="text-transform: capitalize;">${row.crop_name}</td>
-//               <td>${row.yield} KG</td>
-//               <td>${Number(row.cultivated_area).toLocaleString()} SQM</td>
-//               <td>${Number(row.stocks).toLocaleString()} KG</td>
-//               <td>${row.plant_count} Planted</td>
-//               <td>${row.date_planted}</td>
-//               <td>${row.estimated_harvest_date || '-'}</td>
-//               <td>${duration}</td>
-//               <td>${daysSincePlanted}</td>
-//               <td>${status}</td>
-              
-//               <td class="text-nowrap">
-//                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update-crop-modal-${row.id}">
-//                   <i class="bi bi-pencil-square"></i>
-//                 </button>
-//                 <button class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#post-crop-modal-${row.id}">
-//                  <i class="bi bi-cloud-upload-fill"></i>
-//                 </button>
-//               </td>
-//             </tr>
-//           `;
-//           post_crop_modal += postFarmCrop(row);
-//           update_crop_modal += updateFarmCrop(row);
 //           total_stocks += Number(row.stocks);
 //           planted_crops += Number(row.plant_count);
 //           total_harvest = parseFloat(row.stocks);
@@ -208,48 +167,12 @@ document.addEventListener('DOMContentLoaded', function() {
 //         document.getElementById('planted_crop_count').textContent = planted_crops.toLocaleString();
 //         document.getElementById('avg_Yields').textContent = avgYield.toFixed(2)  + " kg";
         
-//         $('#crop_table').html(rows);
-//         $('#modalContainer').html(update_crop_modal);
-//         $('#modalCropContainer').html(post_crop_modal);
-//         renderCropPagination(response.current_page, response.total_pages);
 //       },
 //       error: function() {
 //         alert('Failed to load crop data');
 //       }
 //     });
 //   };
-
-//   function renderCropPagination(current, total) {
-//     let paginationHTML = '';
-
-//     if (total > 1) {
-//       paginationHTML += `
-//         <nav>
-//           <ul class="pagination">
-//             <li class="page-item ${current === 1 ? 'disabled' : ''}">
-//               <a class="page-link" href="#" onclick="loadCropTable(${current - 1})">Prev</a>
-//             </li>
-//       `;
-
-//       for (let i = 1; i <= total; i++) {
-//         paginationHTML += `
-//           <li class="page-item ${i === current ? 'active' : ''}">
-//             <a class="page-link" href="#" onclick="loadCropTable(${i})">${i}</a>
-//           </li>
-//         `;
-//       }
-
-//       paginationHTML += `
-//             <li class="page-item ${current === total ? 'disabled' : ''}">
-//               <a class="page-link" href="#" onclick="loadCropTable(${current + 1})">Next</a>
-//             </li>
-//           </ul>
-//         </nav>
-//       `;
-//     }
-
-//     $('#crop_pagination').html(paginationHTML);
-//   }
 
 //   // Load crop data when page opens
 //   loadCropTable();

@@ -18,7 +18,7 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Crop Name</label>
-                    <select name="crop_name" id="cropSelect" class="form-select">
+                    <select name="crop_name" id="cropSelect" class="form-select" required>
                         <?php
                         $farm_resource->user_id = $_SESSION['user_id'];
                         $stmt = $farm_resource->getCropName();
@@ -58,11 +58,12 @@
                     <?php $futureDate = date('Y-m-d', strtotime('+45 days')); ?>
                     <input type="date" id="estimated_harvest_date" name="estimated_harvest_date" class="form-control"  value="<?php echo $futureDate; ?>">
                 </div>
-                <div class="col-md-6">
+
+                  <div class="col-md-6">
                     <label>
-                      KG/Plant (Average Yield) 
+                      No. of plants (Estimated)
                     </label>
-                    <input type="number" step="0.01" name="kilo_per_plant" id="avgyeild" class="form-control">
+                    <input type="number" name="plant_count" id="plantCount" class="form-control">
                 </div>
               </div>
               <div class="row mb-3">
@@ -78,9 +79,9 @@
                 </div>
                   <div class="col-md-6">
                     <label>
-                      No. of plants (Estimated)
+                      KG/Plant (Avg. Yield) 
                     </label>
-                    <input type="number" name="plant_count" id="plantCount" class="form-control">
+                    <input type="number" step="0.01" name="kilo_per_plant" id="avgyeild" class="form-control" value="2.5">
                 </div>
               </div>
             </div>

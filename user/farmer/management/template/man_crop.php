@@ -18,7 +18,7 @@
         <div class="card-body text-center">
           <i class="bi bi-box-seam text-primary fs-2 mb-2"></i>
           <h6 class="text-muted">Crops Stocks (KG)</h6>
-          <h4 id="crop_stocks">0</h4>
+          <h4 id="crop_stocks"><?php echo number_format($farm_stats['plant_stocks']); ?></h4>
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
         <div class="card-body text-center">
          <i class="bi bi-tree text-success fs-2 mb-2"></i>
           <h6 class="text-muted">Total Planted Crops</h6>
-          <h4 id="planted_crop_count">0</h4>
+          <h4 id="planted_crop_count"><?php echo number_format($farm_stats['planted_crops']); ?></h4>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
           <h6 class="text-muted">Avg. Yield (kg)</h6>
-          <h4 id="avg_Yields"><span>Kg</span></h4>
+          <h4 id="avg_Yields"><?php echo number_format($farm_stats['avg_yield'], 2); ?><span> Kg</span></h4>
         </div>
       </div>
     </div>

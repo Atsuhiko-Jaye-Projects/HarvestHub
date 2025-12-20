@@ -25,7 +25,7 @@ if ($page_title == "Manage Crop") {
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <h6>Planted Crops</h6>
-                        <h2 id="recordCount"></h2>
+                        <h2 id="recordCount"><?php  echo str_pad($farm_stats['crop_plant_count'] ?? 0, 2, '0', STR_PAD_LEFT); ?></h2>
                         <small>Crops</small>
                     </div>
                     <div>
