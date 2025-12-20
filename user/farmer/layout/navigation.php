@@ -3,6 +3,8 @@
     <button class="btn btn-outline-dark d-xl-none m-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
     <i class="bi bi-list"></i>
     </button>
+    <!-- show notice to user who address is not set -->
+    <?php include_once "notice.php"; ?>
     <a class="navbar-brand"></a>
 
         <div class="d-flex align-items-center">

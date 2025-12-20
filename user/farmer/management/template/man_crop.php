@@ -123,14 +123,16 @@
               echo "<td>{$row['estimated_harvest_date']}</td>";
               echo "<td>{$durationDays} days</td>";
               echo "<td>{$ageDays} days</td>";
-              echo "<td class='text-nowrap'>
-                <button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-{$row['id']}'>
-                    <i class='bi bi-pencil-square'></i>
-                </button>
-                <button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
+              echo "<td class='text-nowrap'>";
+                echo "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-{$row['id']}'>";
+                    echo "<i class='bi bi-pencil-square'></i>";
+                echo "</button>";
+                if ($row['crop_status'] != "harvested") {
+                  echo "<button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
                   <i class='bi bi-cloud-upload-fill'></i>
-                </button>
-                  </td>";
+                </button>";
+                }
+              echo "</td>";
             echo "</tr>";
             include "../modal-forms/crop/edit_crop.php";
             include "../modal-forms/crop/post_crop.php";

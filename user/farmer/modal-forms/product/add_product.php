@@ -27,7 +27,22 @@
                 </div>
                 <div class="col-md-6">
                   <label for="">Product Name</label>
-                  <input type="text" name="product_name" class="form-control" required placeholder="Product Name">
+                  <?php
+                    if ($crop_num > 0) {
+                      echo "<select class='form-select' name='product_name'>";
+                        echo "<option value=''>--Select Crop--</option>";
+                        while ($row = $product_stmt->fetch(PDO::FETCH_ASSOC)) {
+                          echo "<option value=\"{$row['crop_name']}\" data-farm-resource-id=\"{$row['farm_resource_id']}\">
+                            {$row['crop_name']}
+                          </option>";
+                        }
+                        echo "<option value='other' id='other-crop'>Other Crop</option>";
+                      echo "</select>";
+                    }else{
+                      echo "<input type='text' id='crop_field' name='product_name' class='form-control' required>";
+                    }
+                  ?>
+                  
                 </div>
               </div>
 
@@ -81,7 +96,7 @@
                       if ($stmt && $stmt->rowCount() > 0) {
                           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                               // Assuming the table has 'id' and 'expense_name' fields
-                             echo "<option value='{$row['grand_total']}' style='color: red; font-weight: bold;'>{$row['record_name']} | ₱" . number_format($row['grand_total']) . "</option>";
+                             echo "<option value='{$row['grand_total']}' data-expense-farm-resource-id=\"{$row['farm_resource_id']}\" style='color: red; font-weight: bold;'>{$row['record_name']} | ₱" . number_format($row['grand_total']) . "</option>";
 
 
                           }
@@ -112,3 +127,4 @@
     </div>
   </div>
 </div>
+

@@ -6,6 +6,7 @@ include_once "../../../objects/harvest_product.php";
 include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
+include_once "../../../objects/crop.php";
 
 $page_title = "Manage Harvest";
 include_once "../layout/layout_head.php";
@@ -21,6 +22,8 @@ $harvest_product = new HarvestProduct($db);
 $product = new Product($db);
 $farm = new Farm($db);
 $farm_resource = new FarmResource($db);
+$crop = new Crop($db);
+
 $farm_resource->user_id = $_SESSION['user_id'];
 $farm_resource->getRecordExpense();
 
@@ -37,9 +40,12 @@ $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
 $harvest_product->user_id = $_SESSION['user_id'];
-// $stmt = $harvest_product->readAllProduct($from_record_num, $records_per_page);
-// $num;
-// $total_rows = $harvest_product->countAll();
+
+// get the harvested crop
+$crop->user_id = $_SESSION['user_id'];
+$product_stmt = $crop->getHarvestedCrops();
+$crop_num = $product_stmt->rowCount();
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 

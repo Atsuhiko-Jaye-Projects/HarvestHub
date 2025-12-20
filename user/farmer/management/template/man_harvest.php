@@ -123,7 +123,7 @@
   <!-- ✅ Modal Container -->
   <div id="modalContainer"></div>
 
-  <?php include_once "../modal-forms/crop/add_crop.php"; ?>
+  <?php include "../modal-forms/crop/add_crop.php"; ?>
 </div>
 
 

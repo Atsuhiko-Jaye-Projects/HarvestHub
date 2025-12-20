@@ -129,6 +129,7 @@ class Crop{
                     suggested_price = :suggested_price,
                     plant_count = :plant_count,
                     stocks = :stocks,
+                    crop_status = :crop_status,
                     modified_at = :modified_at
                 WHERE id = :id";
 
@@ -144,6 +145,7 @@ class Crop{
         $this->estimated_harvest_date = htmlspecialchars(strip_tags($this->estimated_harvest_date));
         $this->suggested_price = htmlspecialchars(strip_tags($this->suggested_price));
         $this->modified_at = date("Y-m-d H:i:s");
+        $this->crop_status = htmlspecialchars(strip_tags($this->crop_status));;
 
         // Bind parameters
         $stmt->bindParam(":id", $this->id);
@@ -157,6 +159,7 @@ class Crop{
         $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
         $stmt->bindParam(":suggested_price", $this->suggested_price);
         $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":crop_status", $this->crop_status);
 
         try {
             if ($stmt->execute()) {
@@ -258,6 +261,25 @@ class Crop{
         
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return  $row;
+    }
+
+    function getHarvestedCrops(){
+
+        $query = "SELECT *
+                  FROM
+                    " . $this->table_name . "
+                  WHERE 
+                    user_id = :user_id AND crop_status = 'harvested'";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->execute();
+
+        return $stmt;
+
+    
     }
 }
 

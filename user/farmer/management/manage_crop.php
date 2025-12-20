@@ -22,6 +22,7 @@ $product = new Product($db);
 $farm = new Farm($db);
 $farm_resource = new FarmResource($db);
 
+
 // get the user location
 $farmer = new Farm($db);
 
@@ -46,9 +47,10 @@ $crop_num = $crop_stmt->rowCount();
 $total_rows = $crop->countAll();
 
 
-//
 $crop->user_id = $_SESSION['user_id'];
 $farm_stats = $crop->getFarmStats();
+
+// get the lot used for the farm
 
 
 
@@ -99,22 +101,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $farm_resource->farm_resource_id = $_POST['farm_resource_id'];
         $farm_resource->crop_status = "crop planted";
 
+        // record the additional used_lot_size
+        $farm->additional_used_size = $_POST['cultivated_area'];
+        $farm->user_id = $_SESSION['user_id'];
+        $lotSize = 
+        
+        // verify if the user posted used lot size is valid
+        $lotSize = $farm->getLotSizeInfo(); // fetch total and used
+        $totalLotSize = $lotSize['lot_size'];
+        $usedLotSize  = $lotSize['used_lot_size'];
 
-        if ($crop->createCrop()) {
-            // mark the crop as planted and the farm resource
-            $crop->MarkCropAsPlanted();
-            $farm_resource->MarkCropAsPlanted();
-            $_SESSION['flash'] = [
-                'title' => 'Success!',
-                'text'  => 'Crop has been updated successfully.',
-                'icon'  => 'success' // 'success', 'error', 'warning', 'info'
-            ];
-            header("Location: manage_crop.php");
+        $cultivatedArea = $_POST['cultivated_area'];
+        $availableLot   = $totalLotSize - $usedLotSize;
 
-            echo "<div class='container'><div class='alert alert-success'>Crop Info Saved!</div></div>";
+        if ($cultivatedArea <= 0) {
+                $_SESSION['flash'] = [
+                    'title' => 'Failed!',
+                    'text'  => 'Cultivated area must be greater than 0.',
+                    'icon'  => 'error' // 'success', 'error', 'warning', 'info'
+                ];
+        } elseif ($cultivatedArea > $availableLot) {
+                $_SESSION['flash'] = [
+                    'title' => 'Failed!',
+                    'text'  => "Error: You only have $availableLot sqm left in your farm. You cannot use $cultivatedArea sqm.",
+                    'icon'  => 'error' // 'success', 'error', 'warning', 'info'
+                ];
+            $error = "Error: You only have $availableLot sqm left in your farm. You cannot use $cultivatedArea sqm.";
         } else {
-            echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";
-        }
+            if ($crop->createCrop()) {
+                // mark the crop as planted and the farm resource
+                $crop->MarkCropAsPlanted();
+                $farm_resource->MarkCropAsPlanted();
+                $farm->addUsedLotSize();
+
+                $_SESSION['flash'] = [
+                    'title' => 'Success!',
+                    'text'  => 'New has been addedd successfully.',
+                    'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+                ];
+            } else {
+                echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";
+            }
+
+            }
+
+        
     }
 
     // ===== UPDATE =====
@@ -142,7 +173,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->is_posted = "Pending";
-
+        $crop->crop_status = $_POST['mark_crop'];
+        
         if ($crop->updateFarmProduct()) {
             $_SESSION['flash'] = [
                 'title' => 'Success!',

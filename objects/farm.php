@@ -21,6 +21,7 @@ class Farm{
     public $farm_image;
     public $created_at;
     public $modified;
+    public $additional_used_size;
 
 
     public function __construct($db) {
@@ -163,8 +164,99 @@ class Farm{
         $this->farm_image = $row['farm_image'] ?? 'logo.png';
         $this->farm_name = isset($row['farm_name']) ? $row['farm_name'] : 'Harvest Hub';
         $this->created_at = $row['created_at'];
+    }
 
+    function updateFarmDetail(){
         
+        $query = "UPDATE
+                  " . $this->table_name . "
+                  SET
+                    lot_size = :lot_size,
+                    farm_type = :farm_type,
+                    farm_name = :farm_name,
+                    province = :province,
+                    municipality = :municipality,
+                    baranggay = :baranggay,
+                    purok = :purok
+                  WHERE
+                    user_id =:user_id";
+        
+        $stmt=$this->conn->prepare($query);
+
+        $this->lot_size=htmlspecialchars(strip_tags($this->lot_size));
+        $this->farm_type=htmlspecialchars(strip_tags($this->farm_type));
+        $this->farm_name=htmlspecialchars(strip_tags($this->farm_name));
+        $this->province=htmlspecialchars(strip_tags($this->province));
+        $this->municipality=htmlspecialchars(strip_tags($this->municipality));
+        $this->baranggay=htmlspecialchars(strip_tags($this->baranggay));
+        $this->purok=htmlspecialchars(strip_tags($this->purok));
+
+        $stmt->bindParam(":lot_size", $this->lot_size);
+        $stmt->bindParam(":farm_type", $this->farm_type);
+        $stmt->bindParam(":farm_name", $this->farm_name);
+        $stmt->bindParam(":province", $this->province);
+        $stmt->bindParam(":municipality", $this->municipality);
+        $stmt->bindParam(":baranggay", $this->baranggay);
+        $stmt->bindParam(":purok", $this->purok);
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    function getfarmerProfile(){
+        $query = "SELECT farm_name
+                  FROM
+                  " . $this->table_name . "
+                  WHERE
+                  user_id = :user_id";
+
+        $stmt=$this->conn->prepare($query);
+        
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['farm_name'] ?? null;
+    }
+
+    function addUsedLotSize() {
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET 
+                    used_lot_size = used_lot_size + :additional_used_size
+                WHERE 
+                    user_id = :user_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":additional_used_size", $this->additional_used_size);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+    }
+
+    function getLotSizeInfo(){
+
+        $query = "SELECT 
+                    lot_size,
+                    used_lot_size
+                  FROM
+                    " . $this->table_name . "
+                  WHERE 
+                    user_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
+        
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
 
 }

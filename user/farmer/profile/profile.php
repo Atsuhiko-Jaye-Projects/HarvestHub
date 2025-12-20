@@ -51,6 +51,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             echo "<div class = 'alert alert-danger'>ERROR: Profile update failed.</div>";
         }
     }
+
+    if ($_POST['action'] == "update_farm_info") {
+        
+        $farm->user_id = $_SESSION['user_id'];
+        $farm->lot_size = $_POST['farm_size'];
+        $farm->farm_type = $_POST['farm_type'];
+        $farm->farm_name = $_POST['farm_name'];
+        $farm->province = $_POST['province_name'];
+        $farm->municipality = $_POST['municipality_name'];
+        $farm->baranggay = $_POST['barangay_name'];
+        $farm->purok = $_POST['purok'];
+
+        if ($farm->updateFarmDetail()) {
+            $_SESSION['flash'] = [
+                'title' => 'Success!',
+                'text'  => 'Farm Info has been updated successfully.',
+                'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+            ];
+        }else{
+            echo "<div class = 'alert alert-danger'>ERROR: Profile update failed.</div>";
+        }
+
+    }
 }
 ?>
 
@@ -202,7 +225,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 <div class="modal fade" id="editFarmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="editFarmForm" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST'>
+            <form id="editFarmForm" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                <input type="hidden" name="action" value="update_farm_info">
+                <input type="hidden" name="province_name" id="province_name">
+                <input type="hidden" name="municipality_name" id="municipality_name">
+                <input type="hidden" name="barangay_name" id="barangay_name">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title">Edit Farm Info</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -226,9 +253,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                             <option value="Livestock" <?php if(($farm->farm_type ?? '')=='Livestock') echo 'selected'; ?>>Livestock</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label>Farm Location</label>
-                        <input type="text" name="farm_location" class="form-control" value="<?= !empty($farm->municipality) ? htmlspecialchars($farm->municipality) : 'Not Set' ?>">
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-6 col-md-6 mt-3">
+                        <label class="form-label">Province</label>
+                        <select name="province" id="farm-province" class='form-select' required>
+                            <option value="" hidden>Select ...</option>
+                        </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 mt-3">
+                        <label class="form-label">Municipality</label>
+                        <select name="municipality" id="farm-municipality" class='form-select' required>
+                            <option value="" hidden>Select...</option>
+                        </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 mt-3">
+                        <label class="form-label">Barangay</label>
+                        <select name="barangay" id="farm-barangay" class='form-select' required>
+                            <option value="" hidden>Select...</option>
+                        </select>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 mt-3">
+                        <label class="form-label">Street</label>
+                        <input type="text" name="purok" class="form-control">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -248,6 +295,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 ?>
 
 <script>
+const farmModal = document.getElementById("editFarmModal");
+
+farmModal.addEventListener("shown.bs.modal", function () {
+
+  const provinceSelect = document.getElementById("farm-province");
+  const municipalitySelect = document.getElementById("farm-municipality");
+  const barangaySelect = document.getElementById("farm-barangay");
+
+  const provinceInput = document.getElementById("province_name");
+  const municipalityInput = document.getElementById("municipality_name");
+  const barangayInput = document.getElementById("barangay_name");
+
+  // prevent reloading provinces
+  if (provinceSelect.options.length > 1) return;
+
+  fetch("https://psgc.gitlab.io/api/provinces/")
+    .then(res => res.json())
+    .then(data => {
+      provinceSelect.innerHTML = '<option disabled selected>Select Province</option>';
+      data.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.code;
+        opt.textContent = p.name;
+        opt.dataset.name = p.name;
+        provinceSelect.appendChild(opt);
+      });
+    });
+
+  provinceSelect.onchange = function () {
+    provinceInput.value = this.selectedOptions[0].dataset.name;
+
+    fetch(`https://psgc.gitlab.io/api/provinces/${this.value}/cities-municipalities/`)
+      .then(res => res.json())
+      .then(data => {
+        municipalitySelect.innerHTML = '<option disabled selected>Select Municipality</option>';
+        barangaySelect.innerHTML = '<option disabled selected>Select Municipality First</option>';
+
+        data.forEach(m => {
+          const opt = document.createElement("option");
+          opt.value = m.code;
+          opt.textContent = m.name;
+          opt.dataset.name = m.name;
+          municipalitySelect.appendChild(opt);
+        });
+      });
+  };
+
+  municipalitySelect.onchange = function () {
+    municipalityInput.value = this.selectedOptions[0].dataset.name;
+
+    fetch(`https://psgc.gitlab.io/api/cities-municipalities/${this.value}/barangays/`)
+      .then(res => res.json())
+      .then(data => {
+        barangaySelect.innerHTML = '<option disabled selected>Select Barangay</option>';
+        data.forEach(b => {
+          const opt = document.createElement("option");
+          opt.value = b.code;
+          opt.textContent = b.name;
+          opt.dataset.name = b.name;
+          barangaySelect.appendChild(opt);
+        });
+      });
+  };
+
+  barangaySelect.onchange = function () {
+    barangayInput.value = this.selectedOptions[0].dataset.name;
+  };
+});
+
 $(document).ready(function() {
     // Profile picture preview
     $('#profilePicInput').on('change', function() {
@@ -263,5 +379,19 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+Swal.fire({
+    title: <?= json_encode($_SESSION['flash']['title']) ?>,
+    text: <?= json_encode($_SESSION['flash']['text']) ?>,
+    icon: <?= json_encode($_SESSION['flash']['icon']) ?>,
+    showConfirmButton: false, // ❌ no OK button
+}).then(() => {
+   window.location.href = window.location.pathname;
+});
+
+</script>
+<?php unset($_SESSION['flash']); ?>
 
 <?php include_once "../layout/layout_foot.php"; ?>

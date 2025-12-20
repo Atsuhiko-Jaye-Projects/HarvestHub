@@ -3,7 +3,6 @@ include_once '../../../config/core.php';
 include_once "../../../config/database.php";
 include_once "../../../objects/product.php";
 
-
 $page_title = "Manage Product";
 include_once "../layout/layout_head.php";
 
@@ -14,8 +13,6 @@ $database = new Database();
 $db = $database->getConnection();
 
 $product = new Product($db);
-
-
 
 // get the search term
 $page_url = "{$home_url}user/farmer/management/manage_product.php?";
@@ -28,6 +25,8 @@ $product->user_id = $_SESSION['user_id'];
 $stmt = $product->readAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $product->countAll();
+
+
 
 // set the login require to to true
 

@@ -56,6 +56,15 @@
                     <label>No. of plants (Estimated)</label>
                     <input type="number"  name="plant_count" class="form-control" value='<?php echo $row['plant_count'];?>'>
                 </div>
+                  <div class="col-md-6  mt-3">
+                    <label class="text-nowrap">Mark this crop as Harvested?</label>
+                        <input class="form-check-input" type="radio" name="mark_crop" id="harvestedYes" value="harvested">
+                          <label class="form-check-label" for="harvestedYes">
+                              Yes
+                          </label>
+                        <input class="form-check-input square-radio" type="radio" name="mark_crop" id="harvestedNo" value="crop_planted" checked>
+                        <label class="form-check-label" for="harvestedNo">No</label>
+                </div>
               </div>
             </div>
           </div>
