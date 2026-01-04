@@ -22,6 +22,7 @@ class Farm{
     public $created_at;
     public $modified;
     public $additional_used_size;
+    public $deduct_used_size;
 
 
     public function __construct($db) {
@@ -257,6 +258,21 @@ class Farm{
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row;
+    }
+
+    function deductUsedLotSize() {
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET 
+                    used_lot_size = used_lot_size - :deduct_used_size
+                WHERE 
+                    user_id = :user_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":deduct_used_size", $this->deduct_used_size);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
     }
 
 }

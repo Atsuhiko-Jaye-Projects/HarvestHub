@@ -143,9 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not saved.</div></div>";
             }
 
-            }
-
-        
+        }   
     }
 
     // ===== UPDATE =====
@@ -173,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->is_posted = "Pending";
-        $crop->crop_status = $_POST['mark_crop'];
+        
         
         if ($crop->updateFarmProduct()) {
             $_SESSION['flash'] = [
