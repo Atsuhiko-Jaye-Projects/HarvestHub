@@ -27,23 +27,31 @@
                 </div>
                 <div class="col-md-6">
                   <label for="">Product Name</label>
-                  <?php
-                    if ($crop_num > 0) {
-                      echo "<select class='form-select' name='product_name'>";
-                        echo "<option value=''>--Select Crop--</option>";
-                        while ($row = $product_stmt->fetch(PDO::FETCH_ASSOC)) {
-                          echo "<option value=\"{$row['crop_name']}\" data-farm-resource-id=\"{$row['farm_resource_id']}\">
-                            {$row['crop_name']}
-                          </option>";
-                        }
-                        echo "<option value='other' id='other-crop'>Other Crop</option>";
-                      echo "</select>";
-                    }else{
-                      echo "<input type='text' id='crop_field' name='product_name' class='form-control' required>";
-                    }
-                  ?>
-                  
+
+                  <?php if ($crop_num > 0): ?>
+                    
+                    <select class="form-select" name="product_name" id="productSelect" required>
+                      <option value="">--Select Crop--</option>
+
+                      <?php while ($row = $product_stmt->fetch(PDO::FETCH_ASSOC)): ?>
+                        <option 
+                          value="<?= htmlspecialchars($row['crop_name']) ?>"
+                          data-farm-resource-id="<?= $row['farm_resource_id'] ?>">
+                          <?= htmlspecialchars($row['crop_name']) ?>
+                        </option>
+                      <?php endwhile; ?>
+
+                      <option value="other">Other Crop</option>
+                    </select>
+
+                  <?php else: ?>
+
+                    <input type="text" name="product_name" class="form-control" required>
+
+                  <?php endif; ?>
                 </div>
+
+
               </div>
 
               <div class="row mb-3">

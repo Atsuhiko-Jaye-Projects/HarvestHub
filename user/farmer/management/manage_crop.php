@@ -104,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         // record the additional used_lot_size
         $farm->additional_used_size = $_POST['cultivated_area'];
         $farm->user_id = $_SESSION['user_id'];
-        $lotSize = 
         
         // verify if the user posted used lot size is valid
         $lotSize = $farm->getLotSizeInfo(); // fetch total and used
@@ -171,16 +170,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->is_posted = "Pending";
+        $crop->crop_status = $_POST['mark_crop'];
         
         
         if ($crop->updateFarmProduct()) {
-            $_SESSION['flash'] = [
+            if ($_POST['mark_crop'] == "harvested") {
+                $farm->user_id = $_SESSION['user_id'];
+                $farm->deduct_used_size = $_POST['cultivated_area'];
+                $farm->deductUsedLotSize();
+                
+                $_SESSION['flash'] = [
                 'title' => 'Success!',
                 'text'  => 'Crop has been updated successfully.',
                 'icon'  => 'success' // 'success', 'error', 'warning', 'info'
-            ];
-            // header("Location: manage_crop.php");
-		     echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
+                ];
+            }else{
+                $_SESSION['flash'] = [
+                    'title' => 'Success!',
+                    'text'  => 'Crop has been updated successfully.',
+                    'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+                ];
+            }
+
 
         } else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";

@@ -56,6 +56,9 @@
                     <label>No. of plants (Estimated)</label>
                     <input type="number"  name="plant_count" class="form-control" value='<?php echo $row['plant_count'];?>'>
                 </div>
+                <?php if ($row['crop_status'] == "harvested") {
+                  
+                }else{?>
                   <div class="col-md-6  mt-3">
                     <label class="text-nowrap">Mark this crop as Harvested?</label>
                         <input class="form-check-input" type="radio" name="mark_crop" id="harvestedYes" value="harvested">
@@ -64,7 +67,8 @@
                           </label>
                         <input class="form-check-input square-radio" type="radio" name="mark_crop" id="harvestedNo" value="crop_planted" checked>
                         <label class="form-check-label" for="harvestedNo">No</label>
-                </div>
+                  </div>
+                <?php } ?>
               </div>
             </div>
           </div>
@@ -72,7 +76,14 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+
+          <?php if ($row['crop_status'] == "harvested") {
+            echo "<button type='' disabled class='btn btn-primary'>Save changes</button>";
+          } else{
+            echo "<button type='submit' class='btn btn-primary'>Save changes</button>";
+          }
+          ?>
+          
         </div>
 
       </form>

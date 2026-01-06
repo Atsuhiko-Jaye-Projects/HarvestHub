@@ -32,7 +32,6 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li><a class="dropdown-item" href="<?php echo $base_url; ?>user/farmer/profile/profile.php">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="<?php echo $base_url; ?>logout.php">Logout</a></li>
                 </ul>

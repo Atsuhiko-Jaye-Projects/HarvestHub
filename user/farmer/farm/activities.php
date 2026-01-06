@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $farm_resource->grand_total = $grand_total;
     $farm_resource->user_id = $_SESSION['user_id'];
     $farm_resource->date = $_POST['activity_date'];
+    $farm_resource->planted_area_sqm = $_POST['planted_area_sqm'];
     $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
     $farm_resource->plant_count = $_POST['plant_count'];
 
@@ -117,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                   </div>
                   <hr>
                   <div class="col-md-3 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4">Crop Name:</label>
+                    <label for="record_name" class="form-label fw-bold col-md-4">Seed Name:</label>
                     <input type="text" name="crop_name" id=""
                           class="form-control border border-3 border-dark"
                           required>

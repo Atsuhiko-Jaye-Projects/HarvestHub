@@ -57,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $db = $database->getConnection();
     $harvest_product = new HarvestProduct($db);
 
+    
+
 
     // ===== CREATE =====
     if ($_POST['action'] == 'create') {
@@ -270,3 +272,5 @@ const ProductPostingURL = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>
 
 <script src="/HarvestHub/js/user/farmer/modals/farm_product/farm_product_modal.js"></script>
 <?php include_once "../layout/layout_foot.php"; ?>
+
+

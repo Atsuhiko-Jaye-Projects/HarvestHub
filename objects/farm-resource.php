@@ -16,6 +16,7 @@ class FarmResource{
     public $created_at;
     public $modified_at;
     public $start_date_expense;
+    public $planted_area_sqm;
     public $crop_status;
     public $today_expense;
 
@@ -34,6 +35,7 @@ class FarmResource{
                 grand_total=:grand_total,
                 average_yield_per_plant=:average_yield_per_plant,
                 plant_count=:plant_count,
+                planted_area_sqm=:planted_area_sqm,
                 crop_name = :crop_name,
                 date=:date,
                 created_at=:created_at";
@@ -46,6 +48,7 @@ class FarmResource{
         $this->crop_name=htmlspecialchars(strip_tags($this->crop_name));
         $this->average_yield_per_plant=htmlspecialchars(strip_tags($this->average_yield_per_plant));
         $this->plant_count=htmlspecialchars(strip_tags($this->plant_count));
+        
         $this->date=date ("Y-m-d");
         $this->created_at = date ("Y-m-d H:i:s");
 
@@ -56,6 +59,7 @@ class FarmResource{
         $stmt->bindParam(":date", $this->date);
         $stmt->bindParam(":average_yield_per_plant", $this->average_yield_per_plant);
         $stmt->bindParam(":plant_count", $this->plant_count);
+        $stmt->bindParam(":planted_area_sqm", $this->planted_area_sqm);
         $stmt->bindParam(":crop_name", $this->crop_name);
         $stmt->bindParam(":created_at", $this->created_at);
 
