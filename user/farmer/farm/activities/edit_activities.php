@@ -230,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
             </div>
 
             <div class="modal-footer">
-                <a href="farm_resource.php" class="btn btn-secondary m-2"><i class="bi bi-x-circle me-1"></i> Cancel</a>
+                <a href="../farm_resource.php" class="btn btn-secondary m-2"><i class="bi bi-x-circle me-1"></i> Cancel</a>
                 <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i> Save</button>
             </div>
         </form>
@@ -268,33 +268,66 @@ function addDynamicField() {
             </button>
         </div>
         <div class="row g-2 align-items-center">
-            <div class="col-md-4"><label>Activity Name</label><input type="text" name="activity_name[]" class="form-control border border-2 border-dark"></div>
+
+            <!-- ACTIVITY NAME (DYNAMIC) -->
+            <div class="col-md-4">
+                <label>Activity Name</label>
+                <select name="activity_name[]" 
+                        class="form-select border border-2 border-dark activity-name">
+                    <option value="">Select activity name</option>
+                </select>
+
+                <!-- Appears only if Activity Type = others -->
+                <input type="text" 
+                       name="other_activity[]" 
+                       class="form-control mt-2 d-none border border-2 border-dark"
+                       placeholder="Enter other activity">
+            </div>
+
+            <!-- ACTIVITY TYPE -->
             <div class="col-md-4">
                 <label>Activity Type</label>
-                <select name="farm_activity_type[]" class="form-select border border-2 border-dark" onchange="toggleOtherInput(this)">
+                <select name="farm_activity_type[]" 
+                        class="form-select border border-2 border-dark activity-type">
                     <option value="" disabled selected>Select activity</option>
-                    <option value="land_prep">Land Prep. Expense</option>
-                    <option value="nursery_seedling">Nursery / Seedling Prep.</option>
+                    <option value="land_prep">Land Preparation</option>
+                    <option value="nursery_seedling">Nursery / Seedling Prep</option>
                     <option value="transplanting">Transplanting</option>
-                    <option value="crop_maintenance">Crop Care & Maintenance</option>
-                    <option value="input_seed_fertilizer">Input (Seeds, Fertilizer, etc.)</option>
-                    <option value="harvesting">Harvesting</option>
-                    <option value="post_harvest_transport">Post-Harvest / Transport</option>
-                    <option value="irrigation">Irrigation / Watering</option>
-                    <option value="pest_control">Pest / Disease Control</option>
-                    <option value="pruning">Pruning / Trimming</option>
-                    <option value="mulching">Mulching</option>
+                    <option value="irrigation">Irrigation</option>
                     <option value="fertilizer_application">Fertilizer Application</option>
-                    <option value="soil_testing">Soil Testing / Analysis</option>
-                    <option value="weeding">Weeding / Grass Removal</option>
+                    <option value="weeding">Weeding</option>
+                    <option value="pest_control">Pest / Disease Control</option>
+                    <option value="harvesting">Harvesting</option>
                     <option value="packing">Packing / Grading</option>
                     <option value="others">Others</option>
                 </select>
-                <input type="text" name="other_activity[]" class="form-control mt-2 d-none border border-2 border-dark" placeholder="Enter other activity">
             </div>
-            <div class="col-md-4"><label>Cost (₱)</label><input type="number" name="activity_cost[]" class="form-control activity-cost border border-2 border-dark"></div>
-            <div class="col-md-4"><label>Additional Info</label><textarea name="additional_info[]" class="form-control border border-2 border-dark" rows="3"></textarea></div>
-            <div class="col-md-4"><label>Date Done</label><input type="date" name="activity_date[]" class="form-control border border-2 border-dark"></div>
+
+            <!-- COST -->
+            <div class="col-md-4">
+                <label>Cost (₱)</label>
+                <input type="number" 
+                       name="activity_cost[]" 
+                       class="form-control activity-cost border border-2 border-dark">
+            </div>
+
+            <!-- ADDITIONAL INFO (UNCHANGED) -->
+            <div class="col-md-4">
+                <label>Additional Details or Other Information</label>
+                <textarea name="additional_info[]" 
+                          class="form-control border border-2 border-dark" 
+                          rows="3"
+                          placeholder="Enter additional details"></textarea>
+            </div>
+
+            <!-- DATE -->
+            <div class="col-md-4">
+                <label>Date Done (or Date Performed)</label>
+                <input type="date" 
+                       name="activity_date[]" 
+                       class="form-control border border-2 border-dark">
+            </div>
+
         </div>
     `;
     frame.appendChild(div);

@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                   </div>
                   <hr>
                   <div class="col-md-3 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4">Seed Name:</label>
+                    <label for="record_name" class="form-label fw-bold col-md-4">Seed Type:</label>
                     <input type="text" name="crop_name" id=""
                           class="form-control border border-3 border-dark"
                           required>
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             </div>
 
             <div class="modal-footer">
-              <a href="farm_resource.php" class="btn btn-secondary m-2">
+              <a href="../farm_resource.php" class="btn btn-secondary m-2">
                   <i class="bi bi-x-circle me-1"></i> Cancel
               </a>
 
@@ -178,7 +178,131 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <?php include_once "../layout/layout_foot.php"; ?>
 
 <script>
+const activityTemplates = {
+  land_prep: [
+    "Land clearing",
+    "Removal of previous crop residues",
+    "Manual plowing",
+    "Tractor plowing",
+    "Harrowing",
+    "Land leveling",
+    "Raised bed formation",
+    "Furrow / ridge making",
+    "Compost or manure incorporation",
+    "Field marking & row layout"
+  ],
+
+  nursery_seedling: [
+    "Seed selection & sorting",
+    "Seed soaking / pre-germination",
+    "Seed treatment",
+    "Seed tray preparation",
+    "Soil mix preparation",
+    "Sowing seeds",
+    "Watering seedlings",
+    "Shade net installation",
+    "Seedling hardening",
+    "Seedling inspection"
+  ],
+
+  transplanting: [
+    "Seedling pulling",
+    "Root trimming",
+    "Seedling transport",
+    "Spacing & hole marking",
+    "Transplanting seedlings",
+    "Initial watering",
+    "Replanting missing hills",
+    "Starter fertilizer application",
+    "Mulching after transplant",
+    "Plant stand inspection"
+  ],
+
+  irrigation: [
+    "Initial field watering",
+    "Manual watering",
+    "Drip irrigation setup",
+    "Sprinkler irrigation",
+    "Canal cleaning",
+    "Pump operation",
+    "Fuel cost for irrigation",
+    "System maintenance",
+    "Emergency watering",
+    "Drainage control"
+  ],
+
+  fertilizer_application: [
+    "Basal fertilizer application",
+    "Side-dress fertilizing",
+    "Foliar spraying",
+    "Organic fertilizer application",
+    "Compost application",
+    "Lime application",
+    "Micronutrient application",
+    "Fertilizer mixing",
+    "Fertilizer transport",
+    "Fertilizer handling"
+  ],
+
+  weeding: [
+    "Manual weeding",
+    "Mechanical weeding",
+    "Herbicide spraying",
+    "Grass cutting",
+    "Mulch replacement",
+    "Border clearing",
+    "Inter-row cultivation",
+    "Volunteer plant removal",
+    "Weed inspection",
+    "Weed disposal"
+  ],
+
+  pest_control: [
+    "Pest scouting",
+    "Manual pest removal",
+    "Insecticide spraying",
+    "Fungicide spraying",
+    "Biological control",
+    "Trap installation",
+    "Infected plant removal",
+    "Sprayer cleaning",
+    "Protective gear usage",
+    "Damage assessment"
+  ],
+
+  harvesting: [
+    "Harvest scheduling",
+    "Manual harvesting",
+    "Mechanical harvesting",
+    "Sorting & cleaning",
+    "Temporary storage",
+    "Harvest labor cost",
+    "Harvest tools preparation",
+    "Yield recording",
+    "Harvest transport",
+    "Post-harvest inspection"
+  ],
+
+  packing: [
+    "Product washing",
+    "Grading & sorting",
+    "Packing materials prep",
+    "Packaging",
+    "Labeling",
+    "Weight measurement",
+    "Storage preparation",
+    "Quality inspection",
+    "Loading",
+    "Transport preparation"
+  ]
+};
+</script>
+
+
+<script>
 let activityCount = 0;
+
+
 
 function addDynamicField() {
     activityCount++;
@@ -186,6 +310,7 @@ function addDynamicField() {
 
     const div = document.createElement("div");
     div.className = "item-block mb-3 border-bottom pb-2";
+
     div.innerHTML = `
         <div class="d-flex align-items-center justify-content-between p-2 mb-2">
             <h5 class="mb-0">Activity No. ${activityCount}</h5>
@@ -195,57 +320,116 @@ function addDynamicField() {
         </div>
 
         <div class="row g-2 align-items-center">
+
+            <!-- ACTIVITY NAME (DYNAMIC) -->
             <div class="col-md-4">
                 <label>Activity Name</label>
-                <input type="text" name="activity_name[]" class="form-control border border-2 border-dark" >
+                <select name="activity_name[]" 
+                        class="form-select border border-2 border-dark activity-name">
+                    <option value="">Select activity name</option>
+                </select>
+
+                <!-- Appears only if Activity Type = others -->
+                <input type="text" 
+                       name="other_activity[]" 
+                       class="form-control mt-2 d-none border border-2 border-dark"
+                       placeholder="Enter other activity">
             </div>
+
+            <!-- ACTIVITY TYPE -->
             <div class="col-md-4">
                 <label>Activity Type</label>
-                <select name="farm_activity_type[]" class="form-select border border-2 border-dark" onchange="toggleOtherInput(this)">
+                <select name="farm_activity_type[]" 
+                        class="form-select border border-2 border-dark activity-type">
                     <option value="" disabled selected>Select activity</option>
-                    <option value="land_prep">Land Prep. Expense</option>
-                    <option value="nursery_seedling">Nursery / Seedling Prep.</option>
+                    <option value="land_prep">Land Preparation</option>
+                    <option value="nursery_seedling">Nursery / Seedling Prep</option>
                     <option value="transplanting">Transplanting</option>
-                    <option value="crop_maintenance">Crop Care & Maintenance</option>
-                    <option value="input_seed_fertilizer">Input (Seeds, Fertilizer, etc.)</option>
-                    <option value="harvesting">Harvesting</option>
-                    <option value="post_harvest_transport">Post-Harvest / Transport</option>
-                    <option value="irrigation">Irrigation / Watering</option>
-                    <option value="pest_control">Pest / Disease Control</option>
-                    <option value="pruning">Pruning / Trimming</option>
-                    <option value="mulching">Mulching</option>
+                    <option value="irrigation">Irrigation</option>
                     <option value="fertilizer_application">Fertilizer Application</option>
-                    <option value="soil_testing">Soil Testing / Analysis</option>
-                    <option value="weeding">Weeding / Grass Removal</option>
+                    <option value="weeding">Weeding</option>
+                    <option value="pest_control">Pest / Disease Control</option>
+                    <option value="harvesting">Harvesting</option>
                     <option value="packing">Packing / Grading</option>
                     <option value="others">Others</option>
                 </select>
-                <input type="text" name="other_activity[]" class="form-control mt-2 d-none border border-2 border-dark" placeholder="Enter other activity">
             </div>
+
+            <!-- COST -->
             <div class="col-md-4">
                 <label>Cost (₱)</label>
-                <input type="number" name="activity_cost[]" class="form-control activity-cost border border-2 border-dark">
+                <input type="number" 
+                       name="activity_cost[]" 
+                       class="form-control activity-cost border border-2 border-dark">
             </div>
 
+            <!-- ADDITIONAL INFO (UNCHANGED) -->
             <div class="col-md-4">
-              <label>Additional Details or Other Information</label>
-              <textarea name="additional_info[]" class="form-control border border-2 border-dark" rows="3" placeholder="Enter additional details"></textarea>
+                <label>Additional Details or Other Information</label>
+                <textarea name="additional_info[]" 
+                          class="form-control border border-2 border-dark" 
+                          rows="3"
+                          placeholder="Enter additional details"></textarea>
             </div>
 
+            <!-- DATE -->
             <div class="col-md-4">
                 <label>Date Done (or Date Performed)</label>
-                <input type="date" name="activity_date[]" class="form-control border border-2 border-dark" >
+                <input type="date" 
+                       name="activity_date[]" 
+                       class="form-control border border-2 border-dark">
             </div>
+
         </div>
     `;
 
     frame.appendChild(div);
 
-    // Add event listener for cost calculation
-    div.querySelector('.activity-cost').addEventListener('input', updateTotal);
+    const typeSelect = div.querySelector(".activity-type");
+    const nameSelect = div.querySelector(".activity-name");
+    const otherInput = div.querySelector("input[name='other_activity[]']");
+
+    // When activity type changes
+    typeSelect.addEventListener("change", function () {
+        const type = this.value;
+
+        nameSelect.innerHTML = "";
+        otherInput.classList.add("d-none");
+        otherInput.value = "";
+
+        // Default option
+        const defaultOpt = document.createElement("option");
+        defaultOpt.value = "";
+        defaultOpt.textContent = "Select activity name";
+        nameSelect.appendChild(defaultOpt);
+
+        if (activityTemplates[type]) {
+            activityTemplates[type].forEach((item, index) => {
+                const opt = document.createElement("option");
+                opt.value = item;
+                opt.textContent = item;
+                nameSelect.appendChild(opt);
+
+                // ✅ Auto-select FIRST item
+                if (index === 0) {
+                    opt.selected = true;
+                }
+            });
+        }
+
+        // Others option
+        if (type === "others") {
+            otherInput.classList.remove("d-none");
+            nameSelect.innerHTML = "";
+        }
+    });
+
+    // Cost listener
+    div.querySelector(".activity-cost").addEventListener("input", updateTotal);
 
     updateItemNumbers();
 }
+
 
 function removeItem(button) {
     button.closest('.item-block').remove();

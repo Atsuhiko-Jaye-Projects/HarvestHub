@@ -236,6 +236,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 			echo "<div class='container'><div class='alert alert-success'>Product Posted!</div></div>";
         }
     }
+    elseif ($_POST['action'] == 'delete') {
+        $harvest_product->id = $_POST['id'];
+        $harvest_product->deleteHarvestProduct();
+
+        $_SESSION['flash'] = [
+            'icon' => 'success',
+            'title' => 'Deleted',
+            'text' => 'Record deleted successfully'
+        ];
+    } 
 }
 
 // get the users farm lot_size
@@ -270,7 +280,22 @@ const UpdatePostURL = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>";
 const ProductPostingURL = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>";
 </script>
 
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+Swal.fire({
+    title: <?= json_encode($_SESSION['flash']['title']) ?>,
+    text: <?= json_encode($_SESSION['flash']['text']) ?>,
+    icon: <?= json_encode($_SESSION['flash']['icon']) ?>,
+    showConfirmButton: false, // ❌ no OK button
+}).then(() => {
+   window.location.href = window.location.pathname;
+});
+
+</script>
+
 <script src="/HarvestHub/js/user/farmer/modals/farm_product/farm_product_modal.js"></script>
+<?php unset($_SESSION['flash']); ?>
 <?php include_once "../layout/layout_foot.php"; ?>
+
 
 

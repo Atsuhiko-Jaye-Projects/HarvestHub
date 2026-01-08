@@ -185,7 +185,7 @@ class FarmResource{
     }
 
     function farmStatsCurrentTotalCost() {
-        $query = "SELECT grand_total
+        $query = "SELECT SUM(grand_total) AS grand_total
                 FROM " . $this->table_name . " 
                   WHERE 
                     date BETWEEN :start_date_expense AND :today_expense 

@@ -35,14 +35,13 @@ $total = $farm_resource->farmStatsCurrentTotalCost();
           <div class="d-flex justify-content-between align-items-start">
             <div>
               <h6>Farm Expense (<?php echo date('M d', strtotime($start_date)); ?> – <?php echo date('M d', strtotime($end_date)); ?>)</h6>
-              <h2>₱ <?php echo number_format($total); ?></h2>
+              <h2>₱ <?php echo number_format($total,2); ?></h2>
             </div>
             <div>
               <i class="bi bi-wallet2" style="font-size: 1.5rem;"></i>
             </div>
           </div>
           <small class="text-success">
-            +3.16% compared to <?php echo date('M d', strtotime($start_date)); ?> – <?php echo date('M d', strtotime($end_date)); ?>
           </small>
         </div>
       </div>

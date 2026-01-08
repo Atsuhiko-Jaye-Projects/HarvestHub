@@ -11,6 +11,7 @@ include_once "../../../objects/user.php";
 $page_title = "Manage Crop";
 include_once "../layout/layout_head.php";
 
+
 $require_login=true;
 include_once "../../../login_checker.php";
 
@@ -170,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->is_posted = "Pending";
-        $crop->crop_status = $_POST['mark_crop'];
+        $crop->crop_status = $_POST['mark_crop'] ?? "";
         
         
         if ($crop->updateFarmProduct()) {
@@ -178,6 +179,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $farm->user_id = $_SESSION['user_id'];
                 $farm->deduct_used_size = $_POST['cultivated_area'];
                 $farm->deductUsedLotSize();
+
+                
+                
+                // bind the posted values to the harvest crop property
+                $harvest_product->product_name = $_POST['crop_name'];
+                $harvest_product->plant_count = $_POST['plant_count'];
+                
                 
                 $_SESSION['flash'] = [
                 'title' => 'Success!',
@@ -191,9 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     'icon'  => 'success' // 'success', 'error', 'warning', 'info'
                 ];
             }
-
-
-        } else {
+        }else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
         }
     }
@@ -220,6 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             echo "<div class='container'><div class='alert alert-success'>Crop has been Posted!</div></div>";
         }
     }
+
 }
 
 // get the users farm lot_size
@@ -248,6 +255,128 @@ Swal.fire({
    window.location.href = window.location.pathname;
 });
 
+</script>
+
+<script>
+document.addEventListener("shown.bs.modal", function (e) {
+    const modal = e.target;
+    if (!modal.id.startsWith("update-crop-modal-")) return;
+
+    const plantedInput = modal.querySelector("input[name='date_planted']");
+    const harvestInput = modal.querySelector("input[name='estimated_harvest_date']");
+
+    if (!plantedInput || !harvestInput) return;
+
+    function validateHarvestDate() {
+        if (!plantedInput.value || !harvestInput.value) return;
+
+        const plantedDate = new Date(plantedInput.value);
+        const harvestDate = new Date(harvestInput.value);
+
+        // Normalize time
+        plantedDate.setHours(0,0,0,0);
+        harvestDate.setHours(0,0,0,0);
+
+        const diffDays = Math.round(
+            (harvestDate - plantedDate) / (1000 * 60 * 60 * 24)
+        );
+
+        // ❌ Same day or past
+        if (diffDays <= 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Harvest Date",
+                text: "Estimated harvest date must be AFTER the date planted."
+            });
+            harvestInput.value = "";
+            return;
+        }
+
+        // ❌ Less than 45 days
+        if (diffDays < 45) {
+            Swal.fire({
+                icon: "error",
+                title: "Too Early",
+                text: "Estimated harvest must be at least greater than 45 days after planting."
+            });
+            harvestInput.value = "";
+            return;
+        }
+
+        // ⚠️ Exactly 45 days (real-world warning)
+        if (diffDays === 45) {
+            Swal.fire({
+                icon: "warning",
+                title: "Minimum Growth Period",
+                text: "45 days is the minimum growth period. Actual harvest may vary depending on crop condition."
+            });
+        }
+    }
+
+    plantedInput.addEventListener("change", validateHarvestDate);
+    harvestInput.addEventListener("change", validateHarvestDate);
+});
+</script>
+
+<script>
+document.addEventListener("shown.bs.modal", function (e) {
+    const modal = e.target;
+    if (!modal.id.startsWith("new-crop-modal")) return;
+
+    const plantedInput = modal.querySelector("input[name='date_planted']");
+    const harvestInput = modal.querySelector("input[name='estimated_harvest_date']");
+
+    if (!plantedInput || !harvestInput) return;
+
+    function validateHarvestDate() {
+        if (!plantedInput.value || !harvestInput.value) return;
+
+        const plantedDate = new Date(plantedInput.value);
+        const harvestDate = new Date(harvestInput.value);
+
+        // Normalize time
+        plantedDate.setHours(0,0,0,0);
+        harvestDate.setHours(0,0,0,0);
+
+        const diffDays = Math.round(
+            (harvestDate - plantedDate) / (1000 * 60 * 60 * 24)
+        );
+
+        // ❌ Same day or past
+        if (diffDays <= 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Harvest Date",
+                text: "Estimated harvest date must be AFTER the date planted."
+            });
+            harvestInput.value = "";
+            return;
+        }
+
+        // ❌ Less than 45 days
+        if (diffDays < 45) {
+            Swal.fire({
+                icon: "error",
+                title: "Too Early",
+                text: "Estimated harvest must be at least greater than 45 days after planting."
+            });
+            harvestInput.value = "";
+            return;
+        }
+
+        // ⚠️ Exactly 45 days (real-world warning)
+        if (diffDays === 45) {
+            Swal.fire({
+                icon: "warning",
+                title: "Minimum Growth Period",
+                text: "45 days is the minimum growth period. Actual harvest may vary depending on crop condition."
+            });
+        }
+    }
+
+    plantedInput.addEventListener("change", validateHarvestDate);
+    harvestInput.addEventListener("change", validateHarvestDate);
+});
 </script>
 <?php unset($_SESSION['flash']); ?>
 <?php include_once "../layout/layout_foot.php"; ?>

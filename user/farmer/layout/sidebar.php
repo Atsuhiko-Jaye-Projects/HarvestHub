@@ -1,7 +1,7 @@
 <?php $page = basename($_SERVER['PHP_SELF']); ?>
 
 <!-- Sidebar for large screens -->
-<div class="d-none d-xl-block col-xl-2 bg-dark min-vh-100 p-0">
+<div class="d-none d-xl-block col-xl-2 col-md-3 bg-dark min-vh-100 p-0 w-5">
   <nav class="nav flex-column">
     <!-- Logo -->
     <div class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">

@@ -4,16 +4,7 @@
 
   <!-- ✅ Summary Cards -->
   <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-      <div class="card border-1 shadow-sm h-100 rounded-4">
-        <div class="card-body text-center">
-          <i class="bi bi-box-seam text-success fs-2 mb-2"></i>
-          <h6 class="text-muted">Total Crop Type</h6>
-          <h4 id="recordCounts"></h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
+    <div class="col-sm-6 col-md-4">
       <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-box-seam text-primary fs-2 mb-2"></i>
@@ -22,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
          <i class="bi bi-tree text-success fs-2 mb-2"></i>
@@ -31,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card border-1 shadow-sm h-100 rounded-4">
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-danger fs-2 mb-2"></i>
@@ -43,7 +34,7 @@
   </div>
 
   <!-- Weather Suggestions -->
-  <div class="alert alert-light border-1   shadow-sm rounded-4 mb-4">
+  <!-- <div class="alert alert-light border-1   shadow-sm rounded-4 mb-4">
     <div class="row align-items-center">
       <div class="col-12 col-md-4 mb-2 mb-md-0">
         <h6 class="mb-0"><i class="bi bi-cloud-sun text-warning me-2"></i>Weather-Based Crop Suggestions</h6>
@@ -55,7 +46,7 @@
         <button class='btn btn-outline-success btn-sm mb-1 mb-md-0'>Sitaw</button>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Page Header -->
   <div class="p-3 bg-light rounded shadow-sm d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
@@ -116,9 +107,9 @@
             echo "<tr>";
               echo "<td class='text-nowrap'>{$row['crop_name']}</td>";
               echo "<td>{$row['yield']} KG/Plant</td>";
-              echo "<td>{$row['cultivated_area']}</td>";
-              echo "<td>{$row['stocks']}</td>";
-              echo "<td>{$row['plant_count']}</td>";
+              echo "<td>{$row['cultivated_area']} SQM</td>";
+              echo "<td>" . number_format($row['stocks']) . " KG</td>";
+              echo "<td>{$row['plant_count']} Crops</td>";
               echo "<td>{$row['date_planted']}</td>";
               echo "<td>{$row['estimated_harvest_date']}</td>";
               echo "<td>{$durationDays} days</td>";

@@ -1,4 +1,26 @@
 
+<?php
+$showHarvestOption = false;
+
+if (!empty($row['date_planted']) && !empty($row['estimated_harvest_date'])) {
+
+    $planted = new DateTime($row['date_planted']);
+    $estimatedHarvest = new DateTime($row['estimated_harvest_date']);
+    $today = new DateTime();
+
+    $totalDays = $planted->diff($estimatedHarvest)->days;
+
+    if ($totalDays > 0) {
+        $remainingDays = $today->diff($estimatedHarvest)->days;
+        $thresholdDays = ceil($totalDays * 0.15);
+
+        if ($remainingDays <= $thresholdDays) {
+            $showHarvestOption = true;
+        }
+    }
+}
+?>
+
 <!-- Modal -->
 <div class="modal fade" id="update-crop-modal-<?php echo $id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -39,7 +61,7 @@
                     <label>
                       Yield/Plant (kg) 
                     </label>
-                    <input type="text" name="kilo_per_plant" value='<?php echo $row['yield'];?>' class="form-control" >
+                    <input type="number" name="kilo_per_plant" value='<?php echo $row['yield'];?>' class="form-control" >
                 </div>
               </div>
               <div class="row mb-3">
@@ -58,16 +80,30 @@
                 </div>
                 <?php if ($row['crop_status'] == "harvested") {
                   
-                }else{?>
-                  <div class="col-md-6  mt-3">
-                    <label class="text-nowrap">Mark this crop as Harvested?</label>
-                        <input class="form-check-input" type="radio" name="mark_crop" id="harvestedYes" value="harvested">
-                          <label class="form-check-label" for="harvestedYes">
-                              Yes
-                          </label>
-                        <input class="form-check-input square-radio" type="radio" name="mark_crop" id="harvestedNo" value="crop_planted" checked>
-                        <label class="form-check-label" for="harvestedNo">No</label>
-                  </div>
+                }else{
+                ?>
+                <?php if ($showHarvestOption) { ?>
+                    <div class="col-md-6 mt-3">
+                      <label class="text-nowrap">Mark this crop as Harvested?</label><br>
+
+                      <input class="form-check-input" type="radio"
+                            name="mark_crop"
+                            value="harvested">
+                      <label class="form-check-label">
+                          Yes
+                      </label>
+
+                      <input class="form-check-input ms-2"
+                            type="radio"
+                            name="mark_crop"
+                            id="harvestedNo-<?php echo $row['id']; ?>"
+                            value="crop_planted" checked>
+                      <label class="form-check-label"
+                            for="harvestedNo-<?php echo $row['id']; ?>">
+                          No
+                      </label>
+                    </div>
+                  <?php } ?>
                 <?php } ?>
               </div>
             </div>
@@ -92,4 +128,6 @@
     </div>
   </div>
 </div>
+
+
 

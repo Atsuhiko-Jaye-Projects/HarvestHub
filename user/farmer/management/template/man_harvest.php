@@ -43,7 +43,7 @@
   </div>
 
   <!-- ✅ Weather Suggestions -->
-  <div class="alert alert-light border shadow-sm mb-3">
+  <!-- <div class="alert alert-light border shadow-sm mb-3">
     <div class="row align-items-center">
       <div class="col-md-4">
         <h6 class="mb-0"><i class="bi bi-cloud-sun text-warning me-2"></i>Weather-Based Crop Suggestions</h6>
@@ -55,7 +55,7 @@
         <button class='btn btn-outline-success btn-sm'>Sitaw</button>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- ✅ Page Header -->
   <div class="p-3 bg-light rounded shadow-sm d-flex justify-content-between align-items-center mb-3">
@@ -101,7 +101,7 @@
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
             echo "<tr>";
-            echo "<td>{$product_name}</td>";
+            echo "<td>{$product_nams}</td>";
             echo "<td>{$category}</td>";
             echo "<td>{$price_per_unit}</td>";
             echo "<td>{$unit}</td>";
@@ -127,6 +127,31 @@
 </div>
 
 <script>
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.btn-delete');
+  if (!btn) return;
+
+  e.preventDefault();
+  const form = btn.closest('form');
+
+  Swal.fire({
+    title: 'Delete this record?',
+    text: 'This action cannot be undone.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, delete it'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit(); // ✅ normal POST submit
+    }
+  });
+});
+</script>
+
+
+<script>
 document.addEventListener("change", function (e) {
   if (e.target.id !== "productSelect") return;
 
@@ -149,6 +174,7 @@ document.addEventListener("change", function (e) {
     input.focus();
   }
 });
+
 </script>
 
 

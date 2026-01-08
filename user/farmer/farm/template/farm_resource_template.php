@@ -16,7 +16,7 @@
         <div class="card-body text-center">
           <i class="bi bi-cash-stack text-primary fs-2 mb-2"></i>
           <h6 class="text-muted">Total Cost</h6>
-          <h4 id="totalCost">₱ <?php echo number_format($total); ?></h4>
+          <h4 id="totalCost">₱ <?php echo number_format($total, 2); ?></h4>
         </div>
       </div>
     </div>

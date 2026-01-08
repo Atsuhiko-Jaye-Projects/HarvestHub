@@ -17,14 +17,29 @@ document.addEventListener('DOMContentLoaded', function() {
         let totalrows = response.records.length;
         let postedPlantCount = 0;
 
+
         if (!response.records || response.records.length === 0) {
-          $('#harvest_product').html("<tr><td colspan='7' class='text-center'>No products found.</td></tr>");
+          $('#harvest_product').html("<tr><td colspan='9' class='text-center'>No products found.</td></tr>");
           $('#harvest_product_pagination').html('');
           return;
         }
 
 
         response.records.forEach(row => {
+          
+        const deleteBtn = row.is_posted === 'posted'
+        ? ''
+        : `
+          <form method="POST" action="" class="d-inline delete-form">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="id" value="${row.id}">
+            <button type="button" class="btn btn-danger btn-delete">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        `;
+
+
 
           if (row.is_posted === "Pending") {
             statusClass = "bg-warning text-dark";
@@ -33,25 +48,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
           rows += `
-              <tr class='text-center'>
-                <td>${row.product_name}</td>
-                <td>${row.category}</td>
-                <td class='price'>₱${row.price_per_unit}.00</td>
-                <td>${row.unit}</td>
-                <td>${Number(row.total_stocks).toLocaleString()} KG</td>
-                <td>${row.plant_count}</td>
-                <td>${row.lot_size}</td>
-                <td><span class='badge ${statusClass} px-3 py-2 text-uppercase'>${row.is_posted}</span></td>
-                <td>
-                  <button class='btn btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-${row.id}'>
-                    <i class='bi bi-pencil-square'></i>
-                  </button>
-                  <button class='btn btn-success me-2' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-${row.id}'>
-                    <i class='bi bi-box-arrow-up'></i>
-                  </button>
-                </td>
-              </tr>
-            `;
+          <tr class='text-center'>
+          <td>${row.product_name}</td>
+          <td>${row.category}</td>
+          <td class='price'>₱${row.price_per_unit}.00</td>
+          <td>${row.unit}</td>
+          <td>${Number(row.total_stocks).toLocaleString()} KG</td>
+          <td>${row.plant_count}</td>
+          <td>${row.lot_size}</td>
+          <td>
+            <span class='badge ${statusClass} px-3 py-2 text-uppercase'>
+              ${row.is_posted}
+            </span>
+          </td>
+          <td>
+            <button class='btn btn-primary me-2'
+                    data-bs-toggle='modal'
+                    data-bs-target='#edit-harvest-modal-${row.id}'>
+              <i class='bi bi-pencil-square'></i>
+            </button>
+
+            <button class='btn btn-success me-2'
+                    data-bs-toggle='modal'
+                    data-bs-target='#post-harvest-modal-${row.id}'>
+              <i class='bi bi-box-arrow-up'></i>
+            </button>
+
+            ${deleteBtn}
+          </td>
+          </tr>
+          `;
+
           edit_modal += editHarvestProduct(row);
           postProduct_modal += postHarvestProduct(row);
         });

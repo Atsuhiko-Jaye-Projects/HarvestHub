@@ -206,15 +206,15 @@ function postHarvestProduct(row) {
         if (price < cost) {
           let loss = (cost - price).toFixed(2);
           var markup = ((price - cost) / cost * 100).toFixed(2);
-          resultBox.className = "alert alert-danger";
-          resultBox.innerHTML = "⚠️ You are selling at a loss! <br> Loss per KG: ₱" + loss + "<br>Markup: " + markup + "%";
+          resultBox.className = "alert alert-success";
+          resultBox.innerHTML = "Per KG: ₱" + loss + "<br>Markup: " + markup + "%";
         } else {
           var markup = ((price - cost) / cost * 100).toFixed(2);
           resultBox.className = "alert alert-success";
-          resultBox.innerHTML = "✔️ Profit per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
+          resultBox.innerHTML = "Per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
 
               if (markup > 25.00) {
-                resultBox.innerHTML += "<br>⚠️ Markup is too high: " + markup + "%";
+                resultBox.innerHTML += "<br>⚠️ Markup is: " + markup + "%";
                 postButton.disabled = true;
               }else{
                 postButton.disabled = false;
