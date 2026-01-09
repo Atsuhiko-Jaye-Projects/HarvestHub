@@ -342,11 +342,32 @@ class FarmResource{
                 FROM " . $this->table_name . "
                 WHERE record_name = :record_name
                     AND user_id = :user_id
-                LIMIT 1"; // stops at first match, faster than COUNT(*)
+                LIMIT 1";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":record_name", $this->record_name);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+
+        // If fetch returns a row, it exists
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+    }
+
+    function checkCropName() {
+        // Normalize the input: remove spaces and lowercase
+        $this->record_name = trim(mb_strtolower($this->record_name));
+
+        // SQL: check existence for this user only
+        $query = "SELECT 1
+                FROM " . $this->table_name . "
+                WHERE crop_name = :crop_name
+                    AND user_id = :user_id
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":crop_name", $this->crop_name);
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->execute();
 

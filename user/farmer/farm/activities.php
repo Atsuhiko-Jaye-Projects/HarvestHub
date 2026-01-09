@@ -31,10 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // the input record title
         $farm_resource->record_name = $_POST['record_name'];
         $farm_resource->user_id = $_SESSION['user_id'];
+        $farm_resource->crop_name = $_POST['crop_name'];
 
         if ($farm_resource->checkRecordName()) {
             header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=record_name_taken");
-                exit;
+            exit;
+        }else if($farm_resource->checkCropName()){
+            header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=crop_name_taken");
+            exit;
         }else{
             $resource_id = 'FID' . preg_replace('/[^0-9]/', '', uniqid());
             
@@ -496,6 +500,15 @@ document.addEventListener("DOMContentLoaded", function() {
         Swal.fire({
             icon: 'error',
             title: 'Record Name is already taken.',
+            showConfirmButton: false,
+            timer: 1800
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'crop_name_taken'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Crop Name is already taken.',
             showConfirmButton: false,
             timer: 1800
         });
