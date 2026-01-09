@@ -181,17 +181,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $farm->deductUsedLotSize();
 
                 
-                
                 // bind the posted values to the harvest crop property
-                $harvest_product->product_name = $_POST['crop_name'];
-                $harvest_product->plant_count = $_POST['plant_count'];
+                $plant_count = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
+                $kilo_per_plant = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
+                $farm_expense = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
+                $total_farm_size = isset($_POST['cultivated_area']) ? (float)str_replace(',', '', $_POST['cultivated_area']) : 0;
+
+                // General markup (50% profit)
+                $markup = 0.015 * 100;
+
+                // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
                 
+
+                // Prevent division by zero
+                if ($farm_expense > 0 && $total_farm_size > 0) {
+
+                    
+                    // Expense allocated to the planted area
+                    $kilo_harvested_product = $plant_count * $kilo_per_plant;
+
+                    // Prevent zero division
+                    if ($kilo_harvested_product <= 0) {
+                        $kilo_harvested_product = 1;
+                    }
+
+                    $stocks = $plant_count * $kilo_per_plant;
+
+                    // Cost per kg
+                    $cost_per_kg = $farm_expense / $kilo_harvested_product;
+
+                    
+
+                    // Selling price with markup
+                    $selling_price = $cost_per_kg * $markup;
+
+                    // Rounded price (currency format)
+                    $harvest_product->price_per_unit = round($selling_price, 2);
+
+                } else {
+                    $harvest_product->price_per_unit = 0;
+                }
+
+                $harvest_product->user_id = $_SESSION['user_id'];
+                $harvest_product->product_name = $_POST['crop_name'];
+                $harvest_product->total_stocks = $stocks;
+                $harvest_product->plant_count = $_POST['plant_count'];
+                $harvest_product->expense = $_POST['total_plant_expense'];
+                $harvest_product->lot_size = $_POST['cultivated_area'];
+                $harvest_product->unit = "KG";
+                $harvest_product->kilo_per_plant = $_POST['kilo_per_plant'];
+                $harvest_product->is_posted = "Pending";
+                
+                $harvest_product->createProduct();
                 
                 $_SESSION['flash'] = [
                 'title' => 'Success!',
-                'text'  => 'Crop has been updated successfully.',
+                'text'  => 'Crop has been updated harvested.',
                 'icon'  => 'success' // 'success', 'error', 'warning', 'info'
                 ];
+
             }else{
                 $_SESSION['flash'] = [
                     'title' => 'Success!',

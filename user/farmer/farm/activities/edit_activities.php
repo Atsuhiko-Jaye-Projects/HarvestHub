@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
                     <label for="record_name" class="form-label fw-bold text-nowrap">
                        Total Planted Area (sqm) 
                     </label>
-                    <input type="number" step="0.1" name="planted_area_sqm" class="form-control border border-3 border-dark" required value="<?php echo $farm_resource->planted_area_sqm;?>">
+                    <input type="number" step="0.1" name="planted_area_sqm" class="form-control border border-3 border-dark" required value="<?php echo $farm_resource->planted_area_sqm;?>" readonly>
                     </div>  
                     <hr>
                 </div>

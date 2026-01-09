@@ -198,10 +198,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->is_posted = "Pending";
 
         if ($harvest_product->updateHarvestProduct()) {
-
-            // header("location:{$home_url}user/farmer/manage_harvest.php?r=pu");
-
-			      echo "<div class='container'><div class='alert alert-success'>Harvest Product Info Updated!</div></div>";
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product Updated!',
+                    text: 'Your product details have been saved successfully.',
+                    showConfirmButton: true
+                });
+            </script>
+            ";
 
         } else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
@@ -228,12 +235,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->is_posted = "Posted";
 
         if ($_POST['is_posted'] == "Posted") {
-            echo "<div class='container'><div class='alert alert-warning'>Product is already posted.</div></div>";
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Already Posted',
+                    text: 'This product has already been posted.',
+                    showConfirmButton: true
+                });
+            </script>
+            ";
         }else{
             $product->postProduct();
             //update the item by the status if its posted
 			$harvest_product->postedProduct();
-			echo "<div class='container'><div class='alert alert-success'>Product Posted!</div></div>";
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product Posted!',
+                    text: 'Your product is now live and available for sale.',
+                    showConfirmButton: true
+                });
+            </script>
+            ";
         }
     }
     elseif ($_POST['action'] == 'delete') {

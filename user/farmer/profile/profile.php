@@ -244,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                         <label>Farm Size (sqm)</label>
                         <input type="number" name="farm_size" class="form-control" value="<?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?>">
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label>Farm Type</label>
                         <select name="farm_type" class="form-select">
                             <option value="">Select type</option>
@@ -253,7 +253,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                             <option value="Fruit" <?php if(($farm->farm_type ?? '')=='Fruit') echo 'selected'; ?>>Fruit</option>
                             <option value="Livestock" <?php if(($farm->farm_type ?? '')=='Livestock') echo 'selected'; ?>>Livestock</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="row mb-3">
                         <div class="col-12 col-sm-6 col-md-6 mt-3">
                         <label class="form-label">Province</label>

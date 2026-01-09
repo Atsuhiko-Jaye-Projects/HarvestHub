@@ -39,6 +39,14 @@ if (!empty($row['date_planted']) && !empty($row['estimated_harvest_date'])) {
             <div class="container">
               <input type="hidden" name="action" value='update'>
               <input type="hidden" name="id" value='<?php echo $row['id'];?>'>
+              <input type="hidden" name="farm_resource_id" value='<?php echo $row['farm_resource_id'];?>'>
+
+              <!-- get the expense amount -->
+              <?php
+                $farm_resource->farm_resource_id = $row['farm_resource_id'];
+                $expense = $farm_resource->cropExpense();
+              ?>
+              <input type="hidden" name="total_plant_expense" value='<?php echo $expense; ?>'>
               <div class="row mb-3">
                 <div class="col-md-6">
                     <label>Crop Name</label>

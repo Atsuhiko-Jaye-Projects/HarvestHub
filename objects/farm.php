@@ -145,6 +145,7 @@ class Farm{
         $this->municipality = $row['municipality'];
         $this->baranggay = $row['baranggay'];
     }
+    
     function getFarmInfo(){
         $query = "SELECT * 
                   FROM 

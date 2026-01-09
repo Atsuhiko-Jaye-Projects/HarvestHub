@@ -375,6 +375,25 @@ class FarmResource{
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
     }
 
+    function cropExpense(){
+        
+        $query = "SELECT 
+                    grand_total
+                  FROM
+                    " . $this->table_name . "
+                   WHERE
+                     farm_resource_id = :farm_resource_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['grand_total'];
+    }
+
 }
 
 
