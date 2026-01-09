@@ -332,6 +332,29 @@ class FarmResource{
         
         return $stmt;
     }
+
+    function checkRecordName(){
+        
+        $query = "SELECT COUNT(*) as recordExist
+                  FROM
+                    " . $this->table_name . "
+                  WHERE
+                    record_name = :record_name
+                  AND
+                    user_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $this->record_name = htmlspecialchars(strip_tags($this->record_name));
+
+        $stmt->bindParam(":record_name", $this->record_name);
+        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row['recordExist'] > 0;
+    }
 }
 
 

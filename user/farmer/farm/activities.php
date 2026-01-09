@@ -27,61 +27,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 	$farm_resource = new FarmResource($db);
 
 	if ($_POST["action"]=="create") {
-		$resource_id = 'FID' . preg_replace('/[^0-9]/', '', uniqid());
 		
+        // the input record title
+        $farm_resource->record_name = $_POST['record_name'];
+        $farm_resource->user_id = $_SESSION['user_id'];
 
-		// bind the values first to variable
-		$activity_names = $_POST['activity_name'];
-		$farm_activity_type = $_POST['farm_activity_type'];
-		$other_farm_activity = $_POST['other_activity'];
-		$activity_cost = $_POST['activity_cost'] ?? [];
-		$additional_info = $_POST['additional_info'];
-		$activity_date = $_POST['activity_date'];
+        if ($farm_resource->checkRecordName()) {
+            header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=record_name_taken");
+                exit;
+        }else{
+            $resource_id = 'FID' . preg_replace('/[^0-9]/', '', uniqid());
+            
+            // bind the values first to variable
+            $activity_names = $_POST['activity_name'];
+            $farm_activity_type = $_POST['farm_activity_type'];
+            $other_farm_activity = $_POST['other_activity'];
+            $activity_cost = $_POST['activity_cost'] ?? [];
+            $additional_info = $_POST['additional_info'];
+            $activity_date = $_POST['activity_date'];
 
-    // compute total expense
-    $activity_cost = array_map('floatval', $activity_cost);
+            // compute total expense
+            $activity_cost = array_map('floatval', $activity_cost);
 
-    $grand_total = array_sum($activity_cost);
+            $grand_total = array_sum($activity_cost);
 
-    for ($i = 0; $i < count($activity_names); $i++) {
+            for ($i = 0; $i < count($activity_names); $i++) {
 
-        // Skip empty rows
-        if (
-            empty($activity_names[$i]) &&
-            empty($farm_activity_type[$i]) &&
-            empty($activity_cost[$i])
-        ) {
-            continue;
+                // Skip empty rows
+                if (
+                    empty($activity_names[$i]) &&
+                    empty($farm_activity_type[$i]) &&
+                    empty($activity_cost[$i])
+                ) {
+                    continue;
+                }
+
+                $farm_activity->record_name = $_POST['record_name'];
+                $farm_activity->activity_name = $activity_names[$i] ?? '';
+                $farm_activity->farm_activity_type = $farm_activity_type[$i] ?? '';
+                $farm_activity->activity_cost = $activity_cost[$i] ?? 0;
+                $farm_activity->additional_info = !empty($additional_info[$i]) 
+                ? $other_farm_activity[$i] 
+                : null;
+                $farm_activity->additional_info = !empty($additional_info[$i]) ? $additional_info[$i] : null;
+                $farm_activity->activity_date = $activity_date[$i] ?? null;
+                $farm_activity->farm_resource_id = $resource_id;
+
+                $farm_activity->createFarmActivity();
+            }
+
+            $farm_resource->farm_resource_id = $resource_id;
+            $farm_resource->record_name = $_POST['record_name'];
+            $farm_resource->crop_name = $_POST['crop_name'];
+            $farm_resource->grand_total = $grand_total;
+            $farm_resource->user_id = $_SESSION['user_id'];
+            $farm_resource->date = $_POST['activity_date'];
+            $farm_resource->planted_area_sqm = $_POST['planted_area_sqm'];
+            $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
+            $farm_resource->plant_count = $_POST['plant_count'];
+
+            if ($farm_resource->createFarmResource()) {
+                header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=success");
+                exit;
+            }
         }
-
-        $farm_activity->record_name = $_POST['record_name'];
-        $farm_activity->activity_name = $activity_names[$i] ?? '';
-        $farm_activity->farm_activity_type = $farm_activity_type[$i] ?? '';
-        $farm_activity->activity_cost = $activity_cost[$i] ?? 0;
-        $farm_activity->additional_info = !empty($additional_info[$i]) 
-        ? $other_farm_activity[$i] 
-        : null;
-        $farm_activity->additional_info = !empty($additional_info[$i]) ? $additional_info[$i] : null;
-        $farm_activity->activity_date = $activity_date[$i] ?? null;
-        $farm_activity->farm_resource_id = $resource_id;
-
-        $farm_activity->createFarmActivity();
     }
-    $farm_resource->farm_resource_id = $resource_id;
-    $farm_resource->record_name = $_POST['record_name'];
-    $farm_resource->crop_name = $_POST['crop_name'];
-    $farm_resource->grand_total = $grand_total;
-    $farm_resource->user_id = $_SESSION['user_id'];
-    $farm_resource->date = $_POST['activity_date'];
-    $farm_resource->planted_area_sqm = $_POST['planted_area_sqm'];
-    $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
-    $farm_resource->plant_count = $_POST['plant_count'];
-
-    if ($farm_resource->createFarmResource()) {
-        header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=success");
-        exit;
-    }
-  }
 }
 ?>
 
@@ -477,6 +487,15 @@ document.addEventListener("DOMContentLoaded", function() {
         Swal.fire({
             icon: 'success',
             title: 'Resource Info Saved!',
+            showConfirmButton: false,
+            timer: 1800
+        });
+    <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'record_name_taken'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Record Name is already taken.',
             showConfirmButton: false,
             timer: 1800
         });
