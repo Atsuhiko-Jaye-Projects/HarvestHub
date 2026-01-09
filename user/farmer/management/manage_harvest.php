@@ -197,7 +197,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 		$harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
 
+        $image=!empty($_FILES["product_image"]["name"])
+            ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
+        $harvest_product->product_image = $image;
+
         if ($harvest_product->updateHarvestProduct()) {
+            $harvest_product->uploadPhoto();
             echo "
             <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
             <script>

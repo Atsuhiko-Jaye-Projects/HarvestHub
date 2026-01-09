@@ -194,6 +194,7 @@ class HarvestProduct{
                 category=:category,
                 lot_size=:lot_size,
                 product_description=:product_description,
+                product_image = :product_image;
                 is_posted=:is_posted,
                 modified=:modified
                 WHERE
@@ -207,6 +208,7 @@ class HarvestProduct{
         $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
         $this->category = htmlspecialchars(strip_tags($this->category));
         $this->lot_size = htmlspecialchars(strip_tags($this->lot_size));
+        $this->product_image = htmlspecialchars(strip_tags($this->product_image));
         $this->product_description = htmlspecialchars(strip_tags($this->product_description));
         $this->is_posted = htmlspecialchars(strip_tags($this->is_posted));
         $this->modified_at = date ("Y-m-d H:i:s");
@@ -218,6 +220,7 @@ class HarvestProduct{
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
         $stmt->bindParam(":category", $this->category);
         $stmt->bindParam(":lot_size", $this->lot_size);
+        $stmt->bindParam(":product_image", $this->product_image);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":is_posted", $this->is_posted);
         $stmt->bindParam(":modified", $this->modified);

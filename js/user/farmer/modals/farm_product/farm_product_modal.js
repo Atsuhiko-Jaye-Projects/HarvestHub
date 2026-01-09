@@ -65,7 +65,10 @@ function editHarvestProduct(row){
                 <input type="hidden"  name="plant_count" value="${row.plant_count}">
                 <input type="hidden"  name="kilo_per_plant" value="${row.kilo_per_plant}">
                 <input type="hidden"  name="total_plant_expense" value="${row.expense}">
-
+                  <div class="col-md-12">
+                    <Label>Product Image</Label>
+                    <input type="file" name="product_image" class="form-control border border-success" required placeholder="Product Name">
+                  </div>
               </div>
             </div>
           </div>
@@ -214,7 +217,6 @@ function postHarvestProduct(row) {
           resultBox.innerHTML = "Per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
 
               if (markup > 25.00) {
-                resultBox.innerHTML += "<br>⚠️ Markup is: " + markup + "%";
                 postButton.disabled = true;
               }else{
                 postButton.disabled = false;
