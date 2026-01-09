@@ -5,12 +5,14 @@ include_once "../../../../config/core.php";
 include_once "../../../../config/database.php";
 include_once "../../../../objects/farm-resource.php";
 include_once "../../../../objects/farm_activities.php";
+include_once "../../../../objects/farm.php";
 
 $database = new Database();
 $db = $database->getConnection();
 
 $farm_resource = new FarmResource($db);
 $farm_activity = new FarmActivity($db);
+$farm  = new Farm($db);
 
 $page_title = "Edit Activities";
 $require_login = true;
@@ -29,66 +31,82 @@ $record_num = $stmt->rowCount();
 // --- POST handler ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
 
+    
+
+    if ($farm->isLotSizeExceeded($_POST['planted_area_sqm'])) {
+        echo "
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Farm Area Exceeded',
+                text: 'Your planted area exceeds the remaining farm lot size.',
+                showConfirmButton: true
+            });
+        </script>
+        ";
+    }else{
     $farm_resource_id = $_POST['farm_resource_id'];
 
-    $activity_names   = $_POST['activity_name'] ?? [];
-    $activity_types   = $_POST['farm_activity_type'] ?? [];
-    $activity_costs   = array_map('floatval', $_POST['activity_cost'] ?? []);
-    $additional_info  = $_POST['additional_info'] ?? [];
-    $other_activity   = $_POST['other_activity'] ?? [];
-    $activity_dates   = $_POST['activity_date'] ?? [];
+        $activity_names   = $_POST['activity_name'] ?? [];
+        $activity_types   = $_POST['farm_activity_type'] ?? [];
+        $activity_costs   = array_map('floatval', $_POST['activity_cost'] ?? []);
+        $additional_info  = $_POST['additional_info'] ?? [];
+        $other_activity   = $_POST['other_activity'] ?? [];
+        $activity_dates   = $_POST['activity_date'] ?? [];
 
-    $grand_total = array_sum($activity_costs);
+        $grand_total = array_sum($activity_costs);
 
-    $existing_activities = $farm_activity->readActivity();
-    $existing_count = $existing_activities->rowCount();
-    $activity_ids = $_POST['activity_id'] ?? [];
+        $existing_activities = $farm_activity->readActivity();
+        $existing_count = $existing_activities->rowCount();
+        $activity_ids = $_POST['activity_id'] ?? [];
 
-    foreach ($activity_names as $key => $name) {
+        foreach ($activity_names as $key => $name) {
 
-        if (empty($name) && empty($activity_costs[$key])) continue;
+            if (empty($name) && empty($activity_costs[$key])) continue;
 
-        $farm_activity->farm_resource_id = $farm_resource_id;
-        $farm_activity->activity_name = $name;
-        $farm_activity->farm_activity_type = $activity_types[$key] ?? '';
-        $farm_activity->activity_cost = $activity_costs[$key] ?? 0;
-        $farm_activity->activity_date = substr($activity_dates[$key], 0, 10);
+            $farm_activity->farm_resource_id = $farm_resource_id;
+            $farm_activity->activity_name = $name;
+            $farm_activity->farm_activity_type = $activity_types[$key] ?? '';
+            $farm_activity->activity_cost = $activity_costs[$key] ?? 0;
+            $farm_activity->activity_date = substr($activity_dates[$key], 0, 10);
 
-        if ($farm_activity->farm_activity_type === 'others') {
-            $farm_activity->additional_info = $other_activity[$key] ?? '';
-        } else {
-            $farm_activity->additional_info = $additional_info[$key] ?? null;
-        }
-
-        if (!empty($activity_ids[$key])) {
-            // Update
-            $farm_activity->id = $activity_ids[$key];
-            if ($farm_activity->updateFarmActivity()) {                     ;
-                echo "Update Success";
-
-            }else{
-                echo "Update Failed";
+            if ($farm_activity->farm_activity_type === 'others') {
+                $farm_activity->additional_info = $other_activity[$key] ?? '';
+            } else {
+                $farm_activity->additional_info = $additional_info[$key] ?? null;
             }
 
-        } else {
-            // Insert
-            
-            $farm_activity->createFarmActivity();
-            echo "Inserted Data";
+            if (!empty($activity_ids[$key])) {
+                // Update
+                $farm_activity->id = $activity_ids[$key];
+                if ($farm_activity->updateFarmActivity()) {                     ;
+                    echo "Update Success";
+
+                }else{
+                    echo "Update Failed";
+                }
+
+            } else {
+                // Insert
+                
+                $farm_activity->createFarmActivity();
+                echo "Inserted Data";
+            }
         }
+
+        // Update farm resource record
+        $farm_resource->farm_resource_id = $farm_resource_id;
+        $farm_resource->grand_total      = $grand_total;
+        $farm_resource->crop_name = $_POST['crop_name'];
+        $farm_resource->plant_count = $_POST['plant_count'];
+        $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
+        $farm_resource->planted_area_sqm = $_POST['planted_area_sqm'];
+        $farm_resource->updateFarmResource();
+
+        header("Location: edit_activities.php?fid={$farm_resource_id}&status=update_success");
+        exit;
     }
-
-    // Update farm resource record
-    $farm_resource->farm_resource_id = $farm_resource_id;
-    $farm_resource->grand_total      = $grand_total;
-    $farm_resource->crop_name = $_POST['crop_name'];
-    $farm_resource->plant_count = $_POST['plant_count'];
-    $farm_resource->average_yield_per_plant = $_POST['average_yield_per_plant'];
-    $farm_resource->planted_area_sqm = $_POST['planted_area_sqm'];
-    $farm_resource->updateFarmResource();
-
-    header("Location: edit_activities.php?fid={$farm_resource_id}&status=update_success");
-    exit;
 }
 ?>
 
@@ -126,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
                     <label for="record_name" class="form-label fw-bold col-md-4">Crop Name:</label>
                     <input type="text" name="crop_name" id=""
                           class="form-control border border-3 border-dark"
-                          required value="<?php echo $farm_resource->crop_name;?>">
+                          required value="<?php echo $farm_resource->crop_name;?>" readonly>
                   </div>
                   <div class="col-md-3 mb-3">
                     <label for="record_name" class="form-label fw-bold col-md-4 text-nowrap">Total Plants Planted:</label>
@@ -249,6 +267,128 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'update') {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+const activityTemplates = {
+  land_prep: [
+    "Land clearing",
+    "Removal of previous crop residues",
+    "Manual plowing",
+    "Tractor plowing",
+    "Harrowing",
+    "Land leveling",
+    "Raised bed formation",
+    "Furrow / ridge making",
+    "Compost or manure incorporation",
+    "Field marking & row layout"
+  ],
+
+  nursery_seedling: [
+    "Seed selection & sorting",
+    "Seed soaking / pre-germination",
+    "Seed treatment",
+    "Seed tray preparation",
+    "Soil mix preparation",
+    "Sowing seeds",
+    "Watering seedlings",
+    "Shade net installation",
+    "Seedling hardening",
+    "Seedling inspection"
+  ],
+
+  transplanting: [
+    "Seedling pulling",
+    "Root trimming",
+    "Seedling transport",
+    "Spacing & hole marking",
+    "Transplanting seedlings",
+    "Initial watering",
+    "Replanting missing hills",
+    "Starter fertilizer application",
+    "Mulching after transplant",
+    "Plant stand inspection"
+  ],
+
+  irrigation: [
+    "Initial field watering",
+    "Manual watering",
+    "Drip irrigation setup",
+    "Sprinkler irrigation",
+    "Canal cleaning",
+    "Pump operation",
+    "Fuel cost for irrigation",
+    "System maintenance",
+    "Emergency watering",
+    "Drainage control"
+  ],
+
+  fertilizer_application: [
+    "Basal fertilizer application",
+    "Side-dress fertilizing",
+    "Foliar spraying",
+    "Organic fertilizer application",
+    "Compost application",
+    "Lime application",
+    "Micronutrient application",
+    "Fertilizer mixing",
+    "Fertilizer transport",
+    "Fertilizer handling"
+  ],
+
+  weeding: [
+    "Manual weeding",
+    "Mechanical weeding",
+    "Herbicide spraying",
+    "Grass cutting",
+    "Mulch replacement",
+    "Border clearing",
+    "Inter-row cultivation",
+    "Volunteer plant removal",
+    "Weed inspection",
+    "Weed disposal"
+  ],
+
+  pest_control: [
+    "Pest scouting",
+    "Manual pest removal",
+    "Insecticide spraying",
+    "Fungicide spraying",
+    "Biological control",
+    "Trap installation",
+    "Infected plant removal",
+    "Sprayer cleaning",
+    "Protective gear usage",
+    "Damage assessment"
+  ],
+
+  harvesting: [
+    "Harvest scheduling",
+    "Manual harvesting",
+    "Mechanical harvesting",
+    "Sorting & cleaning",
+    "Temporary storage",
+    "Harvest labor cost",
+    "Harvest tools preparation",
+    "Yield recording",
+    "Harvest transport",
+    "Post-harvest inspection"
+  ],
+
+  packing: [
+    "Product washing",
+    "Grading & sorting",
+    "Packing materials prep",
+    "Packaging",
+    "Labeling",
+    "Weight measurement",
+    "Storage preparation",
+    "Quality inspection",
+    "Loading",
+    "Transport preparation"
+  ]
+};
+</script>
+
+<script>
+
 let activityCount = <?= $record_num>0 ? $record_num : 0 ?>;
 // // const params = new URLSearchParams(window.location.search);
 // // const farm_resource_id = params.get('fid'); // STRING
@@ -260,31 +400,17 @@ function addDynamicField() {
     const frame = document.getElementById("dynamic-fields");
     const div = document.createElement("div");
     div.className = "item-block mb-3 border-bottom pb-2";
-    div.innerHTML = `
+        div.innerHTML = `
         <div class="d-flex align-items-center justify-content-between p-2 mb-2">
             <h5 class="mb-0">Activity No. ${activityCount}</h5>
             <button type="button" class="btn btn-danger btn-sm" onclick="removeItem(this)">
                 <i class="bi bi-x-circle"></i>
             </button>
         </div>
+
         <div class="row g-2 align-items-center">
 
-            <!-- ACTIVITY NAME (DYNAMIC) -->
-            <div class="col-md-4">
-                <label>Activity Name</label>
-                <select name="activity_name[]" 
-                        class="form-select border border-2 border-dark activity-name">
-                    <option value="">Select activity name</option>
-                </select>
-
-                <!-- Appears only if Activity Type = others -->
-                <input type="text" 
-                       name="other_activity[]" 
-                       class="form-control mt-2 d-none border border-2 border-dark"
-                       placeholder="Enter other activity">
-            </div>
-
-            <!-- ACTIVITY TYPE -->
+            <!-- ACTIVITY TYPE (FIRST) -->
             <div class="col-md-4">
                 <label>Activity Type</label>
                 <select name="farm_activity_type[]" 
@@ -303,6 +429,21 @@ function addDynamicField() {
                 </select>
             </div>
 
+            <!-- ACTIVITY NAME (SECOND) -->
+            <div class="col-md-4">
+                <label>Activity Name</label>
+                <select name="activity_name[]" 
+                        class="form-select border border-2 border-dark activity-name">
+                    <option value="">Select activity name</option>
+                </select>
+
+                <!-- Appears only if Activity Type = others -->
+                <input type="text" 
+                       name="other_activity[]" 
+                       class="form-control mt-2 d-none border border-2 border-dark"
+                       placeholder="Enter other activity">
+            </div>
+
             <!-- COST -->
             <div class="col-md-4">
                 <label>Cost (₱)</label>
@@ -311,7 +452,7 @@ function addDynamicField() {
                        class="form-control activity-cost border border-2 border-dark">
             </div>
 
-            <!-- ADDITIONAL INFO (UNCHANGED) -->
+            <!-- ADDITIONAL INFO -->
             <div class="col-md-4">
                 <label>Additional Details or Other Information</label>
                 <textarea name="additional_info[]" 
@@ -331,6 +472,45 @@ function addDynamicField() {
         </div>
     `;
     frame.appendChild(div);
+     const typeSelect = div.querySelector(".activity-type");
+    const nameSelect = div.querySelector(".activity-name");
+    const otherInput = div.querySelector("input[name='other_activity[]']");
+
+    // When activity type changes
+    typeSelect.addEventListener("change", function () {
+        const type = this.value;
+
+        nameSelect.innerHTML = "";
+        otherInput.classList.add("d-none");
+        otherInput.value = "";
+
+        // Default option
+        const defaultOpt = document.createElement("option");
+        defaultOpt.value = "";
+        defaultOpt.textContent = "Select activity name";
+        nameSelect.appendChild(defaultOpt);
+
+        if (activityTemplates[type]) {
+            activityTemplates[type].forEach((item, index) => {
+                const opt = document.createElement("option");
+                opt.value = item;
+                opt.textContent = item;
+                nameSelect.appendChild(opt);
+
+                // ✅ Auto-select FIRST item
+                if (index === 0) {
+                    opt.selected = true;
+                }
+            });
+        }
+
+        // Others option
+        if (type === "others") {
+            otherInput.classList.remove("d-none");
+            nameSelect.innerHTML = "";
+        }
+    });
+
     div.querySelector('.activity-cost').addEventListener('input', updateTotal);
     updateItemNumbers();
 }
@@ -414,6 +594,8 @@ document.addEventListener("DOMContentLoaded", function() {
             showConfirmButton: true
         });
     <?php endif; ?>
+
+
 
 });
 </script>

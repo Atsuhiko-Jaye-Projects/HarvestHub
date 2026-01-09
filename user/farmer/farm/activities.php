@@ -344,22 +344,7 @@ function addDynamicField() {
 
         <div class="row g-2 align-items-center">
 
-            <!-- ACTIVITY NAME (DYNAMIC) -->
-            <div class="col-md-4">
-                <label>Activity Name</label>
-                <select name="activity_name[]" 
-                        class="form-select border border-2 border-dark activity-name">
-                    <option value="">Select activity name</option>
-                </select>
-
-                <!-- Appears only if Activity Type = others -->
-                <input type="text" 
-                       name="other_activity[]" 
-                       class="form-control mt-2 d-none border border-2 border-dark"
-                       placeholder="Enter other activity">
-            </div>
-
-            <!-- ACTIVITY TYPE -->
+            <!-- ACTIVITY TYPE (FIRST) -->
             <div class="col-md-4">
                 <label>Activity Type</label>
                 <select name="farm_activity_type[]" 
@@ -378,6 +363,21 @@ function addDynamicField() {
                 </select>
             </div>
 
+            <!-- ACTIVITY NAME (SECOND) -->
+            <div class="col-md-4">
+                <label>Activity Name</label>
+                <select name="activity_name[]" 
+                        class="form-select border border-2 border-dark activity-name">
+                    <option value="">Select activity name</option>
+                </select>
+
+                <!-- Appears only if Activity Type = others -->
+                <input type="text" 
+                       name="other_activity[]" 
+                       class="form-control mt-2 d-none border border-2 border-dark"
+                       placeholder="Enter other activity">
+            </div>
+
             <!-- COST -->
             <div class="col-md-4">
                 <label>Cost (₱)</label>
@@ -386,7 +386,7 @@ function addDynamicField() {
                        class="form-control activity-cost border border-2 border-dark">
             </div>
 
-            <!-- ADDITIONAL INFO (UNCHANGED) -->
+            <!-- ADDITIONAL INFO -->
             <div class="col-md-4">
                 <label>Additional Details or Other Information</label>
                 <textarea name="additional_info[]" 
@@ -452,6 +452,7 @@ function addDynamicField() {
 
     updateItemNumbers();
 }
+
 
 
 function removeItem(button) {
