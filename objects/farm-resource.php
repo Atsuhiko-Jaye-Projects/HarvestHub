@@ -333,28 +333,27 @@ class FarmResource{
         return $stmt;
     }
 
-    function checkRecordName(){
-        
-        $query = "SELECT COUNT(*) as recordExist
-                  FROM
-                    " . $this->table_name . "
-                  WHERE
-                    record_name = :record_name
-                  AND
-                    user_id = :user_id";
-        
-        $stmt = $this->conn->prepare($query);
+    function checkRecordName() {
+        // Normalize the input: remove spaces and lowercase
+        $this->record_name = trim(mb_strtolower($this->record_name));
 
-        $this->record_name = htmlspecialchars(strip_tags($this->record_name));
+        // SQL: check existence for this user only
+        $query = "SELECT 1
+                FROM " . $this->table_name . "
+                WHERE record_name = :record_name
+                    AND user_id = :user_id
+                LIMIT 1"; // stops at first match, faster than COUNT(*)
+
+        $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":record_name", $this->record_name);
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $row['recordExist'] > 0;
+        // If fetch returns a row, it exists
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
     }
+
 }
 
 
