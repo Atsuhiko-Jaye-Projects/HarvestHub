@@ -4,17 +4,21 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/farm-resource.php";
 include_once "../../../objects/farm_activities.php";
+include_once "../../../objects/farm.php";
+
 
 $database = new Database();
 $db = $database->getConnection();
 
 $farm_resource = new FarmResource($db);
 $farm_activity = new FarmActivity($db);
+$farm  = new Farm($db);
 
 $page_title = "Farm Inputs";
 $require_login = true;
 include_once "../../../login_checker.php";
 include_once "../layout/layout_head.php";
+
 
 // --- POST handler ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {
@@ -26,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 	$farm_resource = new FarmResource($db);
 
+
 	if ($_POST["action"]=="create") {
 		
         // the input record title
@@ -33,11 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $farm_resource->user_id = $_SESSION['user_id'];
         $farm_resource->crop_name = $_POST['crop_name'];
 
+
         if ($farm_resource->checkRecordName()) {
             header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=record_name_taken");
             exit;
         }else if($farm_resource->checkCropName()){
             header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=crop_name_taken");
+            exit;
+        }else if($farm->isLotSizeExceeded($_POST['planted_area_sqm'])) {
+            header("LOCATION:{$base_url}user/farmer/farm/activities.php?status=farm_size_exceeded");
             exit;
         }else{
             $resource_id = 'FID' . preg_replace('/[^0-9]/', '', uniqid());
@@ -522,6 +531,16 @@ document.addEventListener("DOMContentLoaded", function() {
             showConfirmButton: true
         });
     <?php endif; ?>
+
+    <?php if ($_GET['status'] == 'farm_size_exceeded'): ?>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Farm Area Exceeded',
+        text: 'Your planted area exceeds the remaining farm lot size.',
+        showConfirmButton: true
+    });
+    <?php endif; ?>
+
 
     <?php if ($_GET['status'] == 'update_success'): ?>
         Swal.fire({

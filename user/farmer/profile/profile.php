@@ -157,10 +157,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editFarmModal">
                         Edit
                     </button>
-                </div>
-                <div class="card-body">
-                    <p><strong>Farm Name:</strong> <?= !empty($farm->farm_name) ? htmlspecialchars($farm->farm_name) : 'Not Set' ?></p>
-                    <p><strong>Farm Size:</strong> <?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?> sqm</p>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Farm Name:</strong> <?= !empty($farm->farm_name) ? htmlspecialchars($farm->farm_name) : 'Not Set' ?></p>
+                        <p><strong>Farm Size:</strong> <?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?> sqm</p>
+                    <p><strong>Used Farm Size:</strong> <?= !empty($farm->used_lot_size) ? htmlspecialchars($farm->used_lot_size) : '0' ?> sqm</p>
                     <p><strong>Farm Type:</strong> <?= !empty($farm->farm_type) ? htmlspecialchars($farm->farm_type) : 'Not Set' ?></p>
                     <p><strong>Farm Location:</strong> <?= !empty($farm->municipality) ? htmlspecialchars($farm->municipality) : 'Not Set' ?></p>
                 </div>

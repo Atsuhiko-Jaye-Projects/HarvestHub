@@ -275,6 +275,32 @@ class Farm{
         $stmt->execute();
     }
 
+    function isLotSizeExceeded($newPlantedArea){
+        $query = "SELECT lot_size, used_lot_size
+                FROM " . $this->table_name . "
+                WHERE user_id = :user_id
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return false; // no farm record yet
+        }
+
+        $totalLotSize = (float) $row['lot_size'];
+        $usedLotSize  = (float) $row['used_lot_size'];
+        $newSize      = (float) $newPlantedArea;
+
+        return ($usedLotSize + $newSize) > $totalLotSize;
+    }
+
+
+
+
 }
 
 
