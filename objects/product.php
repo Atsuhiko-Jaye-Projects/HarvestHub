@@ -250,6 +250,7 @@ class Product{
             $this->product_name = $row['product_name'];
             $this->product_image = $row['product_image'];
             $this->user_id = $row['user_id'];
+            $this->total_stocks = $row['total_stocks'];
             $this->price_per_unit = $row['price_per_unit'];
             $this->product_image = $row['product_image'];
             $this->user_id = $row['user_id'];

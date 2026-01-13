@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
 
           $unit_price = $row['amount'] ?? 0; 
           $total_price = $unit_price * $row['quantity'];
+          $stocks = $product->total_stocks;
       ?>
         <div class="card shadow-sm mb-3 p-3">
           <div class="d-flex align-items-start">
@@ -117,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                 data-id="<?php echo $row['product_id']; ?>"
                 data-qty="<?php echo $row['quantity']; ?>"
                 data-price="<?php echo $total_price; ?>"
+                data-stocks="<?php echo $stocks; ?>"
                 name="product_id[]"
                 value="<?php echo $row['product_id']; ?>">
             </div>
@@ -148,12 +150,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                     <div class="input-group input-group-sm" style="max-width: 140px;">
                         <button type="button" class="btn btn-outline-secondary btn-sm decrease-qty rounded-start">−</button>
                         <input 
-                            type="number" 
-                            class="form-control text-center quantity-input border-start-0 border-end-0" 
-                            name="quantity[<?php echo $row['product_id']; ?>]" 
-                            value="<?php echo $row['quantity']; ?>" 
-                            min="1"
-                            data-id="<?php echo $row['product_id']; ?>">
+                              type="number" 
+                              class="form-control text-center quantity-input border-start-0 border-end-0" 
+                              name="quantity[<?php echo $row['product_id']; ?>]" 
+                              value="<?php echo $row['quantity']; ?>" 
+                              min="1"
+                              max="<?php echo $stocks; ?>"
+                              data-id="<?php echo $row['product_id']; ?>">
                         <button type="button" class="btn btn-outline-secondary btn-sm increase-qty rounded-end">+</button>
                     </div>
                 </div>

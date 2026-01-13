@@ -109,26 +109,51 @@ $(function() {
     $('#grand-total').text('₱' + grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2 }));
   }
 
-  $(document)
-    .on('click', '.increase-qty', function() {
-      const card = $(this).closest('.card');
-      const input = card.find('.quantity-input');
-      input.val(parseInt(input.val()) + 5);
-      updateItemTotal(card);
-    })
-    .on('click', '.decrease-qty', function() {
-      const card = $(this).closest('.card');
-      const input = card.find('.quantity-input');
-      const val = parseInt(input.val());
-      if (val > 5) input.val(val - 5);
-      updateItemTotal(card);
-    })
-    .on('input', '.quantity-input', function() {
-      const card = $(this).closest('.card');
-      if (isNaN(this.value) || this.value < 5) this.value = 5;
-      updateItemTotal(card);
-    })
-    .on('change', '.product-checkbox', updateSummary);
+$(document)
+  .on('click', '.increase-qty', function () {
+    const card = $(this).closest('.card');
+    const input = card.find('.quantity-input');
+
+    const step = 5;
+    const max = parseInt(input.attr('max')) || Infinity;
+    let val = parseInt(input.val()) || step;
+
+    val = Math.min(val + step, max);
+    input.val(val);
+
+    updateItemTotal(card);
+  })
+
+  .on('click', '.decrease-qty', function () {
+    const card = $(this).closest('.card');
+    const input = card.find('.quantity-input');
+
+    const step = 5;
+    let val = parseInt(input.val()) || step;
+
+    val = Math.max(val - step, step);
+    input.val(val);
+
+    updateItemTotal(card);
+  })
+
+  .on('input', '.quantity-input', function () {
+    const card = $(this).closest('.card');
+    const input = $(this);
+
+    const step = 5;
+    const max = parseInt(input.attr('max')) || Infinity;
+    let val = parseInt(input.val());
+
+    if (isNaN(val) || val < step) val = step;
+    if (val > max) val = max;
+
+    input.val(val);
+    updateItemTotal(card);
+  })
+
+  .on('change', '.product-checkbox', updateSummary);
+
 });
 </script>
 
