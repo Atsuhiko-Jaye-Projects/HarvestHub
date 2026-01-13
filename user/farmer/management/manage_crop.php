@@ -228,6 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $harvest_product->plant_count = $_POST['plant_count'];
                 $harvest_product->expense = $_POST['total_plant_expense'];
                 $harvest_product->lot_size = $_POST['cultivated_area'];
+                $harvest_product->category = "Not Set";
                 $harvest_product->unit = "KG";
                 $harvest_product->kilo_per_plant = $_POST['kilo_per_plant'];
                 $harvest_product->is_posted = "Pending";

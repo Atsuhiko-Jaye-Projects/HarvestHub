@@ -59,14 +59,14 @@ $total_rows = $order->countAll();
 
                 <!-- Sort Dropdown -->
                 <div class="dropdown">
-                    <button 
+                    <!-- <button 
                         class="btn btn-outline-success px-4 py-2 dropdown-toggle"
                         type="button" 
                         id="dropdownMenuButton" 
                         data-bs-toggle="dropdown" 
                         aria-expanded="false">
                         <i class="bi bi-sort-down"></i> Sort
-                    </button>
+                    </button> -->
                     <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownMenuButton">
                         <li><a href="order.php?order_type=pending" class="dropdown-item"><i class="bi bi-hourglass-split text-warning me-2"></i>Pending</a></li>
                         <li><a href="manage_harvest.php" class="dropdown-item"><i class="bi bi-x-circle text-danger me-2"></i>Cancelled</a></li>

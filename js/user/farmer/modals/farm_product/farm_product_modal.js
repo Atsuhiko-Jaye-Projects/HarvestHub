@@ -127,7 +127,7 @@ function postHarvestProduct(row) {
                   </div>
                   <div class="col-md-4">
                     <label>EST Stocks (KG)</label>
-                    <input type="text" name="total_stocks" value="${row.total_stocks}" class="form-control" readonly>
+                    <input type="text" name="total_stocks" value="${row.total_stocks}" class="form-control">
                   </div>
                   <div class="col-md-4">
                     <label>Unit</label>
@@ -213,6 +213,7 @@ function postHarvestProduct(row) {
           resultBox.innerHTML = "Per KG: ₱" + loss + "<br>Markup: " + markup + "%";
         } else {
           var markup = ((price - cost) / cost * 100).toFixed(2);
+          
           resultBox.className = "alert alert-success";
           resultBox.innerHTML = "Per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
 

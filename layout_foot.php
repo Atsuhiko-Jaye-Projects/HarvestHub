@@ -12,17 +12,9 @@
     <div>
       <h6>Customer Services</h6>
       <ul class="list-unstyled">
-        <li>Online Payment & Cash on Delivery</li>
+        <li>Cash on Pick & Cash on Delivery</li>
         <li>Order Tracking</li>
         <li>Help Center</li>
-      </ul>
-    </div>
-    <div>
-      <h6>Blog</h6>
-      <ul class="list-unstyled">
-        <li>Best Practices</li>
-        <li>Careers</li>
-        <li>Contact</li>
       </ul>
     </div>
   </div>

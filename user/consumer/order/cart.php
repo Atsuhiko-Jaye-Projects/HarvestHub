@@ -23,15 +23,26 @@ $cart_item->user_id = $_SESSION['user_id'];
 $stmt = $cart_item->countCartItem();
 $num = $stmt->rowCount();
 
-
+// check the user address details
+$user->id = $_SESSION['user_id'];
+$row = $user->checkUserAddress();
+$complete_address = trim(
+    $row['address'] .
+    $row['barangay'] .
+    $row['municipality'] .
+    $row['province']
+);
 
 
 $page_title = "Order";
 include_once "../layout/layout_head.php";
 
+if (empty(trim($complete_address))) {
+  include_once "../layout/notice.php";
+}
+
 $require_login=true;
 include_once "../../../login_checker.php";
-
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
@@ -227,7 +238,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           </div>
 
           <!-- ✅ Submit Button -->
-          <button type="submit" id="placeorderbtn" class="btn btn-success w-100 mt-3">Place Order</button>
+           <!-- check if the consumer address is set -->
+          <?php
+            if (empty($complete_address)) {
+              echo "<button type='' id='placeorderbtn' class='btn btn-success w-100 mt-3' disabled>Place Order</button>";
+            }else{
+              echo "<button type='submit' id='placeorderbtn' class='btn btn-success w-100 mt-3' >Place Order</button>";
+            }
+            
+          ?>
+          
         </div>
       </div>
 

@@ -496,6 +496,25 @@ class User{
         $this->province = $row['province'];
     }
 
+    function checkUserAddress(){
+
+        $query = "SELECT 
+                    address, 
+                    barangay, 
+                    municipality, 
+                    province
+                  FROM
+                    " . $this->table_name . "
+                  WHERE
+                    id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
 }
 ?>
