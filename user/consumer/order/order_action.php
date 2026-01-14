@@ -21,7 +21,7 @@ if (!empty($_POST['action']) && in_array($_POST['action'],['cancel order', 'conf
                 // read POST
                 $order->reason = $_POST['reason'] ?? null;
                 $order->id = $_POST['order_id'] ?? null;
-                $order->status = "order cancelled";
+                $order->status = "pending cancel";
 
                 // record the order history
                 $order_status_history->invoice_number = $_POST['invoice_number'];
