@@ -126,6 +126,11 @@
                         $icon_icon = "<i class='bi bi-check2-circle'></i>";
                         $status_color = "step-success";
                         break;
+
+                    case 'pending cancel':
+                        $icon_icon = "<i class='bi bi-x-circle'></i>";
+                        $status_color = "step-danger";
+                        break;
                         
                     case 'order cancelled':
                         $icon_icon = "<i class='bi bi-x-circle'></i>";

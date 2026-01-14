@@ -38,11 +38,33 @@ if ($_POST) {
   $cart_item->product_type = "preorder";
 
   
-  if ($cart_item->itemExist()) {
-      echo "<div class='alert alert-warning'>Product already added to your cart.</div>";
+  if ($cart_item->PreOrderitemExist()) {
+        echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'Product already in the Cart',
+                  text: 'This item is already in your cart.',
+                  showConfirmButton: true,
+                  confirmButtonText: 'OK'
+              });
+            </script>
+            ";
   } else {
       if ($cart_item->addItem()) {
-          // echo "Product successfully added to cart!";
+        echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Added to Cart',
+                  text: 'Item has been added successfully!',
+                  showConfirmButton: true,
+                  confirmButtonText: 'OK'
+              });
+            </script>
+            ";
       } else {
           echo "Failed to add product. Please try again later.";
       }
@@ -144,7 +166,7 @@ if ($_POST) {
         </div>
 
         <div class="d-flex gap-3">
-          <button type="button" id="addToCartBtn" class="btn btn-warning px-4">Pre-Order</button>
+          <button type="submit" id="addToCartBtn" class="btn btn-warning px-4">Pre-Order</button>
           <input type="hidden" class="btn-check" name="farmer_id" value="<?php echo $product->user_id;?>">
           <!-- <button class="btn btn-outline-dark px-4">Checkout Now</button> -->
         </div>

@@ -63,7 +63,29 @@ class CartItem{
         $query = "SELECT COUNT(*) FROM
                     " . $this->table_name . "
                     WHERE
-                    product_id = :product_id AND user_id=:user_id AND status='Pending' ";
+                    product_id = :product_id AND user_id=:user_id AND status='Pending' AND product_type = 'harvest' ";
+
+        $stmt=$this->conn->prepare($query);
+
+        $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+
+        $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetchColumn();
+
+        return $row > 0;
+    }
+
+    function PreOrderitemExist(){
+        
+        $query = "SELECT COUNT(*) FROM
+                    " . $this->table_name . "
+                    WHERE
+                    product_id = :product_id AND user_id=:user_id AND status='Pending' AND product_type = 'preorder' ";
 
         $stmt=$this->conn->prepare($query);
 

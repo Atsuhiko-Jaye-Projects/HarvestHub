@@ -422,7 +422,7 @@ class Order{
                   WHERE
                     status = 'order placed'
                   AND
-                    created_at <= NOW() - interval 1 MINUTE";
+                    created_at <= NOW() - interval 30 MINUTE";
         
         $stmt = $this->conn->prepare($query);
 
@@ -437,9 +437,41 @@ class Order{
                   FROM
                     " . $this->table_name . "
                    WHERE
-                    status = 'order placed' AND created_at <= NOW() - INTERVAL 1 MINUTE";
+                    status = 'order placed' AND created_at <= NOW() - INTERVAL 30 MINUTE";
 
         $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function getPendingCancelOrder(){
+
+        $query = "SELECT *
+                  FROM
+                    " . $this->table_name . "
+                   WHERE
+                    status = 'cancel pending' AND created_at <= NOW() - INTERVAL 5 MINUTE";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function updateCancelledOrder(){
+        
+        $query = "UPDATE
+                  " . $this->table_name . "
+                  set
+                    status = 'cancelled'
+                  WHERE
+                    status = 'cancel pending'
+                  AND
+                    created_at <= NOW() - interval 5 MINUTE";
+        
+        $stmt = $this->conn->prepare($query);
+
         $stmt->execute();
 
         return $stmt;

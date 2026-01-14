@@ -14,6 +14,11 @@ setInterval(() => {
     $.get("../../../js/user/farmer/cron/poll_accept_order.php");
 }, 1); // every 60 seconds
 </script>
+<script>
+setInterval(() => {
+    $.get("../../../js/user/farmer/cron/poll_cancel_order.php");
+}, 1); // every 60 seconds
+</script>
 
 <!-- Enable Bootstrap Tooltips -->
 <script>

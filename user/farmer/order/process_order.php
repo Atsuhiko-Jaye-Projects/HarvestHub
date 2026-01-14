@@ -47,7 +47,7 @@ $service_fee = $sub_total * 0.0225;
 
 
 
-if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete', 'accept pre-order', 'decline pre-order', 'pre-order shipout', 'order shipout'])) {
+if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete', 'accept pre-order', 'decline pre-order', 'pre-order shipout', 'order shipout', 'cancel pending'])) {
     $order->id = $_POST['order_id'];
     $order->status = $_POST['action'];
 
@@ -330,7 +330,14 @@ switch (true) {
         <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
         <?php
         break;
-
+    
+    case ($status == "pending cancel" && $type == "harvest" || $type == "preorder"):
+        ?>
+        <h6 class="fw-bold text-muted mb-3 mt-3">This order is Pending to cancel</h6>
+        <button type="submit" name="action" value="cancel pending" class="btn btn-outline-danger w-100 mb-2">Cancel Order</button>
+        <a href="order.php" class="btn btn-outline-success w-100 mb-3">Return</a>
+        <?php
+        break;
     default:
         ?>
         <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is cancelled</h6>
