@@ -413,5 +413,37 @@ class Order{
         return $stmt->execute();
     }
 
+    function acceptOrder(){
+        
+        $query = "UPDATE
+                  " . $this->table_name . "
+                  set
+                    status = 'accept'
+                  WHERE
+                    status = 'order placed'
+                  AND
+                    created_at <= NOW() - interval 1 MINUTE";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function getPendingOrder(){
+
+        $query = "SELECT *
+                  FROM
+                    " . $this->table_name . "
+                   WHERE
+                    status = 'order placed' AND created_at <= NOW() - INTERVAL 1 MINUTE";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 ?>

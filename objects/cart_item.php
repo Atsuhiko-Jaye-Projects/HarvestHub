@@ -63,7 +63,7 @@ class CartItem{
         $query = "SELECT COUNT(*) FROM
                     " . $this->table_name . "
                     WHERE
-                    product_id = :product_id AND user_id=:user_id";
+                    product_id = :product_id AND user_id=:user_id AND status='Pending' ";
 
         $stmt=$this->conn->prepare($query);
 

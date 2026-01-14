@@ -97,10 +97,32 @@ $cart_item_count = $cart_item->countItem();
     $cart_item->product_type = "harvest";
     
     if ($cart_item->itemExist()) {
-        echo "<div class='alert alert-warning'>Product already added to your cart.</div>";
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'Product already in the Cart',
+                  text: 'This item is already in your cart.',
+                  showConfirmButton: true,
+                  confirmButtonText: 'OK'
+              });
+            </script>
+            ";
     } else {
         if ($cart_item->addItem()) {
-            // echo "Product successfully added to cart!";
+            echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Added to Cart',
+                  text: 'Item has been added successfully!',
+                  showConfirmButton: true,
+                  confirmButtonText: 'OK'
+              });
+            </script>
+            ";
         } else {
             echo "Failed to add product. Please try again later.";
         }
@@ -108,17 +130,7 @@ $cart_item_count = $cart_item->countItem();
   }
 ?>
 
-<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center">
-      <div id="loadingSpinner" class="modern-loader"></div>
-      <div id="checkIcon" class="check-icon">
-        <i class="bi bi-check-circle-fill"></i>
-      </div>
-      <p id="statusText" class="status-text">Adding to cart...</p>
-    </div>
-  </div>
-</div>
+
 
 <div class="container py-5">
   
@@ -199,7 +211,7 @@ $cart_item_count = $cart_item->countItem();
         </div>
 
         <div class="d-flex gap-3">
-          <button type="button" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
+          <button type="submit" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
           <input type="hidden" class="btn-check" name="farmer_id" value="<?php echo $product->user_id;?>">
           <!-- <button class="btn btn-outline-dark px-4">Checkout Now</button> -->
         </div>
@@ -217,16 +229,6 @@ $cart_item_count = $cart_item->countItem();
 <?php include_once "related_product.php"; ?>
   
 
-<div class="modal fade" id="cartModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center p-5 border-0 shadow">
-      <div id="loadingSpinner" class="modern-loader mx-auto mb-3"></div>
-      <div id="checkIcon" class="check-icon text-success mb-3" style="display: none;">
-        <i class="bi bi-check-circle-fill fs-1"></i>
-      </div>
-      <p id="statusText" class="status-text fw-semibold">Adding to cart...</p>
-    </div>
-  </div>
-</div>
+
 
 <?php include_once "layout_foot.php"; ?>

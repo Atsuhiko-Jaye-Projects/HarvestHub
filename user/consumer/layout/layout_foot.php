@@ -9,6 +9,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.4/bootbox.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+setInterval(() => {
+    $.get("../../../js/user/farmer/cron/poll_accept_order.php");
+}, 1); // every 60 seconds
+</script>
+
 <!-- Enable Bootstrap Tooltips -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
