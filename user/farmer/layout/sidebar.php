@@ -46,6 +46,12 @@
     <i class="bi bi-envelope me-2"></i> Messages
     </a>
 
+    <!-- messaging feature -->
+    <a href="<?= $base_url ?>user/farmer/review/feedback.php" 
+    class="sidebar-btn <?= $page=='message.php' ? 'active' : '' ?>">
+    <i class="bi bi-chat-dots me-2"></i> Feedback
+    </a>
+
     <?php } ?>
   </nav>
 </div>

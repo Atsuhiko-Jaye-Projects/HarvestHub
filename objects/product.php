@@ -470,6 +470,51 @@ class Product{
         return $stmt;
     }
 
+    function getProductStats(){
+        $query = "
+        SELECT 
+            p.*,
+
+            COUNT(r.id) AS total_reviews,
+            ROUND(AVG(r.rating), 1) AS avg_rating,
+            SUM(
+                CASE 
+                    WHEN r.reply IS NULL OR r.reply = '' THEN 1 
+                    ELSE 0 
+                END
+            ) AS unreplied_reviews,
+            MAX(r.created_at) AS last_review_date,
+
+            -- New field: recent reviews today
+            SUM(
+                CASE 
+                    WHEN DATE(r.created_at) = CURDATE() THEN 1
+                    ELSE 0
+                END
+            ) AS recent_reviews_today
+
+        FROM " . $this->table_name . " p
+
+        LEFT JOIN reviews r 
+            ON r.product_id = p.id
+
+        WHERE 
+            p.status = 'Active'
+            AND p.user_id = :user_id
+
+        GROUP BY p.id
+
+        ORDER BY last_review_date DESC
+
+        ";
+    
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":user_id", $this->user_id);
+    $stmt->execute();
+
+    return $stmt;
+    }
+
 }
 
 

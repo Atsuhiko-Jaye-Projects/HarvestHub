@@ -1,13 +1,12 @@
 <nav class="navbar navbar-light bg-light shadow-sm sticky-top">
   <div class="container-fluid d-flex align-items-center justify-content-between">
 
-    <!-- Left: Hamburger + Logo -->
+
     <div class="d-flex align-items-center">
-      <!-- Sidebar Toggle Button (mobile only) -->
       <button id="sidebarToggle" class="btn btn-outline-success me-2 d-md-none">
         <i class="bi bi-list fs-5"></i>
       </button>
-
+      
       <!-- Logo -->
       <img src="<?php echo $page_title=="Edit Product" ? '../../../libs/images/logo.png' : $base_url.'libs/images/logo.png'; ?>" 
            alt="HarvestHub Logo" class="rounded-circle me-2" width="40" height="40">
@@ -16,8 +15,11 @@
       <span class="navbar-brand fw-semibold mb-0 d-none d-sm-inline">HarvestHub</span>
     </div>
 
+
     <!-- Right: User Info + Dropdown -->
     <div class="d-flex align-items-center flex-nowrap">
+    <?php include_once "notification.php"; ?>
+
       <!-- User Info -->
       <div class="text-end me-2 d-none d-sm-block">
         <span class="fw-bold d-block"><?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?></span>

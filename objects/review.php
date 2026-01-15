@@ -84,6 +84,44 @@ class Review{
         return false;
     }
 
+    function getProductReview(){
+
+        $query = "SELECT *
+                  FROM
+                    " . $this->table_name . "
+                  WHERE
+                    product_id = :product_id 
+                  AND
+                    farmer_id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->bindParam(":user_id", $this->user_id);
+
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function reviewCountNotification(){
+
+        $query = "SELECT COUNT(id) as review_count
+                  FROM
+                    " . $this->table_name . "
+                  WHERE
+                    farmer_id = :farmer_id 
+                    AND DATE(created_at) = CURDATE()";
+
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $row['review_count'];
+    }
+
 
 
 }
