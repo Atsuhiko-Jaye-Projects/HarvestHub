@@ -109,7 +109,7 @@ include_once "../statistics/stats.php";
 
 
                         <div class="card-footer bg-white border-0">
-                            <a href="<?= $base_url ?>user/farmer/review/review.php?id=<?= $id ?>"
+                            <a href="<?= $base_url ?>user/farmer/review/review.php?pid=<?= $product_id ?>"
                                class="btn btn-outline-success w-100">
                                 <i class="bi bi-eye"></i> View Reviews
                             </a>

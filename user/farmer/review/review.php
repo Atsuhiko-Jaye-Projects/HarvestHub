@@ -1,5 +1,5 @@
 <?php
-$product_id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Missing ID');
+$product_id = isset($_GET['pid']) ? $_GET['pid'] : die('ERROR: Missing ID');
 
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";

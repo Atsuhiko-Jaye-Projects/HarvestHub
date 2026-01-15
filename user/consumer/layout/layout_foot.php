@@ -12,12 +12,12 @@
 <script>
 setInterval(() => {
     $.get("../../../js/user/farmer/cron/poll_accept_order.php");
-}, 1); // every 60 seconds
+}, 60000); // every 60 seconds
 </script>
 <script>
 setInterval(() => {
     $.get("../../../js/user/farmer/cron/poll_cancel_order.php");
-}, 1); // every 60 seconds
+}, 60000); // every 60 seconds
 </script>
 
 <!-- Enable Bootstrap Tooltips -->
@@ -345,6 +345,25 @@ $("#confirmOrderProduct").on("click", function () {
             }
             console.log(res);
         }
+    });
+});
+
+
+document.querySelectorAll('.mark-seen').forEach(item => {
+    
+    item.addEventListener('click', function () {
+        const invoice = this.dataset.invoice;
+        const notif_id = this.dataset.notif;
+        const data = new URLSearchParams();
+        data.append('invoice', invoice);
+        data.append('notif_id', notif_id);
+
+        fetch('/harvesthub/user/consumer/layout/mark_view_notification.php',{
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: data
+
+        });
     });
 });
 </script>

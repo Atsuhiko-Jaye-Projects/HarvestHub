@@ -8,8 +8,10 @@ include_once "../../../objects/product.php";
 include_once "../../../objects/review.php";
 
 
+
 $page_title = "Feedback Form";
 include_once "../layout/layout_head.php";
+print_r($_SESSION);
 
 $require_login = true;
 include_once "../../../login_checker.php";
@@ -28,16 +30,15 @@ $order->orderReviewStatus();
 // pass the value to the variable to look clean
 $productid = $order->product_id;
 $farmerid = $order->farmer_id;
-$customerId = $order->customer_id;
 
 
 if ($_POST) {
 
     $review->rating = $_POST['rating'];
-    $review->product_id = $productid;
-    $review->farmer_id = $farmerid;
-    $review->customer_id = $customerId;
-    $review->review_text = $_POST['feedback'];
+    $review->product_id = $_POST['product_id'];
+    $review->farmer_id = $_POST['farmer_id'];
+    $review->customer_id = $_POST['customer_id'];
+    $review->review_text = $_POST['feedback'];  
 
     if ($review->createReview()) {
         $order->review_status = "1";
@@ -69,7 +70,9 @@ if ($order->review_status == 0) {
                 <div class="card-body">
                     <h5 class="card-title fw-bold mb-4 text-center">We'd Love Your Feedback!</h5>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?vod={$order_id}");?>" method="POST" id="feedbackForm">
-
+                        <input type="hidden" name="product_id" value="<?php echo $productid; ?>">
+                        <input type="hidden" name="farmer_id" value="<?php echo $farmerid; ?>">
+                        <input type="hidden" name="customer_id" value=<?php $_SESSION['user_id']; ?>>
                         <!-- Rating -->
                         <div class="mb-4">
                             <label class="form-label">How would you rate your experience?</label>

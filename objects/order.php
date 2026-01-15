@@ -334,11 +334,10 @@ class Order{
         $stmt->execute();
         
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
         $this->review_status = $row['review_status'];
         $this->product_id = $row['product_id'];
         $this->farmer_id = $row['farmer_id'];
-        $this->customer_id = $row['customer_id'];
+        //$this->customer_id = $row['customer_id'];
     }
 
     function markReviewStatus(){
@@ -491,6 +490,12 @@ class Order{
 
         return $stmt;
     }
+
+
+
+
+
+
 
 }
 ?>

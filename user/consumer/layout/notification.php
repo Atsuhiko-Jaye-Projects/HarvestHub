@@ -10,8 +10,10 @@ $order = new Order($db);
 $order_status_history = new OrderHistory($db);
 
 $order->customer_id = $_SESSION['user_id'];
-$stmt = $order->getOrder();
-$num = $stmt->rowCount();
+$notification_stmt = $order->getOrder();
+$notification_num = $notification_stmt->rowCount();
+
+$badgeCount = $order_status_history->getLatestUnseenCount();
 
 
 ?>
@@ -26,7 +28,7 @@ $num = $stmt->rowCount();
         <i class="bi bi-bell fs-4"></i>
         <?php // Badge example ?>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            <?php // echo $over_count_notification; ?>
+            <?php echo $badgeCount; ?>
         </span>
     </button>
 
@@ -38,33 +40,47 @@ $num = $stmt->rowCount();
         <li class="dropdown-header fw-bold text-center py-2 border-bottom">Notifications</li>
 
         <?php
-        if ($num > 0) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $invoice_no = $row['invoice_number'];
-                $order_id = $row['id'];
+            if ($notification_num > 0) {
+                while ($row = $notification_stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $invoice_no = $row['invoice_number'];
+                    $order_id = $row['id'];
 
-                $order_status_history->invoice_number = $invoice_no;
-                $order_status = $order_status_history->getOrderUpdate();
-                $status = $order_status['status'];
+                    // Get the latest update for this invoice
+                    $order_status_history->invoice_number = $invoice_no;
+                    $order_status = $order_status_history->getOrderUpdate();
+
+                    // Make sure the result exists
+                    if ($order_status) {
+                        $status = $order_status['status'];
+                        $notif_viewed = $order_status['notif_viewed'];
+                        $notif_id = $order_status['id'];
+
+                        // Only show if not viewed
+                        if ($notif_viewed != '1') {
+                            ?>
+                            <li>
+                                <a class="dropdown-item small text-dark py-2 px-3 d-flex justify-content-between align-items-center mark-seen" 
+                                data-invoice="<?= $invoice_no ?>" 
+                                data-notif="<?= $notif_id ?>"
+                                href="/HarvestHub/user/consumer/order/order_details.php?vod=<?= $order_id ?>">
+                                    <span class="text-truncate" style="max-width: 100%">
+                                        Your Order <strong><?= $invoice_no ?></strong> has an update <strong>(<?= strtoupper($status) ?>)</strong>
+                                    </span>
+                                    <i class="bi bi-arrow-right text-muted small"></i>
+                                </a>
+                            </li>
+                            <?php
+                        }
+                    }
+                }
+            } else {
                 ?>
                 <li>
-                    <a class="dropdown-item small text-dark py-2 px-3 d-flex justify-content-between align-items-center"
-                       href="/HarvestHub/user/consumer/order/order_details.php?vod=<?= $order_id ?>">
-                        <span class="text-truncate" style="max-width: 100%">
-                            Your Order <strong><?= $invoice_no ?></strong> has an update <strong>(<?= strtoupper($status)?>)</strong>
-                        </span>
-                        <i class="bi bi-arrow-right text-muted small"></i>
-                    </a>
+                    <a class="dropdown-item small text-muted text-center py-3" href="#">No Update yet</a>
                 </li>
                 <?php
             }
-        } else {
-            ?>
-            <li>
-                <a class="dropdown-item small text-muted text-center py-3" href="#">No Update yet</a>
-            </li>
-            <?php
-        }
+
         ?>
     </ul>
 </div>

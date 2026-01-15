@@ -496,7 +496,7 @@ class Product{
         FROM " . $this->table_name . " p
 
         LEFT JOIN reviews r 
-            ON r.product_id = p.id
+            ON r.product_id = p.product_id
 
         WHERE 
             p.status = 'Active'
