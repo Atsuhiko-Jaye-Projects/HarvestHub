@@ -476,6 +476,21 @@ class Order{
 
         return $stmt;
     }
+    
+    function getOrder(){
+
+        $query = "SELECT *
+                  FROM
+                    " . $this->table_name . "
+                   WHERE
+                    customer_id = :customer_id AND status != 'cancelled' ";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":customer_id" , $this->customer_id);
+        $stmt->execute();
+
+        return $stmt;
+    }
 
 }
 ?>

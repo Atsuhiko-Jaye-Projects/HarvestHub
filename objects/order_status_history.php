@@ -52,6 +52,26 @@ class OrderHistory{
         return $stmt;
     }
 
+    function getOrderUpdate(){
+
+        $query = "SELECT 
+                    status, invoice_number
+                  FROM 
+                    " . $this->table_name ."
+                  WHERE invoice_number = :invoice_number
+                  ORDER BY timestamp DESC
+                  LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":invoice_number", $this->invoice_number);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row;
+    }
+
 }
 
 
