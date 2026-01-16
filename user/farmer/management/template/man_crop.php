@@ -82,8 +82,8 @@
           <th><i class="bi bi-clipboard-data me-1"></i> Planted Crops</th>
           <th><i class="bi bi-calendar-plus me-1"></i> Date Planted</th>
           <th><i class="bi bi-calendar-check me-1"></i> Harvest Est.</th>
-          <th><i class="bi bi-clock me-1"></i> Duration</th>
-          <th><i class="bi bi-calendar3 me-1"></i> Crop Age</th>
+          <!-- <th><i class="bi bi-clock me-1"></i> Duration</th>
+          <th><i class="bi bi-calendar3 me-1"></i> Crop Age</th> -->
           <th class="text-center"><i class="bi bi-gear me-1"></i> Action</th>
         </tr>
       </thead>
@@ -112,13 +112,17 @@
               echo "<td>{$row['plant_count']} Crops</td>";
               echo "<td>{$row['date_planted']}</td>";
               echo "<td>{$row['estimated_harvest_date']}</td>";
-              echo "<td>{$durationDays} days</td>";
-              echo "<td>{$ageDays} days</td>";
+              // echo "<td>{$durationDays} days</td>";
+              // echo "<td>{$ageDays} days</td>";
               echo "<td class='text-nowrap'>";
                 echo "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-{$row['id']}'>";
                     echo "<i class='bi bi-pencil-square'></i>";
                 echo "</button>";
-                if ($row['crop_status'] != "harvested") {
+                if ($row['crop_status'] != "harvested" && $row['status'] != 'posted') {
+                  echo "<button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
+                  <i class='bi bi-cloud-upload-fill'></i>
+                </button>";
+                }else if ($row['crop_status'] == "crop planted" && $row['status'] != 'posted'){
                   echo "<button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
                   <i class='bi bi-cloud-upload-fill'></i>
                 </button>";

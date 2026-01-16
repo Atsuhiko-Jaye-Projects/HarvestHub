@@ -19,18 +19,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     datasets: [{
                         label: 'Total Sales',
                         data: sales,
-                        borderColor: '#16a34a',
-                        backgroundColor: 'rgba(22,163,74,0.2)', // slightly stronger fill
+                        borderColor: '#3d976a',
+                        backgroundColor: 'rgba(22,163,74,0.2)',
                         tension: 0.4,
-                        fill: true
+                        fill: true,
+
+                        // 🔴 DOT SETTINGS
+                        pointRadius: 6,          // default is 3
+                        pointHoverRadius: 9,     // when hovered
+                        pointBackgroundColor: '#181a19',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
                     }]
+
                 },
                 options: {
                     responsive: true,
                     plugins: { legend: { position: 'bottom' } },
                     scales: {
-                        y: { beginAtZero: true },
-                        x: { grid: { display: false } }
+                        y: { beginAtZero: false },
+                        x: { grid: { display: false }, ticks: { display:false } }
                     }
                 }
             });

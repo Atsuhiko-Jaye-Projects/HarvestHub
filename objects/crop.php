@@ -278,8 +278,25 @@ class Crop{
         $stmt->execute();
 
         return $stmt;
+    }
 
-    
+    function cropPosted(){
+
+
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                    SET
+                        status = :status
+                WHERE
+                    id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":id" , $this->id);
+
+        $stmt->execute();
+        
     }
 }
 

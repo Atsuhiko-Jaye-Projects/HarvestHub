@@ -174,20 +174,42 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
   <!-- Product Stocks Chart -->
   <div class="col-lg-6 col-sm-12">
-    <div class="card shadow-sm p-3 h-100 two-d-border">
+    
+    <div class="card shadow-sm h-100 two-d-border">
 
-      <!-- Header with icon -->
-      <div class="d-flex align-items-center justify-content-between mb-2">
+      <!-- Enhanced Header -->
+      <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
+          style="background: linear-gradient(135deg, #198754, #20c997);">
         <div class="d-flex align-items-center gap-2">
-          <div class="icon-badge text-primary">
-            <i class="bi bi-box-seam-fill"></i>
+          <div class="icon-badge">
+            <i class="bi bi-bar-chart-fill"></i>
           </div>
-          <h5 class="mb-0">Product Stocks</h5>
+          <span>Top Products</span>
         </div>
-        <span class="badge bg-primary-subtle text-primary">Updated</span>
+        <span class="badge bg-light text-success small">Live</span>
       </div>
 
-      <canvas id="salesChart2" height="200"></canvas>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table mb-0 align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Rank</th>
+                <th>Product Name</th>
+                <th>Total Planted</th>
+              </tr>
+            </thead>
+            <tbody id="mostPlantedCropTable">
+              <tr>
+                <td colspan="3" class="text-center text-muted py-3">
+                  Loading...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -247,45 +269,25 @@ if ($_SESSION['is_farm_registered'] == 0) {
 </style>
 
 
-  
-<div class="col-lg-6 col-sm-12">
-  <div class="card shadow-sm h-100 two-d-border">
+  <div class="col-lg-6 col-sm-12">
+    <div class="card shadow-sm p-3 h-100 two-d-border">
 
-    <!-- Enhanced Header -->
-    <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
-         style="background: linear-gradient(135deg, #198754, #20c997);">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon-badge">
-          <i class="bi bi-bar-chart-fill"></i>
+      <!-- Header with icon -->
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2">
+          <div class="icon-badge text-primary">
+            <i class="bi bi-box-seam-fill"></i>
+          </div>
+          <h5 class="mb-0">Product Stocks</h5>
         </div>
-        <span>Top Products</span>
+        <span class="badge bg-primary-subtle text-primary">Updated</span>
       </div>
-      <span class="badge bg-light text-success small">Live</span>
-    </div>
 
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table mb-0 align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>Rank</th>
-              <th>Product Name</th>
-              <th>Total Planted</th>
-            </tr>
-          </thead>
-          <tbody id="mostPlantedCropTable">
-            <tr>
-              <td colspan="3" class="text-center text-muted py-3">
-                Loading...
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <canvas id="salesChart2" height="200"></canvas>
     </div>
-
   </div>
-</div>
+  
+
 
   </div>
 </div>

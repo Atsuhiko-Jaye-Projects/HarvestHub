@@ -63,46 +63,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     // ===== CREATE =====
     if ($_POST['action'] == 'create') {
 
-        $planted_area = isset($_POST['lot_size']) ? (float)str_replace(',', '', $_POST['lot_size']) : 0;
-        $plant_count = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
-        $kilo_per_plant = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
-        $farm_expense = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
-        $total_farm_size = isset($_POST['farm_size_sqm']) ? (float)str_replace(',', '', $_POST['farm_size_sqm']) : 0;
+        $planted_area     = isset($_POST['lot_size']) ? (float)str_replace(',', '', $_POST['lot_size']) : 0;
+        $plant_count      = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
+        $kilo_per_plant   = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
+        $farm_expense     = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
 
-        // General markup (50% profit)
-        $markup = 0.015 * 100;
-
-        // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
-        
+        // Profit margin (example: 15%)
+        $markup = 0.20;
 
         // Prevent division by zero
-        if ($planted_area > 0 && $farm_expense > 0 && $total_farm_size > 0) {
+        if ($plant_count > 0 && $kilo_per_plant > 0 && $farm_expense > 0) {
 
-            
-            // Expense allocated to the planted area
-            $kilo_harvested_product = $plant_count * $kilo_per_plant;
+            // ✅ Total harvested kg
+            $harvested_kg = $plant_count * $kilo_per_plant;
 
-            // Prevent zero division
-            if ($kilo_harvested_product <= 0) {
-                $kilo_harvested_product = 1;
+            // Safety fallback
+            if ($harvested_kg <= 0) {
+                $harvested_kg = 1;
             }
 
-            $stocks = $plant_count * $kilo_per_plant;
+            // ✅ Cost per kg (break-even)
+            $cost_per_kg = $farm_expense / $harvested_kg;
+            $stocks = $kilo_per_plant * $plant_count;
 
-            // Cost per kg
-            $cost_per_kg = $farm_expense / $kilo_harvested_product;
+            // ✅ Selling price with margin
+            $selling_price = $cost_per_kg * (1 + $markup);
 
-            
-
-            // Selling price with markup
-            $selling_price = $cost_per_kg * $markup;
-
-            // Rounded price (currency format)
+            // Final price
             $harvest_product->price_per_unit = round($selling_price, 2);
 
         } else {
             $harvest_product->price_per_unit = 0;
         }
+
 
         $harvest_product->user_id = $_SESSION['user_id'];
         $harvest_product->product_name = $_POST['product_name'];
@@ -124,6 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
         $price = $harvest_product->price_per_unit = round($selling_price, 2);
 
+    
 
         if ($harvest_product->createProduct()) {
             echo "

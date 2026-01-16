@@ -188,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $total_farm_size = isset($_POST['cultivated_area']) ? (float)str_replace(',', '', $_POST['cultivated_area']) : 0;
 
                 // General markup (50% profit)
-                $markup = 0.015 * 100;
+                $markup = 0.20;
 
                 // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
                 
@@ -234,6 +234,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $harvest_product->is_posted = "Pending";
                 
                 $harvest_product->createProduct();
+                $crop->id = $_POST['id'];
+                $crop->status = "posted";
+                $crop->cropPosted();
                 
                 $_SESSION['flash'] = [
                 'title' => 'Success!',
@@ -266,13 +269,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->status = "Active";
         $product->product_type = "preorder";
 
+        //update the crop status to posted
+
+
         $image=!empty($_FILES["crop_image"]["name"])
         ? sha1_file($_FILES['crop_image']['tmp_name']) . "-" . basename($_FILES["crop_image"]["name"]) : "";
         $product->product_image = $image;
 
         if ($product->postCrop()) {
             $product->uploadPhoto();
-            echo "<div class='container'><div class='alert alert-success'>Crop has been Posted!</div></div>";
+            $crop->id = $_POST['id'];
+            $crop->status = "posted";
+            $crop->cropPosted();
+
+                $_SESSION['flash'] = [
+                    'title' => 'Success!',
+                    'text'  => 'Crop has been updated successfully.',
+                    'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+                ];
         }
     }
 

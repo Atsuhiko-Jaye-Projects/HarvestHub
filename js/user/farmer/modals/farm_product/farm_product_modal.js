@@ -158,7 +158,7 @@ function postHarvestProduct(row) {
                 <!-- BREAK EVEN SECTION -->
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label>Cost per KG (Base Cost)</label>
+                    <label>Cost per KG (+20%)</label>
                     <input type="number" step="0.01" name="cost_per_kg" class="form-control" id="cost-${row.id}" value="${row.price_per_unit}" readonly>
 
                   </div>

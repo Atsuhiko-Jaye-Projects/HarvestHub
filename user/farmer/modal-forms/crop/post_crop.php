@@ -172,7 +172,9 @@ function confirmPost(form) {
   return false; // prevent default submission until user confirms
 }
 
-function computeModal(modal){
+
+
+function computeModal(modal) {
   if (!modal) return;
 
   const kiloPerPlant = modal.querySelector("input[name='kilo_per_plant']");
@@ -181,6 +183,8 @@ function computeModal(modal){
   const pricePerUnit = modal.querySelector("input[name='price_per_unit']");
   const productValue = modal.querySelector("input[name='product_value']");
   const stocks       = modal.querySelector("input[name='stocks']");
+
+  const markup = 0.20; // ✅ 20% markup
 
   const kpp = parseFloat(kiloPerPlant?.value) || 0;
   const pc  = parseFloat(plantCount?.value)   || 0;
@@ -191,16 +195,18 @@ function computeModal(modal){
 
   if (stocks) stocks.value = totalKilos.toFixed(2);
 
-  // ----------------------
-  // SAME FORMULA AS PHP
-  // ----------------------
-  //const markup = 0.015 * 100; // SAME EXACT BACKEND VALUE
-
+  // Cost per kg
   const costPerKg = totalKilos > 0 ? exp / totalKilos : 0;
-  const sellingPrice = costPerKg; // SAME AS YOUR PHP
 
-  // Update the fields 
+  // ✅ Apply 20% markup
+  const sellingPrice = costPerKg * (1 + markup);
+
+  // Update the fields
   if (pricePerUnit) pricePerUnit.value = sellingPrice.toFixed(2);
   if (productValue) productValue.value = (sellingPrice * totalKilos).toFixed(2);
 }
+
+
+
+
 </script>
