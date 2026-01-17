@@ -171,6 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->stocks =  $estimated_stocks;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->is_posted = "Pending";
+        $crop->status = "pending";
         $crop->crop_status = $_POST['mark_crop'] ?? "";
         
         

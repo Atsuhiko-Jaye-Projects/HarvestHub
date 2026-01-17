@@ -309,7 +309,7 @@ class User{
             if (!is_dir($target_directory)) {
                 mkdir($target_directory, 0777, true);
             }
-
+            
             // If no errors, move file
             if (empty($file_upload_error_messages)) {
                 if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {

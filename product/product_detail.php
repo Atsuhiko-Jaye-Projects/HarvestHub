@@ -163,25 +163,41 @@ $cart_item_count = $cart_item->countItem();
       <div class="d-flex align-items-center mb-3">
         <span class="me-3 text-muted"><?php echo $product->sold_count; ?> KG Sold</span>
         <div class="rating">
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-half"></i>
-          <span class="ms-2">4.5</span>
+            <?php
+            $rating = $product->avg_rating; // example: 4.5
+
+            $fullStars = floor($rating);
+            $halfStar  = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+            $emptyStars = 5 - $fullStars - $halfStar;
+
+            // full stars
+            for ($i = 0; $i < $fullStars; $i++) {
+                echo '<i class="bi bi-star-fill"></i>';
+            }
+
+            // half star
+            if ($halfStar) {
+                echo '<i class="bi bi-star-half"></i>';
+            }
+
+            // empty stars
+            for ($i = 0; $i < $emptyStars; $i++) {
+                echo '<i class="bi bi-star"></i>';
+            }
+            ?>
+            <span class="ms-2"><?= number_format($rating, 1) ?></span>
         </div>
+
       </div>
 
       <h6>Description:</h6>
       <p class="text-secondary">
         <?php echo $product->product_description; ?>
       </p>
-      <h6>Stocks:</h6>
+      <h6>Available Stocks:</h6>
       <p class="text-secondary">
-        <?php echo $product->total_stocks; ?>
+        <?php echo $product->available_stocks; ?>
       </p>
-
-      <p><strong>Lot Size:</strong> 30</p>
 
       <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' id="cartForm">
         <div class="mb-3">

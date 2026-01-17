@@ -11,7 +11,8 @@ include_once "../../../objects/review.php";
 
 $page_title = "Feedback Form";
 include_once "../layout/layout_head.php";
-print_r($_SESSION);
+
+
 
 $require_login = true;
 include_once "../../../login_checker.php";
@@ -32,24 +33,32 @@ $productid = $order->product_id;
 $farmerid = $order->farmer_id;
 
 
-if ($_POST) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $review->rating = $_POST['rating'];
-    $review->product_id = $_POST['product_id'];
-    $review->farmer_id = $_POST['farmer_id'];
-    $review->customer_id = $_POST['customer_id'];
-    $review->review_text = $_POST['feedback'];  
+    $order_id = $_POST['order_id'];
+
+    $review->rating       = (int) $_POST['rating'];
+    $review->product_id   = (int) $_POST['product_id'];
+    $review->farmer_id    = (int) $_POST['farmer_id'];
+    $review->customer_id  = (int) $_POST['customer_id'];
+    $review->review_text  = trim($_POST['feedback']);
 
     if ($review->createReview()) {
-        $order->review_status = "1";
+
         $order->id = $order_id;
+        $order->review_status = 1;
         $order->markReviewStatus();
-        header("Location:{$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
+
+        header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
         exit;
-    }else{
-        header("Location:{$base_url}user/consumer/order/feedback.php?vod={$order_id}&failed");
+
+    } else {
+
+        header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&failed");
+        exit;
     }
 }
+
 
 
 
@@ -72,7 +81,8 @@ if ($order->review_status == 0) {
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?vod={$order_id}");?>" method="POST" id="feedbackForm">
                         <input type="hidden" name="product_id" value="<?php echo $productid; ?>">
                         <input type="hidden" name="farmer_id" value="<?php echo $farmerid; ?>">
-                        <input type="hidden" name="customer_id" value=<?php $_SESSION['user_id']; ?>>
+                        <input type="hidden" name="customer_id" value="<?php echo $_SESSION['user_id']; ?>">
+                        <input type="hidden" name="order_id" value="<?php echo $order_id ?>">
                         <!-- Rating -->
                         <div class="mb-4">
                             <label class="form-label">How would you rate your experience?</label>

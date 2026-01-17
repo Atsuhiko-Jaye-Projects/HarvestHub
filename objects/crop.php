@@ -130,6 +130,7 @@ class Crop{
                     plant_count = :plant_count,
                     stocks = :stocks,
                     crop_status = :crop_status,
+                    status = :status,
                     modified_at = :modified_at
                 WHERE id = :id";
 
@@ -156,6 +157,7 @@ class Crop{
         $stmt->bindParam(":date_planted", $this->date_planted);
         $stmt->bindParam(":plant_count", $this->plant_count);
         $stmt->bindParam(":stocks", $this->stocks);
+        $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
         $stmt->bindParam(":suggested_price", $this->suggested_price);
         $stmt->bindParam(":modified_at", $this->modified_at);

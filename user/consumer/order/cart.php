@@ -121,12 +121,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                 data-stocks="<?php echo $stocks; ?>"
                 name="product_id[]"
                 value="<?php echo $row['product_id']; ?>">
-            </div>
+            </div>  
+
+            <?php
+              $raw_image = $product->product_image;
+              $image_path = '';
+              if ($product_type == "harvest") {
+                $image_path = "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
+              }else{
+                $image_path = "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}";
+              }
+            ?>
 
             <!-- ✅ Product Image -->
             <div class="me-3">
               <img 
-                src="<?php echo $base_url; ?>user/uploads/<?php echo $product->user_id; ?>/products/<?php echo $product->product_image; ?>" 
+                src="<?php echo $image_path; ?>" 
                 alt="Product Image" 
                 class="border rounded"
                 style="width:80px; height:80px; object-fit:cover;">

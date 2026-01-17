@@ -2,6 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/config/core.php";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/config/database.php";
 include_once $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/objects/order_status_history.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/objects/order.php";
 
 $database = new Database();
 $db = $database->getConnection();

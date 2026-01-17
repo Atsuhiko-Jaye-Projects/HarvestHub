@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         response.records.forEach(row => {
           
-        const deleteBtn = row.is_posted === 'posted'
+        const deleteBtn = row.is_posted === 'er'
         ? ''
         : `
           <form method="POST" action="" class="d-inline delete-form">
@@ -38,6 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
           </form>
         `;
+
+        const postBtn = row.is_posted === 'Posted'
+        ? ''
+        :`
+          <button class='btn btn-success me-2'
+          data-bs-toggle='modal'
+          data-bs-target='#post-harvest-modal-${row.id}'>
+          <i class='bi bi-box-arrow-up'></i>
+          </button>
+        `  
 
 
 
@@ -68,12 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
               <i class='bi bi-pencil-square'></i>
             </button>
 
-            <button class='btn btn-success me-2'
-                    data-bs-toggle='modal'
-                    data-bs-target='#post-harvest-modal-${row.id}'>
-              <i class='bi bi-box-arrow-up'></i>
-            </button>
 
+            ${postBtn}
             ${deleteBtn}
           </td>
           </tr>

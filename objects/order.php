@@ -355,7 +355,6 @@ class Order{
         $stmt->bindParam(":id", $this->id);
 
         return $stmt->execute();
-
     }
     
     function cancelOrder(){

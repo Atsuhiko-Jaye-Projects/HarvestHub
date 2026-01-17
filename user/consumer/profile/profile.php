@@ -37,9 +37,29 @@ if($user->getUserProfileById()) {
 
             if ($user->updateUserProfile()) {
                 if ($user->uploadPhoto()) {
-                    echo "<div class='alert alert-success'>Profile has been updated</div>";
+                echo "
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Profile Updated!',
+                        text: 'Profile information has been saved successfully',
+                        showConfirmButton: true
+                    });
+                </script>
+                ";
                 } else {
-                    echo "<div class='alert alert-warning'>Profile has been updated</div>";
+                    echo "
+                    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Profile Updated!',
+                            text: 'Profile information has been saved successfully',
+                            showConfirmButton: true
+                        });
+                    </script>
+                    ";
                 }
             } else {
                 echo "<div class='alert alert-danger'>ERROR: Profile update failed.</div>";
@@ -195,48 +215,6 @@ $(document).ready(function() {
             reader.onload = e => $('#profilePreview').attr('src', e.target.result);
             reader.readAsDataURL(file);
         }
-    });
-
-    // AJAX form submit
-    $('#editProfileForm').on('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-
-    $.ajax({
-        url: '../../../js/user/farmer/api/update_profile.php',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        success: function(response) {
-            if(response.success){
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: response.message,
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    location.reload(); // reload page after user clicks OK
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: response.message
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'An error occurred while updating profile.'
-            });
-        }
-    });
-
     });
 });
 </script>

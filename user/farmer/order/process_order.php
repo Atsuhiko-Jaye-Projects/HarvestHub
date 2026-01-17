@@ -38,10 +38,16 @@ $customer->getShippingAddress();
 //arrange the product image path
 $user_id = $product->user_id;
 $raw_product_image = $product->product_image;
-$product_image_path = "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
+$product_type = $product->product_type;
+$product_image_path = '';
+if ($product_type == 'preorder') {
+    $product_image_path = "{$base_url}user/uploads/{$user_id}/posted_crops/{$raw_product_image}";
+}else{
+    $product_image_path = "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
+}
+
 
 // compute service fee
-
 $sub_total = ($order->quantity * $product->price_per_unit);
 $service_fee = $sub_total * 0.0225;
 

@@ -39,7 +39,10 @@ class OrderHistory{
     }
 
     function getOrderStatus(){
-        $query = "SELECT * FROM " . $this->table_name . " WHERE invoice_number = :invoice_number AND product_id = :product_id";
+        $query = "SELECT * 
+                  FROM 
+                    " . $this->table_name . " 
+                    WHERE invoice_number = :invoice_number AND product_id = :product_id";
 
         $stmt = $this->conn->prepare($query);
 
@@ -47,8 +50,6 @@ class OrderHistory{
         $stmt->bindParam(":product_id", $this->product_id);
 
         $stmt->execute();
-
-
         return $stmt;
     }
 

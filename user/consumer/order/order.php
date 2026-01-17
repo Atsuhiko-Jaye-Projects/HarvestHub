@@ -131,11 +131,18 @@ if ($num > 0) {
 
                     $product->product_id = $row['product_id'];
                     $product->readProductName();
-
+                    
+                    $product_type = $product->product_type;
                     $raw_img = $product->product_image;
                     $img_owner = $product->user_id;
-                    $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
-
+                    
+                    $img_path = '';
+                    if ($product_type == "preorder") {
+                        $img_path = "{$base_url}user/uploads/{$img_owner}/posted_crops/{$raw_img}";
+                    }else{
+                        $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
+                    }
+                    
                     $price = $product->price_per_unit;
                     $qty = $row['quantity'];
                     $total = $price * $qty;
@@ -173,21 +180,25 @@ if ($num > 0) {
                 </div>
 
                 <!-- Buttons -->
-                <?php 
-                if ($first['status'] == "complete" && $first['review_status'] != 1) {
-                    // Complete but not yet reviewed
-                ?>
-                    <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $first['id']; ?>" class="btn btn-warning btn-sm">Rate this order</a>
-                <?php 
-                } elseif ($first['status'] != "complete") { 
-                    // Not complete yet
-                ?>
-                    <a href="order_details.php?vod=<?php echo $first['id']; ?>" class="btn btn-outline-success btn-sm">View Order Details</a>
-                <?php 
-                } 
-                // If complete and review_status == 1, no button is shown
-                ?>
+                <?php if ($first['status'] === "complete" && $first['review_status'] == 0): ?>
+
+                    <!-- Complete but not yet reviewed -->
+                    <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $first['id']; ?>"
+                    class="btn btn-warning btn-sm">
+                        Rate this order
+                    </a>
+
+                <?php elseif ($first['status'] !== "complete"): ?>
+
+                    <!-- Not complete yet -->
+                    <a href="order_details.php?vod=<?php echo $first['id']; ?>"
+                    class="btn btn-outline-success btn-sm">
+                        View Order Details
+                    </a>
+
+                <?php endif; ?>
             </div>
+
         </div>
 
 <?php

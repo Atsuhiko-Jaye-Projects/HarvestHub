@@ -87,7 +87,7 @@
         <div class="d-flex  steps-container">
             <!-- Order Placed -->
             <?php
-                    if ($num > 0) {
+        if ($num > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 extract($row);
 

@@ -22,6 +22,7 @@ class Product{
     public $sold_count;
     public $modified;
     public $product_type;
+    public $avg_rating;
 
 
     public function __construct($db){
@@ -208,9 +209,18 @@ class Product{
     }
 
     function readOne() {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE product_id = ? LIMIT 0, 1";
+        $query = "SELECT 
+                    p.*,
+                    COALESCE(AVG(r.rating), 0) AS avg_rating
+                FROM products p
+                LEFT JOIN reviews r ON p.product_id = r.product_id
+                WHERE p.product_id = :product_id
+                GROUP BY p.product_id
+                LIMIT 1";
+
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $this->id);
+        // $stmt->bindParam(1, $this->id);
+        $stmt->bindParam(":product_id", $this->id);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -226,6 +236,8 @@ class Product{
             $this->total_stocks = $row['total_stocks'];
             $this->product_image = $row['product_image'];
             $this->sold_count = $row['sold_count'];
+            $this->available_stocks = $row['available_stocks'];
+            $this->avg_rating = round($row['avg_rating'], 1);
     }
 
 
@@ -253,6 +265,7 @@ class Product{
             $this->total_stocks = $row['total_stocks'];
             $this->price_per_unit = $row['price_per_unit'];
             $this->product_image = $row['product_image'];
+            $this->product_type = $row['product_type'];
             $this->user_id = $row['user_id'];
         }else{
             return null;

@@ -117,19 +117,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
         $price = $harvest_product->price_per_unit = round($selling_price, 2);
 
-    
 
         if ($harvest_product->createProduct()) {
+            $harvest_product->uploadPhoto();
             echo "
-                <div class='container mt-3'>
-                <div class='alert alert-success alert-dismissible fade show shadow-sm border-0' role='alert' 
-                    style='border-radius: 12px; font-size: 0.95rem;'>
-                    <i class='bi bi-check-circle-fill me-2'></i> 
-                    <strong>Success!</strong> Product information has been saved successfully.
-                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                </div>
-                </div>
-                ";
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product Saved!',
+                    text: 'Product information has been saved successfully',
+                    showConfirmButton: true
+                });
+            </script>
+            ";
             if ($harvest_product->uploadPhoto()) {
                 echo "";
             }
