@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2026 at 12:40 PM
+-- Generation Time: Jan 17, 2026 at 04:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -66,7 +66,12 @@ INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, 
 (22, 2, 2, 15, '2026-01-15 20:19:06', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
 (23, 2, 2, 10, '2026-01-15 20:22:53', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
 (24, 2, 2, 15, '2026-01-15 21:03:21', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(25, 2, 2, 15, '2026-01-15 21:03:35', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest');
+(25, 2, 2, 15, '2026-01-15 21:03:35', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
+(26, 4, 2, 15, '2026-01-17 12:38:09', 15, 'ordered', '2026-01-17 05:05:24', 1, 'preorder'),
+(27, 19, 2, 30, '2026-01-17 12:59:50', 22, 'ordered', '2026-01-17 06:35:46', 1, 'harvest'),
+(28, 4, 2, 5, '2026-01-17 13:05:06', 15, 'ordered', '2026-01-17 05:05:24', 1, 'preorder'),
+(29, 19, 2, 5, '2026-01-17 13:05:38', 22, 'ordered', '2026-01-17 06:35:46', 1, 'harvest'),
+(30, 19, 2, 10, '2026-01-17 14:28:26', 22, 'ordered', '2026-01-17 06:35:46', 1, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -127,9 +132,7 @@ CREATE TABLE `crops` (
 --
 
 INSERT INTO `crops` (`id`, `user_id`, `farm_resource_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`, `crop_status`, `status`) VALUES
-(1, 1, 'FID69660125097', 'kamatis', 5, 50, '2025-11-11', '2026-01-13', 0, '2026-01-13 08:47:41', '2026-01-13 16:26:52', 50, 10, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'harvested', 'posted'),
-(2, 1, 'FID696062578', 'kamote', 2.5, 50, '2026-01-16', '2026-03-02', 0, '2026-01-16 09:37:17', '2026-01-16 17:37:17', 250, 100, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted'),
-(3, 1, 'FID6961246899', 'talong', 2.5, 50, '2026-01-16', '2026-05-09', 0, '2026-01-16 11:18:28', '2026-01-16 19:08:46', 250, 100, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', '', 'pending');
+(4, 1, 'FID69606749', 'kamatis', 2.4, 73, '2026-01-17', '2026-03-03', 0, '2026-01-17 04:31:04', '2026-01-17 12:31:04', 240, 100, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted');
 
 -- --------------------------------------------------------
 
@@ -190,7 +193,10 @@ INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activ
 (1, 'FID69660125097', 'Land clearing', 2000, 'land_prep', '2026-01-13 00:00:00', '2026-01-13 16:24:05', '0000-00-00 00:00:00', 0, ''),
 (2, 'FID69660125097', 'Seed tray preparation', 1000, 'nursery_seedling', '2026-01-13 00:00:00', '2026-01-13 16:24:05', '0000-00-00 00:00:00', 0, ''),
 (3, 'FID696062578', 'Land clearing', 3000, 'land_prep', '2026-01-17 00:00:00', '2026-01-16 17:37:00', '0000-00-00 00:00:00', 0, 'graet'),
-(4, 'FID6961246899', 'Land clearing', 3000, 'land_prep', '0000-00-00 00:00:00', '2026-01-16 19:08:20', '0000-00-00 00:00:00', 0, '');
+(4, 'FID6961246899', 'Land clearing', 3000, 'land_prep', '0000-00-00 00:00:00', '2026-01-16 19:08:20', '0000-00-00 00:00:00', 0, ''),
+(5, 'FID69606749', 'Land clearing', 3000, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:26:20', '0000-00-00 00:00:00', 0, ''),
+(6, 'FID69609091', 'Land clearing', 5000, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:27:06', '0000-00-00 00:00:00', 0, ''),
+(7, 'FID69602932', 'Land clearing', 3500, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:27:46', '0000-00-00 00:00:00', 0, '');
 
 -- --------------------------------------------------------
 
@@ -223,7 +229,7 @@ CREATE TABLE `farm_details` (
 --
 
 INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
-(1, 1, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', 1000, '2026-01-13 16:18:01', '2026-01-13 08:18:01', 100, '', '', 0, '', 0, 0);
+(1, 1, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', 1000, '2026-01-13 16:18:01', '2026-01-13 08:18:01', 173, '', '', 0, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -252,9 +258,9 @@ CREATE TABLE `farm_resources` (
 --
 
 INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`, `crop_name`, `plant_count`, `average_yield_per_plant`, `grand_total`, `date`, `modified_at`, `created_at`, `planted_area_sqm`, `crop_status`) VALUES
-(1, 1, 'FID69660125097', 'Kamatis planting', 'kamatis', 10, 5, 3000, '2026-01-13', '2026-01-16 09:10:33', '2026-01-13 16:24:05', 50, 'crop planted'),
-(2, 1, 'FID696062578', 'kamote hybri', 'kamote', 100, 2.5, 3000, '2026-01-16', '2026-01-16 09:37:17', '2026-01-16 17:37:00', 50, 'crop planted'),
-(3, 1, 'FID6961246899', 'talong', 'talong', 200, 2.5, 3000, '2026-01-16', '2026-01-16 11:08:46', '2026-01-16 19:08:20', 50, 'crop planted');
+(4, 1, 'FID69606749', 'Kamatis planting', 'kamatis', 100, 2.4, 3000, '2026-01-17', '2026-01-17 04:31:04', '2026-01-17 12:26:20', 73, 'crop planted'),
+(5, 1, 'FID69609091', 'kalabasa expense', 'kalabasa', 200, 3.4, 5000, '2026-01-17', '2026-01-17 04:27:06', '2026-01-17 12:27:06', 90, ''),
+(6, 1, 'FID69602932', 'okra expense', 'Okra', 100, 3.4, 3500, '2026-01-17', '2026-01-17 04:27:46', '2026-01-17 12:27:46', 89, '');
 
 -- --------------------------------------------------------
 
@@ -287,24 +293,8 @@ CREATE TABLE `harvested_products` (
 --
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
-(1, 1, 'kamatis', 90, 'KG', 'Vegetable', '50', 'fresh tomatoes', 50, 0, '722d38418b836a2197366f796707ff4ca1b7a95b-kamatis.jpg', '2026-01-13 08:50:06', '2026-01-13 16:47:41', 'Posted', 10, 3000, 5),
-(2, 1, 'kamatis', 11, 'KG', 'Vegetable', '50', 'great', 400, 0, 'df9fc55c18781772e5ae708e239e73f9d3dec58a-kamatis.jpg', '2026-01-14 06:51:45', '2026-01-14 14:51:01', 'Posted', 200, 3000, 2),
-(3, 1, 'kamatis', 12, 'KG', 'Vegetable', '100', 'great', 500, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 06:48:49', '2026-01-16 14:48:49', 'Pending', 200, 3000, 2.5),
-(4, 1, 'kamatis', 6, 'KG', 'Vegetable', '50', 'great', 500, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 06:50:05', '2026-01-16 14:50:05', 'Pending', 200, 3000, 2.5),
-(5, 1, 'kamatis', 38, 'KG', 'Vegetable', '50', 'great', 500, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:45:00', '2026-01-16 16:45:00', 'Pending', 200, 3000, 2.5),
-(6, 1, 'kamatis', 38, 'KG', 'Vegetable', '50', 'great', 500, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:50:17', '2026-01-16 16:50:17', 'Pending', 200, 3000, 2.5),
-(7, 1, 'kamatis', 38, 'KG', 'Vegetable', '100', 'great', 500, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:52:05', '2026-01-16 16:52:05', 'Pending', 200, 3000, 2.5),
-(8, 1, 'kamatis', 7, 'KG', 'Vegetable', '100', 'great', 0, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:54:38', '2026-01-16 16:54:38', 'Pending', 200, 3000, 2.5),
-(9, 1, 'kamatis', 7, 'KG', 'Vegetable', '100', 'great', 0, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:55:11', '2026-01-16 16:55:11', 'Pending', 200, 3000, 2.5),
-(10, 1, 'kamatis', 14, 'KG', 'Vegetable', '50', 'great', 0, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:56:22', '2026-01-16 16:56:22', 'Pending', 100, 3000, 2.5),
-(11, 1, 'kamatis', 15, 'KG', 'Vegetable', '50', 'grea', 0, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:59:31', '2026-01-16 16:59:31', 'Pending', 200, 6600, 2.5),
-(12, 1, 'kamatis', 15, 'KG', 'Vegetable', '100', 'great', 0, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 08:59:58', '2026-01-16 16:59:58', 'Pending', 200, 6600, 2.5),
-(13, 1, 'kamatis', 83, 'KG', 'Vegetable', '100', 'great', 500, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 09:00:57', '2026-01-16 17:00:57', 'Pending', 200, 6600, 2.5),
-(14, 1, 'kamatis', 30, 'KG', 'Vegetable', '100', 'gret', 250, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 09:03:44', '2026-01-16 17:03:44', 'Pending', 100, 6600, 2.5),
-(15, 1, 'kamatis', 32, 'KG', 'Vegetable', '100', 'great', 250, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 09:04:58', '2026-01-16 17:04:58', 'Pending', 100, 6600, 2.5),
-(16, 1, 'kamatis', 14, 'KG', 'Vegetable', '50', 'great', 250, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 09:13:34', '2026-01-16 17:13:34', 'Pending', 100, 3000, 2.5),
-(17, 1, 'kamatis', 14, 'KG', 'Vegetable', '50', 'great', 250, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 09:18:50', '2026-01-16 17:18:50', 'Pending', 100, 3000, 2.5),
-(18, 1, 'kamatis', 12, 'KG', 'Vegetable', '50', 'great', 250, 0, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', '2026-01-16 09:21:16', '2026-01-16 17:21:16', 'Pending', 100, 3000, 2.5);
+(19, 1, 'Kalabasa', 21, 'KG', 'Vegetable', '90', 'kalabasa great', 350, 0, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', '2026-01-17 04:30:42', '2026-01-17 12:28:27', 'Posted', 100, 5000, 3.5),
+(20, 1, 'Kalabasa', 18, 'KG', 'Vegetable', '90', 'kalabasa', 340, 0, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', '2026-01-17 06:31:31', '2026-01-17 14:31:31', 'Pending', 100, 5000, 3.4);
 
 -- --------------------------------------------------------
 
@@ -362,14 +352,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`) VALUES
-(12, 2, 'INV-6968E59E556B0', 2, 'COP', 12, 'complete', '2026-01-12 21:03:26', '2026-01-09 13:03:26', 1, 'harvest', 0, ''),
-(13, 2, 'INV-6968E5ACCEE57', 2, 'COP', 19, 'complete', '2026-01-13 21:03:40', '2026-01-10 13:07:41', 1, 'harvest', 0, ''),
-(14, 2, 'INV-6968E5ACCEE53', 2, 'COP', 5, 'complete', '2026-01-14 21:03:40', '2026-01-11 13:07:41', 1, 'harvest', 0, ''),
-(15, 2, 'INV-6968E5ACCEE52', 2, 'COP', 25, 'complete', '2026-01-15 21:03:40', '2026-01-12 13:07:41', 1, 'harvest', 0, ''),
-(16, 2, 'INV-6968E59E556B0', 2, 'COP', 12, 'complete', '2026-01-12 21:03:26', '2026-01-13 13:03:26', 1, 'harvest', 0, ''),
-(17, 2, 'INV-6968E5ACCEE57', 2, 'COP', 19, 'complete', '2026-01-13 21:03:40', '2026-01-14 13:07:41', 1, 'harvest', 0, ''),
-(18, 2, 'INV-6968E5ACCEE53', 2, 'COP', 5, 'complete', '2026-01-14 21:03:40', '2026-01-15 13:07:41', 1, 'harvest', 0, ''),
-(19, 2, 'INV-6968E5ACCEE52', 2, 'COP', 25, 'complete', '2026-01-15 21:03:40', '2026-01-16 13:07:41', 1, 'harvest', 0, '');
+(22, 4, 'INV-696B189402AC0', 2, 'COP', 5, 'complete', '2026-01-17 13:05:24', '2026-01-17 05:36:03', 1, 'preorder', 1, ''),
+(23, 19, 'INV-696B18AD87CC0', 2, 'COP', 5, 'complete', '2026-01-17 13:05:49', '2026-01-17 05:36:36', 1, 'harvest', 1, ''),
+(24, 19, 'INV-696B2DC2C40D7', 2, 'COP', 5, 'accept', '2026-01-17 14:35:46', '2026-01-17 06:35:46', 1, 'harvest', 0, '');
 
 -- --------------------------------------------------------
 
@@ -391,11 +376,16 @@ CREATE TABLE `order_status_history` (
 --
 
 INSERT INTO `order_status_history` (`id`, `invoice_number`, `status`, `timestamp`, `product_id`, `notif_viewed`) VALUES
-(30, 'INV-6968E59E556B0', 'order placed', '2026-01-15 21:03:45', 2, 1),
-(31, 'INV-6968E5ACCEE57', 'order placed', '2026-01-15 21:03:56', 2, 1),
-(32, 'INV-6968E5ACCEE57', 'accept', '2026-01-15 21:07:18', 2, 1),
-(33, 'INV-6968E5ACCEE57', 'order shipout', '2026-01-15 21:07:36', 2, 1),
-(34, 'INV-6968E5ACCEE57', 'order recieved', '2026-01-15 21:07:44', 2, 1);
+(1, 'INV-696B189402AC0', 'order placed', '2026-01-17 13:06:16', 4, 1),
+(2, 'INV-696B18AD87CC0', 'order placed', '2026-01-17 13:06:23', 19, 1),
+(3, 'INV-696B189402AC0', 'accept pre-order', '2026-01-17 13:34:56', 4, 1),
+(4, 'INV-696B18AD87CC0', 'accept', '2026-01-17 13:35:32', 19, 1),
+(5, 'INV-696B189402AC0', 'pre-order shipout', '2026-01-17 13:36:00', 4, 1),
+(6, 'INV-696B189402AC0', 'order recieved', '2026-01-17 13:36:13', 4, 1),
+(7, 'INV-696B18AD87CC0', 'order shipout', '2026-01-17 13:36:31', 19, 1),
+(8, 'INV-696B18AD87CC0', 'order recieved', '2026-01-17 13:36:53', 19, 1),
+(9, 'INV-696B2DC2C40D7', 'order placed', '2026-01-17 14:35:46', 19, 0),
+(10, 'INV-696B2DC2C40D7', 'accept', '2026-01-17 14:01:26', 19, 0);
 
 -- --------------------------------------------------------
 
@@ -454,10 +444,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(1, 1, 'kamatis', 60, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 50, '722d38418b836a2197366f796707ff4ca1b7a95b-kamatis.jpg', 80, '2026-01-13 08:45:37', '2026-01-13 16:45:37', 'Active', 'preorder', -30, NULL),
-(3, 2, 'kamatis', 12, 1, 'Vegetable', 'KG', 0, 'great', 50, 400, 'df9fc55c18781772e5ae708e239e73f9d3dec58a-kamatis.jpg', 180, '2026-01-14 06:51:45', '2026-01-14 14:51:45', 'Active', 'harvest', 220, NULL),
-(4, 2, 'kamote', 12, 1, 'fruit', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 250, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', 0, '2026-01-16 09:37:48', '2026-01-16 17:37:48', 'Active', 'preorder', 250, NULL),
-(5, 2, 'kamote', 12, 1, 'fruit', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 250, 'f6a84439691dfbe518e3fd17c172f4aec17d0854-617693684_1136581251720978_9151915545275032363_n.jpg', 0, '2026-01-16 10:45:48', '2026-01-16 18:45:48', 'Active', 'preorder', 250, NULL);
+(6, 19, 'Kalabasa', 22, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 350, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 75, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', 275, NULL),
+(7, 4, 'kamatis', 15, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 240, '2a7cb252aa6e87d07c2bf4f8c4191b8b84682f3f-kamatis.jpg', 40, '2026-01-17 04:36:30', '2026-01-17 12:36:30', 'Active', 'preorder', 200, NULL);
 
 -- --------------------------------------------------------
 
@@ -532,8 +520,56 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `product_id`, `farmer_id`, `customer_id`, `rating`, `review_text`, `reply`, `created_at`, `modified_at`, `product_rating`, `farmer_rating`, `performance_review`, `product_quality_review`, `farmer_response`) VALUES
-(2, 2, 1, 2, 5, 'great review ', '', '2026-01-15 20:20:28', '2026-01-15 12:20:28', 0, 0, '', '', ''),
-(4, 2, 1, 0, 5, 'THIS IS NEW REVIEW FOR KAMATIS PRODUCT ID=2', '', '2026-01-15 20:42:00', '2026-01-15 12:42:00', 0, 0, '', '', '');
+(2, 2, 1, 2, 5, 'great review ', 'la', '2026-01-15 20:20:28', '2026-01-15 12:20:28', 0, 0, '', '', ''),
+(4, 2, 1, 0, 5, 'THIS IS NEW REVIEW FOR KAMATIS PRODUCT ID=2', 'la', '2026-01-15 20:42:00', '2026-01-15 12:42:00', 0, 0, '', '', ''),
+(5, 19, 1, 2, 5, 'great', 'la', '2026-01-17 13:37:00', '2026-01-17 05:37:00', 0, 0, '', '', ''),
+(6, 4, 1, 2, 5, 'great', 'la', '2026-01-17 13:37:06', '2026-01-17 05:37:06', 0, 0, '', '', ''),
+(7, 4, 1, 2, 5, 'great', '', '2026-01-17 15:29:46', '2026-01-17 07:29:46', 0, 0, '', '', ''),
+(8, 4, 1, 2, 5, 'great', '', '2026-01-17 15:32:08', '2026-01-17 07:32:08', 0, 0, '', '', ''),
+(9, 4, 1, 2, 5, 'great', '', '2026-01-17 15:34:45', '2026-01-17 07:34:45', 0, 0, '', '', ''),
+(10, 4, 1, 2, 5, 'great', '', '2026-01-17 15:44:09', '2026-01-17 07:44:09', 0, 0, '', '', ''),
+(11, 4, 1, 2, 5, 'great', '', '2026-01-17 15:44:41', '2026-01-17 07:44:41', 0, 0, '', '', ''),
+(12, 4, 1, 2, 5, 'great', '', '2026-01-17 15:45:14', '2026-01-17 07:45:14', 0, 0, '', '', ''),
+(13, 4, 1, 2, 5, 'great', '', '2026-01-17 15:46:36', '2026-01-17 07:46:36', 0, 0, '', '', ''),
+(14, 4, 1, 2, 5, 'great', '', '2026-01-17 15:48:08', '2026-01-17 07:48:08', 0, 0, '', '', ''),
+(15, 4, 1, 2, 5, 'great', '', '2026-01-17 15:50:11', '2026-01-17 07:50:11', 0, 0, '', '', ''),
+(16, 4, 1, 2, 5, 'great', '', '2026-01-17 15:53:16', '2026-01-17 07:53:16', 0, 0, '', '', ''),
+(17, 4, 1, 2, 5, 'great', '', '2026-01-17 18:36:22', '2026-01-17 10:36:22', 0, 0, '', '', ''),
+(18, 4, 1, 2, 5, 'great', '', '2026-01-17 18:36:44', '2026-01-17 10:36:44', 0, 0, '', '', ''),
+(19, 4, 1, 2, 5, 'great', '', '2026-01-17 18:37:10', '2026-01-17 10:37:10', 0, 0, '', '', ''),
+(20, 4, 1, 2, 5, 'greatt', '', '2026-01-17 18:37:42', '2026-01-17 10:37:42', 0, 0, '', '', ''),
+(21, 4, 1, 2, 5, 'greatt', '', '2026-01-17 18:37:59', '2026-01-17 10:37:59', 0, 0, '', '', ''),
+(22, 4, 1, 2, 5, 'great', '', '2026-01-17 18:44:28', '2026-01-17 10:44:28', 0, 0, '', '', ''),
+(23, 4, 1, 2, 5, 'grea', '', '2026-01-17 18:48:49', '2026-01-17 10:48:49', 0, 0, '', '', ''),
+(24, 4, 1, 2, 5, 'klklnklnkn', '', '2026-01-17 18:50:53', '2026-01-17 10:50:53', 0, 0, '', '', ''),
+(25, 4, 1, 2, 5, 'adasdsa', '', '2026-01-17 18:52:07', '2026-01-17 10:52:07', 0, 0, '', '', ''),
+(26, 4, 1, 2, 5, 'great', '', '2026-01-17 19:27:52', '2026-01-17 11:27:52', 0, 0, '', '', ''),
+(27, 4, 1, 2, 5, 'asdadasd', '', '2026-01-17 21:03:16', '2026-01-17 13:03:16', 0, 0, '', '', ''),
+(28, 4, 1, 2, 1, 'adasdsa', '', '2026-01-17 21:05:02', '2026-01-17 13:05:02', 0, 0, '', '', ''),
+(29, 4, 1, 2, 5, 'asdasdsa', '', '2026-01-17 21:06:09', '2026-01-17 13:06:09', 0, 0, '', '', ''),
+(30, 4, 1, 2, 5, 'asdasdas', '', '2026-01-17 21:08:02', '2026-01-17 13:08:02', 0, 0, '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `review_images`
+--
+
+CREATE TABLE `review_images` (
+  `id` int(11) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `farmer_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `review_images`
+--
+
+INSERT INTO `review_images` (`id`, `image`, `product_id`, `customer_id`, `farmer_id`, `created_at`) VALUES
+(30, '<div class=\'alert alert-warning\'>No file selected for upload.</div>', 4, 2, 1, '2026-01-17 20:48:46');
 
 -- --------------------------------------------------------
 
@@ -568,7 +604,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`) VALUES
-(1, 'Sheila Mae', 'Laurente', 'laurentesheila1097@gmail.com', '+639772639814', '', '', '', '', 'Farmer', '$2y$10$BcHRBElcAV5x7Tp8gM.TuecfiOhCTsc0qtu.QN7O3Fm.1OxEZcjUy', 0, '2026-01-13 16:15:26', 0, '2026-01-13 16:15:26', '1', '', 1, ''),
+(1, 'Sheila Mae', 'Laurente', 'laurentesheila1097@gmail.com', '+639772639814', 'Purok 2', 'Anapog-Sibucao', 'Mogpo', 'Marinduque', 'Farmer', '$2y$10$BcHRBElcAV5x7Tp8gM.TuecfiOhCTsc0qtu.QN7O3Fm.1OxEZcjUy', 0, '2026-01-13 16:15:26', 0, '2026-01-17 12:20:10', '1', '31eaf945ca68acd964d58e7426c0f0d075900139-images.jpg', 1, ''),
 (2, 'Jessie', 'Sadiwa', 'alexisdumale@gmail.com', '09533307696', 'Purok2, anapog-sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$IoukiA0wErTkXSb09L5GuOR2ZVjBbDMPJQoUcIJToyYA9ylWk0Mii', 0, '2026-01-13 16:51:41', 0, '2026-01-13 21:16:20', '0', '', 1, '');
 
 --
@@ -686,6 +722,12 @@ ALTER TABLE `reviews`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `review_images`
+--
+ALTER TABLE `review_images`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -699,7 +741,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -717,7 +759,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -735,7 +777,7 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `farm_details`
@@ -747,13 +789,13 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -765,13 +807,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
@@ -783,7 +825,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `product_histories`
@@ -801,7 +843,13 @@ ALTER TABLE `product_types`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `review_images`
+--
+ALTER TABLE `review_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `users`
