@@ -116,6 +116,7 @@
 <script>
 
 document.addEventListener("input", function (e) {
+  if (e.target.type === "file") return;
   const modal = e.target.closest(".modal");
   if (!modal) return;
 

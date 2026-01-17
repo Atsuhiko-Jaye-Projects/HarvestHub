@@ -73,6 +73,37 @@ $root_path = $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/";
     }
   }
 
+    .upload-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    gap: 10px;
+}
+
+.upload-box {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 32px;
+    color: #aaa;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-box.filled {
+    border: none;
+}
+
   
   </style>
 </head>

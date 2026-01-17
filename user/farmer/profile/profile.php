@@ -3,6 +3,7 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/user.php";
 include_once "../../../objects/farm.php";
+//include_once "../../../objects/farm-details.php";
 
 $page_title = "Profile";
 include_once "../layout/layout_head.php";
@@ -159,11 +160,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     </button>
                     </div>
                     <div class="card-body">
+                        <?php
+                            $farm_province     = !empty($farm->province)     ? $farm->province     : 'Not Set';
+                            $farm_municipality = !empty($farm->municipality) ? $farm->municipality : 'Not Set';
+                            $farm_barangay     = !empty($farm->baranggay)    ? $farm->baranggay    : 'Not Set';
+                            $farm_address      = !empty($farm->purok)          ? $farm->purok      : 'Not Set';
+
+                            $farm_location = $farm_address . " " . $farm_barangay . "," . $farm_municipality . "," . $farm_province; 
+                        ?>
                         <p><strong>Farm Name:</strong> <?= !empty($farm->farm_name) ? htmlspecialchars($farm->farm_name) : 'Not Set' ?></p>
-                        <p><strong>Farm Size:</strong> <?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?> sqm</p>
-                    <p><strong>Used Farm Size:</strong> <?= !empty($farm->used_lot_size) ? htmlspecialchars($farm->used_lot_size) : '0' ?> sqm</p>
-                    <p><strong>Farm Type:</strong> <?= !empty($farm->farm_type) ? htmlspecialchars($farm->farm_type) : 'Not Set' ?></p>
-                    <p><strong>Farm Location:</strong> <?= !empty($farm->municipality) ? htmlspecialchars($farm->municipality) : 'Not Set' ?></p>
+                        <p><strong>Farm Location:</strong> <?=  $farm_location ?></p> 
+                        <hr>  
+                        <p>
+                        <strong class="text-primary">Total Farm Area:</strong>
+                        <?= !empty($farm->lot_size) ? htmlspecialchars($farm->lot_size) : 'Not Set' ?> sqm
+                        </p>
+
+                        <p>
+                        <strong class="text-danger">Land in Use:</strong>
+                        <?= !empty($farm->used_lot_size) ? htmlspecialchars($farm->used_lot_size) : '0' ?> sqm
+                        </p>
+
+                        <p>
+                        <strong class="text-success">Available Land:</strong>
+                        <?= !empty($farm->lot_size) 
+                            ? htmlspecialchars($farm->lot_size - ($farm->used_lot_size ?? 0)) 
+                            : '0' ?> sqm
+                        </p>
                 </div>
             </div>
         </div>

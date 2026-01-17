@@ -44,7 +44,7 @@ $badgeCount = $order_status_history->getLatestUnseenCount();
             if ($notification_num > 0) {
                 while ($row = $notification_stmt->fetch(PDO::FETCH_ASSOC)) {
                     $invoice_no = $row['invoice_number'];
-                    $order_id = $row['id'];
+                    $order_id_notification = $row['id'];
 
                     // Get the latest update for this invoice
                     $order_status_history->invoice_number = $invoice_no;
@@ -63,7 +63,7 @@ $badgeCount = $order_status_history->getLatestUnseenCount();
                                 <a class="dropdown-item small text-dark py-2 px-3 d-flex justify-content-between align-items-center mark-seen" 
                                 data-invoice="<?= $invoice_no ?>" 
                                 data-notif="<?= $notif_id ?>"
-                                href="/HarvestHub/user/consumer/order/order_details.php?vod=<?= $order_id ?>">
+                                href="/HarvestHub/user/consumer/order/order_details.php?vod=<?= $order_id_notification ?>">
                                     <span class="text-truncate" style="max-width: 100%">
                                         Your Order <strong><?= $invoice_no ?></strong> has an update <strong>(<?= strtoupper($status) ?>)</strong>
                                     </span>

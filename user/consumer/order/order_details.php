@@ -1,5 +1,4 @@
 <?php
-
 $order_id = isset($_GET['vod']) ? $_GET['vod'] : die('ERROR: missing ID.');
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
@@ -58,6 +57,8 @@ $date = date('Y-m-d');
 
 $farmer_address = "{$farmer->address}, {$farmer->barangay}, {$farmer->municipality}, {$farmer->province}";
 $farmer_contact = $farmer->contact_number;
+
+
 ?>
   
     <div class="row mt-4">

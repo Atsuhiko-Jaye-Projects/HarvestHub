@@ -118,7 +118,15 @@ class Order{
 
     function readOrderDetails(){
         $query = "SELECT 
-                product_id, invoice_number, customer_id, mode_of_payment, quantity, created_at, status, reason
+                id,
+                product_id,
+                invoice_number,
+                mode_of_payment,
+                quantity,
+                created_at,
+                customer_id,
+                status,
+                reason
                 FROM " . $this->table_name . "
                 where id = :id
                 LIMIT
@@ -133,6 +141,7 @@ class Order{
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $this->id = $row['id'];
         $this->product_id = $row['product_id'];
         $this->invoice_number = $row['invoice_number'];
         $this->mode_of_payment = $row['mode_of_payment'];
@@ -141,6 +150,8 @@ class Order{
         $this->customer_id = $row['customer_id']; 
         $this->status = $row['status'];  
         $this->reason = $row['reason'];
+
+
     }
 
     function readOneOrder(){

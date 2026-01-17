@@ -122,7 +122,7 @@ function postHarvestProduct(row) {
 
                 <div class="row mb-3">
                   <div class="col-md-4">
-                    <label>Price</label>
+                    <label>Suggested Price</label>
                     <input type="number" step="0.01" name="price" class="form-control" id="cost-${row.id}" value="${row.price_per_unit}" readonly>
                   </div>
                   <div class="col-md-4">

@@ -100,6 +100,9 @@ class Farm{
                 lot_size,
                 used_lot_size,
                 farm_type,
+                purok,
+                province,
+                baranggay,
                 municipality
                 FROM " . $this->table_name . "
                 WHERE 
@@ -121,6 +124,9 @@ class Farm{
             $this->lot_size = $row['lot_size'];
             $this->used_lot_size = $row['used_lot_size'];
             $this->municipality = $row['municipality'];
+            $this->baranggay = $row['baranggay'];
+            $this->purok = $row['purok'];
+            $this->province = $row['province'];
             $this->farm_type = $row['farm_type'];
             return true;
         }

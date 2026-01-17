@@ -49,10 +49,22 @@ include_once "../statistics/stats.php";
 
                         
                             <div class="d-flex align-items-start gap-3">    
+                                <?php
+
+                                    $raw_image = $row['product_image'];
+                                    $image_path = "";
+
+                                    if ($row['product_type'] == 'preorder') {
+                                       $image_path = "{$base_url}user/uploads/{$user_id}/posted_crops/{$raw_image}";
+                                    }else{
+                                        $image_path = "{$base_url}user/uploads/{$user_id}/products/{$raw_image}";
+                                    }
+                                
+                                ?>
 
                                 <!-- Product Image -->
                                 <img
-                                    src="<?= $base_url ?>user/uploads/<?= $user_id ?>/products/<?= htmlspecialchars($product_image) ?>"
+                                    src="<?= $image_path ?>"
                                     alt="Product Image"
                                     class="rounded"
                                     style="width: 80px; height: 80px; object-fit: cover;"
@@ -78,6 +90,7 @@ include_once "../statistics/stats.php";
                                         <!-- Total Reviews -->
                                         <div>
                                             💬 <?= $total_reviews ?> Reviews
+                                            
                                         </div>
 
                                         <div>
