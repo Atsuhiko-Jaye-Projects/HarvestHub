@@ -41,35 +41,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($review->createReview()) {
 
-    $image_array = $_FILES['review_images'];
-    $files_count = count($image_array['name']);
+        // bind the values to insert method
+        $farmerid = $_POST['farmer_id'];
+        $product_id = $_POST['product_id'];
+        $customer_id = $_POST['customer_id'];
 
-    for ($i = 0; $i < $files_count; $i++) {
+            if (!isset($_FILES['review_image'])) {
+                die('No images uploaded');
+            }
 
-        $file = [
-            'name'     => $image_array['name'][$i],
-            'type'     => $image_array['type'][$i],
-            'tmp_name' => $image_array['tmp_name'][$i],
-            'error'    => $image_array['error'][$i],
-            'size'     => $image_array['size'][$i]
-        ];
+            // Upload images
+            $result = $review_upload->uploadPhoto($_FILES['review_image'], $farmerid, $product_id, $customer_id);
 
-        $upload_result = $review_upload->uploadPhoto($file, $farmerid);
+            if (!$result['success']) {
+                die($result['error']);
+            }
 
-        if ($upload_result['success']) {
-            // Save to database
-            $review_upload->farmer_id = $_POST['farmer_id'];
-            $review_upload->customer_id = $_POST['customer_id'];
-            $review_upload->product_id = $_POST['product_id'];
-            $review_upload->image = $upload_result['filename'];
-            $review_upload->saveReviewImages();
+            // Save each image to DB
+            foreach ($result['files'] as $filename) {
 
-            echo "Uploaded successfully: " . $upload_result['filename'] . "<br>";
-        } else {
-            // Show the reason for failure
-            echo "Upload failed: " . $upload_result['error'] . "<br>";
-        }
-    }
+                $review_upload->customer_id = $_POST['customer_id'];
+                $review_upload->farmer_id   = $_POST['farmer_id'];
+                $review_upload->product_id  = $_POST['product_id'];
+
+                // ✅ Correct image path or filename
+                $review_upload->image = $filename;
+
+                $review_upload->saveReviewImages();
+            }
 
 
         // 2️⃣ Mark order as reviewed
@@ -123,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- Upload Images -->
                         <div class="mb-4">
                             <div class="upload-grid">
-                                <input type="file" id="imageInput" name="review_images[]" accept="image/*" multiple hidden>
+                                <input type="file" id="imageInput" name="review_image[]" accept="image/*" multiple hidden>
                                 <?php for($i=0; $i<5; $i++): ?>
                                     <div class="upload-box" onclick="openPicker(<?= $i ?>)"><span>+</span></div>
                                 <?php endfor; ?>
@@ -178,39 +177,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </style>
 
 <script>
-// Form validation
-document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-    let valid = true;
-    const rating = document.querySelector('input[name="rating"]:checked');
-    if (!rating) { valid = false; document.getElementById('ratingError').textContent = "Please select a rating."; } 
-    else { document.getElementById('ratingError').textContent = ""; }
-    const feedback = document.getElementById('feedback').value.trim();
-    if (feedback === "") { valid = false; document.getElementById('feedbackError').textContent = "Feedback cannot be empty."; } 
-    else { document.getElementById('feedbackError').textContent = ""; }
-    if (!valid) event.preventDefault();
-});
-
-// Image upload preview
 let selectedFiles = [];
 const input = document.getElementById("imageInput");
 const boxes = document.querySelectorAll(".upload-box");
+const MAX_FILES = 5;
 
-function openPicker(index) {
-    if (selectedFiles.length >= 5) return;
+// Open picker
+function openPicker() {
+    if (selectedFiles.length >= MAX_FILES) return;
     input.click();
-    input.onchange = () => {
-        const file = input.files[0];
-        if (!file) return;
-        if (!file.type.startsWith("image/")) { alert("Only images allowed"); return; }
-        if (selectedFiles.length < 5) { selectedFiles.push(file); updateBoxes(); }
-        input.value = "";
-    };
 }
 
+// Handle file selection
+input.addEventListener("change", () => {
+    for (const file of input.files) {
+
+        if (!file.type.startsWith("image/")) {
+            alert("Only images allowed");
+            continue;
+        }
+
+        if (selectedFiles.length < MAX_FILES) {
+            selectedFiles.push(file);
+        }
+    }
+
+    updateBoxes();
+    syncInputFiles();
+});
+
+// Update previews
 function updateBoxes() {
     boxes.forEach((box, index) => {
         box.innerHTML = "<span>+</span>";
         box.classList.remove("filled");
+
         if (selectedFiles[index]) {
             const img = document.createElement("img");
             img.src = URL.createObjectURL(selectedFiles[index]);
@@ -219,15 +220,24 @@ function updateBoxes() {
             box.classList.add("filled");
         }
     });
-    syncInputFiles();
 }
 
+// Sync files back to input (THIS IS CRITICAL)
 function syncInputFiles() {
     const dataTransfer = new DataTransfer();
     selectedFiles.forEach(file => dataTransfer.items.add(file));
     input.files = dataTransfer.files;
 }
+
+// Prevent empty submit
+document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+    if (input.files.length === 0) {
+        e.preventDefault();
+        alert("Please select at least one image");
+    }
+});
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

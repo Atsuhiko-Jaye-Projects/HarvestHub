@@ -87,12 +87,11 @@ class Review{
     function getProductReview(){
 
         $query = "SELECT *
-                  FROM
-                    " . $this->table_name . "
-                  WHERE
-                    product_id = :product_id 
-                  AND
-                    farmer_id = :user_id";
+                FROM " . $this->table_name . "
+                WHERE product_id = :product_id
+                AND farmer_id = :user_id
+                ORDER BY id DESC";
+
         
         $stmt = $this->conn->prepare($query);
 

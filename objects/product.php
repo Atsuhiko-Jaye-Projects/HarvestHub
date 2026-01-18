@@ -264,6 +264,7 @@ class Product{
             $this->user_id = $row['user_id'];
             $this->total_stocks = $row['total_stocks'];
             $this->price_per_unit = $row['price_per_unit'];
+            $this->available_stocks = $row['available_stocks'];
             $this->product_image = $row['product_image'];
             $this->product_type = $row['product_type'];
             $this->user_id = $row['user_id'];

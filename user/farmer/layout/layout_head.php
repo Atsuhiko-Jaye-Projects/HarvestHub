@@ -14,8 +14,10 @@ $base_url = "/HarvestHub/"; // Root URL for links
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  
 
 <style>
   
@@ -253,6 +255,39 @@ textarea:focus {
 .dynamic-row {
     margin-bottom: 10px;
 }
+
+.media-card {
+  width: 80px;
+  height: 80px;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;   /* ✅ THIS is the key */
+  margin-right: 6px;       /* spacing */
+}
+
+.media-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Photo label */
+.media-label {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+}
+
 
 </style>
 

@@ -196,7 +196,7 @@ $cart_item_count = $cart_item->countItem();
       </p>
       <h6>Available Stocks:</h6>
       <p class="text-secondary">
-        <?php echo $product->available_stocks; ?>
+        <?php echo $product->available_stocks; ?> KG
       </p>
 
       <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' id="cartForm">

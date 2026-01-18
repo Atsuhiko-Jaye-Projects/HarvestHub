@@ -43,49 +43,76 @@ class ReviewUpload{
 
     }
 
-public function uploadPhoto($file, $farmerid) {
-    // 1️⃣ Check if file exists and uploaded correctly
-    if (!isset($file['name']) || $file['error'] !== UPLOAD_ERR_OK) {
-        return ['success' => false, 'error' => 'No file uploaded or upload error: ' . $file['error']];
-    }
+    function uploadPhoto($images, $farmerid, $product_id, $customer_id){
+        $uploadedFiles = [];
 
-    // 2️⃣ Ensure upload directory exists
-    $target_directory = "../../uploads/reviews/{$farmerid}/review_images/";
-    if (!is_dir($target_directory)) {
-        if (!mkdir($target_directory, 0777, true)) {
-            return ['success' => false, 'error' => 'Failed to create upload directory'];
+        $target_directory = "../../uploads/reviews/{$farmerid}/review_images/{$product_id}/{$customer_id}/";
+
+        // Create directory if not exists
+        if (!is_dir($target_directory)) {
+            if (!mkdir($target_directory, 0777, true)) {
+                return ['success' => false, 'error' => 'Failed to create upload directory'];
+            }
         }
+
+        $allowed_file_types = ['jpg', 'jpeg', 'png', 'gif'];
+        $max_size = 2 * 1024 * 1024; // 2MB
+
+        foreach ($images['tmp_name'] as $key => $tmp_name) {
+
+            if ($images['error'][$key] !== UPLOAD_ERR_OK) {
+                continue;
+            }
+
+            $original_name = $images['name'][$key];
+            $file_size = $images['size'][$key];
+            $extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+
+            // Validate extension
+            if (!in_array($extension, $allowed_file_types)) {
+                continue;
+            }
+
+            // Validate size
+            if ($file_size > $max_size) {
+                continue;
+            }
+
+            // Generate safe unique filename
+            $unique_name = uniqid('img_', true) . "." . $extension;
+            $target_file = $target_directory . $unique_name;
+
+            if (move_uploaded_file($tmp_name, $target_file)) {
+                $uploadedFiles[] = $unique_name;
+            }
+        }
+
+        if (empty($uploadedFiles)) {
+            return ['success' => false, 'error' => 'No images uploaded'];
+        }
+
+        return [
+            'success' => true,
+            'files' => $uploadedFiles
+        ];
     }
 
-    // 3️⃣ Validate file type
-    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $allowed_file_types = ['jpg','jpeg','png','gif'];
-    if (!in_array($ext, $allowed_file_types)) {
-        return ['success' => false, 'error' => 'Invalid file type: ' . $ext];
+    function getReviewImages(){
+        $query = "SELECT *
+                  FROM
+                  " . $this->table_name . "
+                  WHERE
+                   customer_id = :customer_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":customer_id", $this->customer_id);
+
+        $stmt->execute();
+        
+        return $stmt;
     }
 
-    // 4️⃣ Validate file size
-    if ($file['size'] > 1024 * 1024) { // 1MB
-        return ['success' => false, 'error' => 'File too large: ' . $file['name']];
-    }
-
-    // 5️⃣ Check if real image
-    if (!getimagesize($file['tmp_name'])) {
-        return ['success' => false, 'error' => 'File is not a valid image: ' . $file['name']];
-    }
-
-    // 6️⃣ Generate unique filename
-    $unique_name = sha1_file($file['tmp_name']) . "-" . basename($file['name']);
-    $target_file = $target_directory . $unique_name;
-
-    // 7️⃣ Move uploaded file
-    if (!move_uploaded_file($file['tmp_name'], $target_file)) {
-        return ['success' => false, 'error' => 'Failed to move uploaded file: ' . $file['name']];
-    }
-
-    // ✅ Success
-    return ['success' => true, 'filename' => $unique_name];
-}
 
 
 

@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
 
           $unit_price = $row['amount'] ?? 0; 
           $total_price = $unit_price * $row['quantity'];
-          $stocks = $product->total_stocks;
+          $stocks = $product->available_stocks;
       ?>
         <div class="card shadow-sm mb-3 p-3">
           <div class="d-flex align-items-start">
