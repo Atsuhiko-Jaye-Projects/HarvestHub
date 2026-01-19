@@ -17,15 +17,15 @@
               
               <div class="row mb-3">
                 <div class="col-md-6">    
-                  <label for="">Product Type</label>
+                  <!-- <label for="">Product Type</label>
                   <select name="category" class='form-select' id="" required>
                     <option value="">Select Category...</option>
                     <option value="Vegetable">Vegetable</option>
                     <option value="Fruit">Fruit</option>
-                  </select>
+                  </select> -->
                   <input type="hidden" name="action" value="create">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <label for="">Product Name</label>
 
                   <?php if ($crop_num > 0): ?>

@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
           rows += `
           <tr class='text-center'>
           <td>${row.product_name}</td>
-          <td>${row.category}</td>
+
           <td class='price'>₱${row.price_per_unit}.00</td>
           <td>${row.unit}</td>
           <td>${Number(row.total_stocks).toLocaleString()} KG</td>

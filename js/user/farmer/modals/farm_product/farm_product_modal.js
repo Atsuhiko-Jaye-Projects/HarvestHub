@@ -19,20 +19,13 @@ function editHarvestProduct(row){
                 <input type="hidden" name="product_id" value="${row.id}">
                 <input type="hidden" name="action" value="update">
                 <div class="row mb-3">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <Label>Product</Label>
                     <input type="text" name="product_name" class="form-control border border-success" value="${row.product_name}" required placeholder="Product Name">
                   </div>
 
                   <div class="col-md-6">
-                    <label>Category</label>
-                    <select name="category" class="form-select border border-success" required>
-                      <option value="">Select Category...</option>
-                      <option value="Vegetable" ${row.category === 'Vegetable' ? 'selected' : ''}>Vegetable</option>
-                      <option value="Fruit" ${row.category === 'Fruit' ? 'selected' : ''}>Fruit</option>
-                      <option value="Rootcrop" ${row.category === 'Rootcrop' ? 'selected' : ''}>Rootcrop</option>
-                      <option value="Legume" ${row.category === 'Legume' ? 'selected' : ''}>Legume</option>
-                    </select>
+
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -40,7 +33,7 @@ function editHarvestProduct(row){
                     <Label>Price/KG</Label>
                     <input type="hidden" name="price_per_unit" readonly value="${row.price_per_unit}">
                     <input type="text" name="" readonly value="${Number(row.price_per_unit).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}
-" class="form-control border border-warning" required placeholder="Lot Size">
+                      " class="form-control border border-warning" required placeholder="Lot Size">
                   </div>
                   <div class="col-md-6">
                     <Label>Unit</Label>
@@ -110,26 +103,24 @@ function postHarvestProduct(row) {
                 <input type="hidden" name="action" value="product_post">
 
                 <div class="row mb-3">
-                  <div class="col-md-6">
+                  <div class="col-md-6 mb-3">
                     <label>Product</label>
                     <input type="text" name="product_name" class="form-control" value="${row.product_name}" readonly>
                   </div>
                   <div class="col-md-6">
-                    <label>Category</label>
-                    <input type="text" name="category" value="${row.category}" class="form-control" readonly>
+
+                    <label>Suggested Price</label>
+                    <input type="number" step="0.01" name="price" class="form-control" id="cost-${row.id}" value="${row.price_per_unit}" readonly>
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <div class="col-md-4">
-                    <label>Suggested Price</label>
-                    <input type="number" step="0.01" name="price" class="form-control" id="cost-${row.id}" value="${row.price_per_unit}" readonly>
-                  </div>
-                  <div class="col-md-4">
+
+                  <div class="col-md-6">
                     <label>EST Stocks (KG)</label>
                     <input type="text" name="total_stocks" value="${row.total_stocks}" class="form-control">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label>Unit</label>
                     <input type="text" name="unit" value="${row.unit}" class="form-control" readonly>
                   </div>

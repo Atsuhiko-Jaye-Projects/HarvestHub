@@ -85,7 +85,7 @@
       <thead class="table-success">
         <tr>
           <th>Product</th>
-          <th>Category</th>
+
           <th>Price (/KG)</th>
           <th>Unit</th>
           <th>Stocks (est.)</th>
@@ -101,8 +101,7 @@
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
             echo "<tr>";
-            echo "<td>{$product_nams}</td>";
-            echo "<td>{$category}</td>";
+            echo "<td>{$product_names}</td>";
             echo "<td>{$price_per_unit}</td>";
             echo "<td>{$unit}</td>";
             echo "<td>{$lot_size}</td>";

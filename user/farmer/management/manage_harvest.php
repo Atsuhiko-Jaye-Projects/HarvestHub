@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
         $harvest_product->user_id = $_SESSION['user_id'];
         $harvest_product->product_name = $_POST['product_name'];
-        $harvest_product->category = $_POST['category'];
+        // $harvest_product->category = $_POST['category'];
         $harvest_product->total_stocks = $stocks;
         $harvest_product->plant_count = $_POST['plant_count'];
         $harvest_product->expense = $_POST['total_plant_expense'];
@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->user_id = $_SESSION['user_id'];
         $harvest_product->id = $_POST['product_id'];
         $harvest_product->product_name = $_POST['product_name'];
-        $harvest_product->category = $_POST['category'];
+        //$harvest_product->category = $_POST['category'];
         $harvest_product->unit = $_POST['unit'];
         $harvest_product->expense =['farm_expense'];
         $harvest_product->product_description = $_POST['product_description'];
