@@ -68,12 +68,18 @@ include_once "../statistics/stats.php";
                                             : "<i class='bi bi-star text-muted'></i>";
                                     }
                                 ?>
+                                <div class="ms-2">
+                                    <label for="">Attachment:</label>
+                                </div>
                             </div>
 
                             <!-- Images -->
                             <?php
+                               
                                 if ($image_num > 0) {
+                                    
                                     echo "<div class='d-inline-flex gap-2 flex-wrap'>";
+
                                     while ($img_row = $image_stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                         $review_image = $img_row['image'];
@@ -88,17 +94,21 @@ include_once "../statistics/stats.php";
                                              data-bs-toggle='modal'
                                              data-bs-target='#imageModal'
                                              data-img='{$review_image_path}'>
-                                             
                                             <img src='{$review_image_path}' loading='lazy'>
                                             <div class='media-label'>Review<br>photo</div>
                                         </div>";
                                     }
                                     echo "</div>";
+                                }else{
+                                    echo "";
                                 }
                             ?>
 
                             <!-- Review -->
                             <p class="mb-3">
+                                <div class="mb-2">
+                                    <label for="">Review:</label>
+                                </div>
                                 <?= nl2br(htmlspecialchars($review_text)) ?>
                             </p>
 
@@ -136,7 +146,7 @@ include_once "../statistics/stats.php";
 </div>
 
 
-<?php include_once "../layout/layout_head.php"; ?>
+<?php include_once "../layout/layout_foot.php"; ?>
 
 <div class="modal fade" id="imageModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">

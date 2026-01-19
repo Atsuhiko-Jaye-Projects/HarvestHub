@@ -263,7 +263,7 @@ switch (true) {
         ?>
         <h6 class="fw-bold text-muted mb-3">Confirm This Pre-Order?</h6>
         <button type="submit" name="action" value="accept pre-order" class="btn btn-success w-100 mb-2">Accept Pre-Order</button>
-        <button type="submit" name="action" value="decline pre-order" class="btn btn-outline-danger w-100">Decline Pre-Order</button>
+        <!-- <button type="submit" name="action" value="decline pre-order" class="btn btn-outline-danger w-100">Decline Pre-Order</button> -->
         <?php
         break;
 
@@ -287,7 +287,7 @@ switch (true) {
         ?>
         <h6 class="fw-bold text-muted mb-3 mt-3">Accept this Order?</h6>
         <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Accept</button>
-        <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline</button>
+        <!-- <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline</button> -->
         <?php
         break;
 

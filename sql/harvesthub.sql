@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2026 at 04:26 PM
+-- Generation Time: Jan 19, 2026 at 03:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -45,33 +45,8 @@ CREATE TABLE `cart_items` (
 --
 
 INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
-(4, 1, 2, 30, '2026-01-13 21:22:01', 60, 'ordered', '2026-01-15 12:12:58', 1, 'harvest'),
-(5, 1, 2, 10, '2026-01-14 14:42:24', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(6, 1, 2, 5, '2026-01-14 14:43:33', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(7, 1, 2, 15, '2026-01-14 14:52:09', 60, 'ordered', '2026-01-15 12:12:58', 1, 'harvest'),
-(8, 1, 2, 20, '2026-01-14 14:52:22', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(9, 1, 2, 15, '2026-01-14 14:54:06', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(10, 2, 2, 5, '2026-01-14 14:54:14', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(11, 1, 2, 20, '2026-01-14 14:58:13', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(12, 2, 2, 20, '2026-01-14 15:41:17', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(13, 2, 2, 15, '2026-01-14 17:09:46', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(14, 2, 2, 25, '2026-01-15 18:01:50', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(15, 1, 2, 15, '2026-01-15 18:02:09', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(16, 2, 2, 15, '2026-01-15 19:31:32', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(17, 2, 2, 15, '2026-01-15 19:41:14', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(18, 1, 2, 10, '2026-01-15 20:02:41', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(19, 2, 2, 20, '2026-01-15 20:02:46', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(20, 1, 2, 25, '2026-01-15 20:12:47', 60, 'ordered', '2026-01-15 12:12:58', 1, 'preorder'),
-(21, 2, 2, 15, '2026-01-15 20:12:53', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(22, 2, 2, 15, '2026-01-15 20:19:06', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(23, 2, 2, 10, '2026-01-15 20:22:53', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(24, 2, 2, 15, '2026-01-15 21:03:21', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(25, 2, 2, 15, '2026-01-15 21:03:35', 12, 'ordered', '2026-01-15 13:03:40', 1, 'harvest'),
-(26, 4, 2, 15, '2026-01-17 12:38:09', 15, 'ordered', '2026-01-17 05:05:24', 1, 'preorder'),
-(27, 19, 2, 30, '2026-01-17 12:59:50', 22, 'ordered', '2026-01-17 06:35:46', 1, 'harvest'),
-(28, 4, 2, 5, '2026-01-17 13:05:06', 15, 'ordered', '2026-01-17 05:05:24', 1, 'preorder'),
-(29, 19, 2, 5, '2026-01-17 13:05:38', 22, 'ordered', '2026-01-17 06:35:46', 1, 'harvest'),
-(30, 19, 2, 10, '2026-01-17 14:28:26', 22, 'ordered', '2026-01-17 06:35:46', 1, 'harvest');
+(32, 19, 2, 20, '2026-01-19 09:41:48', 22, 'ordered', '2026-01-19 01:42:54', 1, 'harvest'),
+(33, 19, 2, 15, '2026-01-19 09:42:49', 22, 'ordered', '2026-01-19 01:42:54', 1, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -132,7 +107,8 @@ CREATE TABLE `crops` (
 --
 
 INSERT INTO `crops` (`id`, `user_id`, `farm_resource_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`, `crop_status`, `status`) VALUES
-(4, 1, 'FID69606749', 'kamatis', 2.4, 73, '2026-01-17', '2026-03-03', 0, '2026-01-17 04:31:04', '2026-01-17 12:31:04', 240, 100, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted');
+(4, 1, 'FID69606749', 'kamatis', 2.4, 73, '2026-01-17', '2026-03-03', 0, '2026-01-17 04:31:04', '2026-01-17 12:31:04', 240, 100, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted'),
+(5, 1, 'FID69691569', 'Potato', 2.5, 60, '2026-01-19', '2026-03-05', 0, '2026-01-19 02:07:18', '2026-01-19 10:07:18', 190, 76, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted');
 
 -- --------------------------------------------------------
 
@@ -196,7 +172,8 @@ INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activ
 (4, 'FID6961246899', 'Land clearing', 3000, 'land_prep', '0000-00-00 00:00:00', '2026-01-16 19:08:20', '0000-00-00 00:00:00', 0, ''),
 (5, 'FID69606749', 'Land clearing', 3000, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:26:20', '0000-00-00 00:00:00', 0, ''),
 (6, 'FID69609091', 'Land clearing', 5000, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:27:06', '0000-00-00 00:00:00', 0, ''),
-(7, 'FID69602932', 'Land clearing', 3500, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:27:46', '0000-00-00 00:00:00', 0, '');
+(7, 'FID69602932', 'Land clearing', 3500, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:27:46', '0000-00-00 00:00:00', 0, ''),
+(8, 'FID69691569', 'Land clearing', 6300, 'land_prep', '0000-00-00 00:00:00', '2026-01-19 10:07:01', '0000-00-00 00:00:00', 0, '');
 
 -- --------------------------------------------------------
 
@@ -229,7 +206,7 @@ CREATE TABLE `farm_details` (
 --
 
 INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
-(1, 1, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', 1000, '2026-01-13 16:18:01', '2026-01-13 08:18:01', 173, '', '', 0, '', 0, 0);
+(1, 1, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', 1000, '2026-01-13 16:18:01', '2026-01-13 08:18:01', 233, 'Mondragon', '', 0, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -260,7 +237,8 @@ CREATE TABLE `farm_resources` (
 INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`, `crop_name`, `plant_count`, `average_yield_per_plant`, `grand_total`, `date`, `modified_at`, `created_at`, `planted_area_sqm`, `crop_status`) VALUES
 (4, 1, 'FID69606749', 'Kamatis planting', 'kamatis', 100, 2.4, 3000, '2026-01-17', '2026-01-17 04:31:04', '2026-01-17 12:26:20', 73, 'crop planted'),
 (5, 1, 'FID69609091', 'kalabasa expense', 'kalabasa', 200, 3.4, 5000, '2026-01-17', '2026-01-17 04:27:06', '2026-01-17 12:27:06', 90, ''),
-(6, 1, 'FID69602932', 'okra expense', 'Okra', 100, 3.4, 3500, '2026-01-17', '2026-01-17 04:27:46', '2026-01-17 12:27:46', 89, '');
+(6, 1, 'FID69602932', 'okra expense', 'Okra', 100, 3.4, 3500, '2026-01-17', '2026-01-17 04:27:46', '2026-01-17 12:27:46', 89, ''),
+(7, 1, 'FID69691569', 'Potato Expense', 'Potato', 76, 2.5, 6300, '2026-01-19', '2026-01-19 02:07:18', '2026-01-19 10:07:01', 60, 'crop planted');
 
 -- --------------------------------------------------------
 
@@ -294,7 +272,8 @@ CREATE TABLE `harvested_products` (
 
 INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
 (19, 1, 'Kalabasa', 21, 'KG', 'Vegetable', '90', 'kalabasa great', 350, 0, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', '2026-01-17 04:30:42', '2026-01-17 12:28:27', 'Posted', 100, 5000, 3.5),
-(20, 1, 'Kalabasa', 18, 'KG', 'Vegetable', '90', 'kalabasa', 340, 0, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', '2026-01-17 06:31:31', '2026-01-17 14:31:31', 'Pending', 100, 5000, 3.4);
+(21, 1, 'Okra', 19, 'KG', 'Vegetable', '50', '6 Possible Health Benefits of Okra Water - GoodRxOkra is a flowering plant with edible, green seed pods, technically a fruit, widely used as a vegetable, known as &quot;lady\'s fingers&quot; or &quot;gumbo,&quot; valued for its mild flavor and slimy, thickening texture (mucilage) in cuisines like Sou', 220, 0, '0fed20eb892124416ba3c7f31c0949d327484d8d-images.jpg', '2026-01-19 02:02:58', '2026-01-19 10:02:36', 'Posted', 100, 3500, 2.2),
+(22, 1, 'Kamote', 17, 'KG', 'Vegetable', '76', 'Kamote (Ipomoea batatas), or sweet potato, is a versatile root vegetable known for its large, starchy, sweet-tasting tubers and edible heart-shaped leaves (talbos ng kamote). Belonging to the morning glory family (Convolvulaceae), it\'s a vital staple in the Philippines, eaten boiled, fried, roasted,', 350, 0, '7537ce549714a622697ca1cc1c15a56b743305d6-kamote.jpg', '2026-01-19 02:04:44', '2026-01-19 10:04:24', 'Posted', 100, 5000, 3.5);
 
 -- --------------------------------------------------------
 
@@ -352,9 +331,14 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`) VALUES
-(22, 4, 'INV-696B189402AC0', 2, 'COP', 5, 'complete', '2026-01-17 13:05:24', '2026-01-17 05:36:03', 1, 'preorder', 1, ''),
-(23, 19, 'INV-696B18AD87CC0', 2, 'COP', 5, 'complete', '2026-01-17 13:05:49', '2026-01-17 05:36:36', 1, 'harvest', 1, ''),
-(24, 19, 'INV-696B2DC2C40D7', 2, 'COP', 5, 'accept', '2026-01-17 14:35:46', '2026-01-17 06:35:46', 1, 'harvest', 0, '');
+(27, 19, 'INV-696D8C1EE583D', 2, 'COP', 30, 'complete', '2026-01-19 09:42:54', '2026-01-13 01:43:55', 1, 'harvest', 1, ''),
+(28, 19, 'INV-696D8C1EE583F', 2, 'COP', 11, 'complete', '2026-01-19 09:42:54', '2026-01-14 01:43:55', 1, 'harvest', 0, ''),
+(29, 19, 'INV-696D8C1EE583T', 2, 'COP', 50, 'complete', '2026-01-19 09:42:54', '2026-01-15 01:43:55', 1, 'harvest', 1, ''),
+(30, 19, 'INV-696D8C1EE583HJ', 2, 'COP', 45, 'complete', '2026-01-19 09:42:54', '2026-01-16 01:43:55', 1, 'harvest', 0, ''),
+(31, 19, 'INV-696D8C1EE583HJ', 2, 'COP', 16, 'complete', '2026-01-19 09:42:54', '2026-01-17 01:43:55', 1, 'harvest', 1, ''),
+(32, 19, 'INV-696D8C1EE583PO', 2, 'COP', 30, 'complete', '2026-01-19 09:42:54', '2026-01-18 01:43:55', 1, 'harvest', 0, ''),
+(33, 19, 'INV-696D8C1EE583IU', 2, 'COP', 50, 'complete', '2026-01-19 09:42:54', '2026-01-20 01:43:55', 1, 'harvest', 1, ''),
+(34, 19, 'INV-696D8C1EE583HIUM', 2, 'COP', 5, 'complete', '2026-01-19 09:42:54', '2026-01-20 01:43:55', 1, 'harvest', 0, '');
 
 -- --------------------------------------------------------
 
@@ -376,16 +360,10 @@ CREATE TABLE `order_status_history` (
 --
 
 INSERT INTO `order_status_history` (`id`, `invoice_number`, `status`, `timestamp`, `product_id`, `notif_viewed`) VALUES
-(1, 'INV-696B189402AC0', 'order placed', '2026-01-17 13:06:16', 4, 1),
-(2, 'INV-696B18AD87CC0', 'order placed', '2026-01-17 13:06:23', 19, 1),
-(3, 'INV-696B189402AC0', 'accept pre-order', '2026-01-17 13:34:56', 4, 1),
-(4, 'INV-696B18AD87CC0', 'accept', '2026-01-17 13:35:32', 19, 1),
-(5, 'INV-696B189402AC0', 'pre-order shipout', '2026-01-17 13:36:00', 4, 1),
-(6, 'INV-696B189402AC0', 'order recieved', '2026-01-17 13:36:13', 4, 1),
-(7, 'INV-696B18AD87CC0', 'order shipout', '2026-01-17 13:36:31', 19, 1),
-(8, 'INV-696B18AD87CC0', 'order recieved', '2026-01-17 13:36:53', 19, 1),
-(9, 'INV-696B2DC2C40D7', 'order placed', '2026-01-17 14:35:46', 19, 0),
-(10, 'INV-696B2DC2C40D7', 'accept', '2026-01-17 14:01:26', 19, 0);
+(13, 'INV-696D8C1EE583D', 'order placed', '2026-01-19 09:43:00', 19, 1),
+(14, 'INV-696D8C1EE583D', 'accept', '2026-01-19 09:43:48', 19, 1),
+(15, 'INV-696D8C1EE583D', 'order shipout', '2026-01-19 09:01:51', 19, 0),
+(16, 'INV-696D8C1EE583D', 'order recieved', '2026-01-19 09:01:55', 19, 0);
 
 -- --------------------------------------------------------
 
@@ -444,8 +422,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(6, 19, 'Kalabasa', 22, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 350, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 75, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', 275, NULL),
-(7, 4, 'kamatis', 15, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 240, '2a7cb252aa6e87d07c2bf4f8c4191b8b84682f3f-kamatis.jpg', 40, '2026-01-17 04:36:30', '2026-01-17 12:36:30', 'Active', 'preorder', 200, NULL);
+(6, 19, 'Kalabasa', 22, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 350, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 105, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', 245, NULL),
+(7, 4, 'kamatis', 15, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 240, '2a7cb252aa6e87d07c2bf4f8c4191b8b84682f3f-kamatis.jpg', 40, '2026-01-17 04:36:30', '2026-01-17 12:36:30', 'Active', 'preorder', 200, NULL),
+(8, 21, 'Okra', 22, 1, 'Vegetable', 'KG', 0, '6 Possible Health Benefits of Okra Water - GoodRxOkra is a flowering plant with edible, green seed pods, technically a fruit, widely used as a vegetable, known as \"lady\'s fingers\" or \"gumbo,\" valued for its mild flavor and slimy, thickening texture (mucilage) in cuisines like Sou', 50, 220, '0fed20eb892124416ba3c7f31c0949d327484d8d-images.jpg', 0, '2026-01-19 02:02:58', '2026-01-19 10:02:58', 'Active', 'harvest', 220, NULL),
+(9, 22, 'Kamote', 20, 1, 'Vegetable', 'KG', 0, 'Kamote (Ipomoea batatas), or sweet potato, is a versatile root vegetable known for its large, starchy, sweet-tasting tubers and edible heart-shaped leaves (talbos ng kamote). Belonging to the morning glory family (Convolvulaceae), it\'s a vital staple in the Philippines, eaten boiled, fried, roasted,', 76, 350, '7537ce549714a622697ca1cc1c15a56b743305d6-kamote.jpg', 0, '2026-01-19 02:04:44', '2026-01-19 10:04:44', 'Active', 'harvest', 350, NULL),
+(10, 5, 'Potato', 33, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 190, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', 0, '2026-01-19 02:07:42', '2026-01-19 10:07:42', 'Active', 'preorder', 190, NULL);
 
 -- --------------------------------------------------------
 
@@ -520,34 +501,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `product_id`, `farmer_id`, `customer_id`, `rating`, `review_text`, `reply`, `created_at`, `modified_at`, `product_rating`, `farmer_rating`, `performance_review`, `product_quality_review`, `farmer_response`) VALUES
-(2, 2, 1, 2, 5, 'great review ', 'la', '2026-01-15 20:20:28', '2026-01-15 12:20:28', 0, 0, '', '', ''),
-(4, 2, 1, 0, 5, 'THIS IS NEW REVIEW FOR KAMATIS PRODUCT ID=2', 'la', '2026-01-15 20:42:00', '2026-01-15 12:42:00', 0, 0, '', '', ''),
-(5, 19, 1, 2, 5, 'great', 'la', '2026-01-17 13:37:00', '2026-01-17 05:37:00', 0, 0, '', '', ''),
-(6, 4, 1, 2, 5, 'great', 'la', '2026-01-17 13:37:06', '2026-01-17 05:37:06', 0, 0, '', '', ''),
-(7, 4, 1, 2, 5, 'great', '', '2026-01-17 15:29:46', '2026-01-17 07:29:46', 0, 0, '', '', ''),
-(8, 4, 1, 2, 5, 'great', '', '2026-01-17 15:32:08', '2026-01-17 07:32:08', 0, 0, '', '', ''),
-(9, 4, 1, 2, 5, 'great', '', '2026-01-17 15:34:45', '2026-01-17 07:34:45', 0, 0, '', '', ''),
-(10, 4, 1, 2, 5, 'great', '', '2026-01-17 15:44:09', '2026-01-17 07:44:09', 0, 0, '', '', ''),
-(11, 4, 1, 2, 5, 'great', '', '2026-01-17 15:44:41', '2026-01-17 07:44:41', 0, 0, '', '', ''),
-(12, 4, 1, 2, 5, 'great', '', '2026-01-17 15:45:14', '2026-01-17 07:45:14', 0, 0, '', '', ''),
-(13, 4, 1, 2, 5, 'great', '', '2026-01-17 15:46:36', '2026-01-17 07:46:36', 0, 0, '', '', ''),
-(14, 4, 1, 2, 5, 'great', '', '2026-01-17 15:48:08', '2026-01-17 07:48:08', 0, 0, '', '', ''),
-(15, 4, 1, 2, 5, 'great', '', '2026-01-17 15:50:11', '2026-01-17 07:50:11', 0, 0, '', '', ''),
-(16, 4, 1, 2, 5, 'great', '', '2026-01-17 15:53:16', '2026-01-17 07:53:16', 0, 0, '', '', ''),
-(17, 4, 1, 2, 5, 'great', '', '2026-01-17 18:36:22', '2026-01-17 10:36:22', 0, 0, '', '', ''),
-(18, 4, 1, 2, 5, 'great', '', '2026-01-17 18:36:44', '2026-01-17 10:36:44', 0, 0, '', '', ''),
-(19, 4, 1, 2, 5, 'great', '', '2026-01-17 18:37:10', '2026-01-17 10:37:10', 0, 0, '', '', ''),
-(20, 4, 1, 2, 5, 'greatt', '', '2026-01-17 18:37:42', '2026-01-17 10:37:42', 0, 0, '', '', ''),
-(21, 4, 1, 2, 5, 'greatt', '', '2026-01-17 18:37:59', '2026-01-17 10:37:59', 0, 0, '', '', ''),
-(22, 4, 1, 2, 5, 'great', '', '2026-01-17 18:44:28', '2026-01-17 10:44:28', 0, 0, '', '', ''),
-(23, 4, 1, 2, 5, 'grea', '', '2026-01-17 18:48:49', '2026-01-17 10:48:49', 0, 0, '', '', ''),
-(24, 4, 1, 2, 5, 'klklnklnkn', '', '2026-01-17 18:50:53', '2026-01-17 10:50:53', 0, 0, '', '', ''),
-(25, 4, 1, 2, 5, 'adasdsa', '', '2026-01-17 18:52:07', '2026-01-17 10:52:07', 0, 0, '', '', ''),
-(26, 4, 1, 2, 5, 'great', '', '2026-01-17 19:27:52', '2026-01-17 11:27:52', 0, 0, '', '', ''),
-(27, 4, 1, 2, 5, 'asdadasd', '', '2026-01-17 21:03:16', '2026-01-17 13:03:16', 0, 0, '', '', ''),
-(28, 4, 1, 2, 1, 'adasdsa', '', '2026-01-17 21:05:02', '2026-01-17 13:05:02', 0, 0, '', '', ''),
-(29, 4, 1, 2, 5, 'asdasdsa', '', '2026-01-17 21:06:09', '2026-01-17 13:06:09', 0, 0, '', '', ''),
-(30, 4, 1, 2, 5, 'asdasdas', '', '2026-01-17 21:08:02', '2026-01-17 13:08:02', 0, 0, '', '', '');
+(1, 19, 1, 2, 3, 'The product are fresh and packed very well, will order next time', '', '2026-01-19 09:44:44', '2026-01-19 01:44:44', 0, 0, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -569,7 +523,11 @@ CREATE TABLE `review_images` (
 --
 
 INSERT INTO `review_images` (`id`, `image`, `product_id`, `customer_id`, `farmer_id`, `created_at`) VALUES
-(30, '<div class=\'alert alert-warning\'>No file selected for upload.</div>', 4, 2, 1, '2026-01-17 20:48:46');
+(1, 'img_696d8c8c152152.79682734.jpg', 19, 2, 1, '2026-01-19 09:44:44'),
+(2, 'img_696d8c8c156f07.56154733.jpg', 19, 2, 1, '2026-01-19 09:44:44'),
+(3, 'img_696d8c8c15c433.33550135.jpg', 19, 2, 1, '2026-01-19 09:44:44'),
+(4, 'img_696d8c8c160eb1.11550832.jpg', 19, 2, 1, '2026-01-19 09:44:44'),
+(5, 'img_696d8c8c165875.58751946.jpg', 19, 2, 1, '2026-01-19 09:44:44');
 
 -- --------------------------------------------------------
 
@@ -604,8 +562,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`) VALUES
-(1, 'Sheila Mae', 'Laurente', 'laurentesheila1097@gmail.com', '+639772639814', 'Purok 2', 'Anapog-Sibucao', 'Mogpo', 'Marinduque', 'Farmer', '$2y$10$BcHRBElcAV5x7Tp8gM.TuecfiOhCTsc0qtu.QN7O3Fm.1OxEZcjUy', 0, '2026-01-13 16:15:26', 0, '2026-01-17 12:20:10', '1', '31eaf945ca68acd964d58e7426c0f0d075900139-images.jpg', 1, ''),
-(2, 'Jessie', 'Sadiwa', 'alexisdumale@gmail.com', '09533307696', 'Purok2, anapog-sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$IoukiA0wErTkXSb09L5GuOR2ZVjBbDMPJQoUcIJToyYA9ylWk0Mii', 0, '2026-01-13 16:51:41', 0, '2026-01-13 21:16:20', '0', '', 1, '');
+(1, 'Sheila Mae', 'Laurente', 'testfarmer@gmail.com', '+639772639814', 'Purok 2', 'Anapog-Sibucao', 'Mogpo', 'Marinduque', 'Farmer', '$2y$10$BcHRBElcAV5x7Tp8gM.TuecfiOhCTsc0qtu.QN7O3Fm.1OxEZcjUy', 0, '2026-01-13 16:15:26', 0, '2026-01-17 12:20:10', '1', '31eaf945ca68acd964d58e7426c0f0d075900139-images.jpg', 1, ''),
+(2, 'Jessie', 'Sadiwa', 'testconsumer@gmail.com', '09533307696', 'Purok2, anapog-sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$IoukiA0wErTkXSb09L5GuOR2ZVjBbDMPJQoUcIJToyYA9ylWk0Mii', 0, '2026-01-13 16:51:41', 0, '2026-01-13 21:16:20', '0', '', 1, '');
 
 --
 -- Indexes for dumped tables
@@ -741,7 +699,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -759,7 +717,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -777,7 +735,7 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `farm_details`
@@ -789,13 +747,13 @@ ALTER TABLE `farm_details`
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -807,13 +765,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
@@ -825,7 +783,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `product_histories`
@@ -843,13 +801,13 @@ ALTER TABLE `product_types`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `review_images`
 --
 ALTER TABLE `review_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
