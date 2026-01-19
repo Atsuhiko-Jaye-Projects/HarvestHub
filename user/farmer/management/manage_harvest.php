@@ -221,7 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->product_name = $_POST['product_name'];
         $product->user_id = $_SESSION['user_id'];
         $product->price_per_unit = $_POST['selling_price'];
-        $product->category = $_POST['category'];
+        //$product->category = $_POST['category'];
         $product->unit = $_POST['unit'];
         $product->total_stocks = $_POST['total_stocks'];
         $product->available_stocks = $_POST['total_stocks'];
