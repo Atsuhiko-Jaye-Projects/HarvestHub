@@ -55,13 +55,13 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label>Crop Category:</label>
+                        <!-- <label>Crop Category:</label>
                         <select class='form-select' name='category' required>
                             <option value ='' hidden>Please Select category</option>
                             <option value ='fruit'>Fuit</option>
                             <option value ='vegetable'>Vegetable</option>
                         </select>    
-                    </div>
+                    </div> -->
               </div>
               <div class="row mb-3">
                 <div class="col-md-12">
