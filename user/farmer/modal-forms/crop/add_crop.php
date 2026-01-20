@@ -43,8 +43,6 @@
                     </select>
                 </div>
 
-
-
                 <div class="col-md-6">
                   <input type="hidden" name="crop_name" id="crop_name" class="form-control">
                   <input type="hidden" name="farm_resource_id" id="farmresourceid">
@@ -55,7 +53,7 @@
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                    <label>Estimated Harvest Date</label>
+                    <label>Harvest Date</label>
                     <?php $futureDate = date('Y-m-d', strtotime('+45 days')); ?>
                     <input type="date" id="estimated_harvest_date" name="estimated_harvest_date" class="form-control"  value="<?php echo $futureDate; ?>">
                 </div>

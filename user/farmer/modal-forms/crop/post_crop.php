@@ -9,7 +9,7 @@
         <div class="modal-header d-block">
           <h5 class="modal-title" id="exampleModalLabel">
             <i class="bi bi-check2-square me-2"></i> <!-- optional icon -->
-            Post this crop details to Pre-Order?
+            Post this for Pre-Order?
           </h5>
           <small class="text-muted">
             Confirm the crop information before sending it to the pre-order list.
@@ -117,13 +117,13 @@
 
 <script>
 
-document.addEventListener("input", function (e) {
-  if (e.target.type === "file") return;
-  const modal = e.target.closest(".modal");
-  if (!modal) return;
+// document.addEventListener("input", function (e) {
+//   if (e.target.type === "file") return;
+//   const modal = e.target.closest(".modal");
+//   if (!modal) return;
 
-  computeModal(modal);
-});
+//   computeModal(modal);
+// });
 
 document.addEventListener("shown.bs.modal", function (e) {
     console.log("MODAL OPENED", e.target.id);
@@ -150,8 +150,6 @@ document.addEventListener("shown.bs.modal", function (e) {
 
         
 });
-
-
 
 function confirmPost(form) {
   // Prevent default submission

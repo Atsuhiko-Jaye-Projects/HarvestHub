@@ -80,9 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         } else {
             $harvest_product->price_per_unit = 0;
         }
-
-        
-
         $crop->user_id = $_SESSION['user_id'];
         $crop->crop_name = $_POST['crop_name'];
         $crop->date_planted = $_POST['date_planted'];
@@ -174,9 +171,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->status = "pending";
         $crop->crop_status = $_POST['mark_crop'] ?? "";
         
-        
         if ($crop->updateFarmProduct()) {
-            if ($_POST['mark_crop'] == "harvested") {
+            if (isset($_POST['mark_crop']) && $_POST['mark_crop'] === 'harvested') {
                 $farm->user_id = $_SESSION['user_id'];
                 $farm->deduct_used_size = $_POST['cultivated_area'];
                 $farm->deductUsedLotSize();
@@ -184,54 +180,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 
                 // bind the posted values to the harvest crop property
                 $plant_count = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
-                $kilo_per_plant = isset($_POST['kilo_per_plant']) ? (float)str_replace(',', '', $_POST['kilo_per_plant']) : 0;
+                $kilo_per_plant = isset($_POST['actual_yield_per_plant']) ? (float)str_replace(',', '', $_POST['actual_yield_per_plant']) : 0;
                 $farm_expense = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
                 $total_farm_size = isset($_POST['cultivated_area']) ? (float)str_replace(',', '', $_POST['cultivated_area']) : 0;
-
-                // General markup (50% profit)
-                $markup = 0.20;
-
-                // Example: general yield for vegetables ~0.06–0.08 kg/sqm (use 0.08 default)
                 
+                // // actual harvested input
+                // $actual_harvested = isset($_POST['actual_yield']) ? (float)str_replace(',', '', $_POST['actual_yield']) : 0;
+                // // General markup (50% profit)
+                // $markup = 0.20;
 
-                // Prevent division by zero
-                if ($farm_expense > 0 && $total_farm_size > 0) {
-
-                    
-                    // Expense allocated to the planted area
-                    $kilo_harvested_product = $plant_count * $kilo_per_plant;
-
-                    // Prevent zero division
-                    if ($kilo_harvested_product <= 0) {
-                        $kilo_harvested_product = 1;
-                    }
-
-                    $stocks = $plant_count * $kilo_per_plant;
-
-                    // Cost per kg
-                    $cost_per_kg = $farm_expense / $kilo_harvested_product;
+                // // Prevent division by zero
+                // if ($farm_expense > 0 && $total_farm_size > 0) {
 
                     
+                //     // Expense allocated to the planted area
+                //     //$kilo_harvested_product = $plant_count * $kilo_per_plant;
 
-                    // Selling price with markup
-                    $selling_price = $cost_per_kg * $markup;
+                //     // Prevent zero division
+                //     if ($actual_harvested <= 0) {
+                //         $actual_harvested = 1;
+                //     }
 
-                    // Rounded price (currency format)
-                    $harvest_product->price_per_unit = round($selling_price, 2);
+                //     //harvested
+                //     // $stocks = $plant_count * $kilo_per_plant;
 
-                } else {
-                    $harvest_product->price_per_unit = 0;
-                }
+                //     // Cost per kg
+                //     $cost_per_kg = $farm_expense / $actual_harvested;
+
+                //     // Selling price with markup
+                //     $selling_price = $cost_per_kg * (1 + $markup);
+
+                //     // Rounded price (currency format)
+                //     $harvest_product->price_per_unit = $selling_price;
+
+                // } else {
+                //     $harvest_product->price_per_unit = 0;
+                // }
 
                 $harvest_product->user_id = $_SESSION['user_id'];
                 $harvest_product->product_name = $_POST['crop_name'];
-                $harvest_product->total_stocks = $stocks;
+                $harvest_product->total_stocks = $_POST['actual_yield'];
                 $harvest_product->plant_count = $_POST['plant_count'];
                 $harvest_product->expense = $_POST['total_plant_expense'];
                 $harvest_product->lot_size = $_POST['cultivated_area'];
                 $harvest_product->category = "Not Set";
                 $harvest_product->unit = "KG";
-                $harvest_product->kilo_per_plant = $_POST['kilo_per_plant'];
+                $harvest_product->price_per_unit = $_POST['selling_price'];
+                $harvest_product->kilo_per_plant = $_POST['actual_yield_per_plant'];
                 $harvest_product->is_posted = "Pending";
                 
                 $harvest_product->createProduct();
@@ -242,14 +237,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $_SESSION['flash'] = [
                 'title' => 'Success!',
                 'text'  => 'Crop has been updated harvested.',
-                'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+                'icon'  => 'success'
                 ];
 
             }else{
                 $_SESSION['flash'] = [
                     'title' => 'Success!',
                     'text'  => 'Crop has been updated successfully.',
-                    'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+                    'icon'  => 'success'
                 ];
             }
         }else {

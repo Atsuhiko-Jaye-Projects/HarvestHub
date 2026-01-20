@@ -199,21 +199,26 @@ function postHarvestProduct(row) {
 
         if (price < cost) {
           let loss = (cost - price).toFixed(2);
-          var markup = ((price - cost) / cost * 100).toFixed(2);
-          resultBox.className = "alert alert-success";
-          resultBox.innerHTML = "Per KG: ₱" + loss + "<br>Markup: " + markup + "%";
-        } else {
-          var markup = ((price - cost) / cost * 100).toFixed(2);
-          
-          resultBox.className = "alert alert-success";
-          resultBox.innerHTML = "Per KG: ₱" + (price - cost).toFixed(2) + "<br>Markup: " + markup + "%";
 
-              if (markup > 25.00) {
-                postButton.disabled = true;
-              }else{
-                postButton.disabled = false;
-              }
+          resultBox.className = "alert alert-success";
+          resultBox.innerHTML = "Per KG: ₱ -" + loss;
+
+          postButton.disabled = false;
+
+        } else {
+          let profit = (price - cost).toFixed(2);
+          let markup = ((price - cost) / cost) * 100;
+
+          resultBox.className = "alert alert-success";
+          resultBox.innerHTML = "Per KG: ₱ +" + profit;
+
+          if (markup > 25) {
+            postButton.disabled = true;
+          } else {
+            postButton.disabled = false;
+          }
         }
+
       }
     });
   </script>
