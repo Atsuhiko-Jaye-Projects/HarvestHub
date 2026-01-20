@@ -3,6 +3,7 @@ ob_start();
 include_once "../../config/core.php";
 include_once "../../config/database.php";
 include_once "../../objects/order.php";
+include_once "../../objects/review.php";
 
 
 $page_title = "Index";
@@ -24,7 +25,13 @@ $database = new Database();
 $db = $database->getConnection();
 
 $order = new Order($db);
+$review = new Review($db);
 
+$review->farmer_id = $_SESSION['user_id'];
+$ratingData = $review->getFarmerRating();
+
+$seller_rating = $ratingData['seller_rating'];
+$total_reviews = $ratingData['total_reviews'];
 
 if ($_SESSION['is_farm_registered'] == 0) {
 
@@ -142,6 +149,21 @@ if ($_SESSION['is_farm_registered'] == 0) {
   </div>
 
 
+  
+
+  <div class="row g-3 bg-light p-3 rounded-4">
+
+    <!-- Total Sales -->
+    <div class="col-md-12 col-sm-12">
+      
+
+      <?php include_once "layout/farm_ratings.php"; ?>
+
+    </div>
+
+    <!-- Pending Orders -->
+
+  </div>
 
 
   <!-- Charts -->
@@ -149,27 +171,37 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
   <!-- Sales Summary Chart -->
   <div class="col-lg-6 col-sm-12">
-    <div class="card shadow-sm p-3 h-100 two-d-border">
 
-      <!-- Header with icon -->
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <div class="d-flex align-items-center gap-2">
-          <div class="icon-badge text-success">
-            <i class="bi bi-bar-chart-fill"></i>
-          </div>
-          <h5 class="mb-0">Sales Summary</h5>
-        </div>
-        <span class="badge bg-success-subtle text-success">Live</span>
+
+  <div class="card shadow-sm p-3 h-100 two-d-border">
+    <h5 class="mb-3">Sales Performance</h5>
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs mt-4" id="products" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="daily-tab" data-bs-toggle="tab" href="#daily" role="tab">Daily</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="month-tab" data-bs-toggle="tab" href="#month" role="tab">Month</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="annually-tab" data-bs-toggle="tab" href="#annually" role="tab">Annually</a>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-3">
+      <div class="tab-pane fade show active" id="daily" role="tabpanel">
+        <canvas id="salesChart" height="150"></canvas>
       </div>
-
-      <p class="mb-2">
-        <!-- <strong>3K</strong>
-        <span class="text-success ms-1">+2.1%</span>
-        <small class="text-muted ms-1">vs Last Week</small> -->
-      </p>
-
-      <canvas id="salesChart" height="200"></canvas>
+      <div class="tab-pane fade" id="month" role="tabpanel">
+        <canvas id="salesmonthChart" height="150"></canvas>
+      </div>
+      <div class="tab-pane fade" id="annually" role="tabpanel">
+        <canvas id="salesYearChart" height="150"></canvas>
+      </div>
     </div>
+  </div>
+
   </div>
 
   <!-- Product Stocks Chart -->

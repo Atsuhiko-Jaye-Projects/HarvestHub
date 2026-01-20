@@ -14,6 +14,7 @@ class Order{
     public $quantity;
     public $status;
     public $review_status;
+    public $farmer_rated;
     public $created_at;
     public $reason;
     public $modified_at;
@@ -296,6 +297,55 @@ class Order{
         return $rows;
     }
 
+    public function totalGraphSalesMonthly() {
+        $query = "
+            SELECT 
+                DATE_FORMAT(modified_at, '%Y-%m') AS month_sales, 
+                SUM(o.quantity * p.price_per_unit) AS total_sales
+            FROM orders o
+            JOIN products p ON o.product_id = p.product_id
+            WHERE o.farmer_id = :farmer_id
+            AND o.status = 'complete'
+            AND modified_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) -- last 6 months
+            GROUP BY DATE_FORMAT(modified_at, '%Y-%m')
+            ORDER BY DATE_FORMAT(modified_at, '%Y-%m')
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
+
+    public function totalGraphSalesAnnually() {
+        $query = "
+            SELECT 
+                DATE_FORMAT(modified_at, '%Y-01-01') AS date_sales, 
+                SUM(o.quantity * p.price_per_unit) AS total_sales
+            FROM orders o
+            JOIN products p ON o.product_id = p.product_id
+            WHERE o.farmer_id = :farmer_id
+            AND o.status = 'complete'
+            AND modified_at >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR) -- last 5 years
+            GROUP BY YEAR(modified_at)
+            ORDER BY YEAR(modified_at)
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
+
+
+
+
 
     function getOrderNotification() {
 
@@ -348,6 +398,7 @@ class Order{
         $this->review_status = $row['review_status'];
         $this->product_id = $row['product_id'];
         $this->farmer_id = $row['farmer_id'];
+        $this->farmer_rated = $row['farmer_rated'];
         //$this->customer_id = $row['customer_id'];
     }
 
@@ -363,6 +414,23 @@ class Order{
         $this->review_status=htmlspecialchars(strip_tags($this->review_status));
 
         $stmt->bindParam(":review_status", $this->review_status);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    function markFarmReviewStatus(){
+        $query = "UPDATE
+                " . $this->table_name . "
+                SET
+                farmer_rated = :farmer_rated
+                WHERE 
+                id = :id";
+        $stmt=$this->conn->prepare($query);
+
+        $this->review_status=htmlspecialchars(strip_tags($this->review_status));
+
+        $stmt->bindParam(":farmer_rated", $this->farmer_rated);
         $stmt->bindParam(":id", $this->id);
 
         return $stmt->execute();

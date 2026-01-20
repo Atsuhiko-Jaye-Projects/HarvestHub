@@ -121,6 +121,24 @@ class Review{
         return $row['review_count'];
     }
 
+    function getFarmerRating(){
+
+        $query = "SELECT
+                COALESCE(AVG(r.rating), 0) AS seller_rating,
+                COUNT(r.id) AS total_reviews
+                FROM " . $this->table_name . " r
+                JOIN products p ON p.product_id = r.product_id
+                WHERE p.user_id = :farmer_id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+
 
 
 }

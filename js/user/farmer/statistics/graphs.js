@@ -46,6 +46,102 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(err => console.error('Error fetching sales data:', err));
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesmonthChart');
+
+    fetch('../../js/user/farmer/api/fetch_farm_month_sales.php')
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') throw new Error('Failed to fetch sales data');
+
+            const results = data.expense.result; // array of objects
+
+            // Map the results to arrays for Chart.js
+            const labels = results.map(r => r.date_sales);
+            const sales = results.map(r => parseFloat(r.total_sales));
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Sales',
+                        data: sales,
+                        borderColor: '#3d976a',
+                        backgroundColor: 'rgba(22,163,74,0.2)',
+                        tension: 0.4,
+                        fill: true,
+
+                        // 🔴 DOT SETTINGS
+                        pointRadius: 6,          // default is 3
+                        pointHoverRadius: 9,     // when hovered
+                        pointBackgroundColor: '#181a19',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
+                    }]
+
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: {
+                        y: { beginAtZero: false },
+                        x: { grid: { display: false }, ticks: { display:false } }
+                    }
+                }
+            });
+        })
+        .catch(err => console.error('Error fetching sales data:', err));
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesYearChart');
+
+    fetch('../../js/user/farmer/api/fetch_farm_annually_sales.php')
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') throw new Error('Failed to fetch sales data');
+
+            const results = data.expense.result; // array of objects
+
+            // Map the results to arrays for Chart.js
+            const labels = results.map(r => r.date_sales);
+            const sales = results.map(r => parseFloat(r.total_sales));
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Sales',
+                        data: sales,
+                        borderColor: '#3d976a',
+                        backgroundColor: 'rgba(22,163,74,0.2)',
+                        tension: 0.4,
+                        fill: true,
+
+                        // 🔴 DOT SETTINGS
+                        pointRadius: 6,          // default is 3
+                        pointHoverRadius: 9,     // when hovered
+                        pointBackgroundColor: '#181a19',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
+                    }]
+
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: {
+                        y: { beginAtZero: false },
+                        x: { grid: { display: false }, ticks: { display:false } }
+                    }
+                }
+            });
+        })
+        .catch(err => console.error('Error fetching sales data:', err));
+});
+
 
 
 document.addEventListener('DOMContentLoaded', function () {

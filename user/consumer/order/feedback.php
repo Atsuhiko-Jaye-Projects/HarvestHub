@@ -8,6 +8,7 @@ include_once "../../../objects/order.php";
 include_once "../../../objects/product.php";
 include_once "../../../objects/review.php";
 include_once "../../../objects/review_upload.php";
+include_once "../../../objects/seller_review.php";
 
 $page_title = "Feedback Form";
 include_once "../layout/layout_head.php";
@@ -22,6 +23,7 @@ $db = $database->getConnection();
 $order = new Order($db);
 $review = new Review($db);
 $review_upload = new ReviewUpload($db);
+$seller_review = new SellerReview($db);
 
 // Get order info
 $order->id = $order_id;
@@ -30,58 +32,83 @@ $order->orderReviewStatus();
 $productid = $order->product_id;
 $farmerid = $order->farmer_id;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+
 
     // 1️⃣ Save the review first
-    $review->rating      = (int) $_POST['rating'];
-    $review->product_id  = (int) $_POST['product_id'];
-    $review->farmer_id   = (int) $_POST['farmer_id'];
-    $review->customer_id = (int) $_POST['customer_id'];
-    $review->review_text = trim($_POST['feedback']);
+    if ($_POST['action'] == "product_review") {
+        $review->rating      = (int) $_POST['rating'];
+        $review->product_id  = (int) $_POST['product_id'];
+        $review->farmer_id   = (int) $_POST['farmer_id'];
+        $review->customer_id = (int) $_POST['customer_id'];
+        $review->review_text = trim($_POST['feedback']);
 
-    if ($review->createReview()) {
+        if ($review->createReview()) {
 
-        // bind the values to insert method
-        $farmerid = $_POST['farmer_id'];
-        $product_id = $_POST['product_id'];
-        $customer_id = $_POST['customer_id'];
+            // bind the values to insert method
+            $farmerid = $_POST['farmer_id'];
+            $product_id = $_POST['product_id'];
+            $customer_id = $_POST['customer_id'];
 
-            if (!isset($_FILES['review_image'])) {
-                die('No images uploaded');
-            }
+                if (!isset($_FILES['review_image'])) {
+                    die('No images uploaded');
+                }
 
-            // Upload images
-            $result = $review_upload->uploadPhoto($_FILES['review_image'], $farmerid, $product_id, $customer_id);
+                // Upload images
+                $result = $review_upload->uploadPhoto($_FILES['review_image'], $farmerid, $product_id, $customer_id);
 
-            if (!$result['success']) {
-                die($result['error']);
-            }
+                if (!$result['success']) {
+                    die($result['error']);
+                }
 
-            // Save each image to DB
-            foreach ($result['files'] as $filename) {
+                // Save each image to DB
+                foreach ($result['files'] as $filename) {
 
-                $review_upload->customer_id = $_POST['customer_id'];
-                $review_upload->farmer_id   = $_POST['farmer_id'];
-                $review_upload->product_id  = $_POST['product_id'];
+                    $review_upload->customer_id = $_POST['customer_id'];
+                    $review_upload->farmer_id   = $_POST['farmer_id'];
+                    $review_upload->product_id  = $_POST['product_id'];
 
-                // ✅ Correct image path or filename
-                $review_upload->image = $filename;
+                    // ✅ Correct image path or filename
+                    $review_upload->image = $filename;
 
-                $review_upload->saveReviewImages();
-            }
+                    $review_upload->saveReviewImages();
+                }
 
 
-        // 2️⃣ Mark order as reviewed
-        $order->id = $order_id;
-        $order->review_status = 1;
-        $order->markReviewStatus();
+            // 2️⃣ Mark order as reviewed
+            $order->id = $order_id;
+            $order->review_status = 1;
+            $order->markReviewStatus();
 
-        header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
-        exit;
+            header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
+            exit;
 
-    } else {
-        header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&failed");
-        exit;
+        } else {
+            header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&failed");
+            exit;
+        }
+    }
+
+    if ($_POST['action'] == "seller_review") {
+        
+        $review_tags = json_decode($_POST['tags'], true);
+
+        $seller_review->farmer_id = $_POST['farmer_id'];
+        $seller_review->product_id = $_POST['product_id'];
+        $seller_review->customer_id = $_POST['customer_id'];
+        $seller_review->order_id = $_POST['order_id'];
+        $seller_review->rating = $_POST['rating'];
+        $seller_review->review_text= $_POST['feedback'];
+        $seller_review->message_rating = $_POST['message_rating'];
+        $seller_review->review_tags = json_encode($review_tags);
+        
+        if ($seller_review->createSellerReview()) {
+            $order->id = $order_id;
+            $order->farmer_rated = 1;
+            $order->markFarmReviewStatus();
+            header("Location: {$base_url}user/consumer/order/feedback.php?vod={$order_id}&success");
+            exit;
+        }
     }
 }
 
@@ -99,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="hidden" name="farmer_id" value="<?php echo $farmerid; ?>">
                         <input type="hidden" name="customer_id" value="<?php echo $_SESSION['user_id']; ?>">
                         <input type="hidden" name="order_id" value="<?php echo $order_id ?>">
+                        <input type="hidden" name="action" value="product_review">
 
                         <!-- Rating -->
                         <div class="mb-4">
@@ -140,6 +168,111 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
+
+<?php elseif($order->farmer_rated == 0): ?>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Seller Feedback Card (Color-coded) -->
+            <div class="card shadow-sm border-light" style="border-left: 6px solid #198754;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-4 text-center">
+                        Seller Feedback 
+                    </h5>
+
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?vod={$order_id}"); ?>" method="POST" id="feedbackForm">
+                        <input type="hidden" name="product_id" value="<?php echo $productid; ?>">
+                        <input type="hidden" name="farmer_id" value="<?php echo $farmerid; ?>">
+                        <input type="hidden" name="customer_id" value="<?php echo $_SESSION['user_id']; ?>">
+                        <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
+                        <input type="hidden" name="action" value="seller_review">
+
+                        <!-- Rating -->
+                        <div class="mb-4">
+                            <label class="form-label">Rate your experience with the seller</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rating" id="rating<?= $i ?>" value="<?= $i ?>">
+                                        <label class="form-check-label" for="rating<?= $i ?>">
+                                            <?= $i ?> <i class="bi bi-star-fill text-warning"></i>
+                                        </label>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+                            <div class="invalid-feedback d-block" id="ratingError"></div>
+                        </div>
+
+                        <!-- Messaging Rating -->
+                        <div class="mb-4">
+                            <label class="form-label">Messaging / Communication</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="message_rating" id="message<?= $i ?>" value="<?= $i ?>">
+                                        <label class="form-check-label" for="message<?= $i ?>">
+                                            <?= $i ?> <i class="bi bi-chat-dots-fill text-info"></i>
+                                        </label>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+
+                        <!-- Quick Review Tags -->
+                        <div class="mb-4">
+                            <label class="form-label">What stood out?</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm tagBtn">Fast Response</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm tagBtn">Fresh Products</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm tagBtn">Good Packaging</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm tagBtn">Friendly Seller</button>
+                            </div>
+                            <input type="hidden" name="tags" id="tags">
+                        </div>
+
+                        <!-- Feedback -->
+                        <div class="mb-4">
+                            <label class="form-label">Your Feedback</label>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="5" placeholder="Tell us what you think..." required></textarea>
+                            <div class="invalid-feedback d-block" id="feedbackError"></div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success btn-lg px-4 py-2">
+                                Submit Feedback
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- JS for tags -->
+<script>
+    const tagButtons = document.querySelectorAll(".tagBtn");
+    const tagsInput = document.getElementById("tags");
+
+    tagButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            btn.classList.toggle("btn-outline-secondary");
+            btn.classList.toggle("btn-secondary");
+
+            const selected = Array.from(tagButtons)
+                .filter(b => b.classList.contains("btn-secondary"))
+                .map(b => b.textContent.trim());
+
+            tagsInput.value = JSON.stringify(selected);
+        });
+    });
+</script>
+
+
 
 <?php else: ?>
 <div class="container mt-5">
