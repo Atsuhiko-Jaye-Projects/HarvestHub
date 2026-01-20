@@ -37,10 +37,10 @@
               </div>
 
               <div class="row mb-3">
-                <div class="col-md-6">
-                    <label>Stocks:</label>
-                    <input type="text" name="stocks" value='<?php echo $row['stocks']; ?>' class="form-control" readonly>
-                </div>
+                  <div class="col-md-6">
+                        <label>No. of plants (Estimated):</label>
+                        <input type="number"  name="plant_count" class="form-control" value='<?php echo $row['plant_count']; ?>'>
+                  </div>
                 <div class="col-md-6">
                     <label>
                       KG/Plant (Estimated):
@@ -49,9 +49,11 @@
                 </div>
               </div>
               <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label>No. of plants (Estimated):</label>
-                        <input type="number"  name="plant_count" class="form-control" value='<?php echo $row['plant_count']; ?>'>
+                <div class="col-md-6">
+                    <label>Stocks (KG):</label>
+                    <input type="text" name="stocks" value='<?php echo $row['stocks']; ?>' class="form-control" readonly>
+                </div>
+
                     </div>
 
                     <div class="col-md-6">

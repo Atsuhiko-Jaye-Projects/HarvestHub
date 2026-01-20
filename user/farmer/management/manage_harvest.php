@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $farm_expense     = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
 
         // Profit margin (example: 15%)
-        $markup = 0.20;
+        // $markup = 0.20;
 
         // Prevent division by zero
         if ($plant_count > 0 && $kilo_per_plant > 0 && $farm_expense > 0) {
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $stocks = $kilo_per_plant * $plant_count;
 
             // ✅ Selling price with margin
-            $selling_price = $cost_per_kg * (1 + $markup);
+            $selling_price = $cost_per_kg;
 
             // Final price
             $harvest_product->price_per_unit = round($selling_price, 2);
