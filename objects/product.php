@@ -529,6 +529,30 @@ class Product{
     return $stmt;
     }
 
+
+    function getMostSoldProduct($limit = 5) {
+        // Query: select products with average rating
+        $query = "SELECT p.*, 
+                        COALESCE(AVG(r.rating), 0) AS avg_rating
+                FROM " . $this->table_name . " p
+                LEFT JOIN reviews r ON p.product_id = r.product_id
+                GROUP BY p.id
+                ORDER BY p.sold_count DESC
+                LIMIT :limit";
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind limit
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+        // Execute
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+
 }
 
 

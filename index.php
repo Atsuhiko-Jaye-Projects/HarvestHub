@@ -24,6 +24,10 @@ $stmt = $product->showAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $product->countAll();
 
+$msp_stmt = $product->getMostSoldProduct(6);
+$msp_num = $msp_stmt->rowCount();
+
+
 if (!isset($_SESSION['logged_in'])) {
 
 } else {
@@ -41,6 +45,106 @@ if (!isset($_SESSION['logged_in'])) {
     </div>
     <img src="libs/images/logo.png" alt="Vegetables" class="category-icon mb-2">
   </div>
+
+    <div class="most-sold-banner my-4 p-3 rounded-3 bg-light shadow-sm">
+    <h5 class="mb-3">🔥 Most Sold Products</h5>
+
+    <div id="mostSoldCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+
+            <?php
+            if ($msp_num > 0) {
+                $count = 0; // counter for products per slide
+                $active = "active"; // first slide is active
+                echo '<div class="carousel-item ' . $active . '"><div class="d-flex justify-content-center gap-3">';
+                
+                while ($msp_row = $msp_stmt->fetch(PDO::FETCH_ASSOC)) {
+
+                    $raw_image = $msp_row['product_image'];
+                    $img_owner = $msp_row['user_id'];
+                    $image_path = "";
+
+                    if ($msp_row['product_type'] == "harvest") {
+                       $image_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_image}";
+                    }else{
+                        $image_path = "{$base_url}user/uploads/{$img_owner}/posted_crops/{$raw_image}";
+                    }
+
+                    
+                    $url = "";
+                    if ($msp_row['product_type'] == "harvest") {
+                        $url = "product/product_detail.php?pid={$msp_row['product_id']}";
+                    }else{
+                         $url = "product/preorder.php?pid={$msp_row['product_id']}";
+                    }
+
+                    // Display product card
+                    echo '<div class="text-center border rounded" style="width:140px; flex-shrink:0;">';
+                    echo "<a href='{$url}'>
+                    <img src='{$image_path}' class='img-fluid mb-2' style='height:100px; object-fit:cover;'></a>";
+                    echo '<p class="mb-0 small">' . $msp_row['product_name'] . '</p>';
+                    echo '<p class="mb-1 small text-success">₱' . number_format($msp_row['price_per_unit'], 2) . '</p>';
+                    echo '<p class="mb-0 small text-muted"><i class="bi bi-cart"></i> ' . $msp_row['sold_count'] . ' sold</p>';
+                    $rating = $msp_row['avg_rating']; // e.g., 4.2
+
+                    // Calculate full, half, and empty stars
+                    $fullStars = floor($rating);
+                    $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+                    $emptyStars = 5 - $fullStars - $halfStar;
+
+                    // Start separate echo for rating
+                    echo '<p class="mb-0 small text-warning">';
+
+                    // Full stars
+                    for ($i = 0; $i < $fullStars; $i++) {
+                        echo '★';
+                    }
+
+                    // Half star (optional)
+                    if ($halfStar) {
+                        echo '☆'; // You can replace with a half star icon if you have one
+                    }
+
+                    // Empty stars
+                    for ($i = 0; $i < $emptyStars; $i++) {
+                        echo '☆';
+                    }
+
+                    // Show numeric rating
+                    echo " (" . number_format($rating, 1) . ")";
+                    echo '</p>';
+                    echo '</div>';
+
+                    $count++;
+
+                    // If 3 products are in this slide, close divs and start a new slide
+                    if ($count % 3 == 0 && $count < $msp_num) {
+                        echo '</div></div>'; // close current slide
+                        $active = ""; // only first slide is active
+                        echo '<div class="carousel-item ' . $active . '"><div class="d-flex justify-content-center gap-3">';
+                    }
+                }
+
+                echo '</div></div>'; // close last slide
+            } else {
+                echo '<p>No products found.</p>';
+            }
+            ?>
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#mostSoldCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mostSoldCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+        </button>
+    </div>
+</div>
+
+
+
 
   <h5>Shop From Top Categories</h5>
   <div class="d-flex gap-4 mb-4">
