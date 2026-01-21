@@ -393,6 +393,22 @@ class FarmResource{
 
         return $row['grand_total'];
     }
+    
+    public function updateCropStatus() {
+
+        // Only update the crop_status for the given farm_resource_id
+        $query = "UPDATE " . $this->table_name . "
+                SET crop_status = ''
+                WHERE farm_resource_id = :farm_resource_id
+                LIMIT 1"; // optional, ensures only one row
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farm_resource_id", $this->farm_resource_id, PDO::PARAM_INT);
+
+        return $stmt->execute(); // returns true/false
+    }
+
+
 
 }
 

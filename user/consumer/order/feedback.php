@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $seller_review->product_id = $_POST['product_id'];
         $seller_review->customer_id = $_POST['customer_id'];
         $seller_review->order_id = $_POST['order_id'];
-        $seller_review->rating = $_POST['rating'];
+        $seller_review->rating = $_POST['seller_rating'];
         $seller_review->review_text= $_POST['feedback'];
         $seller_review->message_rating = $_POST['message_rating'];
         $seller_review->review_tags = json_encode($review_tags);
@@ -191,33 +191,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         <!-- Rating -->
                         <div class="mb-4">
                             <label class="form-label">Rate your experience with the seller</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating<?= $i ?>" value="<?= $i ?>">
-                                        <label class="form-check-label" for="rating<?= $i ?>">
-                                            <?= $i ?> <i class="bi bi-star-fill text-warning"></i>
-                                        </label>
-                                    </div>
+
+                            <div class="stars">
+                                <?php for ($i = 5; $i >= 1; $i--): ?>
+                                    <input 
+                                        type="radio"
+                                        id="seller_star<?= $i ?>"
+                                        name="seller_rating"
+                                        value="<?= $i ?>"
+                                        class="star-input"
+                                    >
+                                    <label for="seller_star<?= $i ?>" class="star">&#9733;</label>
                                 <?php endfor; ?>
                             </div>
+
                             <div class="invalid-feedback d-block" id="ratingError"></div>
                         </div>
+
 
                         <!-- Messaging Rating -->
                         <div class="mb-4">
                             <label class="form-label">Messaging / Communication</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="message_rating" id="message<?= $i ?>" value="<?= $i ?>">
-                                        <label class="form-check-label" for="message<?= $i ?>">
-                                            <?= $i ?> <i class="bi bi-chat-dots-fill text-info"></i>
-                                        </label>
-                                    </div>
+                            <div class="stars">
+                                <?php for ($i = 5; $i >= 1; $i--): ?>
+                                    <input
+                                        type="radio"
+                                        id="message_star<?= $i ?>"
+                                        name="message_rating"
+                                        value="<?= $i ?>"
+                                        class="star-input"
+                                    >
+                                    <label for="message_star<?= $i ?>" class="star">&#9733;</label>
                                 <?php endfor; ?>
                             </div>
                         </div>
+
 
                         <!-- Quick Review Tags -->
                         <div class="mb-4">

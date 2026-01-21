@@ -127,6 +127,15 @@
                   <i class='bi bi-cloud-upload-fill'></i>
                 </button>";
                 }
+                  echo "
+                  <button 
+                      class='btn btn-danger ms-1 btn-delete'
+                      data-id='{$row['id']}'
+                      data-farm-resource-id='{$row['farm_resource_id']}'
+                  >
+                      <i class='bi bi-trash'></i>
+                  </button>
+                  ";
               echo "</td>";
             echo "</tr>";
             include "../modal-forms/crop/edit_crop.php";
@@ -192,6 +201,60 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener("click", function (e) {
+    const btn = e.target.closest(".btn-delete");
+    if (!btn) return;
+
+    const id = btn.dataset.id;
+    const farm_resource_id = btn.dataset.farmResourceId;
+
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("farm_resource_id", farm_resource_id);
+
+    Swal.fire({
+        title: "Delete this item?",
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, delete it"
+    }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        fetch("template/delete_crop.php", {
+            method: "POST",
+            body: formData // ✅ just body, no headers
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Deleted!",
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+
+                // remove row smoothly
+                btn.closest("tr")?.remove();
+            } else {
+                Swal.fire("Error", data.message, "error");
+            }
+        })
+        .catch(() => {
+            Swal.fire("Error", "Server error", "error");
+        });
+    });
+});
+</script>
+
+
 
 <style>
 /* Hover & button effects */
