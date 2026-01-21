@@ -136,7 +136,9 @@ if ($_POST) {
         <?php echo $product->available_stocks; ?>
       </p>
 
-      <p><strong>Lot Size:</strong> 30</p>
+      <p style="font-size:0.85em; color:red; margin-top:4px;">
+          *Disclaimer: Pre-order item. Price and availability may change.
+      </p>
 
       <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' id="cartForm">
         <div class="mb-3">
