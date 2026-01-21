@@ -305,6 +305,21 @@ class Farm{
         return ($usedLotSize + $newSize) > $totalLotSize;
     }
 
+        function deductCropUsedLotSize() {
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET 
+                    used_lot_size = used_lot_size - :deduct_used_size
+                WHERE 
+                    user_id = :user_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":deduct_used_size", $this->deduct_used_size);
+        $stmt->bindParam(":user_id", $this->user_id);
+        return $stmt->execute();
+    }
+
 
 
 

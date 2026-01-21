@@ -128,10 +128,12 @@
                 </button>";
                 }
                   echo "
-                  <button 
+                  <button
                       class='btn btn-danger ms-1 btn-delete'
                       data-id='{$row['id']}'
                       data-farm-resource-id='{$row['farm_resource_id']}'
+                      data-carea='{$row['cultivated_area']}'
+                      data-uid='{$row['user_id']}'
                   >
                       <i class='bi bi-trash'></i>
                   </button>
@@ -211,10 +213,14 @@ document.addEventListener("click", function (e) {
 
     const id = btn.dataset.id;
     const farm_resource_id = btn.dataset.farmResourceId;
+    const cultivated_area = btn.dataset.carea;
+    const user_id = btn.dataset.uid;
 
     const formData = new FormData();
     formData.append("id", id);
     formData.append("farm_resource_id", farm_resource_id);
+    formData.append("cultivated_area", cultivated_area);
+    formData.append("user_id", user_id);
 
     Swal.fire({
         title: "Delete this item?",
