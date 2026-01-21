@@ -118,12 +118,29 @@ if ($_POST) {
       <div class="d-flex align-items-center mb-3">
         <span class="me-3 text-muted"><?php echo $product->sold_count; ?> Sold</span>
         <div class="rating">
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-half"></i>
-          <span class="ms-2">4.5</span>
+            <?php
+            $rating = $product->avg_rating; // example: 4.5
+
+            $fullStars = floor($rating);
+            $halfStar  = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+            $emptyStars = 5 - $fullStars - $halfStar;
+
+            // full stars
+            for ($i = 0; $i < $fullStars; $i++) {
+                echo '<i class="bi bi-star-fill"></i>';
+            }
+
+            // half star
+            if ($halfStar) {
+                echo '<i class="bi bi-star-half"></i>';
+            }
+
+            // empty stars
+            for ($i = 0; $i < $emptyStars; $i++) {
+                echo '<i class="bi bi-star"></i>';
+            }
+            ?>
+            <span class="ms-2"><?= number_format($rating, 1) ?></span>
         </div>
       </div>
 
