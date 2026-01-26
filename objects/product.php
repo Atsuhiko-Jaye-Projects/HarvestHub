@@ -145,8 +145,8 @@ class Product{
     function readAllProduct($from_record_num, $records_per_page) {
         $query = "SELECT * FROM " . $this->table_name . "
                 WHERE 
-                
                 user_id = :user_id && status = 'Active'
+                ORDER BY id DESC
                 LIMIT 
                 {$from_record_num}, {$records_per_page}";
 
