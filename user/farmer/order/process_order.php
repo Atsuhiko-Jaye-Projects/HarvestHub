@@ -295,7 +295,7 @@ switch (true) {
     case ($status == "complete"):
         ?>
         <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
-        <a href="order.php" class="btn btn-outline-success w-100">Return</a>
+        <a href="order.php" class="btn btn-outline-success w-100">Back</a>
         <?php
         break;
 
