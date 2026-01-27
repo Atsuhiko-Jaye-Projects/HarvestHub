@@ -149,20 +149,16 @@ if ($_SESSION['is_farm_registered'] == 0) {
   </div>
 
 
-  
-
   <div class="row g-3 bg-light p-3 rounded-4">
 
     <!-- Total Sales -->
     <div class="col-md-12 col-sm-12">
-      
-
       <?php include_once "layout/farm_ratings.php"; ?>
-
     </div>
-
-    <!-- Pending Orders -->
-
+    
+    <div class="col-md-12 col-sm-12">
+      <?php include_once "layout/daily_log_stats.php"; ?>
+    </div>
   </div>
 
 
@@ -247,7 +243,6 @@ if ($_SESSION['is_farm_registered'] == 0) {
 
 </div>
 
-
   <!-- Notifications & Top Products -->
   <div class="row mt-4 g-3">
   <div class="col-lg-3 col-sm-12">
@@ -272,8 +267,6 @@ if ($_SESSION['is_farm_registered'] == 0) {
   cursor: pointer;
 }
 </style>
-
-
 
 
   <div class="col-lg-3 col-sm-12">

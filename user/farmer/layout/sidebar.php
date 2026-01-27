@@ -22,11 +22,20 @@
       <div><i class="bi bi-tools me-2"></i> Dashboard</div>
       <i class="bi <?= in_array($pageFile, ['farm_resource.php']) ? 'bi-caret-down-fill' : 'bi-caret-up-fill' ?> caret-icon"></i>
     </button>
-    <div class="collapse ps-3 mt-3 <?= in_array($pageFile, ['farm_resource.php', 'search.php', 'activities.php', 'edit_activities.php' ]) ? 'show' : '' ?>" id="collapseHarvest">
-      <a href="<?= $base_url ?>user/farmer/farm/farm_resource.php" class="sidebar-btn <?= in_array($pageFile, ['farm_resource.php', 'search.php', 'activities.php', 'edit_activities.php']) ? 'active' : '' ?>">
+    <div class="collapse ps-3 mt-3 <?= in_array($pageFile, ['farm_resource.php', 'search.php', 'activities.php', 'edit_activities.php', 'daily_crop_log.php']) ? 'show' : '' ?>" id="collapseHarvest">
+
+      <a href="<?= $base_url ?>user/farmer/farm/farm_resource.php"
+        class="sidebar-btn <?= in_array($pageFile, ['farm_resource.php', 'search.php', 'activities.php', 'edit_activities.php']) ? 'active' : '' ?>">
         <i class="bi bi-box-seam me-2"></i> Farm Inputs
       </a>
+
+      <a href="<?= $base_url ?>user/farmer/farm/daily_crop_log.php"
+        class="sidebar-btn <?= $pageFile === 'daily_crop_log.php' ? 'active' : '' ?>">
+        <i class="bi bi-clipboard-check me-2"></i> Crop Log
+      </a>
+
     </div>
+
 
     <!-- Inventory Collapsible -->
     <button class="sidebar-btn d-flex justify-content-between align-items-center <?= in_array($pageFile, ['manage_product.php','manage_harvest.php','manage_crop.php']) ? 'active' : '' ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventory">
