@@ -1,6 +1,5 @@
 <?php
 ob_start();
-
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/crop.php";
@@ -8,6 +7,9 @@ include_once "../../../objects/product.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/farm-resource.php";
 include_once "../../../objects/user.php";
+include_once "../../../objects/daily_crop_log.php";
+include_once "../../../objects/seasonal_crop_log.php";
+
 $page_title = "Manage Crop";
 include_once "../layout/layout_head.php";
 
@@ -22,6 +24,8 @@ $crop = new Crop($db);
 $product = new Product($db);
 $farm = new Farm($db);
 $farm_resource = new FarmResource($db);
+$crop_log = new FarmCropLog($db);
+$seasonal_crop_log = new SeasonalCropLog($db);
 
 
 // get the user location
@@ -177,7 +181,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $farm->deduct_used_size = $_POST['cultivated_area'];
                 $farm->deductUsedLotSize();
 
-                
+                // we save the best season this crop has logged
+                $crop_log->crop_id = $_POST['id'];
+                $crop_log_data = $crop_log->getCropLogWithSeason();
+            
+
+                $seasonal_crop_log->crop_name = $_POST['crop_name'];
+                if ($crop_log_data) {
+                    $seasonal_crop_log->best_season = $crop_log_data['best_season'];
+                    $seasonal_crop_log->avg_precip = $crop_log_data['avg_precip'];
+                } else {
+                    $seasonal_crop_log->best_season = "Unknown";
+                    $seasonal_crop_log->avg_precip = 0;
+                }
+                $seasonal_crop_log->saveSeasonalCrop();
+
                 // bind the posted values to the harvest crop property
                 $plant_count = isset($_POST['plant_count']) ? (float)str_replace(',', '', $_POST['plant_count']) : 0;
                 $kilo_per_plant = isset($_POST['actual_yield_per_plant']) ? (float)str_replace(',', '', $_POST['actual_yield_per_plant']) : 0;
@@ -247,6 +265,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     'icon'  => 'success'
                 ];
             }
+            
         }else {
             echo "<div class='container'><div class='alert alert-danger'>ERROR: Product info not updated.</div></div>";
         }

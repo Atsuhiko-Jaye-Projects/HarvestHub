@@ -6,11 +6,14 @@
     <!-- Logo -->
     <div class="navbar bg-dark border-bottom border-white mb-3 d-flex justify-content-center p-3">
       <a class="navbar-brand d-flex flex-column align-items-center w-100" href="#">
-        <img src="<?= $base_url ?>libs/images/logo.png" alt="Logo" class="rounded-circle" width="100" height="100">
+        <img src="<?= $base_url ?>libs/images/logo.png" alt="Logo" class="rounded-circle" width="100" height="100" >
       </a>
     </div>
 
     <!-- Sidebar Menu -->
+    <a href="<?= $base_url ?>user/farmer/farm/farm_crop_analytics.php" border-radius="5px" class="sidebar-btn <?= $pageFile=='farm_crop_analytics.php' ? 'active' : '' ?>">
+      <i class="bi bi-bar-chart-line me-2"></i> Crop & Price Analytics
+    </a>
     <a href="<?= $base_url ?>user/farmer/index.php" class="sidebar-btn <?= $pageFile=='index.php' ? 'active' : '' ?>">
       <i class="bi bi-grid me-2"></i> Farm Summary
     </a>

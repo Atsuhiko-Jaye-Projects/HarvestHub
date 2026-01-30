@@ -20,7 +20,11 @@ $base_url = "/HarvestHub/"; // Root URL for links
 
 <style>
   
-body { font-family: "Inter", sans-serif; }
+body {
+  font-family: "Inter", sans-serif;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+
 /* Darker backdrop with smooth opacity */
 .modal-backdrop.show {
   opacity: 0.6 !important;
@@ -286,6 +290,37 @@ textarea:focus {
   text-align: center;
   font-weight: 500;
 }
+
+.sticky-save-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  z-index: 9999;
+}
+.nav-pills .nav-link {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link:hover {
+  background: #e9f7ef;
+  color: #198754;
+}
+
+.nav-pills .nav-link.active {
+  background: #198754;
+  color: #fff;
+  border-color: #198754;
+}
+
 
 
 </style>

@@ -569,6 +569,96 @@ class Order{
         return $stmt;
     }
 
+    function getTopSoldCropDaily(){
+
+        $query = "SELECT 
+                    p.product_name,
+                    SUM(o.quantity) AS total_sold,
+                    SUM(o.quantity * p.price_per_unit) AS price_sold,
+                    DATE_FORMAT(CURDATE(), '%d %b %Y') AS sale_date  -- Display today nicely
+                FROM 
+                    ". $this->table_name . " o
+                JOIN 
+                    products p ON o.product_id = p.product_id
+                WHERE
+                    o.status = 'complete' 
+                    AND farmer_id = :farmer_id 
+                    AND DATE(o.created_at) = CURDATE()
+                GROUP BY 
+                    p.product_name
+                ORDER BY 
+                    total_sold DESC
+                LIMIT 10;";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+
+    function getTopSoldCropMonthly(){
+
+        $query = "SELECT 
+                    p.product_name,
+                    DATE_FORMAT(o.created_at, '%d %b %Y') AS sale_day,  -- Day view
+                    SUM(o.quantity) AS total_sold,
+                    SUM(o.quantity * p.price_per_unit) AS price_sold
+                FROM 
+                    ". $this->table_name . " o
+                JOIN 
+                    products p ON o.product_id = p.product_id
+                WHERE
+                    o.status = 'complete' 
+                    AND farmer_id = :farmer_id 
+                    AND MONTH(o.created_at) = MONTH(CURDATE()) 
+                    AND YEAR(o.created_at) = YEAR(CURDATE())   
+                GROUP BY 
+                    p.product_name, DAY(o.created_at)
+                ORDER BY 
+                    DAY(o.created_at) DESC, total_sold DESC
+                LIMIT 10;";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+
+    
+    function getTopSoldCropAnnually(){
+
+        $query = "SELECT 
+                    p.product_name,
+                    CONCAT(MONTHNAME(o.created_at), ' ', YEAR(o.created_at)) AS sale_month,
+                    SUM(o.quantity) AS total_sold,
+                    SUM(o.quantity * p.price_per_unit) AS price_sold
+                FROM 
+                    ". $this->table_name . " o
+                JOIN 
+                    products p ON o.product_id = p.product_id
+                WHERE
+                    o.status = 'complete' 
+                    AND farmer_id = :farmer_id 
+                    AND o.created_at >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+                GROUP BY 
+                    p.product_name, sale_month
+                ORDER BY 
+                    o.created_at DESC, total_sold DESC
+                LIMIT 10;";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
+        
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 
 
 
