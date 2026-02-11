@@ -4,8 +4,14 @@
 $order->farmer_id = $_SESSION['user_id'];
 
 $MCSD_stmt = $order->getTopSoldCropDaily();
+$num_MCSD = $MCSD_stmt->rowCount();
+
 $MCSM_stmt = $order->getTopSoldCropMonthly();
+$num_MCSM = $MCSM_stmt->rowCount();
+
 $MCSA_stmt = $order->getTopSoldCropAnnually();
+$num_MCSA = $MCSA_stmt->rowCount();
+
 
 ?>
 <div class="row g-3">
@@ -66,32 +72,47 @@ $MCSA_stmt = $order->getTopSoldCropAnnually();
       <div class="tab-pane fade show active" id="daily-crop-sold-tab" role="tabpanel" aria-labelledby="daily-crop-sold-lbl">
         <div class="table-responsive">
           <table class="table table-hover mb-0 align-middle">
-            <thead class="table-light">
-              <tr>
-                <th>#</th>
-                <th>Crop</th>
-                <th>Sold Quantity</th>
-                <th>Date</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                $rank_MSC = 1;
-                while ($row_MSC = $MCSD_stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>";
-                    echo "<td>{$rank_MSC}</td>";
-                    echo "<td>{$row_MSC['product_name']}</td>";
-                    echo "<td>{$row_MSC['total_sold']} KG</td>";
-                    echo "<td>{$row_MSC['sale_date']} KG</td>";
-                    echo "<td>₱" . number_format($row_MSC['price_sold'], 2). "</td>";
-                    
-                    echo "</tr>";
-                    $rank_MSC++;
-                }
-              ?>
-            </tbody>
+
+          <?php if ($num_MCSD > 0): ?>
+              <thead class="table-light">
+                  <tr>
+                      <th>#</th>
+                      <th>Crop</th>
+                      <th>Sold Quantity</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <?php
+                  $rank_MSC = 1;
+                  while ($row_MSC = $MCSD_stmt->fetch(PDO::FETCH_ASSOC)) {
+                      echo "<tr>";
+                      echo "<td>{$rank_MSC}</td>";
+                      echo "<td>{$row_MSC['product_name']}</td>";
+                      echo "<td>{$row_MSC['total_sold']} KG</td>";
+                      echo "<td>{$row_MSC['sale_date']}</td>";
+                      echo "<td>₱" . number_format($row_MSC['price_sold'], 2) . "</td>";
+                      echo "</tr>";
+                      $rank_MSC++;
+                  }
+                  ?>
+              </tbody>
+
+            <?php else: ?>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <div class="alert alert-info mb-0">
+                                No sales recorded yet.
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            <?php endif; ?>
+
           </table>
+
         </div>
       </div>
 
@@ -111,16 +132,18 @@ $MCSA_stmt = $order->getTopSoldCropAnnually();
             </thead>
             <tbody>
               <?php
-                $rank_MSCM = 1;
-                while ($row_MCSM = $MCSM_stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>";
-                    echo "<td>{$rank_MSCM}</td>";
-                    echo "<td>{$row_MCSM['product_name']}</td>";
-                    echo "<td>{$row_MCSM['total_sold']} KG</td>";
-                    echo "<td>{$row_MCSM['sale_day']}</td>";
-                    echo "<td>₱" . number_format($row_MCSM['price_sold'], 2) . "</td>";
-                    echo "</tr>";
-                    $rank_MSCM++;
+                if ($num_MCSM > 0) {
+                  $rank_MSCM = 1;
+                  while ($row_MCSM = $MCSM_stmt->fetch(PDO::FETCH_ASSOC)) {
+                      echo "<tr>";
+                      echo "<td>{$rank_MSCM}</td>";
+                      echo "<td>{$row_MCSM['product_name']}</td>";
+                      echo "<td>{$row_MCSM['total_sold']} KG</td>";
+                      echo "<td>{$row_MCSM['sale_day']}</td>";
+                      echo "<td>₱" . number_format($row_MCSM['price_sold'], 2) . "</td>";
+                      echo "</tr>";
+                      $rank_MSCM++;
+                  }
                 }
               ?>
             </tbody>
@@ -166,222 +189,160 @@ $MCSA_stmt = $order->getTopSoldCropAnnually();
     </div>
   </div>
 
-  <!-- TOP SEASONAL CROPS -->
-  <div class="col-lg-6 col-sm-12">
-    <div class="card shadow-sm h-100 two-d-border">
+    <!-- TOP SEASONAL CROPS -->
+    <div class="col-lg-6 col-sm-12">
+      <div class="card shadow-sm h-100 two-d-border">
 
-      <!-- Header -->
-      <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
-        style="background: linear-gradient(135deg, #198754, #20c997);">
-        <div class="d-flex align-items-center gap-2">
-          <div class="icon-badge bg-white text-success rounded-circle p-2">
-            <i class="bi bi-bar-chart-fill"></i>
+        <!-- Header -->
+        <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
+          style="background: linear-gradient(135deg, #198754, #20c997);">
+          <div class="d-flex align-items-center gap-2">
+            <div class="icon-badge bg-white text-success rounded-circle p-2">
+              <i class="bi bi-bar-chart-fill"></i>
+            </div>
+            <span>Top Seasonal Crops</span>
           </div>
-          <span>Top Seasonal Crops</span>
+          <span class="badge bg-light text-success small">
+            <i class="bi bi-cloud-sun"></i> Live
+          </span>
         </div>
-        <span class="badge bg-light text-success small">
-          <i class="bi bi-cloud-sun"></i> Live
-        </span>
-      </div>
 
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0 align-middle">
-            <thead class="table-light">
-              <tr>
-                <th style="width: 60px;">#</th>
-                <th>Crop</th>
-                <th class="text-end">Rain (mm)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $rank = 1;
-              while ($row_crops = $SC_stmt->fetch(PDO::FETCH_ASSOC)) {
-                $rankBadge = match ($rank) {
-                    1 => 'bg-warning text-dark',
-                    2 => 'bg-secondary',
-                    3 => 'bg-info',
-                    default => 'bg-light text-dark'
-                };
-
-                echo "
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+              <thead class="table-light">
                 <tr>
-                  <td>
-                    <span class='badge {$rankBadge}'>{$rank}</span>
-                  </td>
-                  <td>
-                    <div class='fw-semibold'>
-                      <i class='bi bi-seedling text-success me-1'></i>
-                      {$row_crops['crop_name']}
-                    </div>
-                  </td>
-                  <td class='text-end'>
-                    <span class='badge bg-success-subtle text-success'>
-                      {$row_crops['avg_precip']} mm
-                    </span>
-                  </td>
-                </tr>";
-                $rank++;
-              }
-              ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
+                  <th style="width: 60px;">#</th>
+                  <th>Crop</th>
+                  <th class="text-end">Rain (mm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $rank = 1;
+                while ($row_crops = $SC_stmt->fetch(PDO::FETCH_ASSOC)) {
+                  $rankBadge = match ($rank) {
+                      1 => 'bg-warning text-dark',
+                      2 => 'bg-secondary',
+                      3 => 'bg-info',
+                      default => 'bg-light text-dark'
+                  };
 
-      <!-- Footer actions -->
-      <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-        <small class="text-muted">
-          Based on weather & crop logs
-        </small>
+                  echo "
+                  <tr>
+                    <td>
+                      <span class='badge {$rankBadge}'>{$rank}</span>
+                    </td>
+                    <td>
+                      <div class='fw-semibold'>
+                        <i class='bi bi-seedling text-success me-1'></i>
+                        {$row_crops['crop_name']}
+                      </div>
+                    </td>
+                    <td class='text-end'>
+                      <span class='badge bg-success-subtle text-success'>
+                        {$row_crops['avg_precip']} mm
+                      </span>
+                    </td>
+                  </tr>";
+                  $rank++;
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Footer actions -->
+        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+          <small class="text-muted">
+            Based on weather & crop logs
+          </small>
+        </div>
+
       </div>
+    </div>
+
+      
+
+    
+
+    <!-- TOP SEASONAL CROPS -->
+    <div class="col-lg-6 col-sm-12">
+      <div class="card shadow-sm h-100 two-d-border">
+
+        <!-- Header -->
+        <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
+          style="background: linear-gradient(135deg, #198754, #20c997);">
+          <div class="d-flex align-items-center gap-2">
+            <div class="icon-badge bg-white text-success rounded-circle p-2">
+              <i class="bi bi-bar-chart-fill"></i>
+            </div>
+            <span>Product Price History</span>
+          </div>
+          <span class="badge bg-light text-success small">
+            <i class="bi bi-cloud-sun"></i> Live
+          </span>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th style="width: 60px;">#</th>
+                  <th>Crop</th>
+                  <th class="text-end">Rain (mm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $rank = 1;
+                while ($row_crops = $SC_stmt->fetch(PDO::FETCH_ASSOC)) {
+                  $rankBadge = match ($rank) {
+                      1 => 'bg-warning text-dark',
+                      2 => 'bg-secondary',
+                      3 => 'bg-info',
+                      default => 'bg-light text-dark'
+                  };
+
+                  echo "
+                  <tr>
+                    <td>
+                      <span class='badge {$rankBadge}'>{$rank}</span>
+                    </td>
+                    <td>
+                      <div class='fw-semibold'>
+                        <i class='bi bi-seedling text-success me-1'></i>
+                        {$row_crops['crop_name']}
+                      </div>
+                    </td>
+                    <td class='text-end'>
+                      <span class='badge bg-success-subtle text-success'>
+                        {$row_crops['avg_precip']} mm
+                      </span>
+                    </td>
+                  </tr>";
+                  $rank++;
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Footer actions -->
+        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+          <small class="text-muted">
+            Based on weather & crop logs
+          </small>
+        </div>
+
+      </div>
+    </div>
 
     </div>
   </div>
-  
-    <div class="col-lg-6 col-sm-12">
-    <div class="card shadow-sm h-100 two-d-border">
-
-      <!-- Header -->
-      <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
-        style="background: linear-gradient(135deg, #198754, #20c997);">
-        <div class="d-flex align-items-center gap-2">
-          <div class="icon-badge bg-white text-success rounded-circle p-2">
-            <i class="bi bi-bar-chart-fill"></i>
-          </div>
-          <span>Top Seasonal Crops</span>
-        </div>
-        <span class="badge bg-light text-success small">
-          <i class="bi bi-cloud-sun"></i> Live
-        </span>
-      </div>
-
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0 align-middle">
-            <thead class="table-light">
-              <tr>
-                <th style="width: 60px;">#</th>
-                <th>Crop</th>
-                <th class="text-end">Rain (mm)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $rank = 1;
-              while ($row_crops = $SC_stmt->fetch(PDO::FETCH_ASSOC)) {
-                $rankBadge = match ($rank) {
-                    1 => 'bg-warning text-dark',
-                    2 => 'bg-secondary',
-                    3 => 'bg-info',
-                    default => 'bg-light text-dark'
-                };
-
-                echo "
-                <tr>
-                  <td>
-                    <span class='badge {$rankBadge}'>{$rank}</span>
-                  </td>
-                  <td>
-                    <div class='fw-semibold'>
-                      <i class='bi bi-seedling text-success me-1'></i>
-                      {$row_crops['crop_name']}
-                    </div>
-                  </td>
-                  <td class='text-end'>
-                    <span class='badge bg-success-subtle text-success'>
-                      {$row_crops['avg_precip']} mm
-                    </span>
-                  </td>
-                </tr>";
-                $rank++;
-              }
-              ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Footer actions -->
-      <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-        <small class="text-muted">
-          Based on weather & crop logs
-        </small>
-      </div>
-
-    </div>
-  </div>
-    <div class="col-lg-6 col-sm-12">
-    <div class="card shadow-sm h-100 two-d-border">
-
-      <!-- Header -->
-      <div class="card-header d-flex align-items-center justify-content-between fw-bold text-white"
-        style="background: linear-gradient(135deg, #198754, #20c997);">
-        <div class="d-flex align-items-center gap-2">
-          <div class="icon-badge bg-white text-success rounded-circle p-2">
-            <i class="bi bi-bar-chart-fill"></i>
-          </div>
-          <span>Top Seasonal Crops</span>
-        </div>
-        <span class="badge bg-light text-success small">
-          <i class="bi bi-cloud-sun"></i> Live
-        </span>
-      </div>
-
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0 align-middle">
-            <thead class="table-light">
-              <tr>
-                <th style="width: 60px;">#</th>
-                <th>Crop</th>
-                <th class="text-end">Rain (mm)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $rank = 1;
-              while ($row_crops = $SC_stmt->fetch(PDO::FETCH_ASSOC)) {
-                $rankBadge = match ($rank) {
-                    1 => 'bg-warning text-dark',
-                    2 => 'bg-secondary',
-                    3 => 'bg-info',
-                    default => 'bg-light text-dark'
-                };
-
-                echo "
-                <tr>
-                  <td>
-                    <span class='badge {$rankBadge}'>{$rank}</span>
-                  </td>
-                  <td>
-                    <div class='fw-semibold'>
-                      <i class='bi bi-seedling text-success me-1'></i>
-                      {$row_crops['crop_name']}
-                    </div>
-                  </td>
-                  <td class='text-end'>
-                    <span class='badge bg-success-subtle text-success'>
-                      {$row_crops['avg_precip']} mm
-                    </span>
-                  </td>
-                </tr>";
-                $rank++;
-              }
-              ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Footer actions -->
-      <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-        <small class="text-muted">
-          Based on weather & crop logs
-        </small>
-      </div>
-
-    </div>
+    
   </div>
 </div>
