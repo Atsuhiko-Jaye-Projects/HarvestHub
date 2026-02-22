@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2026 at 01:31 AM
+-- Generation Time: Feb 22, 2026 at 11:35 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -487,7 +487,7 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `product_name` varchar(250) NOT NULL,
-  `price_per_unit` int(20) NOT NULL,
+  `price_per_unit` double(5,2) NOT NULL,
   `user_id` int(11) NOT NULL,
   `category` varchar(50) NOT NULL,
   `unit` varchar(20) NOT NULL,
@@ -510,11 +510,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(6, 19, 'Kalabasa', 22, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 350, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 125, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', 225, NULL),
-(7, 4, 'kamatis', 15, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 240, '2a7cb252aa6e87d07c2bf4f8c4191b8b84682f3f-kamatis.jpg', 40, '2026-01-17 04:36:30', '2026-01-17 12:36:30', 'Active', 'preorder', 200, NULL),
-(9, 22, 'Kamote', 20, 1, 'Vegetable', 'KG', 0, 'Kamote (Ipomoea batatas), or sweet potato, is a versatile root vegetable known for its large, starchy, sweet-tasting tubers and edible heart-shaped leaves (talbos ng kamote). Belonging to the morning glory family (Convolvulaceae), it\'s a vital staple in the Philippines, eaten boiled, fried, roasted,', 76, 350, '7537ce549714a622697ca1cc1c15a56b743305d6-kamote.jpg', 30, '2026-01-19 02:04:44', '2026-01-19 10:04:44', 'Active', 'harvest', 320, NULL),
-(10, 5, 'Potato', 33, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 190, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', 0, '2026-01-19 02:07:42', '2026-01-19 10:07:42', 'Active', 'preorder', 190, NULL),
-(12, 20, 'kamatis', 15, 1, '', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 240, '9dd3eb7124b7bd69c493f7b657d4abc7a792ffc0-Kalabasa_(Calabaza)_squash_from_the_Philippines.jpg', 20, '2026-01-21 14:40:19', '2026-01-21 22:40:19', 'Active', 'preorder', 220, NULL);
+(6, 19, 'Kalabasa', 22.26, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 650, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 125, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', 635, NULL),
+(7, 4, 'kamatis', 26.00, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1150, '2a7cb252aa6e87d07c2bf4f8c4191b8b84682f3f-kamatis.jpg', 40, '2026-01-17 04:36:30', '2026-01-17 12:36:30', 'Active', 'harvest', 1150, NULL),
+(9, 22, 'Kamote', 30.00, 1, 'Vegetable', 'KG', 0, 'Kamote (Ipomoea batatas), or sweet potato, is a versatile root vegetable known for its large, starchy, sweet-tasting tubers and edible heart-shaped leaves (talbos ng kamote). Belonging to the morning glory family (Convolvulaceae), it\'s a vital staple in the Philippines, eaten boiled, fried, roasted,', 76, 2650, '7537ce549714a622697ca1cc1c15a56b743305d6-kamote.jpg', 30, '2026-01-19 02:04:44', '2026-01-19 10:04:44', 'Active', 'preorder', 1750, NULL),
+(10, 5, 'Potato', 55.00, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 230, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', 0, '2026-01-19 02:07:42', '2026-01-19 10:07:42', 'Active', 'preorder', 230, NULL);
 
 -- --------------------------------------------------------
 
@@ -526,9 +525,17 @@ CREATE TABLE `product_histories` (
   `id` int(11) NOT NULL,
   `farmer_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `price_per_unit` double NOT NULL,
+  `new_price_per_unit` double NOT NULL,
+  `old_price_per_unit` double(5,2) NOT NULL,
   `recorded_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_histories`
+--
+
+INSERT INTO `product_histories` (`id`, `farmer_id`, `product_id`, `new_price_per_unit`, `old_price_per_unit`, `recorded_at`) VALUES
+(6, 1, 5, 55, 56.00, '2026-02-22 17:11:28');
 
 -- --------------------------------------------------------
 
@@ -1171,7 +1178,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `product_histories`
 --
 ALTER TABLE `product_histories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_types`

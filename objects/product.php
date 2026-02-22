@@ -19,6 +19,7 @@ class Product{
     public $status;
     public $created_at;
     public $available_stocks;
+    public $add_stocks;
     public $sold_count;
     public $modified;
     public $product_type;
@@ -547,6 +548,103 @@ class Product{
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 
         // Execute
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function updateAvailableStock(){
+
+    $query = "UPDATE
+                " . $this->table_name . "
+            SET
+                price_per_unit = :price_per_unit,
+
+                total_stocks = GREATEST(
+                    total_stocks,
+                    available_stocks + :add_stocks
+                ),
+
+                available_stocks = available_stocks + :add_stocks,
+
+                product_type = :product_type,
+                product_description = :product_description
+
+            WHERE
+                product_id = :product_id";
+        
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->price_per_unit=htmlspecialchars(strip_tags($this->price_per_unit));
+        // $this->add_stocks = htmlspecialchars(strip_tags($this->add_stocks));
+        $this->product_type=htmlspecialchars(strip_tags($this->product_type));
+        $this->product_description=htmlspecialchars(strip_tags($this->product_description));
+
+        $stmt->bindParam(":price_per_unit", $this->price_per_unit);
+        $stmt->bindParam(":add_stocks", $this->add_stocks);
+        $stmt->bindParam(":product_type", $this->product_type);
+        $stmt->bindParam(":product_description", $this->product_description);
+        $stmt->bindParam(":product_id", $this->product_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function updateProductDetails(){
+
+        $query = "UPDATE
+                " . $this->table_name . "
+                SET
+                price_per_unit = :price_per_unit,
+                product_type = :product_type,
+                product_description = :product_description
+                WHERE
+                product_id = :product_id";
+        
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->price_per_unit=htmlspecialchars(strip_tags($this->price_per_unit));
+        $this->product_type=htmlspecialchars(strip_tags($this->product_type));
+        $this->product_description=htmlspecialchars(strip_tags($this->product_description));
+
+        $stmt->bindParam(":price_per_unit", $this->price_per_unit);
+        $stmt->bindParam(":product_type", $this->product_type);
+        $stmt->bindParam(":product_description", $this->product_description);
+        $stmt->bindParam(":product_id", $this->product_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function getProductHistory(){
+        $query = "SELECT p.product_id,
+                        p.product_name,
+                        ph.new_price_per_unit,
+                        ph.old_price_per_unit,
+                        ph.recorded_at
+                FROM " . $this->table_name . " p
+                LEFT JOIN product_histories ph
+                    ON p.product_id = ph.product_id
+                    AND ph.recorded_at = (
+                        SELECT MAX(recorded_at)
+                        FROM product_histories
+                        WHERE product_id = p.product_id
+                    )
+                WHERE p.user_id = :user_id
+                ORDER BY p.product_name ASC";
+
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":user_id", $this->user_id);
         $stmt->execute();
 
         return $stmt;

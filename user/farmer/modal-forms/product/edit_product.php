@@ -4,7 +4,7 @@
 
   <div class="modal-dialog">
     <div class="modal-content">
-      
+
       <!-- Form starts here and wraps the modal content -->
       <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
 
@@ -13,37 +13,91 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
+
+
         <div class="modal-body">
           <div class="card-body">
             <div class="container">
-              <input type="hidden" name="product_id" value="<?php echo $id; ?>">
+
+              <div class="text-center mb-3">
+                <img src="<?php echo $image_path; ?>" 
+                    class="img-fluid rounded border" 
+                    style="max-height: 200px; object-fit: cover;">
+              </div>
+
+              <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
               <input type="hidden" name="action" value="update">
+              
               <div class="row mb-3">
+
                 <div class="col-md-6">
                   <Label>Product Name</Label>
-                  <input type="text" name="product_name" class="form-control" value="<?php echo $product_name; ?>" required placeholder="Product Name">
+                  <input type="text" 
+                  name="product_name" 
+                  class="form-control" 
+                  value="<?php echo $product_name; ?>" 
+                  required placeholder="Product Name" readonly>
+                </div>
+
+                <div class="col-md-6">
+                  <Label>Price Per KG (₱)</Label>
+                  <input type="hidden" name="current_price" value="<?php echo $price_per_unit; ?>">
+                  <input type="number" 
+                  name="price_per_unit" 
+                  step="0.01"
+                  min="0"
+                  value="<?php echo number_format($price_per_unit,2); ?>" 
+                  class="form-control" required 
+                  min
+                  placeholder="Price/KG">
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <Label>Date Planted</Label>
-                  <input type="date" name="date_planted" value="<?php echo $date_planted; ?>" class="form-control" required placeholder="Unit">
+                  <Label>Add New Stock (KG)</Label>
+                      <input type="number" 
+                      name="add_stock" 
+                      class="form-control" 
+                      min="0" 
+                      placeholder="Enter additional stock">
                 </div>
+
                 <div class="col-md-6">
-                  <Label>Estimated Harvest Date</Label>
-                  <input type="date" name="estimated_harvest_date" value="<?php echo $estimated_harvest_date; ?>" class="form-control" required placeholder="Lot Size">
+                  <Label>Available Stocks (KG)</Label>
+                  <input type="number" 
+                  name="available_stocks" 
+                  value="<?php echo $available_stocks; ?>" 
+                  class="form-control" readonly>
                 </div>
+
               </div>
 
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <Label>Yeild</Label>
-                  <input type="number" name="yield" value="<?php echo $yield; ?>" class="form-control" required placeholder="Lot Size">
+
+                  <Label>Product Category</Label>
+                  <select name="product_type" class="form-select" required>
+                    <option value="harvest" 
+                        <?php if($product_type == 'harvest') echo 'selected'; ?>>
+                        Harvest Product
+                    </option>
+
+                    <option value="preorder" 
+                        <?php if($product_type == 'preorder') echo 'selected'; ?>>
+                        Preorder Product
+                    </option>
+                  </select>
                 </div>
+
                 <div class="col-md-6">
-                  <Label>Suggested Price</Label>
-                  <input type="number" name="suggested_price" value="<?php echo $suggested_price; ?>" class="form-control" required placeholder="Lot Size">
+                  <Label>Description</Label>
+                  <textarea name="description" 
+                  class="form-control" 
+                  style="height:120px;"
+                  required
+
+                  placeholder="Lot Size"><?php echo htmlspecialchars($product_description); ?></textarea>
                 </div>
               </div>
 

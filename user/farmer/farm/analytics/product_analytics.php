@@ -12,6 +12,11 @@ $num_MCSM = $MCSM_stmt->rowCount();
 $MCSA_stmt = $order->getTopSoldCropAnnually();
 $num_MCSA = $MCSA_stmt->rowCount();
 
+// price history table
+$product->user_id = $_SESSION['user_id'];
+$prod_hist = $product->getProductHistory();
+$num_prod_hist = $prod_hist->rowCount();
+
 
 ?>
 <div class="row g-3">
@@ -40,7 +45,7 @@ $num_MCSA = $MCSA_stmt->rowCount();
         <div class="icon-badge bg-white text-success rounded-circle p-2">
           <i class="bi bi-bar-chart-fill"></i>
         </div>
-        <span>Top Crop Sales Analytics</span>
+        <span> Crop Sales Analytics</span>
       </div>
       <span class="badge bg-light text-success small">Live</span>
     </div>
@@ -189,7 +194,6 @@ $num_MCSA = $MCSA_stmt->rowCount();
     </div>
   </div>
 
-    <!-- TOP SEASONAL CROPS -->
     <div class="col-lg-6 col-sm-12">
       <div class="card shadow-sm h-100 two-d-border">
 
@@ -200,7 +204,7 @@ $num_MCSA = $MCSA_stmt->rowCount();
             <div class="icon-badge bg-white text-success rounded-circle p-2">
               <i class="bi bi-bar-chart-fill"></i>
             </div>
-            <span>Top Seasonal Crops</span>
+            <span> Suggested Crops for this <?php  echo $season; ?></span>
           </div>
           <span class="badge bg-light text-success small">
             <i class="bi bi-cloud-sun"></i> Live
@@ -263,11 +267,7 @@ $num_MCSA = $MCSA_stmt->rowCount();
       </div>
     </div>
 
-      
 
-    
-
-    <!-- TOP SEASONAL CROPS -->
     <div class="col-lg-6 col-sm-12">
       <div class="card shadow-sm h-100 two-d-border">
 
@@ -290,37 +290,28 @@ $num_MCSA = $MCSA_stmt->rowCount();
             <table class="table table-hover mb-0 align-middle">
               <thead class="table-light">
                 <tr>
-                  <th style="width: 60px;">#</th>
                   <th>Crop</th>
-                  <th class="text-end">Rain (mm)</th>
+                  <th>New Price</th>
+                  <th>Old Price</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
                 $rank = 1;
-                while ($row_crops = $SC_stmt->fetch(PDO::FETCH_ASSOC)) {
-                  $rankBadge = match ($rank) {
-                      1 => 'bg-warning text-dark',
-                      2 => 'bg-secondary',
-                      3 => 'bg-info',
-                      default => 'bg-light text-dark'
-                  };
-
+                while ($row_product_history = $prod_hist->fetch(PDO::FETCH_ASSOC)) {
                   echo "
                   <tr>
                     <td>
-                      <span class='badge {$rankBadge}'>{$rank}</span>
-                    </td>
-                    <td>
                       <div class='fw-semibold'>
                         <i class='bi bi-seedling text-success me-1'></i>
-                        {$row_crops['crop_name']}
+                        {$row_product_history['product_name']}
                       </div>
                     </td>
-                    <td class='text-end'>
-                      <span class='badge bg-success-subtle text-success'>
-                        {$row_crops['avg_precip']} mm
-                      </span>
+                    <td>
+                    {$row_product_history['new_price_per_unit']}
+                    </td>
+                    <td>
+                    {$row_product_history['old_price_per_unit']}
                     </td>
                   </tr>";
                   $rank++;

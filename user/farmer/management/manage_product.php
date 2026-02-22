@@ -2,6 +2,8 @@
 include_once '../../../config/core.php';
 include_once "../../../config/database.php";
 include_once "../../../objects/product.php";
+include_once "../../../objects/product_history.php";
+
 
 $page_title = "Manage Product";
 include_once "../layout/layout_head.php";
@@ -13,6 +15,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 $product = new Product($db);
+$product_history = new ProductHistory($db);
 
 // get the search term
 $page_url = "{$home_url}user/farmer/management/manage_product.php?";
@@ -32,30 +35,58 @@ $total_rows = $product->countAll();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-	$harvest_product->user_id = $_SESSION['user_id'];
-	$harvest_product->category = $_POST['category'];
-	$harvest_product->product_name = $_POST['product_name'];
-	$harvest_product->unit = $_POST['unit'];
-	$harvest_product->lot_size = $_POST['lot_size'];
-	$harvest_product->price_per_unit = $_POST['price_per_unit'];
-	$harvest_product->total_stock = $_POST['total_stock'];
-	$harvest_product->product_description = $_POST['product_description']; 
+	$add_stock = $_POST['add_stock'];
+    $new_price = $_POST['price_per_unit'];
+    $current_price = $_POST['current_price'];
 
-	$image=!empty($_FILES["product_image"]["name"])
-        ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
-	$harvest_product->product_image = $image;
+	$product->product_id = $_POST['product_id'];
+	$product->price_per_unit = $_POST['price_per_unit'];
+	$product->add_stocks = $add_stock;
+	$product->product_type = $_POST['product_type'];
+	$product->product_description = $_POST['description'];
 
-	
-	if ($harvest_product->createProduct()) {
-		echo $harvest_product->uploadPhoto();
+	if (!empty($add_stock) && $add_stock > 0) {
+        //print_r($_POST);
+		$product->updateAvailableStock();
+			echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product Details Updated & Added New Stocks',
+                    text: 'Product information has been updated successfully',
+                    showConfirmButton: true
+                });
+            </script>
+            ";
+        if ($new_price != $current_price) {
+            $product_history->farmer_id = $_SESSION['user_id'];
+            $product_history->product_id = $_POST['product_id'];
+            $product_history->new_price_per_unit = $new_price;
+            $product_history->old_price_per_unit = $current_price;
+            $product_history->LogPrice();
+        }
 
-		echo "<div class='container'>";
-			echo "<div class='alert alert-success'>Product Info Saved!</div>";
-		echo "</div>";
 	}else{
-		echo "<div class='container'>";
-			echo "<div class='alert alert-danger'>ERROR: Product info is not save.</div>";
-		echo "</div>";
+		$product->updateProductDetails();
+		echo "
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product Details Updated!',
+                    text: 'Product information has been updated successfully',
+                    showConfirmButton: true
+                });
+            </script>
+            ";
+            if ($new_price != $current_price) {
+            $product_history->farmer_id = $_SESSION['user_id'];
+            $product_history->product_id = $_POST['product_id'];
+            $product_history->new_price_per_unit = $new_price;
+            $product_history->old_price_per_unit = $current_price;
+            $product_history->LogPrice();
+        }
 	}
 
 }
@@ -71,4 +102,8 @@ $product_total_value = $product->productValue();
 // include the management product template
 include_once "template/man_product.php";
 ?>
-<?php include_once "../layout/layout_foot.php"; ?>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.4/bootbox.min.js"></script>
+<?php //include_once "../layout/layout_foot.php"; ?>

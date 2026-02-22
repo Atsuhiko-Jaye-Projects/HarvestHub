@@ -6,6 +6,7 @@ include_once "../../../objects/order.php";
 include_once "../../../objects/farm.php";
 include_once "../../../objects/order.php";
 include_once "../../../objects/seasonal_crop_log.php";
+include_once "../../../objects/product.php";
 
 
 $database = new Database();
@@ -13,6 +14,7 @@ $db = $database->getConnection();
 
 $farm = new Farm($db);
 $order = new Order($db);
+$product = new product($db);
 $seasonal_crop_log = new SeasonalCropLog($db);
 
 $page_title = "Index";

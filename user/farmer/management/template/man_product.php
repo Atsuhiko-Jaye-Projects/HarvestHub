@@ -79,8 +79,7 @@
       <thead class="table-success text-uppercase text-center">
         <tr>
           <th>Product Name</th>
-          <th>Category</th>
-          <th>Price</th>
+          <th>Price/KG</th>
           <th>Available Stocks</th>
           <th>Product Type</th>
           <th>Date</th>
@@ -91,10 +90,22 @@
       <?php
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
           extract($row);
+          
+          $image = $product_image;
+          $image_path = "";
+
+          if ($product_type == "preorder") {
+            $image_path = "{$base_url}user/uploads/{$_SESSION['user_id']}/posted_crops/{$image}";
+          }else{
+            $image_path = "{$base_url}user/uploads/{$_SESSION['user_id']}/products/{$image}";
+          }
           echo "<tr class='align-middle text-center'>";
-            echo "<td>{$product_name}</td>";
-            echo "<td>{$category}</td>";
-            echo "<td>₱ " . number_format($price_per_unit, 2) . "</td>";
+            echo "<td>
+              <img src='{$image_path}' width='60' height='60' style='object-fit:cover; border-radius:5px; margin-right:8px;'>
+              {$product_name}
+            </td>";
+
+            echo "<td>₱ " . number_format($price_per_unit, 2) . "/KG</td>";
             echo "<td>
                 <span class='text-primary fw-bold'>
                   {$available_stocks}
@@ -113,16 +124,28 @@
             echo "</td>";
             echo "<td>". date("m-d-Y", strtotime($created_at))."</td>";
             echo "<td class='text-center'>";
-              echo "<div class='btn-group' role='group'>";
-              // echo "<button class='btn btn-outline-primary btn-sm rounded-pill me-2' data-bs-toggle='modal' data-bs-target='#edit-product-modal-$id' title='Edit'>
-              //         <i class='bi bi-pencil-square'></i>
-              //       </button>";
-              echo "<a href='#' data-delete-id='{$id}' class='btn btn-outline-danger delete-object' title='Remove'>
-                      <i class='bi bi-trash'></i>
-                    </a>";
-              echo "</div>";
+            echo "<div class='btn-group btn-group-sm' role='group'>";
+
+            echo "<button type='button' 
+                    class='btn btn-outline-primary' 
+                    data-bs-toggle='modal' 
+                    data-bs-target='#edit-product-modal-$id'
+                    title='Edit'>
+                    <i class='bi bi-pencil-square'></i>
+                  </button>";
+
+            echo "<button type='button' 
+                    class='btn btn-outline-danger delete-object' 
+                    data-delete-id='{$id}'
+                    title='Remove'>
+                    <i class='bi bi-trash'></i>
+                  </button>";
+
+            echo "</div>";
             echo "</td>";
           echo "</tr>";
+
+          include "../modal-forms/product/edit_product.php";
         }
       ?>
       </tbody>
