@@ -80,9 +80,9 @@
         <tr>
           <th>Product Name</th>
           <th>Price/KG</th>
-          <th>Available Stocks</th>
-          <th>Product Type</th>
-          <th>Date</th>
+          <th>Available Stocks (KG)</th>
+          <th>Product Category</th>
+          <th>Date Listed</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>

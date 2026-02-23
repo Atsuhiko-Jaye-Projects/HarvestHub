@@ -278,7 +278,7 @@ $num_prod_hist = $prod_hist->rowCount();
             <div class="icon-badge bg-white text-success rounded-circle p-2">
               <i class="bi bi-bar-chart-fill"></i>
             </div>
-            <span>Product Price History</span>
+            <span>Price Trend Analysis</span>
           </div>
           <span class="badge bg-light text-success small">
             <i class="bi bi-cloud-sun"></i> Live
@@ -293,12 +293,29 @@ $num_prod_hist = $prod_hist->rowCount();
                   <th>Crop</th>
                   <th>New Price</th>
                   <th>Old Price</th>
+                  <th>Price Stats</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
                 $rank = 1;
                 while ($row_product_history = $prod_hist->fetch(PDO::FETCH_ASSOC)) {
+
+                  $old = $row_product_history['old_price_per_unit'];
+                  $new = $row_product_history['new_price_per_unit'];
+
+                  $percent_output = "N/A";
+
+                  if ($old > 0) {
+                      $percent = (($new - $old) / $old) * 100;
+                      $color = ($percent < 0) ? 'red' : 'green';
+                      $sign = ($percent > 0) ? '+' : '';
+
+                      $percent_output = "<span style='color:$color;'>"
+                                      . $sign . number_format($percent, 2)
+                                      . "%</span>";
+                  }
+
                   echo "
                   <tr>
                     <td>
@@ -308,12 +325,16 @@ $num_prod_hist = $prod_hist->rowCount();
                       </div>
                     </td>
                     <td>
-                    {$row_product_history['new_price_per_unit']}
+                      " . number_format($new, 2) . "
                     </td>
                     <td>
-                    {$row_product_history['old_price_per_unit']}
+                      $old
+                    </td>
+                    <td>
+                      $percent_output
                     </td>
                   </tr>";
+
                   $rank++;
                 }
                 ?>
@@ -325,7 +346,7 @@ $num_prod_hist = $prod_hist->rowCount();
         <!-- Footer actions -->
         <div class="card-footer bg-light d-flex justify-content-between align-items-center">
           <small class="text-muted">
-            Based on weather & crop logs
+            
           </small>
         </div>
 

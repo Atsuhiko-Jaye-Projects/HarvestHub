@@ -568,7 +568,8 @@ class Product{
                 available_stocks = available_stocks + :add_stocks,
 
                 product_type = :product_type,
-                product_description = :product_description
+                product_description = :product_description,
+                modified = :modified
 
             WHERE
                 product_id = :product_id";
@@ -580,12 +581,14 @@ class Product{
         // $this->add_stocks = htmlspecialchars(strip_tags($this->add_stocks));
         $this->product_type=htmlspecialchars(strip_tags($this->product_type));
         $this->product_description=htmlspecialchars(strip_tags($this->product_description));
+        $this->modified = date("Y-m-d H:i:s");
 
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
         $stmt->bindParam(":add_stocks", $this->add_stocks);
         $stmt->bindParam(":product_type", $this->product_type);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->bindParam(":modified", $this->modified);
 
         if ($stmt->execute()) {
             return true;
@@ -601,7 +604,8 @@ class Product{
                 SET
                 price_per_unit = :price_per_unit,
                 product_type = :product_type,
-                product_description = :product_description
+                product_description = :product_description,
+                modified = :modified
                 WHERE
                 product_id = :product_id";
         
@@ -611,11 +615,13 @@ class Product{
         $this->price_per_unit=htmlspecialchars(strip_tags($this->price_per_unit));
         $this->product_type=htmlspecialchars(strip_tags($this->product_type));
         $this->product_description=htmlspecialchars(strip_tags($this->product_description));
+        $this->modified = date("Y-m-d H:i:s");
 
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
         $stmt->bindParam(":product_type", $this->product_type);
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->bindParam(":modified", $this->modified);
 
         if ($stmt->execute()) {
             return true;
@@ -625,25 +631,41 @@ class Product{
     }
 
     function getProductHistory(){
-        $query = "SELECT p.product_id,
-                        p.product_name,
-                        ph.new_price_per_unit,
-                        ph.old_price_per_unit,
-                        ph.recorded_at
-                FROM " . $this->table_name . " p
-                LEFT JOIN product_histories ph
-                    ON p.product_id = ph.product_id
-                    AND ph.recorded_at = (
-                        SELECT MAX(recorded_at)
-                        FROM product_histories
-                        WHERE product_id = p.product_id
-                    )
-                WHERE p.user_id = :user_id
-                ORDER BY p.product_name ASC";
 
+        $query = "SELECT p.product_id,
+                    p.product_name,
+                    ph.new_price_per_unit,
+                    ph.old_price_per_unit,
+                    ph.recorded_at
+            FROM " . $this->table_name . " p
+            INNER JOIN product_histories ph 
+                ON p.product_id = ph.product_id
+            WHERE p.user_id = :user_id
+            AND ph.recorded_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            ORDER BY p.product_name DESC, ph.recorded_at DESC";
+
+        // $query = "SELECT p.product_id,
+        //                 p.product_name,
+        //                 ph.new_price_per_unit,
+        //                 ph.old_price_per_unit,
+        //                 ph.recorded_at
+        //         FROM " . $this->table_name . " p
+        //         INNER JOIN (
+        //             SELECT product_id,
+        //                     new_price_per_unit,
+        //                     old_price_per_unit,
+        //                     recorded_at
+        //             FROM product_histories ph1
+        //             WHERE recorded_at = (
+        //                 SELECT MAX(recorded_at)
+        //                 FROM product_histories ph2
+        //                 WHERE ph2.product_id = ph1.product_id
+        //             )
+        //         ) ph ON p.product_id = ph.product_id
+        //         WHERE p.user_id = :user_id
+        //         ORDER BY p.product_name DESC";
 
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->execute();
 
