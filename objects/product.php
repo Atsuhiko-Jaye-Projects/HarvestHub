@@ -281,6 +281,7 @@ class Product{
                 product_name,
                 product_type,
                 category,
+                unit,
                 user_id
             FROM 
                 " . $this->table_name . "
@@ -297,6 +298,7 @@ class Product{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->price_per_unit = $row['price_per_unit'];
+        $this->unit = $row['unit'];
         $this->product_image = $row['product_image'];
         $this->product_name = $row['product_name'];
         $this->category = $row['category'];

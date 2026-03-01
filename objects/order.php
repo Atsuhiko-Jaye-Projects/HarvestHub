@@ -13,6 +13,7 @@ class Order{
     public $mode_of_payment;
     public $quantity;
     public $status;
+    public $unit;
     public $review_status;
     public $farmer_rated;
     public $created_at;
@@ -83,6 +84,7 @@ class Order{
                 customer_id = :customer_id,
                 mode_of_payment = :mode_of_payment,
                 quantity = :quantity,
+                unit=:unit,
                 status = :status,
                 farmer_id = :farmer_id,
                 product_type=:product_type,
@@ -96,6 +98,7 @@ class Order{
         $this->mode_of_payment=htmlspecialchars(strip_tags($this->mode_of_payment));
         $this->quantity=htmlspecialchars(strip_tags($this->quantity));
         $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->unit=htmlspecialchars(strip_tags($this->unit));
         $this->farmer_id=htmlspecialchars(strip_tags($this->farmer_id));
         $this->product_type=htmlspecialchars(strip_tags($this->product_type));
         $this->created_at=htmlspecialchars(strip_tags($this->created_at));
@@ -106,6 +109,7 @@ class Order{
         $stmt->bindParam(":mode_of_payment", $this->mode_of_payment);
         $stmt->bindParam(":quantity", $this->quantity);
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":unit", $this->unit);
         $stmt->bindParam(":farmer_id", $this->farmer_id);
         $stmt->bindParam(":product_type", $this->product_type);
         $stmt->bindParam(":created_at", $this->created_at);
@@ -123,6 +127,7 @@ class Order{
                 product_id,
                 invoice_number,
                 mode_of_payment,
+                unit,
                 quantity,
                 created_at,
                 customer_id,
@@ -144,6 +149,7 @@ class Order{
 
         $this->id = $row['id'];
         $this->product_id = $row['product_id'];
+        $this->unit = $row['unit'];
         $this->invoice_number = $row['invoice_number'];
         $this->mode_of_payment = $row['mode_of_payment'];
         $this->quantity = $row['quantity'];
@@ -160,6 +166,7 @@ class Order{
         $query = "SELECT
                     product_id,
                     invoice_number,
+                    unit,
                     customer_id,
                     mode_of_payment,
                     status,
@@ -183,6 +190,7 @@ class Order{
         $this->mode_of_payment = $row['mode_of_payment'];
         $this->customer_id = $row['customer_id'];
         $this->status = $row['status'];
+        $this->unit = $row['unit'];
         $this->quantity = $row['quantity'];
         $this->created_at = $row['created_at'];
         $this->farmer_id = $row['farmer_id'];
@@ -259,7 +267,14 @@ class Order{
 
     // get the completed order to display the sales
     function totalSales() {
-        $query = "SELECT SUM(o.quantity * p.price_per_unit) AS total_sales, o.modified_at AS date_sales
+        $query = "SELECT 
+                    COALESCE(SUM(
+                        CASE 
+                            WHEN o.unit = 'gram' THEN (o.quantity / 1000) * p.price_per_unit
+                            WHEN o.unit = 'kg' THEN o.quantity * p.price_per_unit
+                            ELSE 0
+                        END
+                    ), 0) AS total_sales
                 FROM " . $this->table_name . " o
                 JOIN products p ON o.product_id = p.product_id
                 WHERE o.farmer_id = :farmer_id
@@ -270,7 +285,7 @@ class Order{
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['total_sales'] ?? 0;
+        return $row['total_sales'];
     }
 
     public function totalGraphSales() {

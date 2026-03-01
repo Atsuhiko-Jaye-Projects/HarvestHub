@@ -46,10 +46,20 @@ if ($product_type == 'preorder') {
     $product_image_path = "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
 }
 
-
 // compute service fee
-$sub_total = ($order->quantity * $product->price_per_unit);
-$service_fee = $sub_total * 0.0225;
+//$sub_total = ($order->quantity * $product->price_per_unit);
+
+
+$unit = strtolower($order->unit);         // 'kg' or 'gram'
+$quantity = $order->quantity;
+$price_per_kg = $product->price_per_unit;
+
+// convert grams to kg if needed
+$quantity_in_kg = ($unit === 'kg') ? $quantity : $quantity / 1000;
+
+// calculate subtotal
+$subtotal = $price_per_kg * $quantity_in_kg;
+$service_fee = $subtotal * 0.0225;
 
 
 
@@ -152,7 +162,9 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
             <!-- ORDER DETAILS -->
             <div class="d-flex justify-content-between">
                 <span>Quantity Ordered</span>
-                <span class="fw-semibold"><?php echo $order->quantity . '' . "KG"; ?></span>
+                <span class="fw-semibold">
+                    <?php echo $order->quantity . ' ' . $order->unit; ?>
+                </span>
             </div>
 
             <div class="d-flex justify-content-between">
@@ -162,7 +174,7 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 
             <div class="d-flex justify-content-between">
                 <span>Subtotal</span>
-                <span class="fw-semibold">₱ <?php echo number_format($order->quantity * $product->price_per_unit, 2); ?></span>
+                <span class="fw-semibold">₱ <?php echo number_format($subtotal,2); ?></span>
             </div>
 
             <hr>
@@ -235,14 +247,14 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 
           <div class="d-flex justify-content-between">
             <span>Total Price</span>
-            <span id="total-price">₱<?php echo number_format($order->quantity * $product->price_per_unit, 2); ?></span>
+            <span id="total-price">₱<?php echo number_format($subtotal, 2); ?></span>
           </div>
 
           <hr>
 
           <div class="d-flex justify-content-between fw-bold">
             <span>Grand Total</span>
-            <span id="grand-total">₱<?php echo number_format($order->quantity * $product->price_per_unit - $service_fee, 2); ?></span>
+            <span id="grand-total">₱<?php echo number_format($subtotal - $service_fee, 2); ?></span>
           </div>
 
           <!-- ✅ Submit Button -->

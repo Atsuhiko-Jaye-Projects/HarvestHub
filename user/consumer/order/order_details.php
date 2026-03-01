@@ -37,11 +37,29 @@ $product->product_id = $order->product_id;
 $product->getProductInfo();
 
 // compute the product Price
-$quanitity = $order->quantity;
-$price = $product->price_per_unit;
-$total = $price * $quanitity;
+
+// get quantity and unit
+$quantity = $order->quantity;
+$unit = strtolower($order->unit); // normalize the unit
+$quantity = $order->quantity;
+
+if ($unit == 'kg') {
+    $quantity_in_kg = $quantity;      // already in KG, no change
+} else { // assume 'gram'
+    $quantity_in_kg = $quantity / 1000; // convert grams → KG
+}
+
+// compute the product total
+$price_per_kg = $product->price_per_unit;
+$total = $price_per_kg * $quantity_in_kg;
+
+// shipping fee (2.25%)
 $shipping_fee = $total * 0.0225;
+
+// grand total
 $grand_total = $total + $shipping_fee;
+
+
 
 // get the farmer info for Consumer
 $farmer->id = $product->user_id;

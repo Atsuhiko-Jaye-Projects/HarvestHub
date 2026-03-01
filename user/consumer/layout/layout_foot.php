@@ -87,22 +87,31 @@ $(document).on('click', '.delete-object', function() {
 <!-- Product Quantity and Summary -->
 <script>
 $(function() {
-  function updateItemTotal(card) {
+    function updateItemTotal(card) {
     const qtyInput = card.find('.quantity-input');
     const unitPrice = parseFloat(card.find('input[name^="unit_price"]').val());
-    const qty = parseInt(qtyInput.val());
-    const total = unitPrice * qty;
+    const unitType = card.find('input[name^="unit"]').val().toLowerCase();
+    const qty = parseFloat(qtyInput.val());
 
-    card.find('.text-success').text('₱' + total.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+    let qtyInGrams;
+
+    if (unitType === "kg") {
+        qtyInGrams = qty * 1000;
+    } else {
+        qtyInGrams = qty;
+    }
+
+    const total = unitPrice * (qtyInGrams / 1000);
+
+    card.find('.text-success')
+        .text('₱' + total.toLocaleString(undefined, { minimumFractionDigits: 2 }));
 
     const checkbox = card.find('.product-checkbox');
     checkbox.data('qty', qty);
     checkbox.data('price', total);
 
-    card.find('input[type="hidden"][name^="quantity"]').val(qty);
-
     updateSummary();
-  }
+    }
 
   function updateSummary() {
     let totalPrice = 0, itemCount = 0;

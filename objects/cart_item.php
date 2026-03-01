@@ -12,6 +12,7 @@ class CartItem{
     public $amount;
     public $status;
     public $farmer_id;
+    public $unit;
     public $created;
     public $modified;
 
@@ -28,6 +29,7 @@ class CartItem{
                     quantity = :quantity,
                     amount = :amount,
                     status = :status,
+                    unit = :unit,
                     farmer_id = :farmer_id,
                     product_type = :product_type,
                     created = :created";
@@ -38,6 +40,7 @@ class CartItem{
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
         $this->quantity = htmlspecialchars(strip_tags($this->quantity));
         $this->amount = htmlspecialchars(strip_tags($this->amount));
+        $this->unit = htmlspecialchars(strip_tags($this->unit));
         $this->status = htmlspecialchars(strip_tags($this->status));
         $this->farmer_id = htmlspecialchars(strip_tags($this->farmer_id));
         $this->product_type = htmlspecialchars(strip_tags($this->product_type));
@@ -47,6 +50,7 @@ class CartItem{
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->bindParam(":quantity", $this->quantity);
         $stmt->bindParam(":amount", $this->amount);
+        $stmt->bindParam(":unit", $this->unit);
         $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":farmer_id", $this->farmer_id);
         $stmt->bindParam(":product_type", $this->product_type);

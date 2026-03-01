@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2026 at 11:35 AM
+-- Generation Time: Mar 01, 2026 at 02:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -31,6 +31,7 @@ CREATE TABLE `cart_items` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `unit` varchar(5) NOT NULL,
   `quantity` int(11) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `amount` int(11) NOT NULL,
@@ -44,11 +45,19 @@ CREATE TABLE `cart_items` (
 -- Dumping data for table `cart_items`
 --
 
-INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
-(32, 19, 2, 20, '2026-01-19 09:41:48', 22, 'ordered', '2026-01-30 12:58:32', 1, 'harvest'),
-(33, 19, 2, 15, '2026-01-19 09:42:49', 22, 'ordered', '2026-01-30 12:58:32', 1, 'harvest'),
-(34, 22, 2, 5, '2026-01-19 15:39:49', 20, 'ordered', '2026-01-21 02:04:49', 1, 'harvest'),
-(35, 19, 2, 10, '2026-01-30 20:58:27', 22, 'ordered', '2026-01-30 12:58:32', 1, 'harvest');
+INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `unit`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
+(42, 19, 2, 'gram', 50000, '2026-02-24 21:03:34', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
+(43, 4, 2, 'gram', 50, '2026-02-25 08:53:16', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(44, 4, 2, 'gram', 750, '2026-02-25 20:20:13', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(45, 4, 2, 'gram', 780, '2026-02-25 20:25:40', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(46, 4, 2, 'gram', 750, '2026-02-25 20:27:30', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(47, 19, 2, 'kg', 50, '2026-02-25 20:30:24', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
+(48, 4, 2, 'gram', 750, '2026-02-25 20:56:09', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(49, 19, 2, 'kg', 50, '2026-02-25 20:56:15', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
+(50, 4, 2, 'gram', 750, '2026-02-25 20:57:14', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(51, 4, 2, 'gram', 750, '2026-02-25 20:58:10', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(52, 19, 2, 'gram', 750, '2026-02-25 21:15:25', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
+(53, 19, 2, 'kg', 5, '2026-02-25 22:26:35', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -371,54 +380,17 @@ CREATE TABLE `orders` (
   `product_type` varchar(25) NOT NULL,
   `review_status` int(4) NOT NULL DEFAULT 0,
   `reason` varchar(255) NOT NULL,
-  `farmer_rated` int(11) NOT NULL DEFAULT 0
+  `farmer_rated` int(11) NOT NULL DEFAULT 0,
+  `unit` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`, `farmer_rated`) VALUES
-(27, 19, 'INV-696D8C1EE583D', 2, 'COP', 30, 'complete', '2026-01-19 09:42:54', '2025-12-02 01:43:55', 1, 'harvest', 0, '', 0),
-(28, 19, 'INV-696D8C1EE583F', 2, 'COP', 11, 'complete', '2026-01-19 09:42:54', '2025-12-31 01:43:55', 1, 'harvest', 0, '', 0),
-(29, 19, 'INV-696D8C1EE583T', 2, 'COP', 50, 'complete', '2026-01-19 09:42:54', '2026-01-15 01:43:55', 1, 'harvest', 1, '', 0),
-(30, 19, 'INV-696D8C1EE583HJ', 2, 'COP', 45, 'complete', '2026-01-19 09:42:54', '2026-02-03 01:43:55', 1, 'harvest', 0, '', 0),
-(31, 19, 'INV-696D8C1EE583HJ', 2, 'COP', 16, 'complete', '2026-01-19 09:42:54', '2026-01-17 01:43:55', 1, 'harvest', 1, '', 0),
-(32, 19, 'INV-696D8C1EE583PO', 2, 'COP', 30, 'complete', '2025-12-01 09:42:54', '2026-01-18 01:43:55', 1, 'harvest', 1, '', 0),
-(33, 19, 'INV-696D8C1EE583IU', 2, 'COP', 50, 'complete', '2026-01-19 09:42:54', '2026-01-20 01:43:55', 1, 'harvest', 1, '', 0),
-(34, 19, 'INV-696D8C1EE583HIUM', 2, 'COP', 5, 'complete', '2026-01-19 09:42:54', '2026-01-20 01:43:55', 1, 'harvest', 1, '', 1),
-(35, 22, 'INV-6970344148813', 2, 'COP', 15, 'complete', '2025-01-01 10:04:49', '2026-01-21 02:05:43', 1, 'harvest', 1, '', 1),
-(36, 19, 'INV-697CAAF85FB96', 2, 'COP', 10, 'complete', '2026-01-30 20:58:32', '2026-01-30 12:58:54', 1, 'harvest', 0, '', 0),
-(37, 19, 'INV-20250101-001', 2, 'COP', 30, 'complete', '2025-01-01 10:12:45', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(38, 19, 'INV-20250105-002', 2, 'COP', 11, 'complete', '2025-01-05 09:45:32', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(39, 19, 'INV-20250110-003', 2, 'COP', 50, 'complete', '2025-01-10 14:20:10', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(40, 19, 'INV-20250112-004', 2, 'COP', 45, 'complete', '2025-01-12 16:50:55', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(41, 19, 'INV-20250115-005', 2, 'COP', 16, 'complete', '2025-01-15 08:30:22', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(42, 19, 'INV-20250118-006', 2, 'COP', 30, 'complete', '2025-01-18 11:10:05', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(43, 19, 'INV-20250120-007', 2, 'COP', 50, 'complete', '2025-01-20 13:15:17', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(44, 19, 'INV-20250125-008', 2, 'COP', 5, 'complete', '2025-01-25 10:00:00', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(45, 19, 'INV-20250127-009', 2, 'COP', 10, 'complete', '2025-01-27 15:35:48', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(46, 19, 'INV-20250130-010', 2, 'COP', 15, 'complete', '2025-01-30 09:55:30', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(47, 22, 'INV-20250103-011', 2, 'COP', 15, 'complete', '2025-01-03 12:12:12', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(48, 22, 'INV-20250106-012', 2, 'COP', 10, 'complete', '2025-01-06 14:40:20', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(49, 22, 'INV-20250111-013', 2, 'COP', 15, 'complete', '2025-01-11 08:05:44', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(50, 22, 'INV-20250114-014', 2, 'COP', 10, 'complete', '2025-01-14 17:22:33', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(51, 22, 'INV-20250117-015', 2, 'COP', 15, 'complete', '2025-01-17 13:14:15', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(52, 22, 'INV-20250121-016', 2, 'COP', 10, 'complete', '2025-01-21 09:10:05', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(53, 22, 'INV-20250123-017', 2, 'COP', 15, 'complete', '2025-01-23 16:30:29', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(54, 22, 'INV-20250126-018', 2, 'COP', 10, 'complete', '2025-01-26 11:11:11', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(55, 22, 'INV-20250128-019', 2, 'COP', 15, 'complete', '2025-01-28 14:45:56', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(56, 22, 'INV-20250130-020', 2, 'COP', 10, 'complete', '2025-01-30 10:30:00', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(57, 19, 'INV-20250201-021', 2, 'COP', 30, 'complete', '2025-02-01 09:15:10', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(58, 19, 'INV-20250205-022', 2, 'COP', 11, 'complete', '2025-02-05 10:55:45', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(59, 19, 'INV-20250210-023', 2, 'COP', 50, 'complete', '2025-02-10 12:10:33', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(60, 19, 'INV-20250212-024', 2, 'COP', 45, 'complete', '2025-02-12 14:20:44', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(61, 19, 'INV-20250215-025', 2, 'COP', 16, 'complete', '2025-02-15 16:45:00', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(62, 19, 'INV-20250218-026', 2, 'COP', 30, 'complete', '2025-02-18 08:30:20', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(63, 19, 'INV-20250220-027', 2, 'COP', 50, 'complete', '2025-02-20 10:10:10', '2026-01-30 04:00:00', 1, 'harvest', 1, '0', 0),
-(64, 19, 'INV-20250225-028', 2, 'COP', 5, 'complete', '2025-02-25 13:25:35', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1),
-(65, 19, 'INV-20250227-029', 2, 'COP', 10, 'complete', '2025-02-27 15:40:50', '2026-01-30 04:00:00', 1, 'harvest', 0, '0', 0),
-(66, 19, 'INV-20250228-030', 2, 'COP', 15, 'complete', '2025-02-28 11:55:05', '2026-01-30 04:00:00', 1, 'harvest', 1, '1', 1);
+INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`, `farmer_rated`, `unit`) VALUES
+(8, 19, 'INV-699EF5F38F638', 2, 'COP', 750, 'complete', '2026-02-25 21:15:31', '2026-02-26 10:41:26', 1, 'harvest', 0, '', 0, 'gram'),
+(9, 19, 'INV-699F06A0A04DF', 2, 'COP', 5, 'complete', '2026-02-25 22:26:40', '2026-02-26 10:46:00', 1, 'harvest', 0, '', 0, 'kg');
 
 -- --------------------------------------------------------
 
@@ -451,7 +423,35 @@ INSERT INTO `order_status_history` (`id`, `invoice_number`, `status`, `timestamp
 (21, 'INV-697CAAF85FB96', 'order placed', '2026-01-30 20:58:32', 19, 0),
 (22, 'INV-697CAAF85FB96', 'accept', '2026-01-30 20:01:48', 19, 0),
 (23, 'INV-697CAAF85FB96', 'order shipout', '2026-01-30 20:01:50', 19, 0),
-(24, 'INV-697CAAF85FB96', 'order recieved', '2026-01-30 20:01:54', 19, 0);
+(24, 'INV-697CAAF85FB96', 'order recieved', '2026-01-30 20:01:54', 19, 0),
+(25, 'INV-699D8AC4B3555', 'order placed', '2026-02-24 19:25:56', 22, 0),
+(26, 'INV-699D8B79720DE', 'order placed', '2026-02-24 19:28:57', 5, 0),
+(27, 'INV-699D8AC4B3555', 'accept', '2026-02-24 20:49:19', 22, 0),
+(28, 'INV-699D8B79720DE', 'accept', '2026-02-24 20:49:19', 5, 0),
+(29, 'INV-699D8AC4B3555', 'cancel pending', '2026-02-25 08:02:54', 22, 0),
+(30, 'INV-699E480973A10', 'order placed', '2026-02-25 08:53:29', 19, 0),
+(31, 'INV-699E480973A10', 'accept', '2026-02-25 08:02:38', 19, 0),
+(32, 'INV-699E480973A10', 'order shipout', '2026-02-25 08:02:43', 19, 0),
+(33, 'INV-699E480973A10', 'order recieved', '2026-02-25 08:02:51', 19, 0),
+(34, 'INV-699D8AC4B3555', 'cancelled', '2026-02-25 08:54:53', 22, 0),
+(35, 'INV-699EE80E8D27F', 'order placed', '2026-02-25 20:16:14', 4, 0),
+(36, 'INV-699EE80E8D27F', 'order cancelled', '2026-02-25 20:19:34', 4, 0),
+(37, 'INV-699EE926AA1FC', 'order placed', '2026-02-25 20:20:54', 4, 0),
+(38, 'INV-699EEA50793D8', 'order placed', '2026-02-25 20:25:52', 4, 0),
+(39, 'INV-699EF10F22DAE', 'order placed', '2026-02-25 20:54:39', 4, 0),
+(40, 'INV-699EF10F24AD9', 'order placed', '2026-02-25 20:54:39', 19, 0),
+(41, 'INV-699EF17678A1E', 'order placed', '2026-02-25 20:56:22', 4, 0),
+(42, 'INV-699EF1767B1C2', 'order placed', '2026-02-25 20:56:22', 19, 0),
+(43, 'INV-699EF1AEA11CD', 'order placed', '2026-02-25 20:57:18', 4, 0),
+(44, 'INV-699EF21C410B9', 'order placed', '2026-02-25 20:59:08', 4, 0),
+(45, 'INV-699EF5F38F638', 'order placed', '2026-02-25 21:15:31', 19, 0),
+(46, 'INV-699EF5F38F638', 'accept', '2026-02-25 21:45:33', 19, 0),
+(47, 'INV-699F06A0A04DF', 'order placed', '2026-02-25 22:26:40', 19, 0),
+(48, 'INV-699EF5F38F638', 'order shipout', '2026-02-26 18:02:06', 19, 0),
+(49, 'INV-699EF5F38F638', 'order recieved', '2026-02-26 18:02:26', 19, 0),
+(50, 'INV-699F06A0A04DF', 'accept', '2026-02-26 18:02:46', 19, 0),
+(51, 'INV-699F06A0A04DF', 'order shipout', '2026-02-26 18:02:48', 19, 0),
+(52, 'INV-699F06A0A04DF', 'order recieved', '2026-02-26 18:02:00', 19, 0);
 
 -- --------------------------------------------------------
 
@@ -510,10 +510,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(6, 19, 'Kalabasa', 22.26, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 650, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 125, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', 635, NULL),
+(6, 19, 'Kalabasa', 22.26, 1, 'Vegetable', 'KG', 0, 'kalabasa great', 90, 650, 'd3ecde51500da84c80b1f62ebf6485b4c171813a-kalabasa.jpg', 1015, '2026-01-17 04:30:42', '2026-01-17 12:30:42', 'Active', 'harvest', -255, NULL),
 (7, 4, 'kamatis', 26.00, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 1150, '2a7cb252aa6e87d07c2bf4f8c4191b8b84682f3f-kamatis.jpg', 40, '2026-01-17 04:36:30', '2026-01-17 12:36:30', 'Active', 'harvest', 1150, NULL),
-(9, 22, 'Kamote', 30.00, 1, 'Vegetable', 'KG', 0, 'Kamote (Ipomoea batatas), or sweet potato, is a versatile root vegetable known for its large, starchy, sweet-tasting tubers and edible heart-shaped leaves (talbos ng kamote). Belonging to the morning glory family (Convolvulaceae), it\'s a vital staple in the Philippines, eaten boiled, fried, roasted,', 76, 2650, '7537ce549714a622697ca1cc1c15a56b743305d6-kamote.jpg', 30, '2026-01-19 02:04:44', '2026-01-19 10:04:44', 'Active', 'preorder', 1750, NULL),
-(10, 5, 'Potato', 55.00, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 230, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', 0, '2026-01-19 02:07:42', '2026-01-19 10:07:42', 'Active', 'preorder', 230, NULL);
+(9, 22, 'Kamote', 30.00, 1, 'Vegetable', 'KG', 0, 'Kamote (Ipomoea batatas), or sweet potato, is a versatile root vegetable known for its large, starchy, sweet-tasting tubers and edible heart-shaped leaves (talbos ng kamote). Belonging to the morning glory family (Convolvulaceae), it\'s a vital staple in the Philippines, eaten boiled, fried, roasted,', 76, 2650, '7537ce549714a622697ca1cc1c15a56b743305d6-kamote.jpg', 35, '2026-01-19 02:04:44', '2026-01-19 10:04:44', 'Active', 'preorder', 1745, NULL),
+(10, 5, 'Potato', 55.00, 1, 'vegetable', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 230, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', 0, '2026-02-23 00:22:03', '2026-01-19 10:07:42', 'Active', 'preorder', 230, NULL);
 
 -- --------------------------------------------------------
 
@@ -920,6 +920,44 @@ INSERT INTO `vegetable_crops` (`id`, `crop_name`, `local_name`, `days_to_harvest
 (185, 'Anise', 'Anis', 120, 365, 1.00, '2026-01-21 13:57:28'),
 (186, 'Sweet Cicely', 'Matamis Sisili', 365, 7, 1.50, '2026-01-21 13:57:28');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vegetable_production`
+--
+
+CREATE TABLE `vegetable_production` (
+  `id` int(11) NOT NULL,
+  `vegetable_name` varchar(100) NOT NULL,
+  `distance_of_planting` varchar(20) DEFAULT NULL,
+  `plant_pop_per_hill` int(11) DEFAULT NULL,
+  `plant_pop_per_hectare` int(11) DEFAULT NULL,
+  `production_per_hill` varchar(50) DEFAULT NULL,
+  `production_per_hectare` varchar(50) DEFAULT NULL,
+  `fruiting_peak_months` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vegetable_production`
+--
+
+INSERT INTO `vegetable_production` (`id`, `vegetable_name`, `distance_of_planting`, `plant_pop_per_hill`, `plant_pop_per_hectare`, `production_per_hill`, `production_per_hectare`, `fruiting_peak_months`) VALUES
+(1, 'Ampalaya', '2 x 1', 3, 15000, '3 kilos', '45,000 kilos', '3 months'),
+(2, 'Eggplant', '1 x 1', 1, 10000, '10 kilos', '100,000 kilos', '12 months'),
+(3, 'Stringbeans', '1 x 0.5', 2, 40000, '1 kilo', '40,000 kilos', '1 month'),
+(4, 'Squash', '2 x 2', 2, 5000, '6 kilos', '30,000 kilos', '3 months'),
+(5, 'Pechay', '10 x 0.1', 1, 1000000, '0.1 kilo', '100,000 kilos', 'once'),
+(6, 'Mustard', '10 x 0.1', 1, 1000000, '0.1 kilo', '100,000 kilos', 'once'),
+(7, 'Radish', '10 x 0.1', 1, 500000, '0.15 kilo', '75,000 kilos', 'once'),
+(8, 'Pepper', '1 x 0.5', 1, 20000, '2 kilos', '40,000 kilos', '3 months'),
+(9, 'Cucumber', '1 x 0.75', 2, 26666, '5 kilos', '133,330 kilos', '2 months'),
+(10, 'Upo', '1 x 1', 2, 30000, '10 pcs', '300,000 kilos', '3 months'),
+(11, 'Patola', '1 x 1', 2, 30000, '10 pcs', '300,000 kilos', '3 months'),
+(12, 'Sayote', '1 x 1', 1, 10000, '5 kilos', '100,000 kilos', 'year round'),
+(13, 'Okra', '1 x 0.5', 1, 20000, '2 kilos', '160,000 kilos', '3 months'),
+(14, 'Snap beans', '1 x 0.5', 3, 80000, '2 kilos', '40,000 kilos', '1 month'),
+(15, 'Tomato', '1 x 0.5', 1, 20000, '2 kilos', '40,000 kilos', '1 month');
+
 --
 -- Indexes for dumped tables
 --
@@ -1075,6 +1113,12 @@ ALTER TABLE `vegetable_crops`
   ADD KEY `idx_shelf_life` (`shelf_life_days`);
 
 --
+-- Indexes for table `vegetable_production`
+--
+ALTER TABLE `vegetable_production`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1082,7 +1126,7 @@ ALTER TABLE `vegetable_crops`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1154,13 +1198,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
@@ -1221,6 +1265,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `vegetable_crops`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+
+--
+-- AUTO_INCREMENT for table `vegetable_production`
+--
+ALTER TABLE `vegetable_production`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -121,7 +121,9 @@ $total_rows = $order->countAll();
                             <?php endif; ?>
                         </td>
                         <td><?php echo $row['mode_of_payment']; ?></td>
-                        <td class="text-truncate" style="max-width: 150px;"><?php echo $row['quantity']; ?> KG</td>
+                        <td class="text-truncate" style="max-width: 150px;">
+                            <?php echo $row['quantity'] . ' ' . $row['unit']; ?>
+                        </td>
                         <td><?php echo $row['created_at']; ?></td>
                         <td>
                             <span class="badge <?php echo $statusClass; ?> px-3 py-2 text-uppercase">

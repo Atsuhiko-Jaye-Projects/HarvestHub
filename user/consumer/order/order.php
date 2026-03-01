@@ -143,19 +143,37 @@ if ($num > 0) {
                         $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
                     }
                     
-                    $price = $product->price_per_unit;
+                    $price = $product->price_per_unit; // price per KG
                     $qty = $row['quantity'];
-                    $total = $price * $qty;
+                    $unit = strtolower($row['unit']); // 'kg' or 'gram'
+
+                    // Convert quantity to KG for pricing
+                    $qty_in_kg = ($unit === 'kg') ? $qty : $qty / 1000;
+
+                    $total = $price * $qty_in_kg;
                 ?>
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <img src="<?php echo $img_path; ?>" class="img-fluid rounded">
                         </div>
                         <div class="col-md-4">
+                            <!-- Price -->
                             <h6 class="text-success">₱<?php echo number_format($total, 2); ?></h6>
+                            
+                            <!-- Payment method -->
                             <small class="text-muted"><?php echo $row['mode_of_payment']; ?></small>
-                            <h6>Variation: <strong><?php echo $qty; ?> KG</strong></h6>
-                            <small class="text-muted fw-bold"><?php echo $product->product_name; ?></small>
+                            
+                            <!-- Quantity + Unit -->
+                            <h6>
+                                Quantity: 
+                                <strong>
+                                    <?php echo $qty; ?> 
+                                    <?php echo strtolower($row['unit']) === 'kg' ? 'KG' : 'g'; ?>
+                                </strong>
+                            </h6>
+                            
+                            <!-- Product Name -->
+                            <small class="text-muted fw-bold"><?php echo htmlspecialchars($product->product_name); ?></small>
                         </div>
                     </div>
                   <hr>

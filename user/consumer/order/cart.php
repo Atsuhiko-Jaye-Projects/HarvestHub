@@ -57,11 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
   }
 
   foreach($_POST['product_id'] as $pid){
-
     $invoice_no = 'INV-' . strtoupper(uniqid());
     $order->product_id = $pid;
     $order->invoice_number = $invoice_no;
     $order->customer_id = $user_id;
+    $order->unit = isset($_POST['unit'][$pid]) 
+    ? strip_tags($_POST['unit'][$pid]) // sanitize the string
+    : 'unknown'; // fallback if not set
     $order->mode_of_payment = $_POST['payment_method'];
     $order->quantity = isset($_POST['quantity'][$pid]) ? (int)$_POST['quantity'][$pid] : 1;
     $order->farmer_id = isset($_POST['farmer_id'][$pid]) ? (int)$_POST['farmer_id'][$pid] : 1;
@@ -103,9 +105,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           $product->product_id = $row['product_id'];
           $product->readProductName();        
 
-          $unit_price = $row['amount'] ?? 0; 
-          $total_price = $unit_price * $row['quantity'];
-          $stocks = $product->available_stocks;
+          $quantity = $row['quantity'];
+          $unit_type = strtolower($row['unit']); // 'kg' or 'gram'
+          $unit_price = $row['amount']; // price per KG
+
+          // Convert everything to grams
+          if ($unit_type === 'kg') {
+              $quantity_in_grams = $quantity * 1000;
+          } else { // grams
+              $quantity_in_grams = $quantity;
+          }
+
+          // Convert grams back to kg for pricing
+          $total_price = $unit_price * ($quantity_in_grams / 1000);
       ?>
         <div class="card shadow-sm mb-3 p-3">
           <div class="d-flex align-items-start">
@@ -156,6 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                 </h5>
 
                 <div class="mt-2 mb-2">
+                    <div>Unit: <span class="fw-bold">Per <?php echo ucwords($unit); ?></span></div>
                     <label class="fw-semibold small text-muted mb-1 d-block">Quantity:</label>
                     <div class="input-group input-group-sm" style="max-width: 140px;">
                         <button type="button" class="btn btn-outline-secondary btn-sm decrease-qty rounded-start">−</button>
@@ -169,6 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                               data-id="<?php echo $row['product_id']; ?>">
                         <button type="button" class="btn btn-outline-secondary btn-sm increase-qty rounded-end">+</button>
                     </div>
+                    
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mt-2">
@@ -186,6 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           <!-- ✅ Hidde xn Inputs -->
           <input type="hidden" name="farmer_id[<?php echo $row['product_id']; ?>]" value="<?php echo $product->user_id; ?>">
           <input type="hidden" name="quantity[<?php echo $row['product_id']; ?>]" value="<?php echo $row['quantity']; ?>">
+          <input type="text" name="unit[<?php echo $row['product_id']; ?>]" value="<?php echo $unit; ?>">
           <input type="hidden" name="unit_price[<?php echo $row['product_id']; ?>]" value="<?php echo $unit_price; ?>">
           <input type="hidden" name="product_type[<?php echo $row['product_id']; ?>]" value="<?php echo $product_type; ?>">
         </div>
