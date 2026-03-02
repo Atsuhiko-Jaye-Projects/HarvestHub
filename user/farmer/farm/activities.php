@@ -142,12 +142,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                   <hr>
                   <div class="col-md-3 mb-3">
                     <label for="record_name" class="form-label fw-bold col-md-4">Seed Type:</label>
-                    <input type="text" name="crop_name" id=""
+                    <input type="text" name="crop_name" id="crop_name"
                           class="form-control border border-3 border-dark"
                           required>
                   </div>
                   <div class="col-md-3 mb-3">
-                    <label for="record_name" class="form-label fw-bold col-md-4 text-nowrap">Total Plants Planted:</label>
+                    <label for="record_name" class="form-label fw-bold col-md-4 text-nowrap">Total Plants Planted (pcs):</label>
                     <input type="number" name="plant_count" id="" class="form-control border border-3 border-dark" required>
                   </div>
 
@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <label for="record_name" class="form-label fw-bold text-nowrap">
                         Average Yield per Plant (kg)
                     </label>
-                    <input type="number" step="0.1" name="average_yield_per_plant" class="form-control border border-3 border-dark" required>
+                    <input type="number" step="0.1" name="average_yield_per_plant" id="average_yield" class="form-control border border-3 border-dark" required>
                     </div> 
 
                     <div class="col-md-3 mb-3">
@@ -324,7 +324,6 @@ const activityTemplates = {
 
 <script>
 let activityCount = 0;
-
 
 
 function addDynamicField() {
@@ -571,4 +570,33 @@ if (window.history.replaceState) {
     url.searchParams.delete('status');
     window.history.replaceState({}, document.title, url.pathname);
 }
+</script>
+
+<script>
+document.getElementById("crop_name").addEventListener("blur", async function () {
+
+    const plantName = this.value.trim();
+    if (!plantName) return;
+
+    try {
+        const response = await fetch("/HarvestHub/js/user/farmer/api/get_average_yield.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "plant_name=" + encodeURIComponent(plantName)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById("average_yield").value = data.average_yield_per_plant;
+        } else {
+            document.getElementById("average_yield").value = "0";
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+});
 </script>

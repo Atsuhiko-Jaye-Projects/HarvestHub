@@ -152,18 +152,6 @@ if (!isset($_SESSION['logged_in'])) {
       <img src="libs/images/general/vegetables/1.jpg" class="category-icon mb-2">
       <p>Vegetables</p>
     </div>
-    <div class="text-center">
-      <img src="libs/images/general/fruits/1.jpg" class="category-icon mb-2">
-      <p>Fruits</p>
-    </div>
-    <div class="text-center">
-      <img src="libs/images/general/seafoods/1.jpg" class="category-icon mb-2">
-      <p>Fish</p>
-    </div>
-    <div class="text-center">
-      <img src="libs/images/general/proteins/1.jpg" class="category-icon mb-2">
-      <p>Meat</p>
-    </div>
   </div>
 
   <!-- ⭐ ADDED ONLY THIS BUTTON GROUP (NO OTHER CHANGE) -->
