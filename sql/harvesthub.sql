@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2026 at 02:15 PM
+-- Generation Time: Mar 02, 2026 at 07:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -47,17 +47,19 @@ CREATE TABLE `cart_items` (
 
 INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `unit`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
 (42, 19, 2, 'gram', 50000, '2026-02-24 21:03:34', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
-(43, 4, 2, 'gram', 50, '2026-02-25 08:53:16', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
-(44, 4, 2, 'gram', 750, '2026-02-25 20:20:13', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
-(45, 4, 2, 'gram', 780, '2026-02-25 20:25:40', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
-(46, 4, 2, 'gram', 750, '2026-02-25 20:27:30', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(43, 4, 2, 'gram', 50, '2026-02-25 08:53:16', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
+(44, 4, 2, 'gram', 750, '2026-02-25 20:20:13', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
+(45, 4, 2, 'gram', 780, '2026-02-25 20:25:40', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
+(46, 4, 2, 'gram', 750, '2026-02-25 20:27:30', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
 (47, 19, 2, 'kg', 50, '2026-02-25 20:30:24', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
-(48, 4, 2, 'gram', 750, '2026-02-25 20:56:09', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(48, 4, 2, 'gram', 750, '2026-02-25 20:56:09', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
 (49, 19, 2, 'kg', 50, '2026-02-25 20:56:15', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
-(50, 4, 2, 'gram', 750, '2026-02-25 20:57:14', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
-(51, 4, 2, 'gram', 750, '2026-02-25 20:58:10', 26, 'ordered', '2026-02-25 12:59:08', 1, 'harvest'),
+(50, 4, 2, 'gram', 750, '2026-02-25 20:57:14', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
+(51, 4, 2, 'gram', 750, '2026-02-25 20:58:10', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
 (52, 19, 2, 'gram', 750, '2026-02-25 21:15:25', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
-(53, 19, 2, 'kg', 5, '2026-02-25 22:26:35', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest');
+(53, 19, 2, 'kg', 5, '2026-02-25 22:26:35', 22, 'ordered', '2026-02-25 14:26:40', 1, 'harvest'),
+(54, 4, 2, 'kg', 50, '2026-03-02 13:42:57', 26, 'ordered', '2026-03-02 05:51:31', 1, 'harvest'),
+(55, 4, 2, 'gram', 500, '2026-03-02 13:51:39', 26, 'Pending', '2026-03-02 05:51:39', 1, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -390,7 +392,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`, `farmer_rated`, `unit`) VALUES
 (8, 19, 'INV-699EF5F38F638', 2, 'COP', 750, 'complete', '2026-02-25 21:15:31', '2026-02-26 10:41:26', 1, 'harvest', 0, '', 0, 'gram'),
-(9, 19, 'INV-699F06A0A04DF', 2, 'COP', 5, 'complete', '2026-02-25 22:26:40', '2026-02-26 10:46:00', 1, 'harvest', 0, '', 0, 'kg');
+(9, 19, 'INV-699F06A0A04DF', 2, 'COP', 5, 'complete', '2026-02-25 22:26:40', '2026-02-26 10:46:00', 1, 'harvest', 0, '', 0, 'kg'),
+(10, 4, 'INV-69A525637C4E5', 2, 'COP', 50, 'order placed', '2026-03-02 13:51:31', '2026-03-02 05:51:31', 1, 'harvest', 0, '', 0, 'kg');
 
 -- --------------------------------------------------------
 
@@ -451,7 +454,8 @@ INSERT INTO `order_status_history` (`id`, `invoice_number`, `status`, `timestamp
 (49, 'INV-699EF5F38F638', 'order recieved', '2026-02-26 18:02:26', 19, 0),
 (50, 'INV-699F06A0A04DF', 'accept', '2026-02-26 18:02:46', 19, 0),
 (51, 'INV-699F06A0A04DF', 'order shipout', '2026-02-26 18:02:48', 19, 0),
-(52, 'INV-699F06A0A04DF', 'order recieved', '2026-02-26 18:02:00', 19, 0);
+(52, 'INV-699F06A0A04DF', 'order recieved', '2026-02-26 18:02:00', 19, 0),
+(53, 'INV-69A525637C4E5', 'order placed', '2026-03-02 13:51:31', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -928,35 +932,37 @@ INSERT INTO `vegetable_crops` (`id`, `crop_name`, `local_name`, `days_to_harvest
 
 CREATE TABLE `vegetable_production` (
   `id` int(11) NOT NULL,
-  `vegetable_name` varchar(100) NOT NULL,
-  `distance_of_planting` varchar(20) DEFAULT NULL,
-  `plant_pop_per_hill` int(11) DEFAULT NULL,
-  `plant_pop_per_hectare` int(11) DEFAULT NULL,
-  `production_per_hill` varchar(50) DEFAULT NULL,
-  `production_per_hectare` varchar(50) DEFAULT NULL,
-  `fruiting_peak_months` varchar(50) DEFAULT NULL
+  `crop_name` varchar(100) NOT NULL,
+  `distance_of_planting` varchar(50) DEFAULT NULL,
+  `plant_population_per_hill` int(11) DEFAULT NULL,
+  `plant_population_per_hectare` int(11) DEFAULT NULL,
+  `production_per_hill` decimal(10,2) DEFAULT NULL,
+  `production_per_hill_unit` varchar(20) DEFAULT NULL,
+  `production_per_hectare` decimal(12,2) DEFAULT NULL,
+  `production_per_hectare_unit` varchar(20) DEFAULT NULL,
+  `fruiting_peak` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `vegetable_production`
 --
 
-INSERT INTO `vegetable_production` (`id`, `vegetable_name`, `distance_of_planting`, `plant_pop_per_hill`, `plant_pop_per_hectare`, `production_per_hill`, `production_per_hectare`, `fruiting_peak_months`) VALUES
-(1, 'Ampalaya', '2 x 1', 3, 15000, '3 kilos', '45,000 kilos', '3 months'),
-(2, 'Eggplant', '1 x 1', 1, 10000, '10 kilos', '100,000 kilos', '12 months'),
-(3, 'Stringbeans', '1 x 0.5', 2, 40000, '1 kilo', '40,000 kilos', '1 month'),
-(4, 'Squash', '2 x 2', 2, 5000, '6 kilos', '30,000 kilos', '3 months'),
-(5, 'Pechay', '10 x 0.1', 1, 1000000, '0.1 kilo', '100,000 kilos', 'once'),
-(6, 'Mustard', '10 x 0.1', 1, 1000000, '0.1 kilo', '100,000 kilos', 'once'),
-(7, 'Radish', '10 x 0.1', 1, 500000, '0.15 kilo', '75,000 kilos', 'once'),
-(8, 'Pepper', '1 x 0.5', 1, 20000, '2 kilos', '40,000 kilos', '3 months'),
-(9, 'Cucumber', '1 x 0.75', 2, 26666, '5 kilos', '133,330 kilos', '2 months'),
-(10, 'Upo', '1 x 1', 2, 30000, '10 pcs', '300,000 kilos', '3 months'),
-(11, 'Patola', '1 x 1', 2, 30000, '10 pcs', '300,000 kilos', '3 months'),
-(12, 'Sayote', '1 x 1', 1, 10000, '5 kilos', '100,000 kilos', 'year round'),
-(13, 'Okra', '1 x 0.5', 1, 20000, '2 kilos', '160,000 kilos', '3 months'),
-(14, 'Snap beans', '1 x 0.5', 3, 80000, '2 kilos', '40,000 kilos', '1 month'),
-(15, 'Tomato', '1 x 0.5', 1, 20000, '2 kilos', '40,000 kilos', '1 month');
+INSERT INTO `vegetable_production` (`id`, `crop_name`, `distance_of_planting`, `plant_population_per_hill`, `plant_population_per_hectare`, `production_per_hill`, `production_per_hill_unit`, `production_per_hectare`, `production_per_hectare_unit`, `fruiting_peak`) VALUES
+(1, 'Ampalaya', '2 x 1', 3, 15000, 3.00, 'kilos', 45000.00, 'kilos', '3 months'),
+(2, 'Eggplant', '1 x 1', 1, 10000, 10.00, 'kilos', 100000.00, 'kilos', '12 months'),
+(3, 'Stringbeans', '1 x 0.5', 2, 40000, 1.00, 'kilo', 40000.00, 'kilos', '1 month'),
+(4, 'Squash', '2 x 2', 2, 5000, 6.00, 'kilos', 30000.00, 'kilos', '3 months'),
+(5, 'Pechay', '10 x 0.1', 1, 1000000, 0.10, 'kilo', 100000.00, 'kilos', 'once'),
+(6, 'Mustard', '10 x 0.1', 1, 1000000, 0.10, 'kilo', 100000.00, 'kilos', 'once'),
+(7, 'Radish', '10 x 0.1', 1, 500000, 0.15, 'kilo', 75000.00, 'kilos', 'once'),
+(8, 'Pepper', '1 x 0.5', 1, 20000, 2.00, 'kilos', 40000.00, 'kilos', '3 months'),
+(9, 'Cucumber', '1 x 0.75', 2, 26666, 5.00, 'kilos', 133330.00, 'kilos', '2 months'),
+(10, 'Upo', '1 x 1', 2, 30000, 10.00, 'pcs', 300000.00, 'kilos', '3 months'),
+(11, 'Patola', '1 x 1', 2, 30000, 10.00, 'pcs', 300000.00, 'kilos', '3 months'),
+(12, 'Sayote', '1 x 1', 1, 10000, 5.00, 'kilos', 100000.00, 'kilos', 'year round'),
+(13, 'Okra', '1 x 0.5', 1, 20000, 2.00, 'kilos', 160000.00, 'kilos', '3 months'),
+(14, 'Snap beans', '1 x 0.5', 3, 80000, 2.00, 'kilos', 40000.00, 'kilos', '1 month'),
+(15, 'Tomato', '1 x 0.5', 1, 20000, 2.00, 'kilos', 40000.00, 'kilos', '1 month');
 
 --
 -- Indexes for dumped tables
@@ -1126,7 +1132,7 @@ ALTER TABLE `vegetable_production`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1198,13 +1204,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
