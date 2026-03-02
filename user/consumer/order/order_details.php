@@ -118,7 +118,7 @@ $farmer_contact = $farmer->contact_number;
                 <img src="<?php echo $base_url;?>libs/images/logo.png" alt="Product">
                 <div class="bg-light border rounded d-flex justify-content-center align-items-center" style="width:60px; height:60px;">+12</div>
               </div>
-              <?php include_once "tracking_status.php"; ?>
+              <?php require "tracking_status.php"; ?>
             </div>
           </div>
         </div>

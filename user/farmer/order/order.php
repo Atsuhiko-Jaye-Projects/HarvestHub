@@ -73,6 +73,22 @@ $total_rows = $order->countAll();
                         <li><a href="farm_resource.php" class="dropdown-item"><i class="bi bi-check-circle text-success me-2"></i>Completed</a></li>
                     </ul>
                 </div>
+                <div class="dropdown ms-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-success btn-sm dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown">
+                            Filter Orders
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="order.php?action=view_all">All</a></li>
+                            <li><a class="dropdown-item" href="order.php?action=shipped_out">In Transit</a></li>
+                            <li><a class="dropdown-item" href="order.php?action=completed">Complete</a></li>
+                            <li><a class="dropdown-item" href="order.php?action=cancelled">Cancelled</a></li>
+                        </ul>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
