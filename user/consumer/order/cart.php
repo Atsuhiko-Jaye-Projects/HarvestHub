@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           <!-- ✅ Hidde xn Inputs -->
           <input type="hidden" name="farmer_id[<?php echo $row['product_id']; ?>]" value="<?php echo $product->user_id; ?>">
           <input type="hidden" name="quantity[<?php echo $row['product_id']; ?>]" value="<?php echo $row['quantity']; ?>">
-          <input type="text" name="unit[<?php echo $row['product_id']; ?>]" value="<?php echo $unit; ?>">
+          <input type="hidden" name="unit[<?php echo $row['product_id']; ?>]" value="<?php echo $unit; ?>">
           <input type="hidden" name="unit_price[<?php echo $row['product_id']; ?>]" value="<?php echo $unit_price; ?>">
           <input type="hidden" name="product_type[<?php echo $row['product_id']; ?>]" value="<?php echo $product_type; ?>">
         </div>
