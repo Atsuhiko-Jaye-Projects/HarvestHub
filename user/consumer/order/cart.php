@@ -108,12 +108,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
           $quantity = $row['quantity'];
           $unit_type = strtolower($row['unit']); // 'kg' or 'gram'
           $unit_price = $row['amount']; // price per KG
-
+          $available_stock = $product->available_stocks;
+          $quantity_limit = "";
           // Convert everything to grams
           if ($unit_type === 'kg') {
               $quantity_in_grams = $quantity * 1000;
+              $quantity_limit = $available_stock;
+
           } else { // grams
               $quantity_in_grams = $quantity;
+              $quantity_limit = $available_stock * 1000;
           }
 
           // Convert grams back to kg for pricing
@@ -124,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
             
             <!-- ✅ Checkbox -->
             <div class="me-3">
+
               <input 
                 type="checkbox"
                 class="form-check-input product-checkbox"
@@ -160,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
 
                 <h5 class="fw-bold mb-2 text-capitalize d-flex justify-content-between align-items-center">
                     <?php echo htmlspecialchars($product->product_name); ?>
+                    
                     <?php if ($product_type == "harvest"): ?>
                         <span class="badge bg-success">Harvest</span>
                     <?php else: ?>
@@ -178,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                               name="quantity[<?php echo $row['product_id']; ?>]" 
                               value="<?php echo $row['quantity']; ?>" 
                               min="1"
-                              max="<?php echo $stocks; ?>"
+                              max="<?php echo $quantity_limit; ?>"
                               data-id="<?php echo $row['product_id']; ?>">
                         <button type="button" class="btn btn-outline-secondary btn-sm increase-qty rounded-end">+</button>
                     </div>
@@ -191,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                 </div>
             </div>
               <div>
-                <button class="btn btn-danger ms-2 delete_cart_item" data-id="<?php echo $row['id']; ?>">
+                <button class="btn btn-danger ms-2 delete_cart_item" data-id="<?php echo $row['product_id']; ?>">
                     <i class="bi bi-x-lg"></i>
                 </button>
               </div>

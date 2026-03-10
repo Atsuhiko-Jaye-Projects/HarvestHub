@@ -29,13 +29,14 @@ $cart_item_count = $cart_item->countItem();
 
 if ($_POST) {
 
-  $cart_item->product_id = $_POST['product_id'];
-  $cart_item->user_id = $_SESSION['user_id'];
-  $cart_item->quantity = $_POST['kilo'];
-  $cart_item->farmer_id = $_POST['farmer_id'];
-  $cart_item->amount = $_POST['amount'];
-  $cart_item->status = "Pending";
-  $cart_item->product_type = "preorder";
+    $cart_item->product_id = $_POST['product_id'];
+    $cart_item->user_id = $_SESSION['user_id'];
+    $cart_item->quantity = $_POST['quantity'];
+    $cart_item->farmer_id = $_POST['farmer_id'];
+    $cart_item->amount = $_POST['amount'];
+    $cart_item->status = "Pending";
+    $cart_item->unit = $_POST['unit'];
+    $cart_item->product_type = "preorder";
 
   
   if ($cart_item->PreOrderitemExist()) {
@@ -148,9 +149,9 @@ if ($_POST) {
       <p class="text-secondary">
         <?php echo $product->product_description; ?>
       </p>
-      <h6>Stocks:</h6>
-      <p class="text-secondary">
-        <?php echo $product->available_stocks; ?>
+      <h6>EST Available Stocks (KG):</h6>
+      <p class="text-primary fw-bold">
+        <?php echo number_format($product->available_stocks); ?> KG
       </p>
 
       <p style="font-size:0.85em; color:red; margin-top:4px;">
@@ -163,25 +164,23 @@ if ($_POST) {
           <div class="btn-group" role="group" aria-label="Select Kilos">
             <input type="text" name="product_id" hidden value="<?php echo $product->id; ?>">
             <input type="text" name="amount" hidden value="<?php echo $product->price_per_unit; ?>">
+            <input type="text" id="available_stocks" hidden value="<?php echo $product->available_stocks; ?>">
 
-            <input type="radio" class="btn-check" name="kilo" id="kilo5" value="5" checked>
-            <label class="btn btn-outline-secondary" for="kilo5">5</label>
+            <input type="radio" class="btn-check" name="unit" id="unitPiece" value="piece" checked>
+            <!-- <label class="btn btn-outline-secondary" for="unitPiece">Per Piece</label> -->
 
-            <input type="radio" class="btn-check" name="kilo" id="kilo10" value="10">
-            <label class="btn btn-outline-secondary" for="kilo10">10</label>
+            <input type="radio" class="btn-check" name="unit" id="unitGram" value="gram" checked>
+            <label class="btn btn-outline-secondary" for="unitGram">Per Gram</label>
 
-            <input type="radio" class="btn-check" name="kilo" id="kilo15" value="15">
-            <label class="btn btn-outline-secondary" for="kilo15">15</label>
-
-            <input type="radio" class="btn-check" name="kilo" id="kilo20" value="20">
-            <label class="btn btn-outline-secondary" for="kilo20">20</label>
-
-            <input type="radio" class="btn-check" name="kilo" id="kilo25" value="25">
-            <label class="btn btn-outline-secondary" for="kilo25">25</label>
-
-            <input type="radio" class="btn-check" name="kilo" id="kilo30" value="30">
-            <label class="btn btn-outline-secondary" for="kilo30">30</label>
+            <input type="radio" class="btn-check" name="unit" id="unitKg" value="kg">
+            <label class="btn btn-outline-secondary" for="unitKg">Per KG</label>
           </div>
+        </div>
+
+        <div class="mt-3 col-md-4" id="quantityContainer">
+            <label id="quantityLabel" class="form-label">Quantity</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" required>
+            <small id="helperText" class="text-muted"></small>
         </div>
 
         <div class="d-flex gap-3">
@@ -263,3 +262,48 @@ if ($_POST) {
 </div>
 
 <?php include_once "layout_foot.php"; ?>
+
+<script>
+const AvailableStock = parseFloat(document.getElementById("available_stocks").value);
+const MaxGrams = AvailableStock * 1000;
+const radios = document.querySelectorAll('input[name="unit"]');
+const input = document.getElementById("quantity");
+const label = document.getElementById("quantityLabel");
+const helper = document.getElementById("helperText");
+
+function updateField(unit) {
+
+    if(unit === "piece") {
+        label.innerText = "Number of Pieces";
+        input.min = 1;
+        input.step = 1;
+        input.placeholder = "Enter pieces";
+        helper.innerText = "Minimum: 1 piece";
+
+    } else if(unit === "gram") {
+        label.innerText = "Grams";
+        input.min = 50;
+        input.step = 10;
+        input.max = MaxGrams;
+        input.placeholder = "Enter grams";
+        helper.innerText = "Minimum: 50 grams";
+
+    } else if(unit === "kg") {
+        label.innerText = "Kilograms";
+        input.min = 0.1;
+        input.step = 0.1;
+        input.max = AvailableStock;
+        input.placeholder = "Enter kilograms";
+        helper.innerText = "Minimum: 0.1 kg";
+    }
+}
+
+radios.forEach(radio => {
+    radio.addEventListener("change", function() {
+        updateField(this.value);
+    });
+});
+
+// Run on page load (for default checked)
+updateField(document.querySelector('input[name="unit"]:checked').value);
+</script>

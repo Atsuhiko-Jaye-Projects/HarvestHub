@@ -228,7 +228,6 @@ $cart_item_count = $cart_item->countItem();
         <div class="d-flex gap-3">
           <button type="submit" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
           <input type="hidden" class="btn-check" name="farmer_id" value="<?php echo $product->user_id;?>">
-          <!-- <button class="btn btn-outline-dark px-4">Checkout Now</button> -->
         </div>
       </div>
     </form>
