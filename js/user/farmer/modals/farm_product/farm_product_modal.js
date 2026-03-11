@@ -79,7 +79,7 @@ function editHarvestProduct(row){
 
 /**
  * 2. FUNCTION: postHarvestProduct
- * DESIGN: Ultra-Modern Economic Dashboard
+ * DESIGN: Ultra-Modern Economic Dashboard with Profitability Logic
  */
 function postHarvestProduct(row) {
   const farmSize = parseFloat(row.lot_size) || 1;
@@ -120,7 +120,7 @@ function postHarvestProduct(row) {
 
               <div class="col-lg-8 p-4 p-md-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                  <h4 class="fw-bold m-0 text-dark">Product Details</h4>
+                  <h4 class="fw-bold m-0 text-dark">Market Pricing Dashboard</h4>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -152,7 +152,7 @@ function postHarvestProduct(row) {
                   </div>
                   <div class="col-md-6">
                     <label class="form-label small fw-bold text-muted ps-2">Cost per KG (Break-even)</label>
-                    <input type="text" class="form-control form-control-lg border-0 bg-light rounded-4 px-4 text-danger fw-bold" value="₱${costPerKg}" readonly>
+                    <input type="text" class="form-control form-control-lg border-0 bg-light rounded-4 px-4 text-danger fw-bold" value="₱${costPerKg.toFixed(2)}" readonly>
                     <input type="hidden" id="cost-${row.id}" value="${costPerKg}">
                   </div>
 
@@ -175,7 +175,7 @@ function postHarvestProduct(row) {
                   </div>
 
                   <div class="col-md-12">
-                     <div id="status-box-${row.id}" class="p-3 rounded-4 bg-light d-flex justify-content-between align-items-center">
+                     <div id="status-box-${row.id}" class="p-3 rounded-4 bg-light d-flex justify-content-between align-items-center transition-all">
                         <div class="d-flex align-items-center">
                            <div class="p-2 bg-white rounded-circle shadow-sm me-3" id="margin-icon-${row.id}">
                              <i class="bi bi-graph-up-arrow text-muted"></i>
@@ -233,28 +233,16 @@ function postHarvestProduct(row) {
         const price  = parseFloat(priceIn.value) || 0;
         const cost   = parseFloat(costIn.value) || 0;
 
-        // Formula 1: Prod/sqm
         pSqmLabel.innerText = (stocks / farmSize).toFixed(2) + " kg/sqm";
         yldLabel.innerText = stocks.toFixed(2) + " KG";
 
-        // Formula 3: Revenue
         const totalRevenue = stocks * price;
         revText.innerText = "₱" + totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-        // Formula 4: Net Income
         const netIncome = totalRevenue - totalExp;
         netLabel.innerText = "₱" + netIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-        // Dynamic Card Color
-        if(netIncome > 0) {
-          netCard.className = "p-3 rounded-5 bg-success text-white shadow-lg";
-        } else if (netIncome < 0) {
-          netCard.className = "p-3 rounded-5 bg-danger text-white shadow-lg";
-        } else {
-          netCard.className = "p-3 rounded-5 bg-dark text-white shadow-lg";
-        }
-
-        // Logic
+        // Profit & Status Logic
         if (price > 0) {
           const margin = ((price - cost) / cost) * 100;
           marginTxt.innerText = margin.toFixed(1) + "%";
@@ -263,11 +251,28 @@ function postHarvestProduct(row) {
             mktStatus.innerText = "OVERPRICED";
             mktStatus.className = "badge rounded-pill bg-danger px-4 py-2";
             postBtn.disabled = true;
+          } else if (margin < 0) {
+            mktStatus.innerText = "LOW PRICE (LOSS)";
+            mktStatus.className = "badge rounded-pill bg-danger px-4 py-2";
+            postBtn.disabled = false;
+          } else if (margin <= 5) {
+            mktStatus.innerText = "LOW MARGIN";
+            mktStatus.className = "badge rounded-pill bg-warning text-dark px-4 py-2";
+            postBtn.disabled = false;
           } else {
             mktStatus.innerText = "COMPLIANT";
             mktStatus.className = "badge rounded-pill bg-success px-4 py-2";
             postBtn.disabled = false;
           }
+        }
+
+        // Dynamic Card Styling based on Net Income
+        if(netIncome > 0) {
+          netCard.className = "p-3 rounded-5 bg-success text-white shadow-lg";
+        } else if (netIncome < 0) {
+          netCard.className = "p-3 rounded-5 bg-danger text-white shadow-lg";
+        } else {
+          netCard.className = "p-3 rounded-5 bg-dark text-white shadow-lg";
         }
       }
 
