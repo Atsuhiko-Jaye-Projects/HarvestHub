@@ -24,7 +24,7 @@
           <!-- Cart -->
           <a class="nav-link position-relative" href="<?php echo $base_url; ?>user/consumer/order/cart.php">
             <i class="bi bi-cart-fill fs-5"></i>
-            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+            <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
           </a>
 
           <!-- User Dropdown -->
@@ -47,3 +47,22 @@
     </div>
   </div>
 </nav>
+
+<script>
+  async function fetchCartCount() {
+    try {
+        const response = await fetch(
+            'http://localhost/HarvestHub/js/user/farmer/api/fetch_cart_count.php'
+        );
+
+        const data = await response.json();
+
+        document.getElementById("cartCount").innerText = data.count;
+
+    } catch (error) {
+        console.error("Error fetching cart count:", error);
+    }
+}
+
+fetchCartCount();
+</script>
