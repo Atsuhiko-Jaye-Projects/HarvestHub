@@ -223,6 +223,22 @@ class CartItem{
     }
 
 
+    function countCartItemNumber(){
+        $query = "SELECT Count(id) FROM " . $this->table_name . "
+            WHERE 
+                user_id = :user_id AND status = 'ordered' ";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+
+        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 
 

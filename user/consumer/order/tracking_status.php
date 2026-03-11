@@ -154,72 +154,7 @@ $num = count($rows);
 
 <body>
 
-<!-- FIRST SECTION (Horizontal Steps) -->
-<div class="container mt-5 align-center">
-    <div class="d-flex steps-container">
 
-<?php if ($num > 0): ?>
-    <?php foreach ($rows as $row): ?>
-
-        <?php
-        $icon_icon = "";
-        $status_color = "";
-
-        switch ($row['status']) {
-
-            case 'order placed':
-                $icon_icon = "<i class='bi bi-cart'></i>";
-                $status_color = "step-primary";
-                break;
-
-            case 'accept':
-                $icon_icon = "<i class='bi bi-gear-wide-connected'></i>";
-                $status_color = "step-primary";
-                break;
-
-            case 'order shipout':
-                $icon_icon = "<i class='bi bi-truck'></i>";
-                $status_color = "step-primary";
-                break;
-
-            case 'order recieved':
-                $icon_icon = "<i class='bi bi-box-seam'></i>";
-                $status_color = "step-primary";
-                break;
-
-            case 'completed':
-            case 'order confirmed':
-                $icon_icon = "<i class='bi bi-check2-circle'></i>";
-                $status_color = "step-success";
-                break;
-
-            case 'pending cancel':
-            case 'order cancelled':
-                $icon_icon = "<i class='bi bi-x-circle'></i>";
-                $status_color = "step-danger";
-                break;
-
-            default:
-                $icon_icon = "<i class='bi bi-info-circle'></i>";
-                $status_color = "step-secondary";
-                break;
-        }
-        ?>
-
-        <div class="step">
-            <div class="step-icon <?= $status_color ?>"><?= $icon_icon ?></div>
-            <div class="step-details">
-                <div class="step-text"><?= ucwords($row['status']) ?></div>
-                <div class="step-time"><?= $row['timestamp'] ?></div>
-            </div>
-            <div class="step-line"></div>
-        </div>
-
-    <?php endforeach; ?>
-<?php endif; ?>
-
-    </div>
-</div>
 
 
 <!-- SECOND SECTION (Vertical Timeline) -->

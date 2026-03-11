@@ -11,320 +11,267 @@ $db = $database->getConnection();
 $product = new Product($db);
 $cart_item = new CartItem($db);
 
-$page_title = "Index";
+$page_title = "Home | Harvest Hub";
 include_once "layout_head.php";
 
 $page_url = "{$home_url}index.php?";
-
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$records_per_page = 10;
+$records_per_page = 16; 
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
 $stmt = $product->showAllProduct($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
 $total_rows = $product->countAll();
 
-$msp_stmt = $product->getMostSoldProduct(6);
+$msp_stmt = $product->getMostSoldProduct(12); 
 $msp_num = $msp_stmt->rowCount();
 
-
-if (!isset($_SESSION['logged_in'])) {
-
-} else {
-  $cart_item->user_id = $_SESSION['user_id'];
-  $cart_item_count= $cart_item->countItem();
+if (isset($_SESSION['logged_in'])) {
+    $cart_item->user_id = $_SESSION['user_id'];
+    $cart_item_count = $cart_item->countItem();
 }
-
 ?>
-<div class="container">
-<?php include_once "layout/navigation.php";?>
-  <div class="hero-banner">
-    <div>
-      <h1>Fresh Goods</h1>
-      <p>Order Now!</p>
-    </div>
-    <img src="libs/images/logo.png" alt="Vegetables" class="category-icon mb-2">
-  </div>
 
-    <div class="most-sold-banner my-4 p-3 rounded-3 bg-light shadow-sm">
-    <h5 class="mb-3">🔥 Most Sold Products</h5>
+<style>
+    :root {
+        --harvest-green: #10b981;
+        --harvest-soft-green: #ecfdf5;
+        --harvest-dark: #1e293b;
+        --bg-main: #fcfdfd;
+    }
 
-    <div id="mostSoldCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner">
+    body {
+        background-color: var(--bg-main);
+        font-family: 'Inter', sans-serif;
+    }
 
-            <?php
-            if ($msp_num > 0) {
-                $count = 0; // counter for products per slide
-                $active = "active"; // first slide is active
-                echo '<div class="carousel-item ' . $active . '"><div class="d-flex justify-content-center gap-3">';
-                
-                while ($msp_row = $msp_stmt->fetch(PDO::FETCH_ASSOC)) {
+    .container-compact { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 
-                    $raw_image = $msp_row['product_image'];
-                    $img_owner = $msp_row['user_id'];
-                    $image_path = "";
+    /* 🏷️ CATEGORY NAVIGATION DIV */
+    .category-nav-wrapper {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 10px 5px;
+        margin-bottom: 25px;
+        scrollbar-width: none; /* Hide scrollbar Firefox */
+    }
+    .category-nav-wrapper::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
 
-                    if ($msp_row['product_type'] == "harvest") {
-                       $image_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_image}";
-                    }else{
-                        $image_path = "{$base_url}user/uploads/{$img_owner}/posted_crops/{$raw_image}";
-                    }
+    .cat-item {
+        background: white;
+        border: 1px solid #f1f5f9;
+        padding: 8px 20px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none !important;
+        color: var(--harvest-dark);
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .cat-item i { font-size: 1.1rem; }
+    .cat-item.active {
+        background: var(--harvest-green);
+        color: white;
+        border-color: var(--harvest-green);
+        box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+    .cat-item:hover:not(.active) {
+        background: var(--harvest-soft-green);
+        border-color: var(--harvest-green);
+        transform: translateY(-2px);
+    }
 
-                    
-                    $url = "";
-                    if ($msp_row['product_type'] == "harvest") {
-                        $url = "product/product_detail.php?pid={$msp_row['product_id']}";
-                    }else{
-                         $url = "product/preorder.php?pid={$msp_row['product_id']}";
-                    }
+    /* 🖼️ Hero Banner Slim */
+    .hero-slim {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 24px; padding: 35px 50px; color: white;
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 25px;
+    }
 
-                    // Display product card
-                    echo '<div class="text-center border rounded" style="width:140px; flex-shrink:0;">';
-                    echo "<a href='{$url}'>
-                    <img src='{$image_path}' class='img-fluid mb-2' style='height:100px; object-fit:cover;'></a>";
-                    echo '<p class="mb-0 small">' . $msp_row['product_name'] . '</p>';
-                    echo '<p class="mb-1 small text-success">₱' . number_format($msp_row['price_per_unit'], 2) . '</p>';
-                    echo '<p class="mb-0 small text-muted"><i class="bi bi-cart"></i> ' . $msp_row['sold_count'] . ' sold</p>';
-                    $rating = $msp_row['avg_rating']; // e.g., 4.2
+    /* 📦 Product Card Styles */
+    .product-card {
+        border: 1px solid #f1f5f9; border-radius: 20px;
+        background: white; transition: 0.3s; overflow: hidden;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+    .card-img-top { height: 160px; object-fit: cover; }
 
-                    // Calculate full, half, and empty stars
-                    $fullStars = floor($rating);
-                    $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
-                    $emptyStars = 5 - $fullStars - $halfStar;
+    /* 🎨 Badge Colors */
+    .badge-ready { background: #10b981 !important; color: white; }
+    .badge-preorder { background: #f59e0b !important; color: white; }
 
-                    // Start separate echo for rating
-                    echo '<p class="mb-0 small text-warning">';
+    /* Filter Buttons */
+    .filter-btn {
+        border: none; background: #f1f5f9; border-radius: 12px;
+        padding: 6px 16px; font-size: 0.85rem; font-weight: 700;
+        color: #64748b; transition: 0.2s;
+    }
+    .filter-btn.active { background: var(--harvest-dark); color: white; }
+</style>
 
-                    // Full stars
-                    for ($i = 0; $i < $fullStars; $i++) {
-                        echo '★';
-                    }
+<div class="container-compact py-4">
+    <?php include_once "layout/navigation.php";?>
 
-                    // Half star (optional)
-                    if ($halfStar) {
-                        echo '☆'; // You can replace with a half star icon if you have one
-                    }
-
-                    // Empty stars
-                    for ($i = 0; $i < $emptyStars; $i++) {
-                        echo '☆';
-                    }
-
-                    // Show numeric rating
-                    echo " (" . number_format($rating, 1) . ")";
-                    echo '</p>';
-                    echo '</div>';
-
-                    $count++;
-
-                    // If 3 products are in this slide, close divs and start a new slide
-                    if ($count % 3 == 0 && $count < $msp_num) {
-                        echo '</div></div>'; // close current slide
-                        $active = ""; // only first slide is active
-                        echo '<div class="carousel-item ' . $active . '"><div class="d-flex justify-content-center gap-3">';
-                    }
-                }
-
-                echo '</div></div>'; // close last slide
-            } else {
-                echo '<p>No products found.</p>';
-            }
-            ?>
-
+    <div class="hero-slim shadow-sm">
+        <div>
+            <h1 class="fw-800">Harvest Hub</h1>
+            <p class="opacity-75">Sourcing the best vegetables from Baao farmers.</p>
         </div>
-
-        <!-- Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#mostSoldCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#mostSoldCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-        </button>
+        <img src="libs/images/logo.png" style="width: 85px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">
     </div>
-</div>
 
-
-
-
-  <h5>Shop From Top Categories</h5>
-  <div class="d-flex gap-4 mb-4">
-    <div class="text-center">
-      <img src="libs/images/general/vegetables/1.jpg" class="category-icon mb-2">
-      <p>Vegetables</p>
+    <div class="category-nav-wrapper">
+        <a href="#" class="cat-item active">
+            <i class="bi bi-leaf"></i> Vegetables
+        </a>
+        <a href="#" class="cat-item opacity-50">
+            <i class="bi bi- shop-window"></i> Others (Soon)
+        </a>
     </div>
-  </div>
 
-  <!-- ⭐ ADDED ONLY THIS BUTTON GROUP (NO OTHER CHANGE) -->
-  <div class="d-flex gap-2 mb-4">
-      <button class="btn btn-dark" data-filter="all">All Products</button>
-      <button class="btn btn-primary" data-filter="harvest">Harvest Products</button>
-      <button class="btn btn-warning" data-filter="preorder">Pre-Order Products</button>
-        <select class="form-select w-auto" id="sortPrice">
-            <option value="" hidden>Sort by Price</option>
-            <option value="asc">Low to High</option>
-            <option value="desc">High to Low</option>
-        </select>
-  </div>
-  <!-- ⭐ END OF ADDED BUTTONS -->
-
-<div id="productContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-<?php
-if ($num > 0) {
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        extract($row);
-        $product_type = $row['product_type'];
-        
-        ?>
-        <div class="col product-item mb-4" data-type="<?= $product_type ?>"  data-price="<?= $price_per_unit ?>" >
-            <div class="card product-card h-100 shadow-sm">
-                
-                <!-- Image with Pre-Order badge if needed -->
-                <div class="position-relative">
-                    <?php
-                    $path = "user/uploads/{$user_id}/products/{$product_image}";
-                    $crops_path = "user/uploads/{$user_id}/posted_crops/{$product_image}";
-                    $default = "libs/images/logo.png";
-
-                    if (!empty($product_image) && file_exists($path)) {
-                        $image = $path;
-                    } elseif (!empty($product_image) && file_exists($crops_path)) {
-                        $image = $crops_path;
-                    } else {
-                        $image = $default;
-                    }
-                    ?>
-                    <img src="<?= $image ?>" 
-                        class="card-img-top"
-                        alt="<?= htmlspecialchars($product_name) ?>" 
-                        style="object-fit: cover; height: 180px;">
-
-
-                    <?php 
-                        $discount = ($row['discount'] * 100) * 100;
-                        if (!empty($row['discount'])): 
-                    ?>
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-2">
-                            <?= $discount ?>% OFF
-                        </span>
-                    <?php endif; ?>
-                    <?php if ($product_type != "harvest") : ?>
-                        <span class="badge bg-warning position-absolute top-0 end-0 m-2">Pre-Order</span>
-                    <?php endif; ?>
-                </div>
-                
-                <div class="card-body d-flex flex-column">
-                    <!-- Product Name -->
-                    <h5 class="card-title text-truncate"><?= htmlspecialchars($product_name) ?></h5>
-                    
-                    <!-- Price -->
-                    <p class="card-text text-success fw-bold">₱ <?= number_format($price_per_unit, 2) ?> per KG</p>
-                    
-                    <!-- Stock and KG info -->
-                    <p class="small text-muted mb-1">Available: <?= number_format($row['total_stocks']); ?> KG</p>
-                    <!-- <p class="small text-muted mb-2">KG/Plant: <?= $yield ?></p> -->
-                    
-                    <!-- Action button -->
-                    <?php if (empty($_SESSION['logged_in'])): ?>
-                        <a href="<?= $home_url ?>signin.php?action=add_to_cart" class="btn btn-info w-100 mt-auto">
-                            Sign in to Order
-                        </a>
-                    <?php else: ?>
-                        <?php if ($product_type == "harvest"): ?>
-                            <a class="btn btn-success w-100 mt-auto" href="<?= $home_url ?>product/product_detail.php?pid=<?= $product_id ?>&page=1">
-                                Add to Cart
-                            </a>
-                        <?php else: ?>
-                            <a class="btn btn-warning w-100 mt-2 mt-auto" href="<?= $home_url ?>product/preorder.php?pid=<?= $product_id ?>&page=1">
-                                Pre-Order
-                            </a>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
+    <div class="mb-5 bg-white p-3 rounded-4 border shadow-xs">
+        <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+            <h6 class="fw-bold m-0 text-uppercase small tracking-wider text-muted">🔥 Popular Now</h6>
+            <div class="d-flex gap-1">
+                <button class="btn btn-sm p-0 px-2" data-bs-target="#mspCarousel" data-bs-slide="prev"><i class="bi bi-chevron-left"></i></button>
+                <button class="btn btn-sm p-0 px-2" data-bs-target="#mspCarousel" data-bs-slide="next"><i class="bi bi-chevron-right"></i></button>
             </div>
         </div>
+        <div id="mspCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php
+                if ($msp_num > 0) {
+                    $count = 0; $active = "active";
+                    echo '<div class="carousel-item ' . $active . '"><div class="row g-2 row-cols-3 row-cols-md-6">';
+                    while ($msp_row = $msp_stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $img = "user/uploads/{$msp_row['user_id']}/" . ($msp_row['product_type'] == "harvest" ? "products" : "posted_crops") . "/{$msp_row['product_image']}";
+                        echo '<div class="col"><div class="text-center p-2 border border-light rounded-3">';
+                        echo "<a href='product/product_detail.php?pid={$msp_row['product_id']}' class='text-decoration-none'>
+                                <img src='{$img}' class='rounded-3 mb-2 w-100 shadow-xs' style='height: 65px; object-fit: cover;'>
+                                <p class='mb-0 small fw-bold text-dark text-truncate'>{$msp_row['product_name']}</p>
+                                <span class='text-success small fw-bold'>₱" . number_format($msp_row['price_per_unit'], 2) . "</span>
+                            </a></div></div>";
+                        $count++;
+                        if ($count % 6 == 0 && $count < $msp_num) echo '</div></div><div class="carousel-item"><div class="row g-2 row-cols-3 row-cols-md-6">';
+                    }
+                    echo '</div></div>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-2 rounded-4 shadow-xs border">
+        <div class="d-flex gap-2">
+            <button class="filter-btn active" data-filter="all">All Items</button>
+            <button class="filter-btn" data-filter="harvest">In-Stock</button>
+            <button class="filter-btn" data-filter="preorder">Pre-Order</button>
+        </div>
+        <div class="d-flex align-items-center gap-2 pe-2">
+            <i class="bi bi-sort-down text-muted"></i>
+            <select class="form-select form-select-sm border-0 bg-transparent fw-bold" id="sortPrice" style="width: 130px;">
+                <option value="">Sort Price</option>
+                <option value="asc">Low to High</option>
+                <option value="desc">High to Low</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="productContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <?php
-    }
-} else {
-    echo "<p class='text-muted'>No products available.</p>";
-}
-?>
+        if ($num > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+                $img = "user/uploads/{$user_id}/" . ($product_type == "harvest" ? "products" : "posted_crops") . "/{$product_image}";
+                ?>
+                <div class="col product-item" data-type="<?= $product_type ?>" data-price="<?= $price_per_unit ?>">
+                    <div class="card product-card h-100 border-0 shadow-xs">
+                        <div class="position-relative">
+                            <img src="<?= $img ?>" class="card-img-top">
+                            <span class="badge position-absolute top-0 start-0 m-3 rounded-pill px-3 py-1 shadow-sm <?= ($product_type == 'harvest') ? 'badge-ready' : 'badge-preorder' ?>" style="font-size: 0.6rem; letter-spacing: 0.5px;">
+                                <?= strtoupper($product_type) ?>
+                            </span>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold text-dark mb-0 text-truncate" style="font-size: 0.95rem;"><?= htmlspecialchars($product_name) ?></h6>
+                                <?php if(isset($_SESSION['logged_in']) && $_SESSION['user_id'] != $user_id): ?>
+                                    <a href="message/chat.php?receiver_id=<?= $user_id ?>" class="text-muted"><i class="bi bi-chat-dots"></i></a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end mt-3">
+                                <div>
+                                    <span class="text-muted d-block small" style="font-size: 0.7rem;">Price per KG</span>
+                                    <span class="text-success fw-800 fs-5">₱<?= number_format($price_per_unit, 2) ?></span>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-light text-muted rounded-pill border fw-normal" style="font-size: 0.7rem;"><?= $total_stocks ?>kg left</span>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <a href="product/<?= ($product_type == 'harvest' ? 'product_detail.php' : 'preorder.php') ?>?pid=<?= $product_id ?>" 
+                                   class="btn <?= ($product_type == 'harvest' ? 'btn-success' : 'btn-warning') ?> w-100 btn-sm rounded-pill fw-bold py-2 shadow-xs">
+                                    <?= ($product_type == 'harvest' ? 'Buy Now' : 'Reserve') ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        }
+        ?>
+    </div>
 
-  </div>
-  <?php include_once "paging.php";?>
+    <div class="mt-5 d-flex justify-content-center">
+        <?php include_once "paging.php";?>
+    </div>
 </div>
-<?php 
-include_once "layout_foot.php";
-ob_end_flush();
-?>
-<script>
 
+<?php include_once "layout_foot.php"; ob_end_flush(); ?>
+
+<script>
+// Filter script same as before... (functional)
 document.addEventListener('DOMContentLoaded', function() {
-    const filterButtons = document.querySelectorAll('.d-flex button[data-filter]');
+    const filterButtons = document.querySelectorAll('.filter-btn');
     const sortSelect = document.getElementById('sortPrice');
     const container = document.getElementById('productContainer');
 
     function filterAndSort() {
-        const filter = document.querySelector('.d-flex button.active')?.dataset.filter || 'all';
+        const activeBtn = document.querySelector('.filter-btn.active');
+        const filter = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
         const sort = sortSelect.value;
-
         let items = Array.from(container.querySelectorAll('.product-item'));
 
-        // Filter
         items.forEach(item => {
-            item.style.display = (filter === 'all' || item.dataset.type === filter) ? 'block' : 'none';
+            const isMatch = (filter === 'all' || item.getAttribute('data-type') === filter);
+            item.style.display = isMatch ? 'block' : 'none';
         });
 
-        // Sort visible items
         if(sort) {
             items.sort((a, b) => {
-                const priceA = parseFloat(a.dataset.price) || 0;
-                const priceB = parseFloat(b.dataset.price) || 0;
-                return sort === 'asc' ? priceA - priceB : priceB - priceA;
+                const pA = parseFloat(a.getAttribute('data-price'));
+                const pB = parseFloat(b.getAttribute('data-price'));
+                return sort === 'asc' ? pA - pB : pB - pA;
             });
-            items.forEach(item => {
-                if(item.style.display !== 'none') container.appendChild(item);
-            });
+            items.forEach(item => { if(item.style.display !== 'none') container.appendChild(item); });
         }
     }
 
-    // Filter button click
     filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', function() {
             filterButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            this.classList.add('active');
             filterAndSort();
         });
     });
-
-    // Sort dropdown change
     sortSelect.addEventListener('change', filterAndSort);
-
-    // Initial filter & sort
-    filterAndSort();
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.d-flex .btn');
-    const items = document.querySelectorAll('.product-item');
-
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const filter = btn.textContent.toLowerCase().includes('harvest') ? 'harvest' :
-                           btn.textContent.toLowerCase().includes('pre-order') ? 'preorder' : 'all';
-
-            items.forEach(item => {
-                if(filter === 'all') {
-                    item.style.display = 'block';
-                } else {
-                    if(item.dataset.type === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                }
-            });
-        });
-    });
 });
 </script>

@@ -2,121 +2,88 @@
 $base_url = "/HarvestHub/";
 $root_path = $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/";
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?php echo isset($page_title) ? $page_title : "HarvestHub"; ?></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo isset($page_title) ? $page_title : "HarvestHub"; ?></title>
 
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
-  
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="<?php echo $base_url; ?>libs/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cyber-bg: #05080a;
+            --neon-emerald: #10b981;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --sidebar-width: 280px; /* Eksaktong sukat ng sidebar */
+        }
 
-  <style>
-  body {
-    overflow-x: hidden;
-    background: #f8f9fa;
-  }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: #f8f9fa;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-  /* Sidebar */
-  .sidebar {
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 1000;
-    background-color: #fff;
-    transition: transform 0.3s ease;
-  }
-  .sidebar.show { transform: translateX(0); }
-  .sidebar.hide { transform: translateX(-100%); }
+        /* SIDEBAR WRAPPER - Naka-fixed para hindi mausog */
+        .sidebar-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            z-index: 1050;
+            background-color: var(--cyber-bg);
+            transition: transform 0.3s ease;
+        }
 
-  /* Content */
-  .content-wrapper {
-    margin-left: 250px;
-    min-height: 100vh;
-    transition: margin-left 0.3s ease;
-  }
+        /* CONTENT WRAPPER - Ito ang magpapatabi sa kanila */
+        .content-wrapper {
+            margin-left: var(--sidebar-width); /* Eto ang fix! */
+            min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-  .nav-link.active {
-    background-color: #ffffff;
-    color: #198754 !important;
-    font-weight: 600;
-  }
+        /* Mobile View Fix */
+        @media (max-width: 1199px) {
+            .sidebar-wrapper {
+                transform: translateX(-100%);
+            }
+            .sidebar-wrapper.show {
+                transform: translateX(0);
+            }
+            .content-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
 
-  /* Cards */
-  .order-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    background: #fff;
-    margin-bottom: 1rem;
-    transition: all 0.2s ease-in-out;
-  }
-  .order-card:hover { transform: scale(1.01); }
-
-  /* Tables */
-  .table-responsive { overflow-x: auto; }
-
-  /* Mobile */
-  @media (max-width: 768px) {
-    .sidebar { transform: translateX(-100%); position: fixed; }
-    .content-wrapper { margin-left: 0 !important; }
-    .sidebar-toggle-btn {
-      display: inline-block;
-    }
-  }
-
-    .upload-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 80px);
-    gap: 10px;
-}
-
-.upload-box {
-    width: 80px;
-    height: 80px;
-    border: 2px dashed #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 32px;
-    color: #aaa;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-
-.upload-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.upload-box.filled {
-    border: none;
-}
-
-  
-  </style>
+        /* Card styles para sa Review Items */
+        .order-card, .main-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            background: #fff;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <?php include $root_path . "user/consumer/layout/sidebar.php"; ?>
+    <div class="d-flex">
+        <aside class="sidebar-wrapper">
+            <?php include $root_path . "user/consumer/layout/sidebar.php"; ?>
+        </aside>
 
-  <!-- Content Wrapper -->
-  <div class="content-wrapper">
+        <main class="content-wrapper">
+            <?php include $root_path . "user/consumer/layout/navigation.php"; ?>
 
-    <!-- Navigation -->
-    <?php include $root_path . "user/consumer/layout/navigation.php"; ?>
-
-    <!-- Main Container -->
-    <div class="container-fluid p-3">
+            <div class="container-fluid p-4">
