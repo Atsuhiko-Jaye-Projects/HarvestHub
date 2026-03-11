@@ -276,17 +276,20 @@ class Product{
 
     function getProductInfo(){
         $query = "SELECT 
-                price_per_unit,
-                product_image,
-                product_name,
-                product_type,
-                category,
-                unit,
-                user_id
+                p.price_per_unit,
+                p.product_image,
+                p.product_name,
+                p.product_type,
+                p.category,
+                p.unit,
+                p.user_id,
+                c.estimated_harvest_date
             FROM 
-                " . $this->table_name . "
+                " . $this->table_name . " p
+            INNER JOIN 
+                crops c ON p.product_id = c.id
             WHERE
-                product_id = :product_id
+                p.product_id = :product_id
             LIMIT 
                 0,1";
         
@@ -304,6 +307,7 @@ class Product{
         $this->category = $row['category'];
         $this->product_type = $row['product_type'];
         $this->user_id = $row['user_id'];
+        $this->estimated_harvest_date = $row['estimated_harvest_date'];
     }
 
     function activeProductCount(){

@@ -205,6 +205,13 @@ $stmt = $order_status->getOrderStatus();
                                   </button>';
                             break;
 
+                        case 'accept pre-order':
+                            echo '<button type="button" class="btn btn-outline-danger w-100 py-3 rounded-4 fw-bold" 
+                                    data-bs-toggle="modal" data-bs-target="#cancel-order-modal">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel Order
+                                  </button>';
+                            break;
+
                         default:
                             echo '<div class="alert alert-success border-0 rounded-4 text-center small fw-bold mb-0">
                                     <i class="bi bi-check2-all"></i> Transaction Completed

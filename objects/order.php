@@ -43,6 +43,31 @@ class Order{
         return $stmt;
     }
 
+    // public function readOrders($from_record_num, $records_per_page){
+
+    //     $query = "SELECT 
+    //             u.firstname,
+    //             u.lastname,
+    //             u.contact_number,
+
+    //             o.invoice_number
+    //             FROM " . $this->table_name . " o
+    //             INNER JOIN users u 
+    //                 ON o.customer_id = u.id
+    //             WHERE o.farmer_id = :farmer_id
+    //             ORDER BY o.id DESC
+    //             LIMIT :from_record_num, :records_per_page";
+
+    //     $stmt = $this->conn->prepare($query);
+
+    //     $stmt->bindParam(":farmer_id", $this->farmer_id, PDO::PARAM_INT);
+    //     $stmt->bindParam(":from_record_num", $from_record_num, PDO::PARAM_INT);
+    //     $stmt->bindParam(":records_per_page", $records_per_page, PDO::PARAM_INT);
+
+    //     $stmt->execute();
+
+    //     return $stmt;
+    // }
     // display orders to farmers order Page
     function readOrders($from_record_num, $records_per_page) {
         $query = "SELECT *
@@ -65,9 +90,10 @@ class Order{
 
     public function countAll(){
 
-        $query = "SELECT customer_id FROM " . $this->table_name . "";
+        $query = "SELECT customer_id FROM " . $this->table_name . " WHERE farmer_id = :farmer_id";
 
         $stmt = $this->conn->prepare( $query );
+        $stmt->bindParam(":farmer_id", $this->farmer_id);
         $stmt->execute();
 
         $num = $stmt->rowCount();

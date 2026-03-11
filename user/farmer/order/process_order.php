@@ -269,6 +269,8 @@ if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline',
 
 $status = $order->status;
 $type   = $product->product_type;
+$estimated_harvest = $product->estimated_harvest_date;
+$isNotHarvestDate = (date("Y-m-d") != $estimated_harvest);
 
 switch (true) {
     case ($status == "order placed" && $type == "preorder"):
@@ -280,12 +282,36 @@ switch (true) {
         break;
 
     case ($status == "accept pre-order" && $type == "preorder"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">Mark this pre-order as ready to ship?</h6>
-        <button type="submit" name="action" value="pre-order shipout" class="btn btn-success w-100 mb-2">Yes</button>
-        <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">No</button>
-        <?php
-        break;
+    ?>
+
+    <h6 class="fw-bold text-muted mb-3 mt-3">Mark this pre-order as ready to ship?</h6>
+
+    <button 
+        type="submit" 
+        name="action" 
+        value="pre-order shipout" 
+        class="btn btn-success w-100 mb-2"
+        <?php if($isNotHarvestDate) echo "disabled"; ?>
+    >
+        Yes
+    </button>
+
+    <button 
+        type="submit" 
+        name="action" 
+        value="cancel" 
+        class="btn btn-outline-danger w-100"
+        <?php if($isNotHarvestDate) echo "disabled"; ?>
+    >
+        No
+    </button>
+
+    <?php
+    if($isNotHarvestDate){
+        echo '<small class="text-danger">You can only ship this order on the harvest date.</small>';
+    }
+
+    break;
 
     case ($status == "decline pre-order" && $type == "preorder"):
         ?>
