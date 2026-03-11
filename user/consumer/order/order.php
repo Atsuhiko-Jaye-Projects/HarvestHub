@@ -7,7 +7,6 @@ include_once "../../../objects/product.php";
 $page_title = "My Orders";
 include_once "../layout/layout_head.php";
 
-// always make the page required is enabled
 $require_login = true;
 include_once "../../../login_checker.php";
 
@@ -17,230 +16,174 @@ $db = $database->getConnection();
 $order = new Order($db);
 $product = new Product($db);
 
-$page = "order.php";
-
-$page_url = "{$home_url}user/farmer/management/manage_harvest.php?";
-
-// page given in URL parameter, default page is one
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
+$records_per_page = 20; 
+$from_record_num = ($records_per_page * $page) - $records_per_page;
 
-// set number of records per page
-$records_per_page = 5;
-
-// get the userId to get the order details
 $order->customer_id = $_SESSION['user_id'];
-
 $stmt = $order->readAllOrder($from_record_num, $records_per_page);
 $num = $stmt->rowCount();
-
-
-
 ?>
 
-
-<div class="container py-3">
-
-  <!-- Filter Buttons -->
-  <div class="d-flex flex-wrap gap-2 mb-3">
-    <button class="btn btn-outline-success btn-sm">All</button>
-    <button class="btn btn-outline-success btn-sm">In Progress</button>
-    <button class="btn btn-outline-success btn-sm">Delivered</button>
-    <button class="btn btn-outline-success btn-sm">Complete</button>
-  </div>
-
-  <!-- Page Header -->
-  <div class="bg-success text-white p-3 rounded mb-3">
-    <h5 class="mb-0"><i class="bi bi-basket-fill me-2"></i><?php echo $page_title; ?></h5>
-    <small class="text-light">Track and manage your recent orders.</small>
-  </div>
-
-  <!-- Order Card Example -->
-  <?php
-if ($num > 0) {
-
-    // GROUP BY INVOICE
-    $groupedOrders = [];
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $groupedOrders[$row['invoice_number']][] = $row;
+<style>
+    :root { --harvest-green: #10b981; --harvest-dark: #1e293b; --bg-soft: #f8fafc; }
+    body { background-color: var(--bg-soft); font-family: 'Inter', sans-serif; }
+    
+    .filter-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+    .filter-pills::-webkit-scrollbar { display: none; }
+    
+    .filter-btn {
+        border: 1px solid #e2e8f0; background: white; color: #64748b;
+        padding: 8px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+        transition: 0.2s; white-space: nowrap; cursor: pointer;
     }
+    .filter-btn.active { background: var(--harvest-green); color: white; border-color: var(--harvest-green); box-shadow: 0 4px 10px rgba(16,185,129,0.2); }
 
-    // LOOP THROUGH EACH INVOICE GROUP
-    foreach ($groupedOrders as $invoice => $orders) {
+    .order-card { background: white; border: 1px solid #eef2f6; border-radius: 15px; overflow: hidden; margin-bottom: 20px; transition: 0.3s; }
+    .invoice-header { background: #fcfdfd; padding: 12px 20px; border-bottom: 1px solid #f1f5f9; }
+    .product-img-sm { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; }
+    
+    /* Button Styles */
+    .btn-sm-custom { border-radius: 8px; font-weight: 700; padding: 7px 16px; font-size: 0.8rem; text-decoration: none !important; display: inline-block; transition: 0.2s; }
+    .btn-rate { background-color: #f59e0b; color: white; border: none; }
+    .btn-rate:hover { background-color: #d97706; color: white; }
+    .btn-details { border: 1px solid var(--harvest-green); color: var(--harvest-green); background: transparent; }
+    .btn-details:hover { background-color: var(--harvest-green); color: white; }
+</style>
 
-        $first = $orders[0];
-        $invoiceID = "invoice_" . $invoice; // unique collapse ID
-?>
-        <div class="order-card p-3 border mb-3">
+<div class="container py-4">
+    <div class="mb-4">
+        <h4 class="fw-bold text-dark mb-1">My Orders</h4>
+        <p class="text-muted small">Track your farm-to-table purchases.</p>
+    </div>
 
-            <!-- HEADER -->
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                <div>
-                    
-                    <h6 class="mb-0 fw-semibold">Invoice NO. <?php echo $invoice; ?></h6>
-                    <small class="text-muted"><?php echo $first['created_at']; ?></small>
+    <div class="filter-pills mb-4">
+        <button class="filter-btn active" data-status="all">All</button>
+        <button class="filter-btn" data-status="in-progress">In Progress</button>
+        <button class="filter-btn" data-status="delivered">Delivered</button>
+        <button class="filter-btn" data-status="complete">Complete</button>
+        <button class="filter-btn" data-status="cancelled">Cancelled</button>
+    </div>
+
+    <div id="ordersContainer">
+    <?php
+    if ($num > 0) {
+        $groupedOrders = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $groupedOrders[$row['invoice_number']][] = $row;
+        }
+
+        foreach ($groupedOrders as $invoice => $orders) {
+            $first = $orders[0];
+            $rawStatus = strtolower($first['status']);
+            
+            // Logic for filtering Categories
+            $category = "in-progress";
+            if($rawStatus == "complete") $category = "complete";
+            elseif($rawStatus == "delivered" || $rawStatus == "in transit") $category = "delivered";
+            elseif($rawStatus == "cancelled" || $rawStatus == "decline") $category = "cancelled";
+
+            // UI Status Badges
+            $statusLabel = $rawStatus; $statusClass = "bg-light text-dark";
+            switch($rawStatus) {
+                case "order placed": $statusLabel = "Order Placed"; $statusClass = "bg-info text-white"; break;
+                case "accept": $statusLabel = "Preparing"; $statusClass = "bg-warning text-dark"; break;
+                case "complete": $statusLabel = "Complete"; $statusClass = "bg-success text-white"; break;
+                case "in transit": $statusLabel = "In Transit"; $statusClass = "bg-primary text-white"; break;
+                case "delivered": $statusLabel = "Delivered"; $statusClass = "bg-success text-white"; break;
+                case "decline": $statusLabel = "Declined"; $statusClass = "bg-danger text-white"; break;
+                case "cancelled": $statusLabel = "Cancelled"; $statusClass = "bg-secondary text-white"; break;
+                case "accept pre-order": $statusLabel = "Pre-Order Accepted"; $statusClass = "bg-info text-white"; break;
+            }
+    ?>
+            <div class="order-card shadow-sm" data-category="<?php echo $category; ?>">
+                <div class="invoice-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 fw-bold">Invoice #<?php echo $invoice; ?></h6>
+                        <small class="text-muted"><?php echo date('M d, Y | h:i A', strtotime($first['created_at'])); ?></small>
+                    </div>
+                    <span class="badge <?php echo $statusClass; ?> rounded-pill px-3 py-2 text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">
+                        <?php echo $statusLabel; ?>
+                    </span>
                 </div>
 
-                <!-- STATUS BADGE -->
-                <?php
-                $status = $first['status'];
-                switch ($status) {
-                    case "order placed": 
-                        $displayStatus = "Order Placed"; 
-                        $class = "bg-info text-white"; 
-                        break;
-                    case "accept": 
-                        $displayStatus = "Preparing"; 
-                        $class = "bg-warning text-dark"; 
-                        break;
-                    case "decline": 
-                        $displayStatus = "Declined"; 
-                        $class = "bg-danger text-white"; 
-                        break;
-                    case "complete": 
-                        $displayStatus = "Complete"; 
-                        $class = "bg-success text-white"; 
-                        break;
-                    case "in Transit": 
-                        $displayStatus = "In Transit"; 
-                        $class = "bg-primary text-white"; 
-                        break;
-                    case "cancelled": 
-                        $displayStatus = "Cancelled"; 
-                        $class = "bg-secondary text-white"; 
-                        break;
+                <div class="p-3">
+                    <?php 
+                    $grandTotal = 0;
+                    foreach ($orders as $row) {
+                        $product->product_id = $row['product_id'];
+                        $product->readProductName();
+                        
+                        $qty = $row['quantity'];
+                        $unit = strtolower($row['unit']);
+                        $qty_in_kg = ($unit === 'kg') ? $qty : $qty / 1000;
+                        $itemTotal = $product->price_per_unit * $qty_in_kg;
+                        $grandTotal += $itemTotal;
 
-
-                    case "accept pre-order": 
-                        $displayStatus = "Pre-Order Placed"; 
-                        $class = "bg-info text-white"; 
-                        break;
-                    default: 
-                    $displayStatus = $status; 
-                    $class = "bg-light text-dark"; 
-                    break;
-                }
-                ?>
-                <span class="badge <?php echo $class; ?>"><?php echo $displayStatus; ?></span>
-            </div>
-
-            <hr>
-
-            <!-- COLLAPSIBLE PRODUCTS LIST -->
-            <div id="<?php echo $invoiceID; ?>" class="collapse">
-                <?php foreach ($orders as $row) {
-
-                    $product->product_id = $row['product_id'];
-                    $product->readProductName();
-                    
-                    $product_type = $product->product_type;
-                    $raw_img = $product->product_image;
-                    $img_owner = $product->user_id;
-                    
-                    $img_path = '';
-                    if ($product_type == "preorder") {
-                        $img_path = "{$base_url}user/uploads/{$img_owner}/posted_crops/{$raw_img}";
-                    }else{
-                        $img_path = "{$base_url}user/uploads/{$img_owner}/products/{$raw_img}";
-                    }
-                    
-                    $price = $product->price_per_unit; // price per KG
-                    $qty = $row['quantity'];
-                    $unit = strtolower($row['unit']); // 'kg' or 'gram'
-
-                    // Convert quantity to KG for pricing
-                    $qty_in_kg = ($unit === 'kg') ? $qty : $qty / 1000;
-
-                    $total = $price * $qty_in_kg;
-                ?>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <img src="<?php echo $img_path; ?>" class="img-fluid rounded">
+                        $img_path = ($product->product_type == "preorder") 
+                                    ? "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}"
+                                    : "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
+                    ?>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <img src="<?php echo $img_path; ?>" class="product-img-sm border shadow-sm">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold"><?php echo htmlspecialchars($product->product_name); ?></h6>
+                                <small class="text-muted"><?php echo $qty . $unit; ?> • ₱<?php echo number_format($product->price_per_unit, 2); ?>/kg</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="fw-bold text-dark">₱<?php echo number_format($itemTotal, 2); ?></span>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <!-- Price -->
-                            <h6 class="text-success">₱<?php echo number_format($total, 2); ?></h6>
-                            
-                            <!-- Payment method -->
-                            <small class="text-muted"><?php echo $row['mode_of_payment']; ?></small>
-                            
-                            <!-- Quantity + Unit -->
-                            <h6>
-                                Quantity: 
-                                <strong>
-                                    <?php echo $qty; ?> 
-                                    <?php echo strtolower($row['unit']) === 'kg' ? 'KG' : 'g'; ?>
-                                </strong>
-                            </h6>
-                            
-                            <!-- Product Name -->
-                            <small class="text-muted fw-bold"><?php echo htmlspecialchars($product->product_name); ?></small>
+                    <?php } ?>
+
+                    <hr class="my-3 opacity-25">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted small mb-0">Total Amount</p>
+                            <h5 class="text-success fw-bold mb-0">₱<?php echo number_format($grandTotal, 2); ?></h5>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <?php if ($rawStatus === "complete" && $first['review_status'] == 0): ?>
+                                <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $first['id']; ?>" class="btn-sm-custom btn-rate">
+                                    <i class="bi bi-star-fill me-1"></i> Rate
+                                </a>
+                            <?php endif; ?>
+
+                            <a href="order_details.php?vod=<?php echo $first['id']; ?>" class="btn-sm-custom btn-details">
+                                View Details
+                            </a>
                         </div>
                     </div>
-                  <hr>
-                <?php 
-              } 
-              ?>
-            </div>
-            <!-- SEE MORE / SEE LESS BUTTON -->
-            <button class="btn btn-primary btn-sm toggle-btn"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#<?php echo $invoiceID; ?>">
-                See More
-            </button>
-
-
-            <!-- FOOTER BUTTON -->
-            <div class="text-end mt-3">
-                <!-- Order Total -->
-                <div class="mb-3 d-flex justify-content-end align-items-baseline gap-2">
-                    <h6 class="text-primary mb-0">Order Total</h6>
-                    <h4 class="text-success mb-0">₱<?php echo number_format($total, 2); ?></h4>
                 </div>
-
-                <!-- Buttons -->
-                <?php if ($first['status'] === "complete" && $first['review_status'] == 0): ?>
-
-                    <!-- Complete but not yet reviewed -->
-                    <a href="<?php echo $base_url; ?>user/consumer/order/feedback.php?vod=<?php echo $first['id']; ?>"
-                    class="btn btn-warning btn-sm">
-                        Rate this order
-                    </a>
-
-                <?php elseif ($first['status'] !== "complete"): ?>
-
-                    <!-- Not complete yet -->
-                    <a href="order_details.php?vod=<?php echo $first['id']; ?>"
-                    class="btn btn-outline-success btn-sm">
-                        View Order Details
-                    </a>
-
-                <?php endif; ?>
             </div>
-
-        </div>
-
-<?php
+    <?php
+        }
+    } else {
+        echo "<div class='text-center py-5'><i class='bi bi-basket text-muted fs-1'></i><p class='text-muted mt-2'>No orders yet.</p></div>";
     }
-} else {
-    echo "<div class='alert alert-danger'>It looks like you haven't ordered anything yet. Explore our products <a href='{$home_url}index.php?action=browse_products'>here</a>.</div>";
-}
-?>
-
+    ?>
+    </div>
 </div>
 
 <script>
-document.querySelectorAll('.toggle-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        setTimeout(() => {
-            if (this.textContent === "See More") {
-                this.textContent = "See Less";
-            } else {
-                this.textContent = "See More";
-            }
-        }, 200);
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.order-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.getAttribute('data-status');
+            cards.forEach(card => {
+                const cat = card.getAttribute('data-category');
+                card.style.display = (filter === 'all' || cat === filter) ? 'block' : 'none';
+            });
+        });
     });
 });
 </script>
-
 
 <?php include_once "../layout/layout_foot.php"; ?>
