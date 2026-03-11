@@ -1,6 +1,7 @@
 <?php 
 // Kukunin ang kasalukuyang file name para sa active state ng links
 $pageFile = basename(parse_url($_SERVER['PHP_SELF'], PHP_URL_PATH)); 
+
 ?>
 
 <style>
@@ -156,7 +157,7 @@ $pageFile = basename(parse_url($_SERVER['PHP_SELF'], PHP_URL_PATH));
             
             <a href="<?= $base_url ?>user/consumer/order/cart.php" class="glass-nav-item <?= $pageFile=='cart.php' ? 'active' : '' ?>">
                 <i class="bi bi-cart-fill"></i> My Cart
-                <span class="cart-counter" id="cartCountBadge">0</span>
+                <span class="cart-counter" id="cartCount">0</span>
             </a>
 
             <span class="section-tag">Activity</span>
@@ -206,4 +207,22 @@ document.addEventListener("DOMContentLoaded", function() {
     // Maaari mong i-update ito gamit ang AJAX o PHP session count
     // document.getElementById('cartCountBadge').innerText = '3';
 });
+
+async function fetchCartCount() {
+    try {
+        const response = await fetch(
+            'http://localhost/HarvestHub/js/user/farmer/api/fetch_cart_count.php'
+        );
+
+        const data = await response.json();
+
+        document.getElementById("cartCount").innerText = data.count;
+
+    } catch (error) {
+        console.error("Error fetching cart count:", error);
+    }
+}
+
+fetchCartCount();
 </script>
+

@@ -15,4 +15,7 @@ $result = $cart_item->countItem();
 
 
 header('Content-Type: application/json');
-echo json_encode(["cart_item_count" => (int)$result]);
+
+echo json_encode([
+    "count" =>(int)$result
+]);
