@@ -1,7 +1,7 @@
 <?php
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
-$secret_key = "sk_test_hQUf2iBTFeb76Zgb5J13oP8x"; // your test key
+//$secret_key = "sk_test_hQUf2iBTFeb76Zgb5J13oP8x"; // your test key
 
 $data = [
     "data" => [
@@ -25,7 +25,7 @@ curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Content-Type: application/json",
-    "Authorization: Basic " . base64_encode("sk_test_hQUf2iBTFeb76Zgb5J13oP8x:")
+    //"Authorization: Basic " . base64_encode("sk_test_hQUf2iBTFeb76Zgb5J13oP8x:")
 ]);
 
 $response = curl_exec($ch);
