@@ -7,7 +7,7 @@ include_once '../../../objects/product.php';
 include_once '../../../objects/user.php';
 include_once '../../../objects/order_status_history.php';
 
-$page_title = "Process Order";
+$page_title = "Order Processing | Harvest Hub";
 include_once "../layout/layout_head.php";
 
 $require_login = true;
@@ -21,463 +21,319 @@ $product = new Product($db);
 $customer = new User($db);
 $order_status_history = new OrderHistory($db);
 
-
-// get order info to accept or decline
+// Load Data
 $order->id = $order_id;
 $order->readOneOrder();
-
-// get product details
 $product->product_id = $order->product_id; 
 $product->getProductInfo();
-
-// get customer info
 $customer->id = $order->customer_id;
 $customer->getShippingAddress();
 
-
-//arrange the product image path
+// Pathing logic
 $user_id = $product->user_id;
 $raw_product_image = $product->product_image;
 $product_type = $product->product_type;
-$product_image_path = '';
-if ($product_type == 'preorder') {
-    $product_image_path = "{$base_url}user/uploads/{$user_id}/posted_crops/{$raw_product_image}";
-}else{
-    $product_image_path = "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
-}
+$product_image_path = ($product_type == 'preorder') 
+    ? "{$base_url}user/uploads/{$user_id}/posted_crops/{$raw_product_image}" 
+    : "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
 
-// compute service fee
-//$sub_total = ($order->quantity * $product->price_per_unit);
-
-
-$unit = strtolower($order->unit);         // 'kg' or 'gram'
-$quantity = $order->quantity;
-$price_per_kg = $product->price_per_unit;
-
-// convert grams to kg if needed
-$quantity_in_kg = ($unit === 'kg') ? $quantity : $quantity / 1000;
-
-// calculate subtotal
-$subtotal = $price_per_kg * $quantity_in_kg;
+// Financials
+$unit = strtolower($order->unit);
+$quantity_in_kg = ($unit === 'kg') ? $order->quantity : $order->quantity / 1000;
+$subtotal = $product->price_per_unit * $quantity_in_kg;
 $service_fee = $subtotal * 0.0225;
+$grand_total = $subtotal - $service_fee;
 
+// Form Processing
+if ($_POST) {
+    if (!empty($_POST['action'])) {
+        $order->id = $_POST['order_id'];
+        $order->status = $_POST['action'];
 
+        if ($order->processOrder($_POST['action'])) {
+            $product->sold_count = $_POST['product_quantity'];
+            $product->quantity = $_POST['product_quantity'];
+            $product->product_id = $_POST['product_id'];
+            $product->deductStock();
 
-if (!empty($_POST['action']) && in_array($_POST['action'], ['accept', 'decline', 'cancel', 'complete', 'accept pre-order', 'decline pre-order', 'pre-order shipout', 'order shipout', 'cancel pending'])) {
-    $order->id = $_POST['order_id'];
-    $order->status = $_POST['action'];
+            $order_status_history->product_id = $order->product_id;
+            $order_status_history->status = $_POST['action'];
+            $order_status_history->invoice_number = $order->invoice_number;
+            $order_status_history->timestamp = date("Y-m-d H:i:s");
+            $order_status_history->recordStatus();
 
-
-    if ($order->processOrder($_POST['action'])) {
-
-        switch ($_POST['action']) {
-            case 'accept':
-                echo "<div class='alert alert-success text-center'>
-                    <span class='bi bi-check-circle'></span>
-                    Order " . ucfirst($_POST['action']) . "
-                </div>";
-                break;
-
-            case 'decline':
-                echo "<div class='alert alert-danger text-center'>
-                    <span class='bi bi-cross-circle'></span>
-                    Order " . ucfirst($_POST['action']) . "
-                </div>";
-                break;
-
-            case 'Order':
-                echo "<div class='alert alert-danger text-center'>
-                    <span class='bi bi-cross-circle'></span>
-                    Order " . ucfirst($_POST['action']) . "
-                </div>";
-                break;
-
-            case 'accept pre-order':
-                echo "<div class='alert alert-success text-center'>
-                    <span class='bi bi-check-circle'></span>
-                    Order " . ucfirst($_POST['action']) . "
-                </div>";
-                break;
-            case 'decline pre-order':
-                echo "<div class='alert alert-danger text-center'>
-                    <span class='bi bi-cross-circle'></span>
-                    Order " . ucfirst($_POST['action']) . "
-                </div>";
-                break;
-            default:
-                echo "<div class='alert alert-success text-center'>
-                    <span class='bi bi-cross-circle'></span>
-                    Order " . ucfirst($_POST['action']) . "
-                </div>";
-                break;
+            echo "<script>window.location.href='process_order.php?pid=$order_id&msg=success';</script>";
         }
-        
-        $product_quantity = $_POST['product_quantity'];
-        $product->sold_count = $product_quantity;
-        $product->quantity = $product_quantity;
-        $product->product_id = $_POST['product_id'];
-        $product->deductStock();
-
-        // add record to the order history
-        $order_status_history->product_id = $order->product_id;
-        $order_status_history->status = $_POST['action'];
-        $order_status_history->invoice_number = $order->invoice_number;
-        $order_status_history->timestamp = date("Y-m-d H:m:s");
-        $order_status_history->recordStatus();
-
-    } else {
-        echo "<div class='alert alert-danger'>
-                Failed to update order
-              </div>";
     }
 }
 ?>
 
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) . "?pid={$order_id}"; ?>" method="POST" id="checkoutForm">
-  <div class="row mt-4">
+<style>
+    :root {
+        --harvest-green: #2dce89;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    body { background-color: #f0f2f5; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    .main-card {
+        background: var(--glass-bg);
+        border-radius: 24px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        overflow: hidden;
+    }
+
+    .status-banner {
+        background: linear-gradient(90deg, #11cdef 0%, #1171ef 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
+
+    .info-box {
+        background: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 16px;
+        padding: 20px;
+        height: 100%;
+    }
+
+    /* WAYBILL DESIGN */
+    .waybill-card {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        color: #000;
+        background: #fff;
+        border: 2px solid #000;
+        font-family: Arial, sans-serif;
+    }
+
+    .wb-header { border-bottom: 2px solid #000; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .wb-section { border-bottom: 1px solid #000; padding: 15px; }
+    .wb-grid { display: flex; width: 100%; }
+    .wb-col { flex: 1; padding: 15px; border-right: 1px solid #000; }
+    .wb-col:last-child { border-right: none; }
     
-    <!-- ✅ Left side: Cart Items -->
-  <div class="col-md-8">
-    <div class="card shadow-sm position-sticky" style="top: 20px;">
-        <div class="card-body">
-          <input type="hidden" name="product_id" value="<?php echo $order->product_id; ?>">
-          <input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
-          <input type="hidden" name="product_quantity" value="<?php echo $order->quantity; ?>">
-            <!-- PRODUCT SNAPSHOT -->
-            <h5 class="fw-bold mb-3">Product Information</h5>
-            <div class="d-flex align-items-start mb-3">
-                <img src="<?php echo $product_image_path; ?>" 
-                     alt="Product Image"
-                     class="rounded border"
-                     width="100" height="100">
-                
-                <div class="ms-3">
-                    <h6 class="fw-bold mb-1"><?php echo $product->product_name; ?></h6>
-                    <p class="mb-1 text-muted small">
-                        Category: <span class="fw-semibold"><?php echo $product->category; ?></span>
-                    </p>
+    .text-bold { font-weight: bold; }
+    .text-large { font-size: 1.4rem; line-height: 1.2; }
+    .address-box { font-size: 1rem; line-height: 1.3; margin-top: 5px; }
+
+    @media print {
+        body * { visibility: hidden; }
+        #waybill-area, #waybill-area * { visibility: visible; }
+        #waybill-area { position: absolute; left: 0; top: 0; width: 100%; border: none; }
+        .no-print { display: none !important; }
+    }
+</style>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+        <div>
+            <h3 class="fw-bold mb-0">Process Order</h3>
+            <p class="text-muted small">Update fulfillment and print logistics labels</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-dark px-4 rounded-pill" onclick="location.href='order.php'">Back</button>
+            <button class="btn btn-dark px-4 rounded-pill shadow" data-bs-toggle="modal" data-bs-target="#waybillModal">
+                <i class="bi bi-printer me-2"></i> Print Waybill
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-4 no-print">
+        <div class="col-lg-8">
+            <div class="main-card p-4">
+                <div class="status-banner d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-white-50 small text-uppercase fw-bold">Current Status</span>
+                        <h4 class="mb-0 fw-bold"><?php echo strtoupper($order->status); ?></h4>
+                    </div>
+                    <i class="bi bi-box-seam fs-1 opacity-50"></i>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <img src="<?php echo $product_image_path; ?>" class="img-fluid rounded-4 border shadow-sm" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-8">
+                        <span class="badge bg-soft-success text-success mb-2 px-3 py-2 rounded-pill"><?php echo strtoupper($product_type); ?></span>
+                        <h3 class="fw-bold text-dark"><?php echo $product->product_name; ?></h3>
+                        <div class="d-flex gap-4 mt-3">
+                            <div>
+                                <p class="text-muted small mb-0 text-uppercase">Quantity</p>
+                                <h5 class="fw-bold"><?php echo $order->quantity . ' ' . $order->unit; ?></h5>
+                            </div>
+                            <div>
+                                <p class="text-muted small mb-0 text-uppercase">Invoice</p>
+                                <h5 class="fw-bold text-primary">#<?php echo $order->invoice_number; ?></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4 opacity-5">
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="info-box">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-person-circle me-2 text-primary"></i> Buyer Information</h6>
+                            <p class="mb-1 fw-bold"><?php echo $customer->firstname ." ". $customer->lastname; ?></p>
+                            <p class="mb-1 text-muted small"><i class="bi bi-telephone me-1"></i> <?php echo $customer->contact_number; ?></p>
+                            <p class="mb-0 small text-muted"><i class="bi bi-geo-alt me-1"></i> <?php echo $customer->address . ', ' . $customer->barangay . ', ' . $customer->municipality; ?></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-box">
+                            <h6 class="fw-bold mb-3"><i class="bi bi-credit-card me-2 text-primary"></i> Payment Method</h6>
+                            <h5 class="text-success fw-bold mb-1"><?php echo $order->mode_of_payment; ?></h5>
+                            <p class="small text-muted mb-0">Verified via Harvest Hub Gateway</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="main-card p-4 mb-4">
+                <h5 class="fw-bold mb-4">Earnings</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Gross Subtotal</span>
+                    <span class="fw-bold">₱<?php echo number_format($subtotal, 2); ?></span>
+                </div>
+                <div class="d-flex justify-content-between mb-3 text-danger">
+                    <span class="small">System Fee (2.25%)</span>
+                    <span class="fw-bold">- ₱<?php echo number_format($service_fee, 2); ?></span>
+                </div>
+                <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                    <span class="fw-bold fs-5">Net Payout</span>
+                    <span class="text-success fw-bold fs-3">₱<?php echo number_format($grand_total, 2); ?></span>
                 </div>
             </div>
 
-            <!-- ORDER DETAILS -->
-            <div class="d-flex justify-content-between">
-                <span>Quantity Ordered</span>
-                <span class="fw-semibold">
-                    <?php echo $order->quantity . ' ' . $order->unit; ?>
-                </span>
-            </div>
+            <div class="main-card p-4">
+                <h5 class="fw-bold mb-3 small text-uppercase text-muted">Order Controls</h5>
+                <form method="POST" id="actionForm">
+                    <input type="hidden" name="product_id" value="<?php echo $order->product_id; ?>">
+                    <input type="hidden" name="order_id" value="<?php echo $order->id; ?>">
+                    <input type="hidden" name="product_quantity" value="<?php echo $order->quantity; ?>">
+                    <input type="hidden" name="action" id="actionInput">
 
-            <div class="d-flex justify-content-between">
-                <span>Unit Price</span>
-                <span class="fw-semibold text-success">₱ <?php echo number_format($product->price_per_unit, 2); ?></span>
-            </div>
+                    <?php
+                    $status = $order->status;
+                    $type = $product->product_type;
+                    $estimated_harvest = $product->estimated_harvest_date; // Dynamic date from DB
+                    $today = date("Y-m-d");
+                    $isNotHarvestDate = ($today < $estimated_harvest);
 
-            <div class="d-flex justify-content-between">
-                <span>Subtotal</span>
-                <span class="fw-semibold">₱ <?php echo number_format($subtotal,2); ?></span>
-            </div>
-
-            <hr>
-
-            <!-- BUYER INFO -->
-            <h6 class="fw-bold">Buyer Information</h6>
-            <div class="d-flex justify-content-between">
-                <span>Name</span>
-                <span><?php echo $customer->firstname ." ". $customer->lastname; ?></span>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <span>Contact</span>
-                <span><?php echo !empty($customer->contact_number) ? $customer->contact_number : 'Not Set'; ?></span>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <span>Address</span>
-                <span>
-                    <?php 
-                        $fullAddress = trim($customer->address . ' ' . $customer->barangay . ' ' . $customer->municipality);
-                        echo !empty($fullAddress) ? $fullAddress : 'Not Set'; 
+                    if ($status == "order placed") {
+                        $btnVal = ($type == "preorder") ? "accept pre-order" : "accept";
+                        echo "<button type='button' onclick='confirmSubmit(\"$btnVal\")' class='btn btn-success w-100 py-3 rounded-4 fw-bold mb-2'>ACCEPT ORDER</button>";
+                    } 
+                    elseif ($status == "accept" || $status == "accept pre-order") {
+                        $btnVal = ($type == "preorder") ? "pre-order shipout" : "order shipout";
+                        
+                        // HARVEST DATE CHECK
+                        $disabled = ($type == "preorder" && $isNotHarvestDate) ? "disabled" : "";
+                        
+                        echo "<button type='button' $disabled onclick='confirmSubmit(\"$btnVal\")' class='btn btn-primary w-100 py-3 rounded-4 fw-bold mb-2'>READY TO SHIP</button>";
+                        
+                        if($type == "preorder" && $isNotHarvestDate) {
+                            echo "<div class='alert alert-warning border-0 small mt-2 text-center fw-bold text-dark'>
+                                    <i class='bi bi-clock-history'></i> Wait for harvest date: $estimated_harvest
+                                  </div>";
+                        }
+                    }
                     ?>
-                </span>
+                </form>
             </div>
-
-            <hr>
-
-            <!-- DELIVERY & PAYMENT -->
-            <div class="d-flex justify-content-between">
-                <span>Delivery Method</span>
-                <span><?php echo "N/A"; ?></span>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <span>Preferred Schedule</span>
-                <span><?php echo 'Not specified'; ?></span>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <span>Mode of Payment</span>
-                <span><?php echo $order->mode_of_payment; ?></span>
-            </div>
-
-            <!-- META -->
-            <div class="d-flex justify-content-between">
-                <span>Invoice No.</span>
-                <span><?php echo $order->invoice_number; ?></span>
-            </div>
-
-            <hr>
-
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="waybillModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0">
+            <div class="modal-header no-print">
+                <h5 class="fw-bold">Logistics Waybill Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <div id="waybill-area" class="waybill-card">
+                    <div class="wb-header">
+                        <div>
+                            <h4 class="m-0 fw-bold">HARVEST HUB</h4>
+                            <p class="m-0 small text-bold">STANDARD DELIVERY</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="border border-dark px-2 py-1 text-bold">DOM</span>
+                        </div>
+                    </div>
 
-    <!-- ✅ Right side: Order Summary -->
-    <div class="col-md-4">
-      <div class="card shadow-sm position-sticky" style="top: 20px;">
-        <div class="card-body">
-          <h5 class="fw-bold">Order Summary</h5>
+                    <div class="wb-section text-center py-4">
+                        <h2 class="fw-bold mb-0"># <?php echo $order->invoice_number; ?></h2>
+                        <p class="small text-muted">ORDER REF: HH-<?php echo time(); ?></p>
+                    </div>
 
+                    <div class="wb-grid">
+                        <div class="wb-col" style="flex: 2;">
+                            <p class="text-bold mb-1 small">RECEIVER (TO):</p>
+                            <p class="text-large text-bold mb-0"><?php echo strtoupper($customer->firstname ." ". $customer->lastname); ?></p>
+                            <p class="mb-1 text-bold"><?php echo $customer->contact_number; ?></p>
+                            <div class="address-box">
+                                <?php echo $customer->address . ', ' . $customer->barangay . ', ' . $customer->municipality; ?>
+                            </div>
+                        </div>
+                        <div class="wb-col text-center" style="flex: 1;">
+                            <p class="small mb-1">MUNICIPALITY</p>
+                            <h5 class="text-bold"><?php echo strtoupper($customer->municipality); ?></h5>
+                        </div>
+                    </div>
 
+                    <div class="wb-grid" style="border-top: 1px solid #000;">
+                        <div class="wb-col" style="flex: 2;">
+                            <p class="text-bold mb-1 small">PRODUCT NAME</p>
+                            <p class="mb-0 small"><?php echo $product->product_name; ?> x <?php echo $order->quantity; ?> <?php echo $order->unit; ?></p>
+                        </div>
+                        <div class="wb-col text-center" style="flex: 1;">
+                            <p class="text-bold mb-1 small">COD AMOUNT</p>
+                            <h5 class="text-bold">₱<?php echo number_format($subtotal, 0); ?></h5>
+                        </div>
+                    </div>
 
-          <div class="d-flex justify-content-between">
-            <span>Service Fee (2.25%)</span>
-            <span id="shipping-fee">₱ <?php echo number_format($service_fee, 2); ?></span>
-          </div>
-
-          <div class="d-flex justify-content-between">
-            <span>Total Price</span>
-            <span id="total-price">₱<?php echo number_format($subtotal, 2); ?></span>
-          </div>
-
-          <hr>
-
-          <div class="d-flex justify-content-between fw-bold">
-            <span>Grand Total</span>
-            <span id="grand-total">₱<?php echo number_format($subtotal - $service_fee, 2); ?></span>
-          </div>
-
-          <!-- ✅ Submit Button -->
+                    <div class="wb-section py-4 text-center">
+                         <h4 class="text-bold mb-0"><?php echo strtoupper($order->mode_of_payment); ?></h4>
+                         <p class="small mb-0">Verified Logistics Partner</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary px-4" onclick="window.print()">Print Label</button>
+            </div>
         </div>
-      </div>
-
-      
-      <div class="card shadow-sm position-sticky mt-3" style="top: 20px;">
-        <div class="card-body text-center">
-
-<?php
-
-$status = $order->status;
-$type   = $product->product_type;
-$estimated_harvest = $product->estimated_harvest_date;
-$isNotHarvestDate = (date("Y-m-d") != $estimated_harvest);
-
-switch (true) {
-    case ($status == "order placed" && $type == "preorder"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3">Confirm This Pre-Order?</h6>
-        <button type="submit" name="action" value="accept pre-order" class="btn btn-success w-100 mb-2">Accept Pre-Order</button>
-        <!-- <button type="submit" name="action" value="decline pre-order" class="btn btn-outline-danger w-100">Decline Pre-Order</button> -->
-        <?php
-        break;
-
-    case ($status == "accept pre-order" && $type == "preorder"):
-    ?>
-
-    <h6 class="fw-bold text-muted mb-3 mt-3">Mark this pre-order as ready to ship?</h6>
-
-    <button 
-        type="submit" 
-        name="action" 
-        value="pre-order shipout" 
-        class="btn btn-success w-100 mb-2"
-        <?php if($isNotHarvestDate) echo "disabled"; ?>
-    >
-        Yes
-    </button>
-
-    <button 
-        type="submit" 
-        name="action" 
-        value="cancel" 
-        class="btn btn-outline-danger w-100"
-        <?php if($isNotHarvestDate) echo "disabled"; ?>
-    >
-        No
-    </button>
-
-    <?php
-    if($isNotHarvestDate){
-        echo '<small class="text-danger">You can only ship this order on the harvest date.</small>';
-    }
-
-    break;
-
-    case ($status == "decline pre-order" && $type == "preorder"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This Pre-order is cancelled</h6>
-        <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
-        <?php
-        break;
-
-
-    case ($status == "order placed" && $type == "harvest"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">Accept this Order?</h6>
-        <button type="submit" name="action" value="accept" class="btn btn-success w-100 mb-2">Accept</button>
-        <!-- <button type="submit" name="action" value="decline" class="btn btn-outline-danger w-100">Decline</button> -->
-        <?php
-        break;
-
-
-    case ($status == "complete"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
-        <a href="order.php" class="btn btn-outline-success w-100">Back</a>
-        <?php
-        break;
-
-    case ($status == "order confirmed"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is complete</h6>
-        <a href="order.php" class="btn btn-outline-success w-100">Return</a>
-        <?php
-        break;
-
-    case ($status == "accept" && $type == "harvest"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">Mark this order as ready to ship?</h6>
-        <button type="submit" name="action" value="order shipout" class="btn btn-success w-100 mb-2">Yes</button>
-        <button type="submit" name="action" value="cancel" class="btn btn-outline-danger w-100">No</button>
-        <?php
-        break;
-
-    case ($status == "pre-order shipout"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This Pre-order is in transit</h6>
-        <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
-        <button type="submit" disabled name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
-        <?php
-        break;
-
-    case ($status == "order shipout"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This Order is in transit</h6>
-        <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
-        <button type="submit" disabled name="action" value="cancel" class="btn btn-outline-danger w-100">Cancel</button>
-        <?php
-        break;
-
-    case ($status == "order received"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This Pre-order is complete</h6>
-        <button type="submit" disabled name="action" value="complete" class="btn btn-success w-100 mb-2">Complete</button>
-        <?php
-        break;
-    
-    case ($status == "pending cancel" && $type == "harvest" || $type == "preorder"):
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This order is Pending to cancel</h6>
-        <button type="submit" name="action" value="cancel pending" class="btn btn-outline-danger w-100 mb-2">Cancel Order</button>
-        <a href="order.php" class="btn btn-outline-success w-100 mb-3">Return</a>
-        <?php
-        break;
-    default:
-        ?>
-        <h6 class="fw-bold text-muted mb-3 mt-3">This transaction is cancelled</h6>
-        <a href="order.php" class="btn btn-outline-danger w-100 mb-3">Return</a>
-        <?php
-        break;
-}
-?>
-
-            <input type="hidden" name="action" id="actionInput">
-      </div>
-
-
     </div>
-  </div>
-
-  <!-- ✅ Hidden container for dynamic JS data -->
-  <div id="selectedProductsContainer"></div>
-</form>
-
-<script>
-  document.querySelectorAll('.order-action').forEach(button => {
-    button.addEventListener('click', function() {
-        const orderId = this.dataset.id;
-        const action = this.dataset.action;
-
-        fetch('process_order.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `order_id=${orderId}&action=${action}`
-        })
-        .then(res => res.text())
-        .then(data => {
-            // display response message
-            document.getElementById('order-msg').innerHTML = data;
-
-            // optionally, reload chart or totals
-            // loadChart(); or updateDashboard();
-        });
-    });
-});
-
-</script>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Attach to ALL submit buttons inside this card-body
-    const buttons = document.querySelectorAll('.card-body button[type="submit"]');
-
-    buttons.forEach(btn => {
-        btn.addEventListener("click", function (e) {
-            e.preventDefault(); // stop immediate submit
-
-            let action = this.value;
-            let form = this.closest("form");
-            actionInput.value = action;
-            let message = "";
-
-            // Match your button values WITHOUT changing them
-            if (action === "accept-pre-order") {
-                message = "Accept this pre-order?";
-            } else if (action === "decline-pre-order") {
-                message = "Decline this pre-order?";
-            } else if (action === "accept") {
-                message = "Accept this order?";
-            } else if (action === "decline") {
-                message = "Decline this order?";
-            } else if (action === "complete") {
-                message = "Complete this transaction?";
-            } else if (action === "cancel") {
-                message = "Cancel this transaction?";
-            } else if (action === "accept") {
-                message = "Re-open this cancelled order?";
-            } else {
-                message = "Are you sure?";
-            }
-
-            Swal.fire({
-                title: message,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes",
-                cancelButtonText: "No"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
+function confirmSubmit(action) {
+    document.getElementById('actionInput').value = action;
+    Swal.fire({
+        title: 'Confirm',
+        text: "Update status to: " + action.toUpperCase() + "?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2dce89',
+        confirmButtonText: 'Yes, Proceed'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('actionForm').submit();
+        }
     });
-});
+}
 </script>
-
-
-
 
 <?php include_once "../layout/layout_foot.php"; ?>

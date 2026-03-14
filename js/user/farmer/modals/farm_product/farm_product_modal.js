@@ -1,13 +1,15 @@
 /**
  * 1. FUNCTION: editHarvestProduct
  * DESIGN: Sleek Minimalist Glassmorphism
+ * Gagamitin para sa pag-update ng existing harvest records.
  */
-function editHarvestProduct(row){
+function editHarvestProduct(row) {
   return `
   <div class="modal fade" id="edit-harvest-modal-${row.id}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content border-0 shadow-2xl" style="border-radius: 30px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
         <form action="${UpdatePostURL}" method="POST" enctype="multipart/form-data">
+          
           <div class="modal-header border-0 px-4 pt-4">
             <h5 class="fw-bold d-flex align-items-center">
               <span class="p-2 bg-primary bg-opacity-10 rounded-3 me-2">
@@ -80,6 +82,7 @@ function editHarvestProduct(row){
 /**
  * 2. FUNCTION: postHarvestProduct
  * DESIGN: Ultra-Modern Economic Dashboard with Profitability Logic
+ * Gagamitin para ilipat ang harvest papunta sa Market (Product Posting).
  */
 function postHarvestProduct(row) {
   const farmSize = parseFloat(row.lot_size) || 1;
@@ -92,6 +95,18 @@ function postHarvestProduct(row) {
       <div class="modal-content border-0 shadow-2xl" style="border-radius: 35px; background: #ffffff;">
         
         <form action="${ProductPostingURL}" method="POST" enctype="multipart/form-data" id="postForm-${row.id}">
+          
+          <input type="hidden" name="product_id" value="${row.id}">
+          <input type="hidden" name="product_name" value="${row.product_name}">
+          <input type="hidden" name="unit" value="${row.unit}">
+          <input type="hidden" name="product_description" value="${row.product_description}">
+          <input type="hidden" name="lot_size" value="${row.lot_size}">
+          <input type="hidden" name="is_posted" value="1">
+          <input type="hidden" name="action" value="product_post">
+          
+          <input type="hidden" id="farm-size-${row.id}" value="${farmSize}">
+          <input type="hidden" id="total-expense-${row.id}" value="${totalExpense}">
+
           <div class="modal-body p-0">
             <div class="row g-0">
               
@@ -198,13 +213,7 @@ function postHarvestProduct(row) {
               </div>
             </div>
           </div>
-          
-          <input type="hidden" name="product_id" value="${row.id}">
-          <input type="hidden" name="action" value="product_post">
-          <input type="hidden" id="farm-size-${row.id}" value="${farmSize}">
-          <input type="hidden" id="total-expense-${row.id}" value="${totalExpense}">
         </form>
-
       </div>
     </div>
   </div>
@@ -242,7 +251,7 @@ function postHarvestProduct(row) {
         const netIncome = totalRevenue - totalExp;
         netLabel.innerText = "₱" + netIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-        // Profit & Status Logic
+        // Profit & Validation Logic
         if (price > 0) {
           const margin = ((price - cost) / cost) * 100;
           marginTxt.innerText = margin.toFixed(1) + "%";
@@ -255,10 +264,6 @@ function postHarvestProduct(row) {
             mktStatus.innerText = "LOW PRICE (LOSS)";
             mktStatus.className = "badge rounded-pill bg-danger px-4 py-2";
             postBtn.disabled = false;
-          } else if (margin <= 5) {
-            mktStatus.innerText = "LOW MARGIN";
-            mktStatus.className = "badge rounded-pill bg-warning text-dark px-4 py-2";
-            postBtn.disabled = false;
           } else {
             mktStatus.innerText = "COMPLIANT";
             mktStatus.className = "badge rounded-pill bg-success px-4 py-2";
@@ -266,7 +271,7 @@ function postHarvestProduct(row) {
           }
         }
 
-        // Dynamic Card Styling based on Net Income
+        // Dynamic Feedback for Net Income
         if(netIncome > 0) {
           netCard.className = "p-3 rounded-5 bg-success text-white shadow-lg";
         } else if (netIncome < 0) {
