@@ -96,9 +96,12 @@ if($user->getUserProfileById()) {
                             </div>
                             <div class="col-md-5">
                                 <div class="d-flex flex-column flex-sm-row gap-3">
-                                    <button class="btn btn-success btn-wallet shadow-sm">
-                                        <i class="bi bi-plus-circle"></i> Top Up
-                                    </button>
+                                    <form action="../order/payment.php" method="POST">
+                                        <input type="hidden" name="amount" value="5000">
+                                        <button type="submit" class="btn btn-success btn-wallet shadow-sm">
+                                            <i class="bi bi-plus-circle"></i> Top Up
+                                        </button>
+                                    </form>
                                     <button class="btn btn-outline-light btn-wallet">
                                         <i class="bi bi-box-arrow-up"></i> Withdraw
                                     </button>
