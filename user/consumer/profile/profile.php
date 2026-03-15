@@ -2,6 +2,8 @@
 include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/user.php";
+include_once "../../../objects/wallet.php";
+include_once "../../../objects/wallet_transaction.php";
 
 $page_title = "User Profile";
 include_once "../layout/layout_head.php";
@@ -14,6 +16,10 @@ $db = $database->getConnection();
 
 $user = new User($db);
 $user->id = $_SESSION['user_id'];
+$WT = new WalletTransaction($db);
+
+$wallet = new Wallet($db);
+$wallet->user_id = $_SESSION['user_id'];
 
 if($user->getUserProfileById()) {
     // --- POST LOGIC ---
@@ -37,6 +43,11 @@ if($user->getUserProfileById()) {
                 if(!empty($_FILES["profile_pic"]["name"])) { $user->uploadPhoto(); }
                 $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Profile Updated!', 'text' => 'Information saved successfully.'];
             }
+        }
+        elseif ($_POST['action'] == "activate_wallet") {
+            $wallet->user_id = $_POST['user_id'];
+            $wallet->balance = 0.00;
+            $wallet->createWallet();
         }
     }
 
@@ -65,7 +76,7 @@ if($user->getUserProfileById()) {
     
     .btn-action { border-radius: 12px; padding: 12px 24px; font-weight: 700; transition: all 0.3s; }
     .btn-glass { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px); }
-    .btn-wallet { border-radius: 15px; font-weight: 700; padding: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
+    .btn-wallet { border-radius: 15px; font-weight: 700; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
 </style>
 
 <div class="container py-4">
@@ -91,20 +102,52 @@ if($user->getUserProfileById()) {
                         <div class="row align-items-center">
                             <div class="col-md-7 mb-4 mb-md-0">
                                 <span class="label-sm">Harvest Hub Wallet</span>
-                                <div class="display-5 fw-800" style="font-weight: 800;">₱ <?= number_format($user->wallet_balance ?? 0, 2) ?></div>
+                                <?php
+                                    $wallet->getWalletBalance();
+                                    $wallet_id = $wallet->wallet_id;
+                                ?>
+                                <div class="display-5 fw-800" style="font-weight: 800;">₱ <?= number_format($wallet->balance ?? 0, 2) ?></div>
                                 <p class="text-success small mb-0 mt-2"><i class="bi bi-shield-check"></i> Funds are secured</p>
                             </div>
                             <div class="col-md-5">
-                                <div class="d-flex flex-column flex-sm-row gap-3">
-                                    <form action="../order/payment.php" method="POST">
-                                        <input type="hidden" name="amount" value="5000">
-                                        <button type="submit" class="btn btn-success btn-wallet shadow-sm">
-                                            <i class="bi bi-plus-circle"></i> Top Up
-                                        </button>
+                                <div class="d-flex flex-column flex-sm-row gap-2">
+                                    <?php
+                                        $wallet->id = $_SESSION['user_id'];
+                                        if ($wallet->VerifyWallet()){
+                                    ?>
+                                    <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                        <input type="hidden" name="action" value="reload_balance">
+                                        
+                                        <?php
+                                        
+                                        $WT->wallet_id = $wallet_id;
+                                        $WT->getLatestReferenceNo();
+                                        print_r($WT->getLatestReferenceNo());
+                                        ?>  
+                                            
+                                            <input type="text" value="<?php echo $WT->reference_number; ?>">
+                                        <?php
+                                        ?>
+                                        <button type="submit" class="btn btn-outline-light py-3 fw-bold rounded-4 shadow-sm"><i class="bi bi-arrow-repeat"></i></button>
                                     </form>
+                                    <button class="btn btn-success w-100 py-3 fw-bold rounded-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#cashInModal">Cash In</button>
                                     <button class="btn btn-outline-light btn-wallet">
                                         <i class="bi bi-box-arrow-up"></i> Withdraw
                                     </button>
+                                    <?php
+                                        }else{
+                                    ?>
+                                    <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                        <input type="hidden" name="action" value="activate_wallet">
+                                        <input type="hidden" name="action" value="activate_wallet">
+                                        <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
+                                        <button type="submit" class="btn btn-outline-light btn-wallet">
+                                            <i class="bi bi-arrow-repeat"></i> Activate Wallet
+                                        </button>
+                                    </form>
+                                    <?php
+                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -158,6 +201,36 @@ if($user->getUserProfileById()) {
                 </div>
                 <div class="modal-footer border-0 p-4"><button type="submit" class="btn btn-success btn-action w-100 shadow">Save Changes</button></div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cashInModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content p-4 text-center border-0 rounded-4 shadow">
+            
+            <h5 class="mb-3">Top Up</h5>
+
+            <form action="payment_link.php" method="POST">
+                <?php
+                    $wallet->user_id = $_SESSION['user_id'];
+                    $wallet->getWalletBalance();
+                ?>
+                <input type="hidden" name="wallet_id" value="<?php echo $wallet->wallet_id; ?>">
+                <input 
+                    type="number" 
+                    name="amount"
+                    step="0.01"
+                    min="10"
+                    class="form-control mb-3"
+                    placeholder="₱ 0.00"
+                    required
+                >
+                <button type="submit" class="btn btn-success w-100 fw-bold">
+                    Proceed
+                </button>
+            </form>
+
         </div>
     </div>
 </div>

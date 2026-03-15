@@ -1,44 +1,111 @@
 <?php
-include_once "../../../config/core.php";
-include_once "../../../config/database.php";
-//$secret_key = "sk_test_hQUf2iBTFeb76Zgb5J13oP8x"; // your test key
+// Your PayMongo secret key
+$secretKey = 'sk_test_hQUf2iBTFeb76Zgb5J13oP8x';
 
-$data = [
-    "data" => [
-        "attributes" => [
-            "amount" => 10000, // ₱5
-            "currency" => "PHP",
-            "description" => "HarvestHub Test Payment",
-            "farmer_id" => $_SESSION['user_id'],
-            "payment_method_allowed" => ["qrph","card"], // allow QRPH + card
-            "redirect" => [
-                "success" => "https://example.com/success",
-                "failed" => "https://example.com/failed"
-            ]
-        ]
-    ]
-];
+// Payment details
+// $amount = 150000; // Amount in centavos (₱1,500.00)
+// $currency = 'PHP';
+// $description = 'Consultation Fee';
 
-$ch = curl_init("https://api.paymongo.com/v1/links");
+// // Prepare data
+// $data = [
+//     'data' => [
+//         'attributes' => [
+//             'amount' => $amount,
+//             'currency' => $currency,
+//             'description' => $description
+//         ]
+//     ]
+// ];
+
+// // Initialize cURL
+// $ch = curl_init('https://api.paymongo.com/v1/links');
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch, CURLOPT_POST, true);
+// curl_setopt($ch, CURLOPT_HTTPHEADER, [
+//     'Content-Type: application/json',
+//     'Authorization: Basic ' . base64_encode($secretKey . ':')
+// ]);
+// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+// // Execute request
+// $response = curl_exec($ch);
+// curl_close($ch);
+
+// // Decode response
+// $result = json_decode($response, true);
+
+// // Output checkout URL
+// if (isset($result['data']['attributes']['checkout_url'])) {
+//     print_r($result);
+//     echo "Payment link created: " . $result['data']['attributes']['checkout_url'];
+// } else {
+//     echo "Error creating payment link: ";
+//     print_r($result);
+// }
+
+// Get POSTed reference number
+// $reference = "1pApdnr";
+
+// if (!$reference) {
+//     http_response_code(400);
+//     echo json_encode(['error' => 'Reference number is required']);
+//     exit;
+// }
+
+// // PayMongo API endpoint: search payments by reference number
+// $ch = curl_init("https://api.paymongo.com/v1/payments?reference_number=" . urlencode($reference));
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch, CURLOPT_HTTPHEADER, [
+//     'Authorization: Basic ' . base64_encode($secretKey . ':')
+// ]);
+
+// $response = curl_exec($ch);
+// $paymentData = json_decode($response, true);
+
+// // Check if any payment is found
+// if (!empty($paymentData['data'])) {
+//     $payment = $paymentData['data'][0]['attributes'];
+//     $status = $payment['status']; // paid / unpaid / failed
+
+//     echo json_encode([
+//         'reference_number' => $reference,
+//         'status' => $status,
+//         'amount' => $payment['amount'],
+//         'currency' => $payment['currency']
+//     ]);
+// } else {
+//     echo json_encode([
+//         'reference_number' => $reference,
+//         'status' => 'not_found'
+//     ]);
+// }
+
+// The link ID you want to verify
+$linkId = 'link_GiM5s9MaAUiuRoLnXMTgPVux';
+
+// Initialize cURL
+$ch = curl_init("https://api.paymongo.com/v1/links/$linkId");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/json",
-    //"Authorization: Basic " . base64_encode("sk_test_hQUf2iBTFeb76Zgb5J13oP8x:")
+    'Authorization: Basic ' . base64_encode($secretKey . ':')
 ]);
 
 $response = curl_exec($ch);
-curl_close($ch);
+if ($response === false) {
+    echo "cURL error: " . curl_error($ch);
+    exit;
+}
 
 $linkData = json_decode($response, true);
 
-if (isset($linkData['data']['attributes']['url'])) {
-    echo "Payment Link: <a href='" . $linkData['data']['attributes']['url'] . "' target='_blank'>" . $linkData['data']['attributes']['url'] . "</a>";
+if (isset($linkData['data']['attributes']['status'])) {
+    $status = $linkData['data']['attributes']['status']; // "unpaid" or "paid"
+    $reference = $linkData['data']['attributes']['reference_number'];
+    $checkoutUrl = $linkData['data']['attributes']['checkout_url'];
+    echo json_encode($linkData, JSON_PRETTY_PRINT);
 } else {
-    echo "Failed to create payment link:<br>";
-    echo "<pre>";
+    echo "Failed to verify link. Response:\n";
     print_r($linkData);
-    echo "</pre>";
 }
 ?>
