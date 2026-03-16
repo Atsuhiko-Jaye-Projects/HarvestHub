@@ -240,7 +240,8 @@ $SC_stmt = $seasonal_crop_log->getSeasonalCrops();
                 </div>
             </div>
         </div>
-</div>
+    </div>
+
 
 </div>
 

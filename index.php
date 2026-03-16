@@ -203,7 +203,6 @@ if (isset($_SESSION['logged_in'])) {
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h6 class="fw-bold text-dark mb-0 text-truncate" style="font-size: 0.95rem;"><?= htmlspecialchars($product_name) ?></h6>
                                 <?php if(isset($_SESSION['logged_in']) && $_SESSION['user_id'] != $user_id): ?>
-                                    <a href="message/chat.php?receiver_id=<?= $user_id ?>" class="text-muted"><i class="bi bi-chat-dots"></i></a>
                                 <?php endif; ?>
                             </div>
                             <div class="d-flex justify-content-between align-items-end mt-3">
