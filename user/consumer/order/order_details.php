@@ -16,6 +16,7 @@ include_once "../../../login_checker.php";
 $database = new Database();
 $db = $database->getConnection();
 
+
 $order = new Order($db);
 $product = new Product($db);
 $user = new User($db);
@@ -41,7 +42,7 @@ $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
 $price_per_kg = $product->price_per_unit;
 $total = $price_per_kg * $quantity_in_kg;
 $shipping_fee = $total * 0.0225;
-$grand_total = $total + $shipping_fee;
+$grand_total = $total + $shipping_fee + $shipping_fee;
 
 // Farmer Info
 $farmer->id = $product->user_id;
@@ -167,6 +168,11 @@ $stmt = $order_status->getOrderStatus();
                 
                 <div class="d-flex justify-content-between mb-3">
                     <span class="text-muted small">Service Fee (2.25%)</span>
+                    <span class="fw-bold">₱<?php echo number_format($shipping_fee, 2); ?></span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted small">Shipping Fee (2.25%)</span>
                     <span class="fw-bold">₱<?php echo number_format($shipping_fee, 2); ?></span>
                 </div>
 

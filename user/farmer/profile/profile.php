@@ -67,11 +67,11 @@ if($user->getUserProfileById()){
     .avatar-wrapper { width: 140px; height: 140px; border-radius: 40px; border: 6px solid rgba(255,255,255,0.2); background: white; overflow: hidden; }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Wallet Card */
-    .wallet-glass { background: var(--slate); border-radius: 25px; padding: 2rem; color: white; position: relative; overflow: hidden; }
-    .wallet-glass::before { content: ''; position: absolute; top: -20%; right: -10%; width: 150px; height: 150px; background: var(--p-green); filter: blur(70px); opacity: 0.3; }
-    .label-caps { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; font-weight: 800; }
-    
+        /* Wallet Card */
+        .wallet-glass { background: var(--slate); border-radius: 25px; padding: 2rem; color: white; position: relative; overflow: hidden; }
+        .wallet-glass::before { content: ''; position: absolute; top: -20%; right: -10%; width: 150px; height: 150px; background: var(--p-green); filter: blur(70px); opacity: 0.3; }
+        .label-caps { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; font-weight: 800; }
+        
     /* Tiles & Details */
     .info-box { background: #f8fafc; border: 1px solid #eef2f6; border-radius: 20px; padding: 1.5rem; }
     .stat-tile { background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 1.2rem; text-align: center; transition: 0.3s; }
@@ -129,7 +129,7 @@ if($user->getUserProfileById()){
 
                 <div class="col-lg-8">
                     <div class="wallet-glass shadow-sm mb-5">
-                        <div class="row align-items-center text-center text-md-start">
+                        <!-- <div class="row align-items-center text-center text-md-start">
                             <div class="col-md-7">
                                 <span class="label-caps">Total Wallet Balance</span>
                                 <div class="display-5 fw-800" style="font-weight: 800;">₱ <?= number_format($user->wallet_balance ?? 0, 2) ?></div>
@@ -140,7 +140,7 @@ if($user->getUserProfileById()){
                                     <button class="btn btn-outline-light w-100 py-3 fw-bold rounded-4" data-bs-toggle="modal" data-bs-target="#cashOutModal">Withdraw</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-4">

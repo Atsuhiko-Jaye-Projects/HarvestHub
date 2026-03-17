@@ -207,6 +207,8 @@ if ($_POST) {
                     <span class="small">System Fee (2.25%)</span>
                     <span class="fw-bold">- ₱<?php echo number_format($service_fee, 2); ?></span>
                 </div>
+
+
                 <div class="border-top pt-3 d-flex justify-content-between align-items-center">
                     <span class="fw-bold fs-5">Net Payout</span>
                     <span class="text-success fw-bold fs-3">₱<?php echo number_format($grand_total, 2); ?></span>
