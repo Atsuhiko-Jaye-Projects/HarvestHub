@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <div class="row g-3">
                                 <div class="col-md-8">
                                     <label class="small fw-bold">Project / Record Name</label>
-                                    <input type="text" name="record_name" class="form-control form-control-custom" placeholder="Batch #001 - Marubay" required>
+                                    <input type="text" name="record_name" class="form-control form-control-custom" placeholder="Enter Crop Title" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="small fw-bold">Record Date</label>
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         </div>
                         <div class="col-md-2">
                             <div class="calc-box">
-                                <label class="small fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Ave Yield/Plant</label>
+                                <label class="small fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Ave Yield/Plant (KG)</label>
                                 <div class="d-flex align-items-center">
                                     <input type="number" step="0.01" name="average_yield_per_plant" id="average_yield" class="form-control-plaintext fw-bold p-0" value="0.00" readonly>
                                     <span class="small fw-bold ms-1">kg</span>

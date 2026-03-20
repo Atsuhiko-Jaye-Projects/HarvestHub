@@ -93,14 +93,14 @@ $expense = $farm_resource->cropExpense();
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Date Planted</label>
-                            <input type="date" name="date_planted" class="form-control shadow-sm" required value="<?php echo $row['date_planted'];?>" disabled>
+                            <input type="date" name="date_planted" class="form-control shadow-sm" required value="<?php echo $row['date_planted'];?>" readonly>
                         </div>
                     </div>
 
                     <div class="row g-3 mb-4">
                         <div class="col-md-4">
                             <label class="form-label">Est. Harvest Date</label>
-                            <input type="date" name="estimated_harvest_date" class="form-control shadow-sm" value="<?php echo $row['estimated_harvest_date'];?>">
+                            <input type="date" name="estimated_harvest_date" class="form-control shadow-sm" value="<?php echo $row['estimated_harvest_date'];?>" readonly>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Plants (pcs)</label>
@@ -138,7 +138,7 @@ $expense = $farm_resource->cropExpense();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="yield-box">
-                                    <label class="form-label text-muted">Est. Total Yield (KG)</label>
+                                    <label class="form-label text-muted">Total Expenses (PHP)</label>
                                     <input type="number" id="est_yield-<?php echo $id; ?>" class="form-control-plaintext fw-bold fs-5 p-0" readonly>
                                 </div>
                             </div>

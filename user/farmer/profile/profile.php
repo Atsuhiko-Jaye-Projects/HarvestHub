@@ -20,7 +20,7 @@ $user->id = $_SESSION['user_id'];
 if($user->getUserProfileById()){
     $farm->user_id = $user->id;
 
-    // --- FORM LOGIC (WALANG BAWAS) ---
+    // --- FORM LOGIC ---
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         if ($_POST['action'] == "update_profile") {
             $user->firstname = $_POST['firstname'];
@@ -67,9 +67,6 @@ if($user->getUserProfileById()){
     .avatar-wrapper { width: 140px; height: 140px; border-radius: 40px; border: 6px solid rgba(255,255,255,0.2); background: white; overflow: hidden; }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Wallet Card */
-    .wallet-glass { background: var(--slate); border-radius: 25px; padding: 2rem; color: white; position: relative; overflow: hidden; }
-    .wallet-glass::before { content: ''; position: absolute; top: -20%; right: -10%; width: 150px; height: 150px; background: var(--p-green); filter: blur(70px); opacity: 0.3; }
     .label-caps { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; font-weight: 800; }
     
     /* Tiles & Details */
@@ -85,7 +82,7 @@ if($user->getUserProfileById()){
 </style>
 
 <div class="container py-5">
-    <div class="main-card">
+    <div class="main-card shadow-sm">
         <div class="hero-box d-flex flex-column flex-md-row align-items-center justify-content-between">
             <div class="d-flex flex-column flex-md-row align-items-center gap-4 text-center text-md-start">
                 <div class="avatar-wrapper shadow-lg">
@@ -128,21 +125,6 @@ if($user->getUserProfileById()){
                 </div>
 
                 <div class="col-lg-8">
-                    <div class="wallet-glass shadow-sm mb-5">
-                        <div class="row align-items-center text-center text-md-start">
-                            <div class="col-md-7">
-                                <span class="label-caps">Total Wallet Balance</span>
-                                <div class="display-5 fw-800" style="font-weight: 800;">₱ <?= number_format($user->wallet_balance ?? 0, 2) ?></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="d-flex gap-2 mt-3 mt-md-0">
-                                    <button class="btn btn-success w-100 py-3 fw-bold rounded-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#cashInModal">Cash In</button>
-                                    <button class="btn btn-outline-light w-100 py-3 fw-bold rounded-4" data-bs-toggle="modal" data-bs-target="#cashOutModal">Withdraw</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="fw-800 m-0">Farm Infrastructure</h4>
                         <button class="btn btn-sm btn-outline-success rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#editFarmModal">Edit Farm</button>
@@ -250,9 +232,6 @@ if($user->getUserProfileById()){
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="cashInModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content p-4 text-center border-0 rounded-4 shadow"><h5>Top Up</h5><input type="number" class="form-control mb-3" placeholder="₱ 0.00"><button class="btn btn-success w-100 fw-bold">Proceed</button></div></div></div>
-<div class="modal fade" id="cashOutModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content p-4 text-center border-0 rounded-4 shadow"><h5>Cash Out</h5><input type="number" class="form-control mb-3" placeholder="₱ 0.00"><button class="btn btn-warning w-100 fw-bold">Confirm</button></div></div></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

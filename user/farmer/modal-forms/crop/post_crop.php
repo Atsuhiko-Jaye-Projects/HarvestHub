@@ -91,23 +91,24 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label">Crop Name</label>
-                                    <input type="text" name="crop_name" class="form-control" required value="<?php echo $row['crop_name']; ?>">
+                                    <input type="text" name="crop_name" class="form-control" required value="<?php echo $row['crop_name']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Estimated Harvest Date</label>
-                                    <input type="date" name="estimated_harvest_date" class="form-control" value="<?php echo $row['estimated_harvest_date']; ?>">
+                                    <input type="date" name="estimated_harvest_date" class="form-control" value="<?php echo $row['estimated_harvest_date']; ?>" readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">No. of Plants</label>
+                                    <input type="number" name="plant_count" class="form-control" value="<?php echo $row['plant_count']; ?>" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">KG per Plant</label>
+                                    <input type="text" name="kilo_per_plant" class="form-control" value="<?php echo $row['yield']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label text-success">Total Stocks (KG)</label>
                                     <input type="text" name="stocks" value="<?php echo $row['stocks']; ?>" class="form-control stocks-badge" readonly>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">No. of Plants</label>
-                                    <input type="number" name="plant_count" class="form-control" value="<?php echo $row['plant_count']; ?>">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">KG per Plant</label>
-                                    <input type="text" name="kilo_per_plant" class="form-control" value="<?php echo $row['yield']; ?>">
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Product Showcase Image</label>
