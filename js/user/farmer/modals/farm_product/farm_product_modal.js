@@ -101,6 +101,7 @@ function postHarvestProduct(row) {
           <input type="hidden" name="unit" value="${row.unit}">
           <input type="hidden" name="product_description" value="${row.product_description}">
           <input type="hidden" name="lot_size" value="${row.lot_size}">
+          <input type="hidden" name="product_image" value="${row.product_image}">
           <input type="hidden" name="is_posted" value="1">
           <input type="hidden" name="action" value="product_post">
           
@@ -111,6 +112,7 @@ function postHarvestProduct(row) {
             <div class="row g-0">
               
               <div class="col-lg-4 p-4 p-md-5 bg-light" style="border-radius: 35px 0 0 35px;">
+                
                 <div class="position-relative mb-4">
                   <img src="${row.product_image_path}" class="w-100 rounded-5 shadow-lg" style="height: 250px; object-fit: cover;">
                   <span class="position-absolute top-0 start-0 m-3 badge rounded-pill bg-white text-dark shadow-sm px-3 py-2 fw-bold border">

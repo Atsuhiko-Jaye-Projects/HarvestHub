@@ -1,68 +1,101 @@
+<?php
+$distanceText = "";
+$durationText = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $lat1 = $_POST['lat'];
+    $lng1 = $_POST['lng'];
+    $lat2 = $_POST['dest_lat'];
+    $lng2 = $_POST['dest_lng'];
+
+    $apiKey = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjE1Mjc3ZmM2ZGM3ZDQ5M2M4NWMxNWExNmQ4MWMxMmNkIiwiaCI6Im11cm11cjY0In0=";
+
+    $url = "https://api.openrouteservice.org/v2/directions/driving-car";
+
+    $data = [
+        "coordinates" => [
+            [(float)$lng1, (float)$lat1],
+            [(float)$lng2, (float)$lat2]
+        ]
+    ];
+
+    $options = [
+        "http" => [
+            "header"  => "Content-type: application/json\r\n" .
+                         "Authorization: $apiKey\r\n",
+            "method"  => "POST",
+            "content" => json_encode($data),
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    if ($result !== FALSE) {
+        $response = json_decode($result, true);
+
+        if (isset($response['routes'][0])) {
+            $distance = $response['routes'][0]['summary']['distance'];
+            $duration = $response['routes'][0]['summary']['duration'];
+
+            $distanceText = round($distance / 1000, 2) . " km";
+            $durationText = round($duration / 60, 2) . " minutes";
+        } else {
+            $distanceText = "Route not found.";
+        }
+    } else {
+        $distanceText = "API request failed.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Crop Shelf Life Estimator</title>
+    <title>Road Distance Calculator</title>
 </head>
 <body>
-<h2>Crop Shelf Life Estimator</h2>
 
-<label>Location: <input type="text" id="location" value="Barangay San Isidro, Talisay, Cebu, Philippines"></label><br>
-<label>Crop: 
-  <select id="crop">
-    <option value="leafy">Leafy Greens</option>
-    <option value="tomato">Tomato</option>
-    <option value="root">Root Crop</option>
-  </select>
-</label><br>
-<button onclick="getWeather()">Get Shelf Life</button>
+<h2>OpenRouteService Distance Calculator</h2>
 
-<div id="result" style="margin-top:20px; font-weight:bold;"></div>
+<button onclick="getLocation()">Use My Location</button>
+
+<form method="POST">
+    <br><br>
+
+    <label>Origin:</label><br>
+    <input type="text" id="lat" name="lat" placeholder="Latitude" required>
+    <input type="text" id="lng" name="lng" placeholder="Longitude" required>
+
+    <br><br>
+
+    <label>Destination:</label><br>
+    <input type="text" name="dest_lat" placeholder="Latitude" required>
+    <input type="text" name="dest_lng" placeholder="Longitude" required>
+
+    <br><br>
+    <button type="submit">Calculate Distance</button>
+</form>
+
+<?php if ($distanceText): ?>
+    <h3>Distance: <?php echo $distanceText; ?></h3>
+    <h4>Estimated Time: <?php echo $durationText; ?></h4>
+<?php endif; ?>
 
 <script>
-function getWeather() {
-    const location = encodeURIComponent(document.getElementById('location').value);
-    const apiKey = 'VTZE7BHR7XAT9XD3GGS4VL3HU';
-    const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/today?unitGroup=metric&key=${apiKey}`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-          const today = data.days[0]; // today's weather data
-
-          const crop = document.getElementById('crop').value;
-
-          // Simple shelf life model
-          let baseline, idealTemp, idealHumidity;
-
-          if(crop === 'leafy') { 
-              baseline = 7; idealTemp = 4; idealHumidity = 90; 
-          } else if(crop === 'tomato') { 
-              baseline = 14; idealTemp = 12; idealHumidity = 85; 
-          } else { 
-              baseline = 30; idealTemp = 10; idealHumidity = 70; 
-          }
-
-          const tempFactor = Math.max(0, 1 - 0.1 * Math.abs(today.temp - idealTemp));
-          const humidityFactor = Math.max(0, 1 - 0.05 * Math.abs(today.humidity - idealHumidity) / 10);
-          const estimatedShelfLife = Math.round(baseline * tempFactor * humidityFactor);
-
-          // Combine all today's data with shelf life
-          const resultJSON = {
-              location: decodeURIComponent(location),
-              crop: crop,
-              estimated_shelf_life_days: estimatedShelfLife,
-              weather_today: today // everything returned by Visual Crossing for today
-          };
-
-          // Display as JSON
-          document.getElementById('result').innerHTML = `<pre>${JSON.stringify(resultJSON, null, 2)}</pre>`;
-      })
-      .catch(err => {
-          console.error(err);
-          document.getElementById('result').innerHTML = "Error fetching today's weather data.";
-      });
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            document.getElementById("lat").value = pos.coords.latitude;
+            document.getElementById("lng").value = pos.coords.longitude;
+        }, function(err) {
+            alert("Location error: " + err.message);
+        });
+    } else {
+        alert("Geolocation not supported.");
+    }
 }
-
 </script>
+
 </body>
 </html>

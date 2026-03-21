@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                         <span>Subtotal</span>
                         <span class="fw-bold text-dark" id="subtotal-price">₱0.00</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-4 text-muted">
+                    <div class="d-flex justify-content-between mb-4 text-muted" id="shippingId">
                         <span>Shipping Fee</span>
                         <span class="fw-bold text-success">₱50.00</span>
                     </div>
@@ -246,6 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
         </div>
     </div>
 </div>
+
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
