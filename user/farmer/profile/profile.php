@@ -86,7 +86,7 @@ if($user->getUserProfileById()){
         <div class="hero-box d-flex flex-column flex-md-row align-items-center justify-content-between">
             <div class="d-flex flex-column flex-md-row align-items-center gap-4 text-center text-md-start">
                 <div class="avatar-wrapper shadow-lg">
-                    <img id="profilePreview" src="../../uploads/profile_pictures/<?= $_SESSION['user_type']."/".$_SESSION['user_id']."/".$user->profile_pic;?>">
+                    <img id="profilePreview" src="../../uploads/profile_pictures/<?="/".$_SESSION['user_id']."/".$user->profile_pic;?>">
                 </div>
                 <div>
                     <span class="badge bg-white text-success rounded-pill px-3 py-2 mb-2 fw-bold shadow-sm">Verified Account</span>

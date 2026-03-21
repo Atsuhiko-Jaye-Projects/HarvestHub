@@ -30,8 +30,9 @@ $user->id = $order->customer_id;
 $user->getShippingAddress();
 $shipping_address = "{$user->address}, {$user->barangay}, {$user->municipality}";
 
+$product_id = $order->product_id;
 // Product Info
-$product->product_id = $order->product_id;
+$product->product_id = $product_id;
 $product->getProductInfo();
 
 // Pricing Logic
@@ -43,8 +44,9 @@ $total = $price_per_kg * $quantity_in_kg;
 $shipping_fee = $total * 0.0225;
 $grand_total = $total + $shipping_fee;
 
+
 // Farmer Info
-$farmer->id = $product->user_id;
+$farmer->id = $order->farmer_id;
 $farmer->getFarmerInfo();
 $farmer_address = "{$farmer->address}, {$farmer->barangay}, {$farmer->municipality}, {$farmer->province}";
 $farmer_contact = $farmer->contact_number; // FIXED: Added this to prevent Warning
