@@ -166,7 +166,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['product_id'])) {
                         <span>Subtotal</span>
                         <span class="fw-bold text-dark" id="subtotal-price">₱0.00</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-4 text-muted">
+
+                    <div class="d-flex justify-content-between mb-4 text-muted" id="shipping-row">
                         <span>Shipping Fee</span>
                         <span class="fw-bold text-success">₱50.00</span>
                     </div>
@@ -263,7 +264,23 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function calculate() {
-        let itemsCount = 0; let subtotal = 0; const ship = 50;
+        let itemsCount = 0; 
+        let subtotal = 0; 
+        
+        // DINAGDAG NA LOGIC PARA SA SHIPPING HIDE/SHOW
+        const isCOD = document.getElementById("COD").checked;
+        const shippingRow = document.getElementById("shipping-row");
+        
+        if (isCOD) {
+            shippingRow.classList.add("d-flex");
+            shippingRow.classList.remove("d-none");
+        } else {
+            shippingRow.classList.add("d-none");
+            shippingRow.classList.remove("d-flex");
+        }
+
+        const ship = isCOD ? 50 : 0;
+
         document.querySelectorAll(".item-row").forEach(row => {
             const qtyInput = row.querySelector(".quantity-input");
             const unit = row.querySelector(".unit-selector").value;
@@ -285,6 +302,11 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("subtotal-price").innerText = "₱" + subtotal.toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById("grand-total").innerText = "₱" + (itemsCount > 0 ? subtotal + ship : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
     }
+
+    // DINAGDAG NA LISTENER PARA SA PAYMENT RADIO BUTTONS
+    document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+        radio.addEventListener('change', calculate);
+    });
 
     document.addEventListener("input", e => { if (e.target.matches(".quantity-input, .unit-selector, .product-checkbox")) calculate(); });
     document.addEventListener("click", e => {
