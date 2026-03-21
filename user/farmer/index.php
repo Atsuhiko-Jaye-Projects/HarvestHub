@@ -33,7 +33,7 @@ $seller_rating = $ratingData['seller_rating'];
 $total_reviews = $ratingData['total_reviews'];
 
 if ($_SESSION['is_farm_registered'] == 0) {
-    // [Backend Logic remains untouched as per your instruction]
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         include_once "../../config/database.php";
         include_once "../../objects/farm.php";
@@ -49,6 +49,8 @@ if ($_SESSION['is_farm_registered'] == 0) {
         $farm->purok = $_POST['purok'];
         $farm->farm_ownership = $_POST['farm_ownership'];
         $farm->lot_size = $_POST['lot_size'];
+        $farm->latitude = $_POST['latitude'];
+        $farm->longitude = $_POST['longitude'];
 
         if ($farm->createFarmInfo()) {
             $user->farm_details_exists = 1;
@@ -306,3 +308,46 @@ if ($_SESSION['is_farm_registered'] == 0) {
 ob_end_flush();
 include_once "layout/layout_foot.php";
 ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function getLocation() {
+
+    // 👉 Show loading popup
+    Swal.fire({
+        title: 'Saving farm details...',
+        text: 'Please wait while we save your farm details...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+
+            document.getElementById("latitude").value = pos.coords.latitude;
+            document.getElementById("longitude").value = pos.coords.longitude;
+
+
+            // 👉 Submit form
+            setTimeout(() => {
+                document.getElementById("farmForm").submit();
+            }, 500);
+
+        }, function(err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Location Error',
+                text: err.message
+            });
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Not Supported',
+            text: 'Geolocation is not supported by your browser.'
+        });
+    }
+}
+</script>

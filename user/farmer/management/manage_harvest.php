@@ -58,8 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $harvest_product = new HarvestProduct($db);
 
     
-
-
     // ===== CREATE =====
     if ($_POST['action'] == 'create') {
 
@@ -110,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $harvest_product->lot_size = $_POST['lot_size'];
         $harvest_product->is_posted = "Pending";
 
-
         // bind the image value
         $image=!empty($_FILES["product_image"]["name"])
         ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
@@ -118,9 +115,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
         $price = $harvest_product->price_per_unit = round($selling_price, 2);
 
+        if (!empty($image)) {
+            $harvest_product->uploadPhoto();
+        }
 
         if ($harvest_product->createProduct()) {
-            $harvest_product->uploadPhoto();
             echo "
             <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
             <script>
@@ -197,8 +196,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             ? sha1_file($_FILES['product_image']['tmp_name']) . "-" . basename($_FILES["product_image"]["name"]) : "";
         $harvest_product->product_image = $image;
 
-        if ($harvest_product->updateHarvestProduct()) {
+        if (!empty($image)) {
             $harvest_product->uploadPhoto();
+        }
+            
+        if ($harvest_product->updateHarvestProduct()) {
+            
             echo "
             <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
             <script>
@@ -231,7 +234,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->product_image = $_POST['product_image'] ?? 'default.png';
         $product->status = "Active";
         $product->product_type = "harvest";
-
         $harvest_product->id = $_POST['product_id'];
         $harvest_product->is_posted = "Posted";
 

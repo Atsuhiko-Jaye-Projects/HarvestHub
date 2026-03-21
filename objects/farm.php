@@ -23,6 +23,8 @@ class Farm{
     public $modified;
     public $additional_used_size;
     public $deduct_used_size;
+    public $latitude;
+    public $longitude;
 
 
     public function __construct($db) {
@@ -41,6 +43,8 @@ class Farm{
                     province=:province,
                     lot_size=:lot_size,
                     farm_ownership=:farm_ownership,
+                    latitude=:latitude,
+                    longitude=:longitude,
                     created_at=:created_at";
         
         $stmt=$this->conn->prepare($query);
@@ -62,6 +66,8 @@ class Farm{
         $stmt->bindParam(":province", $this->province);
         $stmt->bindParam(":lot_size", $this->lot_size);
         $stmt->bindParam(":farm_ownership", $this->farm_ownership);
+        $stmt->bindParam(":latitude", $this->latitude);
+        $stmt->bindParam(":longitude", $this->longitude);
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {

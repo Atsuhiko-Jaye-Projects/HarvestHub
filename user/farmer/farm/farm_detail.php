@@ -12,7 +12,7 @@
                         <i class="bi bi-person-badge-fill text-white fs-4"></i>
                     </div>
                     <div>
-                        <h5 class="mb-0 fw-bold tracking-tight">Farmer Profile & Geotagging</h5>
+                        <h5 class="mb-0 fw-bold tracking-tight">Farmer Profile</h5>
                         <p class="text-secondary mb-0 small opacity-75">Complete your agricultural land registration</p>
                     </div>
                 </div>
@@ -21,6 +21,8 @@
             <div class="card-body p-4 p-md-5">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" id="farmForm">
                     
+                    <!-- hidden location of user -->
+
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Last Name</label>
@@ -57,30 +59,8 @@
                         </div>
                     </div>
 
-                    <div class="p-4 mb-4" style="background: rgba(13, 110, 253, 0.04); border: 1px solid #e2e8f0; border-radius: 24px;">
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
-                                <i class="bi bi-crosshair me-2"></i>GPS Mapping Module
-                            </span>
-                        </div>
-                        <div class="row g-3 align-items-end">
-                            <div class="col-md-4">
-                                <label class="small fw-semibold text-secondary mb-2 d-block text-center">Latitude</label>
-                                <input type="text" name="latitude" id="latitude" class="form-control border-0 py-2 shadow-none text-center fw-bold" 
-                                       placeholder="---" style="border-radius: 12px; background: #fff; height: 48px;">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="small fw-semibold text-secondary mb-2 d-block text-center">Longitude</label>
-                                <input type="text" name="longitude" id="longitude" class="form-control border-0 py-2 shadow-none text-center fw-bold" 
-                                       placeholder="---" style="border-radius: 12px; background: #fff; height: 48px;">
-                            </div>
-                            <div class="col-md-4">
-                                <button type="button" class="btn btn-primary w-100 fw-bold shadow-sm" style="border-radius: 12px; height: 48px;">
-                                    Get Location
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+
+
 
                     <div class="row g-4 mb-5">
                         <div class="col-md-6">
@@ -101,20 +81,17 @@
                         </div>
                     </div>
 
+                    <input type="text" name="latitude" id="latitude">
+                    <input type="text" name="longitude" id="longitude">
                     <input type="hidden" name="province_name" id="province_name">
                     <input type="hidden" name="municipality_name" id="municipality_name">
                     <input type="hidden" name="barangay_name" id="barangay_name">
 
                     <div class="row g-3">
-                        <div class="col-md-3 order-3 order-md-1">
-                            <button type="button" class="btn btn-outline-dark w-100 py-3 fw-bold border-2" style="border-radius: 18px;">
-                                Button
-                            </button>
-                        </div>
                         <div class="col-md-3 order-2 order-md-2">
                         </div>
                         <div class="col-md-6 order-1 order-md-3">
-                            <button type="submit" class="btn btn-success w-100 py-3 fw-bold shadow-sm" 
+                            <button type="button" onclick="getLocation()" class="btn btn-success w-100 py-3 fw-bold shadow-sm" 
                                     style="border-radius: 18px; background: linear-gradient(135deg, #166534, #22c55e); border: none;">
                                 <i class="bi bi-check2-circle me-2"></i>Save Farm Details
                             </button>

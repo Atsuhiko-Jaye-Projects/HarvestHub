@@ -138,6 +138,7 @@ class HarvestProduct{
             // If no errors, attempt to move file
             if (empty($file_upload_error_messages)) {
                 if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
+                    
                 } else {
                     $result_message = "<div>Unable to upload image.</div>";
                 }
