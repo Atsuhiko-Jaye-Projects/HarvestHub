@@ -110,21 +110,20 @@ if ($order->mode_of_payment == "COD") {
     $additional_fare = $distanceValue * 10;
     $shipping_fee = 50 + $additional_fare;
     $service_fee = $total * 0.0225;
-    $grand_total = round($service_fee + $total + $shipping_fee, 2);
+    $grand_total = ($shipping_fee + $service_fee) + $total;
     // shipping fee
-    
-
+}else{
+    // Pricing Logic
+    $quantity = $order->quantity;
+    $unit = strtolower($order->unit);
+    $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
+    $price_per_kg = $product->price_per_unit;
+    $total = $price_per_kg * $quantity_in_kg;
+    $service_fee = $total * 0.0225;
+    $grand_total = $total + $service_fee;
 }
 
 
-// Pricing Logic
-$quantity = $order->quantity;
-$unit = strtolower($order->unit);
-$quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
-$price_per_kg = $product->price_per_unit;
-$total = $price_per_kg * $quantity_in_kg;
-$service_fee = $total * 0.0225;
-$grand_total = $total + $service_fee;
 
 
 // Farmer Info
