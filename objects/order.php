@@ -200,6 +200,7 @@ class Order{
                     customer_id,
                     mode_of_payment,
                     status,
+                    product_type,
                     quantity,
                     created_at,
                     farmer_id
@@ -220,6 +221,7 @@ class Order{
         $this->mode_of_payment = $row['mode_of_payment'];
         $this->customer_id = $row['customer_id'];
         $this->status = $row['status'];
+        $this->product_type = $row['product_type'];
         $this->unit = $row['unit'];
         $this->quantity = $row['quantity'];
         $this->created_at = $row['created_at'];

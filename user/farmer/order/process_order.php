@@ -19,13 +19,107 @@ $db = $database->getConnection();
 $order = new Order($db);
 $product = new Product($db);
 $customer = new User($db);
+$user = new User($db);
 $order_status_history = new OrderHistory($db);
 
 // Load Data
 $order->id = $order_id;
 $order->readOneOrder();
+
+
 $product->product_id = $order->product_id; 
-$product->getProductInfo();
+
+if ($order->product_type == "harvest") {
+    // get harvested product type
+    $product->getHarvestProductInfo();
+    $image_path = "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
+}else{
+    $product->getProductInfo();
+    $image_path = "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}";
+}
+
+if ($order->mode_of_payment == "COD") {
+    // get the coordinates of two user
+    $user->sender_id = $order->farmer_id;
+    $user->reciever_id = $order->customer_id;
+    $user->getShippingLocation();
+
+    // sender location
+    $sender_latitude = $user->sender_latitude;
+    $sender_longitude = $user->sender_longitude;
+
+    // reciever location
+    $reciever_latitude = $user->reciever_latitude;
+    $reciever_longitude = $user->reciever_longitude;
+
+    $distanceText = "";
+    $durationText = "";
+
+    $apiKey = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjE1Mjc3ZmM2ZGM3ZDQ5M2M4NWMxNWExNmQ4MWMxMmNkIiwiaCI6Im11cm11cjY0In0=";
+
+    $url = "https://api.openrouteservice.org/v2/directions/driving-car";
+
+    $data = [
+        "coordinates" => [
+            [(float)$sender_longitude, (float)$sender_latitude],
+            [(float)$reciever_longitude, (float)$reciever_latitude]
+        ]
+    ];
+
+    $options = [
+        "http" => [
+            "header"  => "Content-type: application/json\r\n" .
+                        "Authorization: $apiKey\r\n",
+            "method"  => "POST",
+            "content" => json_encode($data),
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    if ($result !== FALSE) {
+        $response = json_decode($result, true);
+
+        if (isset($response['routes'][0])) {
+            $distance = $response['routes'][0]['summary']['distance'];
+            $duration = $response['routes'][0]['summary']['duration'];
+
+            $distanceText = round($distance / 1000, 2) . " km";
+            $distanceValue = round($distance / 1000, 2);
+            $durationText = round($duration / 60, 2) . " minutes";
+        } else {
+            $distanceText = "Route not found.";
+        }
+    } else {
+        $distanceText = "API request failed.";
+    }
+
+
+    $quantity = $order->quantity;
+    $unit = strtolower($order->unit);
+    $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
+    $price_per_kg = $product->price_per_unit;
+    
+    $total = $price_per_kg * $quantity_in_kg;
+    $additional_fare = $distanceValue * 5;
+    $shipping_fee = 50 + $additional_fare;
+    $service_fee = $total * 0.0225;
+    $subtotal = $total - $service_fee;
+    $grand_total = $shipping_fee + $subtotal;
+    // shipping fee
+}else{
+    // Pricing Logic
+    $quantity = $order->quantity;
+    $unit = strtolower($order->unit);
+    $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
+    $price_per_kg = $product->price_per_unit;
+    $total = $price_per_kg * $quantity_in_kg;
+    $service_fee = $total * 0.0225;
+    $grand_total = $total - $service_fee;
+}
+
+
 $customer->id = $order->customer_id;
 $customer->getShippingAddress();
 
@@ -38,11 +132,11 @@ $product_image_path = ($product_type == 'preorder')
     : "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
 
 // Financials
-$unit = strtolower($order->unit);
-$quantity_in_kg = ($unit === 'kg') ? $order->quantity : $order->quantity / 1000;
-$subtotal = $product->price_per_unit * $quantity_in_kg;
-$service_fee = $subtotal * 0.0225;
-$grand_total = $subtotal - $service_fee;
+// $unit = strtolower($order->unit);
+// $quantity_in_kg = ($unit === 'kg') ? $order->quantity : $order->quantity / 1000;
+// $subtotal = $product->price_per_unit * $quantity_in_kg;
+// $service_fee = $subtotal * 0.0225;
+// $grand_total = $subtotal - $service_fee;
 
 // Form Processing
 if ($_POST) {
@@ -122,11 +216,44 @@ if ($_POST) {
     .address-box { font-size: 1rem; line-height: 1.3; margin-top: 5px; }
 
     @media print {
-        body * { visibility: hidden; }
-        #waybill-area, #waybill-area * { visibility: visible; }
-        #waybill-area { position: absolute; left: 0; top: 0; width: 100%; border: none; }
-        .no-print { display: none !important; }
+        @page {
+            size: 4in 6in;
+            margin: 0;
+        }
+
+        body * {
+            visibility: hidden;
+        }
+
+        #waybill-area, #waybill-area * {
+            visibility: visible;
+        }
+
+        #waybill-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4in;
+        }
+
+        .waybill-card {
+            width: 4in;
+            height: 6in;
+            margin: 0;
+        }
+
+        .modal,
+        .modal-dialog,
+        .modal-content,
+        .modal-body {
+            all: unset;
+        }
+
+        .no-print {
+            display: none !important;
+        }
     }
+    
 </style>
 
 <div class="container py-5">
@@ -137,9 +264,13 @@ if ($_POST) {
         </div>
         <div class="d-flex gap-2">
             <button class="btn btn-outline-dark px-4 rounded-pill" onclick="location.href='order.php'">Back</button>
-            <button class="btn btn-dark px-4 rounded-pill shadow" data-bs-toggle="modal" data-bs-target="#waybillModal">
-                <i class="bi bi-printer me-2"></i> Print Waybill
-            </button>
+            <?php
+                if ($order->product_type == "harvest") {
+                    echo "<button class='btn btn-dark px-4 rounded-pill shadow' data-bs-toggle='modal' data-bs-target='#waybillModal'>
+                        <i class='bi bi-printer me-2'></i> Print Waybill
+                    </button>";
+                }
+            ?>
         </div>
     </div>
 
@@ -201,12 +332,23 @@ if ($_POST) {
                 <h5 class="fw-bold mb-4">Earnings</h5>
                 <div class="d-flex justify-content-between mb-2">
                     <span class="text-muted small">Gross Subtotal</span>
-                    <span class="fw-bold">₱<?php echo number_format($subtotal, 2); ?></span>
+                    <span class="fw-bold">₱<?php echo number_format($total, 2); ?></span>
                 </div>
                 <div class="d-flex justify-content-between mb-3 text-danger">
                     <span class="small">System Fee (2.25%)</span>
                     <span class="fw-bold">- ₱<?php echo number_format($service_fee, 2); ?></span>
                 </div>
+                <?php
+                    if ($order->mode_of_payment == "COD") {
+                        echo "<div class='d-flex justify-content-between mb-3'>
+                            <span class='text-muted small'>
+                                Shipping Fee (₱50.00 Base Fare) + 
+                                <span class='text-danger fw-semibold'>₱" .number_format($additional_fare, 2) . "</span>
+                            </span>
+                            <span class='fw-bold'>₱ " . number_format($shipping_fee, 2) . "</span>
+                        </div>";
+                    }
+                ?>
                 <div class="border-top pt-3 d-flex justify-content-between align-items-center">
                     <span class="fw-bold fs-5">Net Payout</span>
                     <span class="text-success fw-bold fs-3">₱<?php echo number_format($grand_total, 2); ?></span>
@@ -222,11 +364,17 @@ if ($_POST) {
                     <input type="hidden" name="action" id="actionInput">
 
                     <?php
-                    $status = $order->status;
-                    $type = $product->product_type;
-                    $estimated_harvest = $product->estimated_harvest_date; // Dynamic date from DB
-                    $today = date("Y-m-d");
-                    $isNotHarvestDate = ($today < $estimated_harvest);
+
+                    if ($order->product_type == "harvest") {
+                        $status = $order->status;
+                        $type = $product->product_type;
+                    }else{
+                        $status = $order->status;
+                        $type = $product->product_type;
+                        $estimated_harvest = $product->estimated_harvest_date; // Dynamic date from DB
+                        $today = date("Y-m-d");
+                        $isNotHarvestDate = ($today < $estimated_harvest);
+                    }
 
                     if ($status == "order placed") {
                         $btnVal = ($type == "preorder") ? "accept pre-order" : "accept";
@@ -245,6 +393,8 @@ if ($_POST) {
                                     <i class='bi bi-clock-history'></i> Wait for harvest date: $estimated_harvest
                                   </div>";
                         }
+                    }else{
+                        echo "<button type='button' disabled class='btn btn-success w-100 py-3 rounded-4 fw-bold mb-2'>ORDER COMPLETED</button>";
                     }
                     ?>
                 </form>
