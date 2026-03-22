@@ -26,8 +26,8 @@ class CropProductionDetails{
         $query = " SELECT 
                         production_per_hectare,
                         plant_population_per_hectare,
-                        (production_per_hectare / plant_population_per_hectare) 
-                            AS yield_per_plant
+                        distance_of_planting,
+                        (production_per_hectare / plant_population_per_hectare) AS yield_per_plant
                     FROM " . $this->table_name . "
                     WHERE crop_name = :crop_name
                     LIMIT 1";

@@ -144,11 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         </div>
                         <div class="col-md-2">
                             <label class="small fw-bold">Total Width (SQM)</label>
-                            <input type="number" step="0.1" name="planted_area_sqm" id="planted_area_sqm" class="form-control form-control-custom" required>
+                            <input type="number" step="0.01" id="total_width_sqm" class="form-control form-control-custom" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label class="small fw-bold">Total Hieght (SQM)</label>
-                            <input type="number" step="0.1" name="planted_area_sqm" id="planted_area_sqm" class="form-control form-control-custom" required>
+                            <label class="small fw-bold">Total Height (SQM)</label>
+                            <input type="number" step="0.01"  id="total_height_sqm" class="form-control form-control-custom" readonly>
                         </div>
                         <div class="col-md-2">
                             <div class="calc-box">
@@ -163,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                              <div class="calc-box">
                                 <label class="small fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Total Plants</label>
                                 <input type="number" name="plant_count" id="plant_count" class="form-control-plaintext fw-bold p-0" value="0" readonly>
+                                <input type="hidden" id="area_per_plant">
                              </div>
                         </div>
                         <div class="col-md-4">
@@ -323,8 +324,8 @@ land_prep: [
 function runCalculations() {
     const sqm = parseFloat(document.getElementById("planted_area_sqm").value) || 0;
     const yieldPlant = parseFloat(document.getElementById("average_yield").value) || 0;
-
-    const totalPlants = Math.round(sqm * yieldPlant);
+    const areaPerPlant = parseFloat(document.getElementById("area_per_plant").value) || 0;
+    const totalPlants = Math.round(sqm * areaPerPlant);
     const totalAveKg = (totalPlants * yieldPlant).toFixed(2);
 
     document.getElementById("plant_count").value = totalPlants;
@@ -346,6 +347,9 @@ document.getElementById("crop_name").addEventListener("blur", async function () 
         const data = await response.json();
         if (data.success) {
             document.getElementById("average_yield").value = data.average_yield_per_plant;
+            document.getElementById("total_width_sqm").value = data.width;
+            document.getElementById("total_height_sqm").value = data.height;
+            document.getElementById("area_per_plant").value = data.area_per_plant;
             runCalculations();
         }
     } catch (e) { console.error(e); }

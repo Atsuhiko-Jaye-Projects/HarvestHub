@@ -1,6 +1,5 @@
 <?php
-// FitLife Gym - Navigation Structure
-// Mobile-first PHP Application
+
 
 $current_page = isset($_GET['page']) ? $_GET['page'] : 'home';
 $current_sub = isset($_GET['sub']) ? $_GET['sub'] : '';
@@ -116,7 +115,7 @@ $pageTitle = getPageTitle($current_page, $current_sub, $current_detail, $nav_str
     overflow-x: hidden;
   }
 
-  /* ── HEADER ── */
+
   .header {
     position: sticky; top: 0; z-index: 100;
     height: var(--header-h);
@@ -150,7 +149,7 @@ $pageTitle = getPageTitle($current_page, $current_sub, $current_detail, $nav_str
   }
   .spacer { width: 36px; flex-shrink: 0; }
 
-  /* ── HERO (Home only) ── */
+
   .hero {
     margin: 16px; border-radius: var(--radius);
     background: linear-gradient(135deg, #1a1010 0%, #1a0d00 40%, #0f1520 100%);
@@ -322,7 +321,7 @@ $pageTitle = getPageTitle($current_page, $current_sub, $current_detail, $nav_str
 <body>
 
 <?php
-// ── HEADER ──────────────────────────────────────────────
+
 $showBack = ($current_page !== 'home' || $current_sub || $current_detail);
 
 // Determine back URL
@@ -347,9 +346,7 @@ if ($current_detail && $current_sub) {
 </header>
 
 <?php
-// ── RENDER PAGE CONTENT ──────────────────────────────────
 
-// HOME SCREEN
 if ($current_page === 'home' && !$current_sub):
 ?>
 
