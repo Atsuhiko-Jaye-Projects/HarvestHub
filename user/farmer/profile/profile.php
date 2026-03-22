@@ -31,11 +31,14 @@ if($user->getUserProfileById()){
             $user->province = $_POST['u_province_name'];
             $user->municipality = $_POST['u_municipality_name'];
             $user->barangay = $_POST['u_barangay_name'];
+            $user->latitude = $_POST['latitude'];
+            $user->longitude = $_POST['longitude'];
 
             if(!empty($_FILES["profile_pic"]["name"])){
                 $image = sha1_file($_FILES['profile_pic']['tmp_name']) . "-" . basename($_FILES["profile_pic"]["name"]);
                 $user->profile_pic = $image;
             }
+
             if ($user->updateUserProfile()) {
                 if(!empty($_FILES["profile_pic"]["name"])) { $user->uploadPhoto(); }
                 $_SESSION['flash'] = ['title' => 'Profile Updated', 'text' => 'Account details saved successfully.', 'icon' => 'success'];
@@ -182,8 +185,11 @@ if($user->getUserProfileById()){
 <div class="modal fade" id="editProfileModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 shadow-lg">
-            <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
+            <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data" id="consumerForm">
                 <input type="hidden" name="action" value="update_profile">
+
+                <input type="text" name="latitude" id="latitude">
+                <input type="text" name="longitude" id="longitude">
                 <input type="hidden" name="u_province_name" id="u_province_name" value="<?= $user->province ?>">
                 <input type="hidden" name="u_municipality_name" id="u_municipality_name" value="<?= $user->municipality ?>">
                 <input type="hidden" name="u_barangay_name" id="u_barangay_name" value="<?= $user->barangay ?>">
@@ -201,7 +207,7 @@ if($user->getUserProfileById()){
                         <input type="hidden" name="email" value="<?= $user->email_address ?>"><input type="hidden" name="contact_number" value="<?= $user->contact_number ?>">
                     </div>
                 </div>
-                <div class="modal-footer border-0 p-4"><button type="submit" class="btn btn-success w-100 py-3 rounded-4 fw-bold shadow">Apply Account Changes</button></div>
+                <div class="modal-footer border-0 p-4"><button type="button" onclick="getLocation()" class="btn btn-success w-100 py-3 rounded-4 fw-bold shadow">Apply Account Changes</button></div>
             </form>
         </div>
     </div>
@@ -275,6 +281,46 @@ $(document).ready(function() {
     setupPSGC('u'); // Account
     setupPSGC('f'); // Farm
 });
+
+function getLocation() {
+
+    // 👉 Show loading popup
+    Swal.fire({
+        title: 'Saving details...',
+        text: 'Please wait while we save your Informations...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+
+            document.getElementById("latitude").value = pos.coords.latitude;
+            document.getElementById("longitude").value = pos.coords.longitude;
+
+
+            // 👉 Submit form
+            setTimeout(() => {
+                document.getElementById("consumerForm").submit();
+            }, 700);
+
+        }, function(err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Location Error',
+                text: err.message
+            });
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Not Supported',
+            text: 'Geolocation is not supported by your browser.'
+        });
+    }
+}
 </script>
 
 <?php if(isset($_SESSION['flash'])): ?>

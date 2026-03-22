@@ -21,6 +21,14 @@ class User{
     public $is_verified;
     public $created;
     public $modified;
+    public $latitude;
+    public $longitude;
+    public $sender_latitude;
+    public $sender_longitude;
+    public $reciever_latitude;
+    public $reciever_longitude;
+    public $reciever_id;
+    public $sender_id;
 
     public function __construct($db) {
 		$this->conn = $db;
@@ -233,6 +241,8 @@ class User{
                     municipality=:municipality,
                     barangay=:barangay,
                     province=:province,
+                    latitude=:latitude,
+                    longitude=:longitude,
                     modified=:modified
                     WHERE id=:id";
 
@@ -254,6 +264,8 @@ class User{
         $stmt->bindParam(":profile_pic", $this->profile_pic);
         $stmt->bindParam(":contact_number", $this->contact_number);
         $stmt->bindParam(":address", $this->address);
+        $stmt->bindParam(":latitude", $this->latitude);
+        $stmt->bindParam(":longitude", $this->longitude);
         $stmt->bindParam(":municipality", $this->municipality);
         $stmt->bindParam(":barangay", $this->barangay);
         $stmt->bindParam(":province", $this->province);
@@ -513,6 +525,40 @@ class User{
         $stmt->bindParam(":user_id", $this->id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getShippingLocation(){
+
+        $query = "SELECT
+                sender.latitude AS sender_latitude,
+                sender.longitude AS sender_longitude,
+                reciever.latitude AS reciever_latitude,
+                reciever.longitude AS reciever_longitude
+                FROM 
+                    " . $this->table_name . " sender 
+                JOIN ". $this->table_name . " reciever
+                    ON reciever.id = :reciever_id
+                WHERE sender.id = :sender_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":reciever_id", $this->reciever_id);
+        $stmt->bindParam(":sender_id", $this->sender_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return false;
+        }
+
+        $this->sender_latitude = $row['sender_latitude'];
+        $this->sender_longitude = $row['sender_longitude'];
+        $this->reciever_latitude = $row['reciever_latitude'];
+        $this->reciever_longitude = $row['reciever_longitude'];
+        
+        return true;
     }
 
 

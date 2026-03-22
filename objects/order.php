@@ -157,6 +157,8 @@ class Order{
                 quantity,
                 created_at,
                 customer_id,
+                farmer_id,
+                product_type,
                 status,
                 reason
                 FROM " . $this->table_name . "
@@ -178,10 +180,12 @@ class Order{
         $this->unit = $row['unit'];
         $this->invoice_number = $row['invoice_number'];
         $this->mode_of_payment = $row['mode_of_payment'];
+        $this->product_type = $row['product_type'];
         $this->quantity = $row['quantity'];
         $this->created_at = $row['created_at'];
         $this->customer_id = $row['customer_id']; 
-        $this->status = $row['status'];  
+        $this->status = $row['status'];
+        $this->farmer_id = $row['farmer_id']; 
         $this->reason = $row['reason'];
 
 

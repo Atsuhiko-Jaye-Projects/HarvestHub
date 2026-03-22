@@ -30,10 +30,91 @@ $user->id = $order->customer_id;
 $user->getShippingAddress();
 $shipping_address = "{$user->address}, {$user->barangay}, {$user->municipality}";
 
-$product_id = $order->product_id;
-// Product Info
-$product->product_id = $product_id;
-$product->getProductInfo();
+
+$product->product_id = $order->product_id;
+// get image location base on product type
+
+
+if ($order->product_type == "harvest") {
+    // get harvested product type
+    $product->getHarvestProductInfo();
+    $image_path = "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
+}else{
+    $product->getProductInfo();
+    $image_path = "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}";
+}
+
+if ($order->mode_of_payment == "COD") {
+    // get the coordinates of two user
+    $user->sender_id = $order->farmer_id;
+    $user->reciever_id = $order->customer_id;
+    $user->getShippingLocation();
+
+    // sender location
+    $sender_latitude = $user->sender_latitude;
+    $sender_longitude = $user->sender_longitude;
+
+    // reciever location
+    $reciever_latitude = $user->reciever_latitude;
+    $reciever_longitude = $user->reciever_longitude;
+
+    $distanceText = "";
+    $durationText = "";
+
+    $apiKey = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjE1Mjc3ZmM2ZGM3ZDQ5M2M4NWMxNWExNmQ4MWMxMmNkIiwiaCI6Im11cm11cjY0In0=";
+
+    $url = "https://api.openrouteservice.org/v2/directions/driving-car";
+
+    $data = [
+        "coordinates" => [
+            [(float)$sender_longitude, (float)$sender_latitude],
+            [(float)$reciever_longitude, (float)$reciever_latitude]
+        ]
+    ];
+
+    $options = [
+        "http" => [
+            "header"  => "Content-type: application/json\r\n" .
+                        "Authorization: $apiKey\r\n",
+            "method"  => "POST",
+            "content" => json_encode($data),
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    if ($result !== FALSE) {
+        $response = json_decode($result, true);
+
+        if (isset($response['routes'][0])) {
+            $distance = $response['routes'][0]['summary']['distance'];
+            $duration = $response['routes'][0]['summary']['duration'];
+
+            $distanceText = round($distance / 1000, 2) . " km";
+            $distanceValue = round($distance / 1000, 2);
+            $durationText = round($duration / 60, 2) . " minutes";
+        } else {
+            $distanceText = "Route not found.";
+        }
+    } else {
+        $distanceText = "API request failed.";
+    }
+
+
+    $quantity = $order->quantity;
+    $unit = strtolower($order->unit);
+    $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
+    $price_per_kg = $product->price_per_unit;
+    $total = $price_per_kg * $quantity_in_kg;
+    $additional_fare = $distanceValue * 10;
+    $shipping_fee = 50 + $additional_fare;
+    $grand_total = $total + $shipping_fee;
+    // shipping fee
+    
+
+}
+
 
 // Pricing Logic
 $quantity = $order->quantity;
@@ -41,12 +122,11 @@ $unit = strtolower($order->unit);
 $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
 $price_per_kg = $product->price_per_unit;
 $total = $price_per_kg * $quantity_in_kg;
-$shipping_fee = $total * 0.0225;
 $grand_total = $total + $shipping_fee;
 
 
 // Farmer Info
-$farmer->id = $order->farmer_id;
+$farmer->id = $product->user_id;
 $farmer->getFarmerInfo();
 $farmer_address = "{$farmer->address}, {$farmer->barangay}, {$farmer->municipality}, {$farmer->province}";
 $farmer_contact = $farmer->contact_number; // FIXED: Added this to prevent Warning
@@ -55,6 +135,9 @@ $farmer_contact = $farmer->contact_number; // FIXED: Added this to prevent Warni
 $order_status->invoice_number = $order->invoice_number;
 $order_status->product_id = $order->product_id;
 $stmt = $order_status->getOrderStatus();
+
+
+
 ?>
 
 <style>
@@ -138,7 +221,7 @@ $stmt = $order_status->getOrderStatus();
             
             <div class="d-flex align-items-center mb-4 bg-light p-3 rounded-4">
                 <div class="product-img-box me-3 border">
-                    <img src="<?php echo $base_url;?>libs/images/logo.png" style="width: 40px; height: 40px; opacity: 0.7;">
+                    <img src="<?php echo $image_path;?>" style="width: 70px; height: 70px; object-fit: cover;">
                 </div>
                 <div>
                     <h6 class="m-0 text-dark fw-bold" style="text-transform: none; letter-spacing: 0;"><?php echo htmlspecialchars($product->product_name); ?></h6>
@@ -171,7 +254,17 @@ $stmt = $order_status->getOrderStatus();
                     <span class="text-muted small">Service Fee (2.25%)</span>
                     <span class="fw-bold">₱<?php echo number_format($shipping_fee, 2); ?></span>
                 </div>
-
+                <?php
+                    if ($order->mode_of_payment == "COD") {
+                        echo "<div class='d-flex justify-content-between mb-3'>
+                            <span class='text-muted small'>
+                                Shipping Fee (₱50.00 Base Fare) + 
+                                <span class='text-danger fw-semibold'>₱{$additional_fare}</span>
+                            </span>
+                            <span class='fw-bold'>₱ " . number_format($shipping_fee, 2) . "</span>
+                        </div>";
+                    }
+                ?>
                 <div class="p-3 bg-light rounded-3 mb-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="text-muted small">Method</span>
@@ -208,6 +301,13 @@ $stmt = $order_status->getOrderStatus();
                             break;
 
                         case 'accept pre-order':
+                            echo '<button type="button" class="btn btn-outline-danger w-100 py-3 rounded-4 fw-bold" 
+                                    data-bs-toggle="modal" data-bs-target="#cancel-order-modal">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel Order
+                                  </button>';
+                            break;
+
+                        case 'accept':
                             echo '<button type="button" class="btn btn-outline-danger w-100 py-3 rounded-4 fw-bold" 
                                     data-bs-toggle="modal" data-bs-target="#cancel-order-modal">
                                     <i class="bi bi-x-circle me-1"></i> Cancel Order

@@ -26,23 +26,24 @@ if($user->getUserProfileById()) {
             $user->municipality = $_POST['municipality'];
             $user->barangay = $_POST['barangay'];
             $user->province = $_POST['province'];
+            $user->latitude = $_POST['latitude'];
+            $user->longitude = $_POST['longitude'];
 
             $image = !empty($_FILES["profile_pic"]["name"])
                 ? sha1_file($_FILES['profile_pic']['tmp_name']) . "-" . basename($_FILES["profile_pic"]["name"])
                 : $user->profile_pic;
             
             $user->profile_pic = $image;
-
+            $user->uploadPhoto();
             if ($user->updateUserProfile()) {
-                if(!empty($_FILES["profile_pic"]["name"])) { $user->uploadPhoto(); }
                 $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Profile Updated!', 'text' => 'Information saved successfully.'];
             }
         }
     }
 
     $profile_img = $user->profile_pic == ""
-        ? "{$base_url}/user/uploads/logo.png"
-        : "{$base_url}/user/uploads/profile_pictures/{$_SESSION['user_type']}/{$_SESSION['user_id']}/{$user->profile_pic}";
+        ? "{$base_url}user/uploads/logo.png"
+        : "{$base_url}user/uploads/profile_pictures/{$_SESSION['user_id']}/{$user->profile_pic}";
 ?>
 
 <style>
@@ -137,7 +138,7 @@ if($user->getUserProfileById()) {
 <div class="modal fade" id="editProfileModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 shadow-lg">
-            <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
+            <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data" id="consumerForm">
                 <input type="hidden" name="action" value="update_profile">
                 <div class="modal-header border-0 p-4">
                     <h5 class="fw-800 m-0">Edit Account Settings</h5>
@@ -161,6 +162,9 @@ if($user->getUserProfileById()) {
                         <div class="col-md-4"><label class="label-sm">Municipality</label><select class="form-select rounded-3" id="municipality"></select></div>
                         <div class="col-md-4"><label class="label-sm">Barangay</label><select class="form-select rounded-3" id="barangay"></select></div>
                         
+                        <!-- hidden inputs -->
+                        <input type="text" name="latitude" id="latitude">
+                        <input type="text" name="longitude" id="longitude">
                         <input type="hidden" name="province" id="province_name">
                         <input type="hidden" name="municipality" id="municipality_name">
                         <input type="hidden" name="barangay" id="barangay_name">
@@ -169,8 +173,10 @@ if($user->getUserProfileById()) {
                     </div>
                 </div>
                 <div class="modal-footer border-0 p-4">
-                    <button type="submit" class="btn btn-success btn-action w-100 shadow-sm">Save Profile Changes</button>
+                    <button type="button" onclick="getLocation()" class="btn btn-success btn-action w-100 shadow-sm">Save Profile Changes</button>
                 </div>
+                
+
             </form>
         </div>
     </div>
@@ -223,7 +229,49 @@ $(document).ready(function() {
         brgyS.addEventListener("change", function() { brgyI.value = this.selectedOptions[0].dataset.name; });
     }
 });
+
+function getLocation() {
+
+    // 👉 Show loading popup
+    Swal.fire({
+        title: 'Saving details...',
+        text: 'Please wait while we save your Informations...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+
+            document.getElementById("latitude").value = pos.coords.latitude;
+            document.getElementById("longitude").value = pos.coords.longitude;
+
+
+            // 👉 Submit form
+            setTimeout(() => {
+                document.getElementById("consumerForm").submit();
+            }, 700);
+
+        }, function(err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Location Error',
+                text: err.message
+            });
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Not Supported',
+            text: 'Geolocation is not supported by your browser.'
+        });
+    }
+}
 </script>
+
+
 
 <?php if(isset($_SESSION['flash'])): ?>
 <script>Swal.fire({ icon: '<?= $_SESSION['flash']['icon'] ?>', title: '<?= $_SESSION['flash']['title'] ?>', text: '<?= $_SESSION['flash']['text'] ?>', timer: 2000, showConfirmButton: false });</script>

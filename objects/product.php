@@ -283,6 +283,7 @@ class Product{
                 p.category,
                 p.unit,
                 p.user_id,
+                p.product_image,
                 c.estimated_harvest_date
             FROM 
                 " . $this->table_name . " p
@@ -307,7 +308,40 @@ class Product{
         $this->category = $row['category'];
         $this->product_type = $row['product_type'];
         $this->user_id = $row['user_id'];
+        $this->product_image = $row['product_image'];
         $this->estimated_harvest_date = $row['estimated_harvest_date'];
+    }
+
+    function getHarvestProductInfo(){
+                $query = "SELECT 
+                price_per_unit,
+                product_image,
+                product_name,
+                product_type,
+                product_image,
+                unit,
+                user_id
+            FROM 
+                " . $this->table_name . " 
+            WHERE
+                product_id = :product_id
+            LIMIT 
+                0,1";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->price_per_unit = $row['price_per_unit'];
+        $this->unit = $row['unit'];
+        $this->product_image = $row['product_image'];
+        $this->product_name = $row['product_name'];
+        $this->product_type = $row['product_type'];
+        $this->user_id = $row['user_id'];
+        $this->product_image = $row['product_image'];
     }
 
     function activeProductCount(){
