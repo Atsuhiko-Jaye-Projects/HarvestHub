@@ -81,8 +81,8 @@
                         </div>
                     </div>
 
-                    <input type="text" name="latitude" id="latitude">
-                    <input type="text" name="longitude" id="longitude">
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
                     <input type="hidden" name="province_name" id="province_name">
                     <input type="hidden" name="municipality_name" id="municipality_name">
                     <input type="hidden" name="barangay_name" id="barangay_name">

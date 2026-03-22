@@ -143,6 +143,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <input type="number" step="0.1" name="planted_area_sqm" id="planted_area_sqm" class="form-control form-control-custom" required>
                         </div>
                         <div class="col-md-2">
+                            <label class="small fw-bold">Total Width (SQM)</label>
+                            <input type="number" step="0.1" name="planted_area_sqm" id="planted_area_sqm" class="form-control form-control-custom" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="small fw-bold">Total Hieght (SQM)</label>
+                            <input type="number" step="0.1" name="planted_area_sqm" id="planted_area_sqm" class="form-control form-control-custom" required>
+                        </div>
+                        <div class="col-md-2">
                             <div class="calc-box">
                                 <label class="small fw-bold text-muted text-uppercase" style="font-size: 0.65rem;">Ave Yield/Plant (KG)</label>
                                 <div class="d-flex align-items-center">
