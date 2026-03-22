@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2026 at 02:59 AM
+-- Generation Time: Mar 22, 2026 at 04:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,116 @@ SET time_zone = "+00:00";
 --
 -- Database: `harvesthub`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barangays`
+--
+
+CREATE TABLE `barangays` (
+  `id` int(11) NOT NULL,
+  `province` varchar(100) NOT NULL,
+  `municipality` varchar(100) NOT NULL,
+  `barangay` varchar(100) NOT NULL,
+  `lat` decimal(10,7) DEFAULT NULL,
+  `lon` decimal(10,7) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barangays`
+--
+
+INSERT INTO `barangays` (`id`, `province`, `municipality`, `barangay`, `lat`, `lon`) VALUES
+(1, 'Marinduque', 'Mogpog', 'Argao', 13.4712000, 121.8451000),
+(2, 'Marinduque', 'Mogpog', 'Balanacan', 13.4809000, 121.8465000),
+(3, 'Marinduque', 'Mogpog', 'Banto', 13.4715000, 121.8482000),
+(4, 'Marinduque', 'Mogpog', 'Bocboc', 13.4741000, 121.8489000),
+(5, 'Marinduque', 'Mogpog', 'Butansapa', 13.4698000, 121.8437000),
+(6, 'Marinduque', 'Mogpog', 'Candahon', 13.4645000, 121.8496000),
+(7, 'Marinduque', 'Mogpog', 'Danao', 13.4679000, 121.8502000),
+(8, 'Marinduque', 'Mogpog', 'Dulong Bayan', 13.4692000, 121.8473000),
+(9, 'Marinduque', 'Mogpog', 'Gitnang Bayan', 13.4701000, 121.8468000),
+(10, 'Marinduque', 'Mogpog', 'Guisian', 13.4725000, 121.8443000),
+(11, 'Marinduque', 'Mogpog', 'Hinadharan', 13.4738000, 121.8429000),
+(12, 'Marinduque', 'Mogpog', 'Hinanggayon', 13.4756000, 121.8495000),
+(13, 'Marinduque', 'Mogpog', 'Ino', 13.4771000, 121.8479000),
+(14, 'Marinduque', 'Mogpog', 'Janagdong', 13.4745000, 121.8460000),
+(15, 'Marinduque', 'Mogpog', 'Laon', 13.4763000, 121.8481000),
+(16, 'Marinduque', 'Mogpog', 'Malayak', 13.4729000, 121.8457000),
+(17, 'Marinduque', 'Mogpog', 'Malbog', 13.4718000, 121.8490000),
+(18, 'Marinduque', 'Mogpog', 'Mangyan-Mababad', 13.4705000, 121.8442000),
+(19, 'Marinduque', 'Mogpog', 'Market Site', 13.4730000, 121.8470000),
+(20, 'Marinduque', 'Mogpog', 'Mataas na Bayan', 13.4742000, 121.8456000),
+(21, 'Marinduque', 'Mogpog', 'Mendez', 13.4720000, 121.8475000),
+(22, 'Marinduque', 'Mogpog', 'Nangka I', 13.4710000, 121.8485000),
+(23, 'Marinduque', 'Mogpog', 'Nangka II', 13.4702000, 121.8492000),
+(24, 'Marinduque', 'Mogpog', 'Pili', 13.4689000, 121.8467000),
+(25, 'Marinduque', 'Mogpog', 'Puting Buhangin', 13.4695000, 121.8453000),
+(26, 'Marinduque', 'Mogpog', 'Sayao', 13.4673000, 121.8449000),
+(27, 'Marinduque', 'Mogpog', 'Silangan', 13.4681000, 121.8436000),
+(28, 'Marinduque', 'Mogpog', 'Sumangga', 13.4668000, 121.8458000),
+(29, 'Marinduque', 'Mogpog', 'Tarug', 13.4679000, 121.8461000),
+(30, 'Marinduque', 'Mogpog', 'Villa Mendez', 13.4690000, 121.8479000),
+(31, 'Marinduque', 'Mogpog', 'Bagacay', 13.4707000, 121.8455000),
+(32, 'Marinduque', 'Mogpog', 'Bintakay', 13.4713000, 121.8463000),
+(33, 'Marinduque', 'Mogpog', 'Anapog-Silong', 13.4721000, 121.8448000),
+(34, 'Marinduque', 'Mogpog', 'Bahi', 13.4687000, 121.8442000),
+(35, 'Marinduque', 'Mogpog', 'Biga', 13.4694000, 121.8439000),
+(36, 'Marinduque', 'Mogpog', 'Bintakay-Silangan', 13.4709000, 121.8469000),
+(37, 'Marinduque', 'Mogpog', 'Paye', 13.4717000, 121.8472000),
+(38, 'Marinduque', 'Boac', 'Agot', 13.4710000, 121.8395000),
+(39, 'Marinduque', 'Boac', 'Ampon', 13.4725000, 121.8412000),
+(40, 'Marinduque', 'Boac', 'Balagasan', 13.4741000, 121.8430000),
+(41, 'Marinduque', 'Boac', 'Balaring', 13.4756000, 121.8445000),
+(42, 'Marinduque', 'Boac', 'Balimbing', 13.4768000, 121.8429000),
+(43, 'Marinduque', 'Boac', 'Balogo', 13.4780000, 121.8450000),
+(44, 'Marinduque', 'Boac', 'Balanacan', 13.4791000, 121.8437000),
+(45, 'Marinduque', 'Boac', 'Banahao', 13.4803000, 121.8442000),
+(46, 'Marinduque', 'Boac', 'Banot', 13.4815000, 121.8458000),
+(47, 'Marinduque', 'Boac', 'Bangka', 13.4826000, 121.8465000),
+(48, 'Marinduque', 'Boac', 'Bantad', 13.4838000, 121.8472000),
+(49, 'Marinduque', 'Boac', 'Bongabong', 13.4850000, 121.8480000),
+(50, 'Marinduque', 'Boac', 'Bukal', 13.4862000, 121.8490000),
+(51, 'Marinduque', 'Boac', 'Calanta', 13.4873000, 121.8455000),
+(52, 'Marinduque', 'Boac', 'Canlan', 13.4885000, 121.8461000),
+(53, 'Marinduque', 'Boac', 'Cawit', 13.4897000, 121.8470000),
+(54, 'Marinduque', 'Boac', 'Catubig', 13.4909000, 121.8482000),
+(55, 'Marinduque', 'Boac', 'Dapdap', 13.4920000, 121.8491000),
+(56, 'Marinduque', 'Boac', 'Dagohoy', 13.4932000, 121.8503000),
+(57, 'Marinduque', 'Boac', 'Dulong Bayan', 13.4944000, 121.8467000),
+(58, 'Marinduque', 'Boac', 'Gasan', 13.4955000, 121.8475000),
+(59, 'Marinduque', 'Boac', 'Gasan I', 13.4967000, 121.8484000),
+(60, 'Marinduque', 'Boac', 'Gasan II', 13.4979000, 121.8493000),
+(61, 'Marinduque', 'Boac', 'Hinanggayon', 13.4980000, 121.8500000),
+(62, 'Marinduque', 'Boac', 'Ino', 13.4992000, 121.8471000),
+(63, 'Marinduque', 'Boac', 'Janagdong', 13.5004000, 121.8480000),
+(64, 'Marinduque', 'Boac', 'Laon', 13.5015000, 121.8492000),
+(65, 'Marinduque', 'Boac', 'Malayak', 13.5027000, 121.8458000),
+(66, 'Marinduque', 'Boac', 'Malbog', 13.5039000, 121.8469000),
+(67, 'Marinduque', 'Boac', 'Mangyan-Mababad', 13.5050000, 121.8477000),
+(68, 'Marinduque', 'Boac', 'Market Site', 13.5062000, 121.8485000),
+(69, 'Marinduque', 'Boac', 'Mataas na Bayan', 13.5074000, 121.8490000),
+(70, 'Marinduque', 'Boac', 'Mendez', 13.5085000, 121.8463000),
+(71, 'Marinduque', 'Boac', 'Nangka I', 13.5097000, 121.8472000),
+(72, 'Marinduque', 'Boac', 'Nangka II', 13.5109000, 121.8480000),
+(73, 'Marinduque', 'Boac', 'Pili', 13.5120000, 121.8491000),
+(74, 'Marinduque', 'Boac', 'Puting Buhangin', 13.5132000, 121.8468000),
+(75, 'Marinduque', 'Boac', 'Sayao', 13.5144000, 121.8475000),
+(76, 'Marinduque', 'Boac', 'Silangan', 13.5155000, 121.8483000),
+(77, 'Marinduque', 'Boac', 'Sumangga', 13.5167000, 121.8492000),
+(78, 'Marinduque', 'Boac', 'Tarug', 13.5179000, 121.8459000),
+(79, 'Marinduque', 'Boac', 'Villa Mendez', 13.5190000, 121.8467000),
+(80, 'Marinduque', 'Boac', 'Bagacay', 13.5202000, 121.8475000),
+(81, 'Marinduque', 'Boac', 'Bintakay', 13.5214000, 121.8483000),
+(82, 'Marinduque', 'Boac', 'Anapog-Silong', 13.5225000, 121.8490000),
+(83, 'Marinduque', 'Boac', 'Bahi', 13.5237000, 121.8462000),
+(84, 'Marinduque', 'Boac', 'Biga', 13.5249000, 121.8470000),
+(85, 'Marinduque', 'Boac', 'Bintakay-Silangan', 13.5260000, 121.8478000),
+(86, 'Marinduque', 'Boac', 'Paye', 13.5272000, 121.8485000),
+(87, 'Marinduque', 'Boac', 'Talaga', 13.5283000, 121.8469000),
+(88, 'Marinduque', 'Boac', 'Torrijos', 13.5295000, 121.8477000),
+(89, 'Marinduque', 'Boac', 'Victoria', 13.5307000, 121.8485000);
 
 -- --------------------------------------------------------
 
@@ -46,9 +156,11 @@ CREATE TABLE `cart_items` (
 --
 
 INSERT INTO `cart_items` (`id`, `product_id`, `user_id`, `unit`, `quantity`, `created`, `amount`, `status`, `modified`, `farmer_id`, `product_type`) VALUES
-(58, 22, 2, 'gram', 60, '2026-03-10 16:59:39', 30, 'ordered', '2026-03-11 12:41:15', 1, 'preorder'),
-(59, 23, 2, 'kg', 5, '2026-03-10 17:53:33', 500, 'ordered', '2026-03-11 12:44:44', 1, 'preorder'),
-(60, 24, 2, 'gram', 500, '2026-03-11 20:55:12', 13, 'ordered', '2026-03-11 12:55:18', 1, 'preorder');
+(62, 40, 2, 'kg', 3, '2026-03-22 07:08:20', 10, 'ordered', '2026-03-21 23:10:55', 4, 'harvest'),
+(63, 40, 3, 'kg', 30, '2026-03-22 07:10:43', 10, 'ordered', '2026-03-21 23:10:55', 4, 'harvest'),
+(64, 41, 3, 'kg', 2, '2026-03-22 07:51:32', 9, 'ordered', '2026-03-22 01:13:18', 4, 'harvest'),
+(65, 26, 3, 'kg', 50, '2026-03-22 08:20:34', 7, 'ordered', '2026-03-22 00:20:48', 4, 'preorder'),
+(66, 41, 3, 'kg', 20, '2026-03-22 09:09:26', 9, 'ordered', '2026-03-22 01:13:18', 4, 'harvest');
 
 -- --------------------------------------------------------
 
@@ -109,7 +221,7 @@ CREATE TABLE `crops` (
 --
 
 INSERT INTO `crops` (`id`, `user_id`, `farm_resource_id`, `crop_name`, `yield`, `cultivated_area`, `date_planted`, `estimated_harvest_date`, `suggested_price`, `modified_at`, `created_at`, `stocks`, `plant_count`, `province`, `municipality`, `baranggay`, `crop_status`, `status`) VALUES
-(24, 1, 'FID69606749', 'kamatis', 2.4, 73, '2026-03-11', '2026-04-25', 0, '2026-03-11 12:53:43', '2026-03-11 20:53:43', 240, 100, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted');
+(26, 4, 'FID69241032', 'ampalaya', 3, 55, '2026-03-22', '2026-05-06', 0, '2026-03-21 23:46:54', '2026-03-22 07:46:54', 495, 165, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'crop planted', 'posted');
 
 -- --------------------------------------------------------
 
@@ -212,7 +324,11 @@ INSERT INTO `farm_activities` (`id`, `farm_resource_id`, `activity_name`, `activ
 (7, 'FID69602932', 'Land clearing', 3500, 'land_prep', '0000-00-00 00:00:00', '2026-01-17 12:27:46', '0000-00-00 00:00:00', 0, ''),
 (8, 'FID69691569', 'Land clearing', 6300, 'land_prep', '0000-00-00 00:00:00', '2026-01-19 10:07:01', '0000-00-00 00:00:00', 0, ''),
 (9, 'FID69690011', 'Land clearing', 5000, 'land_prep', '0000-00-00 00:00:00', '2026-03-03 17:32:00', '0000-00-00 00:00:00', 0, ''),
-(10, 'FID699553', 'Land clearing', 5000, 'land_prep', '2026-03-10 00:00:00', '2026-03-10 17:59:55', '0000-00-00 00:00:00', 0, '');
+(10, 'FID699553', 'Land clearing', 5000, 'land_prep', '2026-03-10 00:00:00', '2026-03-10 17:59:55', '0000-00-00 00:00:00', 0, ''),
+(11, 'FID6974521263', 'Land clearing', 2000, 'land_prep', '2026-03-16 00:00:00', '2026-03-16 07:47:54', '0000-00-00 00:00:00', 0, ''),
+(12, 'FID69241032', 'Tractor plowing', 1200, 'land_prep', '2026-03-22 00:00:00', '2026-03-22 07:04:48', '0000-00-00 00:00:00', 0, ''),
+(13, 'FID69241032', 'Herbicide spraying', 1300, 'weeding', '2026-03-22 00:00:00', '2026-03-22 07:04:48', '0000-00-00 00:00:00', 0, ''),
+(14, 'FID69241032', 'Seed soaking / pre-germination', 500, 'nursery_seedling', '2026-03-22 00:00:00', '2026-03-22 07:04:48', '0000-00-00 00:00:00', 0, '');
 
 -- --------------------------------------------------------
 
@@ -237,15 +353,17 @@ CREATE TABLE `farm_details` (
   `follower_count` int(11) NOT NULL,
   `farm_image` varchar(525) NOT NULL,
   `reputation` int(11) NOT NULL,
-  `following_count` int(11) NOT NULL
+  `following_count` int(11) NOT NULL,
+  `latitude` varchar(255) NOT NULL,
+  `longitude` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `farm_details`
 --
 
-INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`) VALUES
-(1, 1, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok 2', 'owned', 1000, '2026-01-13 16:18:01', '2026-01-13 08:18:01', -784, 'Mondragon', '', 0, '', 0, 0);
+INSERT INTO `farm_details` (`id`, `user_id`, `province`, `municipality`, `baranggay`, `purok`, `farm_ownership`, `lot_size`, `created_at`, `modified_at`, `used_lot_size`, `farm_name`, `farm_type`, `follower_count`, `farm_image`, `reputation`, `following_count`, `latitude`, `longitude`) VALUES
+(8, 4, 'Marinduque', 'Mogpog', 'Anapog-Sibucao', 'Purok2, anapog-sibucao', 'owned', 1000, '2026-03-20 21:09:18', '2026-03-20 13:09:18', 55, 'Atsuhiko Farm and vegetables', '', 0, '', 0, 0, '13.470089337082577', '121.85715144304534');
 
 -- --------------------------------------------------------
 
@@ -279,7 +397,9 @@ INSERT INTO `farm_resources` (`id`, `user_id`, `farm_resource_id`, `record_name`
 (6, 1, 'FID69602932', 'okra expense', 'Okra', 100, 3.4, 3500, '2026-01-17', '2026-01-26 16:11:45', '2026-01-17 12:27:46', 89, 'crop planted'),
 (7, 1, 'FID69691569', 'Potato Expense', 'Potato', 76, 2.5, 6300, '2026-01-19', '2026-01-28 13:14:30', '2026-01-19 10:07:01', 60, 'crop planted'),
 (8, 1, 'FID69690011', 'pepper expense', 'pepper', 100, 0.12, 5000, '2026-03-03', '2026-03-03 09:47:56', '2026-03-03 17:32:00', 30, 'crop planted'),
-(9, 1, 'FID699553', 'ampalaya planting', 'ampalaya', 150, 3, 5000, '2026-03-10', '2026-03-10 10:01:39', '2026-03-10 17:59:55', 50, 'crop planted');
+(9, 1, 'FID699553', 'ampalaya planting', 'ampalaya', 150, 3, 5000, '2026-03-10', '2026-03-10 10:01:39', '2026-03-10 17:59:55', 50, 'crop planted'),
+(10, 1, 'FID6974521263', 'radish', 'radish', 78, 0.15, 2000, '2026-03-16', '2026-03-15 23:48:02', '2026-03-16 07:47:54', 520, 'crop planted'),
+(11, 4, 'FID69241032', 'ampalaya planting', 'ampalaya', 165, 3, 3000, '2026-03-22', '2026-03-21 23:46:54', '2026-03-22 07:04:48', 55, 'crop planted');
 
 -- --------------------------------------------------------
 
@@ -306,6 +426,14 @@ CREATE TABLE `harvested_products` (
   `expense` double NOT NULL,
   `kilo_per_plant` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `harvested_products`
+--
+
+INSERT INTO `harvested_products` (`id`, `user_id`, `product_name`, `price_per_unit`, `unit`, `category`, `lot_size`, `product_description`, `total_stocks`, `quantity`, `product_image`, `modified`, `created_at`, `is_posted`, `plant_count`, `expense`, `kilo_per_plant`) VALUES
+(40, 4, 'Ampalaya', 8, 'KG', '', '60', 'Ampalaya for live', 480, 0, '1910ae0df13bf605e3f4e42ef31db1820a373f19-images (2).jpg', '2026-03-21 23:08:06', '2026-03-22 07:06:51', 'Posted', 150, 3000, 3.2),
+(41, 4, 'Potato', 8, 'KG', '', '60', 'great', 460, 0, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', '2026-03-21 23:51:08', '2026-03-22 07:50:43', 'Posted', 200, 3000, 2.3);
 
 -- --------------------------------------------------------
 
@@ -365,7 +493,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `product_id`, `invoice_number`, `customer_id`, `mode_of_payment`, `quantity`, `status`, `created_at`, `modified_at`, `farmer_id`, `product_type`, `review_status`, `reason`, `farmer_rated`, `unit`) VALUES
-(13, 24, 'INV-69B1663665235', 2, 'COP', 500, 'accept pre-order', '2026-03-11 20:55:18', '2026-03-11 12:55:18', 1, 'preorder', 0, '', 0, 'gram');
+(15, 40, 'INV-69BF257FB8167', 3, 'COP', 30, 'accept', '2026-03-22 07:10:55', '2026-03-21 23:10:55', 4, 'harvest', 0, '', 0, 'kg'),
+(16, 41, 'INV-69BF2F0B9BF3E', 3, 'COD', 2, 'accept', '2026-03-22 07:51:39', '2026-03-21 23:51:39', 4, 'harvest', 0, '', 0, 'kg'),
+(17, 26, 'INV-69BF35E08AF4F', 3, 'COD', 50, 'accept', '2026-03-22 08:20:48', '2026-03-22 00:20:48', 4, 'preorder', 0, '', 0, 'kg'),
+(18, 41, 'INV-69BF422E6FFAA', 3, 'COD', 20, 'accept', '2026-03-22 09:13:18', '2026-03-22 01:13:18', 4, 'harvest', 0, '', 0, 'kg');
 
 -- --------------------------------------------------------
 
@@ -433,7 +564,16 @@ INSERT INTO `order_status_history` (`id`, `invoice_number`, `status`, `timestamp
 (56, 'INV-69B162EB801B7', 'accept pre-order', '2026-03-11 20:03:34', 22, 0),
 (57, 'INV-69B163BC1DB89', 'order placed', '2026-03-11 20:44:44', 23, 0),
 (58, 'INV-69B1663665235', 'order placed', '2026-03-11 20:55:18', 24, 0),
-(59, 'INV-69B1663665235', 'accept pre-order', '2026-03-11 20:03:37', 24, 0);
+(59, 'INV-69B1663665235', 'accept pre-order', '2026-03-11 20:03:37', 24, 0),
+(60, 'INV-69BF24FA9C22F', 'order placed', '2026-03-22 07:08:42', 40, 0),
+(61, 'INV-69BF257FB8167', 'order placed', '2026-03-22 07:10:55', 40, 0),
+(62, 'INV-69BF2F0B9BF3E', 'order placed', '2026-03-22 07:51:39', 41, 0),
+(63, 'INV-69BF257FB8167', 'accept', '2026-03-22 07:54:17', 40, 0),
+(64, 'INV-69BF35E08AF4F', 'order placed', '2026-03-22 08:20:48', 26, 0),
+(65, 'INV-69BF2F0B9BF3E', 'accept', '2026-03-22 08:22:06', 41, 0),
+(66, 'INV-69BF35E08AF4F', 'accept', '2026-03-22 08:52:29', 26, 0),
+(67, 'INV-69BF422E6FFAA', 'order placed', '2026-03-22 09:13:18', 41, 0),
+(68, 'INV-69BF422E6FFAA', 'accept', '2026-03-22 09:43:48', 41, 0);
 
 -- --------------------------------------------------------
 
@@ -492,7 +632,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `product_id`, `product_name`, `price_per_unit`, `user_id`, `category`, `unit`, `quantity`, `product_description`, `lot_size`, `total_stocks`, `product_image`, `sold_count`, `modified`, `created_at`, `status`, `product_type`, `available_stocks`, `discount`) VALUES
-(15, 24, 'kamatis', 12.50, 1, '', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 240, '3a923d600b2ee6969d7b4ccf7f5de0553367890e-kalabasa.jpg', 500, '2026-03-11 12:56:25', '2026-03-11 20:54:20', 'Active', 'preorder', 220, NULL);
+(23, 40, 'Ampalaya', 10.00, 4, '', 'KG', 0, 'Ampalaya for live', 60, 500, '1910ae0df13bf605e3f4e42ef31db1820a373f19-images (2).jpg', 0, '2026-03-21 23:08:06', '2026-03-22 07:08:06', 'Active', 'harvest', 500, NULL),
+(24, 41, 'Potato', 9.00, 4, '', 'KG', 0, 'great', 60, 460, 'b5ff02adfcd4876f6f67f8e5f4240669c142e6b5-patatas.jpg', 0, '2026-03-21 23:51:08', '2026-03-22 07:51:08', 'Active', 'harvest', 460, NULL),
+(25, 26, 'ampalaya', 7.27, 4, '', '', 0, 'Reserve fresh farm produce ahead of time and get it delivered at peak quality.', 0, 495, '1910ae0df13bf605e3f4e42ef31db1820a373f19-images (2).jpg', 0, '2026-03-22 00:20:17', '2026-03-22 08:20:17', 'Active', 'preorder', 495, NULL);
 
 -- --------------------------------------------------------
 
@@ -683,16 +825,20 @@ CREATE TABLE `users` (
   `farm_details_exists` varchar(11) DEFAULT NULL,
   `profile_pic` varchar(255) NOT NULL,
   `is_verified` tinyint(4) NOT NULL,
-  `verification_token` varchar(255) NOT NULL
+  `verification_token` varchar(255) NOT NULL,
+  `latitude` varchar(255) NOT NULL,
+  `longitude` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`) VALUES
-(1, 'Sheila Mae', 'Laurente', 'testfarmer@gmail.com', '+639772639814', 'Purok 2', 'Anapog-Sibucao', 'Mogpo', 'Marinduque', 'Farmer', '$2y$10$BcHRBElcAV5x7Tp8gM.TuecfiOhCTsc0qtu.QN7O3Fm.1OxEZcjUy', 0, '2026-01-13 16:15:26', 0, '2026-01-21 11:32:08', '1', '36450cd9803a614682521f804264fe3fe61269e0-3bd65777-5010-4f87-862f-632f3e6dbc87.jpg', 1, ''),
-(2, 'Jessie', 'Sadiwa', 'testconsumer@gmail.com', '09533307696', 'Purok2, anapog-sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$IoukiA0wErTkXSb09L5GuOR2ZVjBbDMPJQoUcIJToyYA9ylWk0Mii', 0, '2026-01-13 16:51:41', 0, '2026-01-13 21:16:20', '0', '', 1, '');
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `contact_number`, `address`, `barangay`, `municipality`, `province`, `user_type`, `password`, `rating`, `created`, `first_time_logged_in`, `modified`, `farm_details_exists`, `profile_pic`, `is_verified`, `verification_token`, `latitude`, `longitude`) VALUES
+(1, 'Sheila Mae', 'Laurente', 'testfarmer@gmail.com', '+639772639814', 'Purok 2', 'Anapog-Sibucao', 'Mogpo', 'Marinduque', 'Farmer', '$2y$10$BcHRBElcAV5x7Tp8gM.TuecfiOhCTsc0qtu.QN7O3Fm.1OxEZcjUy', 0, '2026-01-13 16:15:26', 0, '2026-01-21 11:32:08', '1', '36450cd9803a614682521f804264fe3fe61269e0-3bd65777-5010-4f87-862f-632f3e6dbc87.jpg', 1, '', '', ''),
+(2, 'Jessie', 'Sadiwa', 'testconsumer@gmail.com', '09533307696', 'Purok2, anapog-sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$IoukiA0wErTkXSb09L5GuOR2ZVjBbDMPJQoUcIJToyYA9ylWk0Mii', 0, '2026-01-13 16:51:41', 0, '2026-01-13 21:16:20', '0', '', 1, '', '', ''),
+(3, 'alexisjaye', 'dumale', 'alexisdumale@gmail.com', '09533307696', 'Purok 2, Anapog-Sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'consumer', '$2y$10$cOtHAausywE7oUkgDNXeLOD4hOCCv9F7TyDlyykFiiDg5gM9SIP7a', 0, '2026-03-14 20:58:06', 0, '2026-03-22 09:08:41', '0', '729429003d4ff752d8ebb390cb10b4fe453dd18e-unnamed.jpg', 1, '', '13.470012422018348', '121.85710978715596'),
+(4, 'Juan', 'Dela Cruz', 'ajcodalify@gmail.com', '+639533307696', 'Purok 2, Anapog-Sibucao', 'Anapog-Sibucao', 'Mogpog', 'Marinduque', 'Farmer', '$2y$10$zTciHnKQBD0ChUebX9gjSuGz3ITzhD3vRNT4Brm3aKKLPyc5QQHAC', 0, '2026-03-19 20:25:09', 0, '2026-03-22 10:40:01', '1', '729429003d4ff752d8ebb390cb10b4fe453dd18e-unnamed.jpg', 1, '471df0fb86e8fdf38027464af1c3d47cfe85f157350217f87f8dbc0642bd1f25', '13.47463346338262', '122.03098095130478');
 
 -- --------------------------------------------------------
 
@@ -942,9 +1088,69 @@ INSERT INTO `vegetable_production` (`id`, `crop_name`, `distance_of_planting`, `
 (14, 'Snap beans', '1 x 0.5', 3, 80000, 2.00, 'kilos', 40000.00, 'kilos', '1 month'),
 (15, 'Tomato', '1 x 0.5', 1, 20000, 2.00, 'kilos', 40000.00, 'kilos', '1 month');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wallets`
+--
+
+CREATE TABLE `wallets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `balance` double(5,2) NOT NULL DEFAULT 0.00,
+  `currency` varchar(3) NOT NULL DEFAULT 'PHP',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `modified` datetime NOT NULL,
+  `status` enum('activated','deactivated','','') NOT NULL,
+  `wallet_id` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wallets`
+--
+
+INSERT INTO `wallets` (`id`, `user_id`, `balance`, `currency`, `created_at`, `modified`, `status`, `wallet_id`) VALUES
+(5, 3, 100.00, 'PHP', '2026-03-15 10:00:19', '0000-00-00 00:00:00', 'activated', 'WLT-T5FWHUFG');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wallet_transactions`
+--
+
+CREATE TABLE `wallet_transactions` (
+  `id` int(11) NOT NULL,
+  `wallet_id` varchar(11) NOT NULL,
+  `type` varchar(25) NOT NULL,
+  `amount` decimal(9,2) NOT NULL,
+  `reference_number` varchar(10) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `modified_at` datetime NOT NULL,
+  `paymongo_link` varchar(255) DEFAULT NULL,
+  `paymongo_link_id` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wallet_transactions`
+--
+
+INSERT INTO `wallet_transactions` (`id`, `wallet_id`, `type`, `amount`, `reference_number`, `status`, `description`, `created_at`, `modified_at`, `paymongo_link`, `paymongo_link_id`) VALUES
+(13, 'WLT-T5FWHUF', 'credit', 999.99, '97xFKUL', 'unpaid', 'Top Up Balance', '2026-03-15 12:00:46', '0000-00-00 00:00:00', 'https://pm.link/org-tMtj5mUcns3M7YjXseaKQQaH/test/97xFKUL', 'link_oqtmZYGeFNTZ6XvqnUqQm3An'),
+(14, 'WLT-T5FWHUF', 'credit', 999.99, 'g5pEebe', 'unpaid', 'Top Up Balance', '2026-03-15 12:01:34', '0000-00-00 00:00:00', 'https://pm.link/org-tMtj5mUcns3M7YjXseaKQQaH/test/g5pEebe', 'link_tkkT6XVzCZwJzXrksuNLnWyW'),
+(15, 'WLT-T5FWHUF', 'credit', 999.99, 'Wadwzom', 'unpaid', 'Top Up Balance', '2026-03-15 19:45:31', '0000-00-00 00:00:00', 'https://pm.link/org-tMtj5mUcns3M7YjXseaKQQaH/test/Wadwzom', 'link_H2cVqK5d477tofV3vWbTGy7o'),
+(16, 'WLT-T5FWHUF', 'credit', 50000.00, 'iXf7G9b', 'unpaid', 'Top Up Balance', '2026-03-15 19:51:22', '0000-00-00 00:00:00', 'https://pm.link/org-tMtj5mUcns3M7YjXseaKQQaH/test/iXf7G9b', 'link_cNh2imp1DWeV9Ub6FVkUsswm');
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `barangays`
+--
+ALTER TABLE `barangays`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `cart_items`
@@ -1103,14 +1309,32 @@ ALTER TABLE `vegetable_production`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `wallets`
+--
+ALTER TABLE `wallets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `wallet_transactions`
+--
+ALTER TABLE `wallet_transactions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `barangays`
+--
+ALTER TABLE `barangays`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1128,7 +1352,7 @@ ALTER TABLE `conversations`
 -- AUTO_INCREMENT for table `crops`
 --
 ALTER TABLE `crops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `crop_statistics`
@@ -1152,25 +1376,25 @@ ALTER TABLE `deleted_products`
 -- AUTO_INCREMENT for table `farm_activities`
 --
 ALTER TABLE `farm_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `farm_details`
 --
 ALTER TABLE `farm_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `farm_resources`
 --
 ALTER TABLE `farm_resources`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `harvested_products`
 --
 ALTER TABLE `harvested_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -1182,13 +1406,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `order_status_history`
 --
 ALTER TABLE `order_status_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `password_resets`
@@ -1200,7 +1424,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `product_histories`
@@ -1242,7 +1466,7 @@ ALTER TABLE `seller_reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `vegetable_crops`
@@ -1255,6 +1479,18 @@ ALTER TABLE `vegetable_crops`
 --
 ALTER TABLE `vegetable_production`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `wallets`
+--
+ALTER TABLE `wallets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `wallet_transactions`
+--
+ALTER TABLE `wallet_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

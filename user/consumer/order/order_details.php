@@ -109,7 +109,8 @@ if ($order->mode_of_payment == "COD") {
     $total = $price_per_kg * $quantity_in_kg;
     $additional_fare = $distanceValue * 10;
     $shipping_fee = 50 + $additional_fare;
-    $grand_total = $total + $shipping_fee;
+    $service_fee = $total * 0.0225;
+    $grand_total = round($service_fee + $total + $shipping_fee, 2);
     // shipping fee
     
 
@@ -122,7 +123,8 @@ $unit = strtolower($order->unit);
 $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
 $price_per_kg = $product->price_per_unit;
 $total = $price_per_kg * $quantity_in_kg;
-$grand_total = $total + $shipping_fee;
+$service_fee = $total * 0.0225;
+$grand_total = $total + $service_fee;
 
 
 // Farmer Info
@@ -252,7 +254,7 @@ $stmt = $order_status->getOrderStatus();
                 
                 <div class="d-flex justify-content-between mb-3">
                     <span class="text-muted small">Service Fee (2.25%)</span>
-                    <span class="fw-bold">₱<?php echo number_format($shipping_fee, 2); ?></span>
+                    <span class="fw-bold">₱<?php echo number_format($service_fee, 2); ?></span>
                 </div>
                 <?php
                     if ($order->mode_of_payment == "COD") {
