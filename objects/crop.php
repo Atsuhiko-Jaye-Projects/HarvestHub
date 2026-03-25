@@ -17,6 +17,7 @@ class Crop{
     public $created_at;
     public $stocks;
     public $modified_at;
+    public $safe_harvest;
     public $is_posted;
     public $province;
     public $municipality;
@@ -42,6 +43,7 @@ class Crop{
                 farm_resource_id=:farm_resource_id,
                 created_at=:created_at,
                 stocks=:stocks,
+                safe_harvest = :safe_harvest,
                 plant_count = :plant_count,
                 province = :province,
                 municipality = :municipality,
@@ -74,6 +76,7 @@ class Crop{
         $stmt->bindParam(":estimated_harvest_date", $this->estimated_harvest_date);
         $stmt->bindParam(":suggested_price", $this->suggested_price);
         $stmt->bindParam(":stocks", $this->stocks);
+        $stmt->bindParam(":safe_harvest", $this->safe_harvest);
         $stmt->bindParam(":farm_resource_id", $this->farm_resource_id);
         $stmt->bindParam(":plant_count", $this->plant_count);
         $stmt->bindParam(":province", $this->province);

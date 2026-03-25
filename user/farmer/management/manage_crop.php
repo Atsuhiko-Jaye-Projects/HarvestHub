@@ -80,7 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         if ($kilo_per_plant > 0 && $plant_counts > 0) {
 
             $estimated_stocks = ($plant_counts * $kilo_per_plant);
-        
+            $safe_harvest_value = $estimated_stocks * 0.20;
+            $safe_harvest = $estimated_stocks - $safe_harvest_value;
+
         } else {
             $harvest_product->price_per_unit = 0;
         }
@@ -91,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $crop->yield = $_POST['kilo_per_plant'];
         $crop->plant_count = $_POST['plant_count'];
         $crop->stocks =  $estimated_stocks;
+        $crop->safe_harvest = $safe_harvest;
         $crop->cultivated_area = $_POST['cultivated_area'];
         $crop->farm_resource_id = $_POST['farm_resource_id'];
         // we bind values from farmer to crop 
@@ -278,14 +281,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $product->user_id = $_SESSION['user_id'];
         $product->price_per_unit = $_POST['price_per_unit'];
         // $product->category = $_POST['category'];
-        $product->total_stocks = $_POST['stocks'];
-        $product->available_stocks = $_POST['stocks'];
         $product->product_description = "Reserve fresh farm produce ahead of time and get it delivered at peak quality.";
         $product->status = "Active";
-        $product->product_type = "preorder";
 
+        $product->product_type = "preorder";
         //update the crop status to posted
 
+        $product->total_stocks = $_POST['stocks'];
+        $product->available_stocks = $_POST['stocks'];
 
         $image=!empty($_FILES["crop_image"]["name"])
         ? sha1_file($_FILES['crop_image']['tmp_name']) . "-" . basename($_FILES["crop_image"]["name"]) : "";

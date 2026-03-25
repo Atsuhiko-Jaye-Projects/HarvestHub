@@ -137,6 +137,15 @@
                                     <small class="text-muted d-block mt-1">Suggested price per kilogram.</small>
                                 </div>
 
+                                <div class="mb-4">
+                                    <label class="text-warning">Safe Harvest(KG)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-warning text-white border-0">KG</span>
+                                        <input type="number" name="safe_harvest" value="<?php echo number_format((float)$row['safe_harvest'], 2); ?>" class="form-control border-primary fw-bold text-warning fs-5 bg-white" readonly>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">Suggested price per kilogram.</small>
+                                </div>                            
+
                                 <div class="mb-0">
                                     <label class="text-success">Est. Total Product Value</label>
                                     <div class="input-group">
@@ -178,7 +187,7 @@ document.addEventListener("shown.bs.modal", function (e) {
         fetch("../../../js/user/farmer/api/fetch_crop_expense.php?id=" + resource_id)
             .then(res => res.json())
             .then(data => {
-                expenseField.value = data.grand_total ?? 0;
+                expenseField.value = Number(data.grand_total ?? 0).toFixed(2);
                 computeModalLogic(modal); // Compute pagka-load
             })
             .catch(err => console.error("Error fetching capital:", err));
