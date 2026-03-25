@@ -109,9 +109,7 @@ if ($order->mode_of_payment == "COD") {
     $total = $price_per_kg * $quantity_in_kg;
     $additional_fare = $distanceValue * 5;
     $shipping_fee = 50 + $additional_fare;
-    $service_fee = $total * 0.0225;
-    $subtotal = $total - $service_fee;
-    $grand_total = $shipping_fee + $subtotal;
+    $grand_total = $shipping_fee + $total;
     // shipping fee
 }else{
     // Pricing Logic
@@ -120,8 +118,7 @@ if ($order->mode_of_payment == "COD") {
     $quantity_in_kg = ($unit == 'kg') ? $quantity : $quantity / 1000;
     $price_per_kg = $product->price_per_unit;
     $total = $price_per_kg * $quantity_in_kg;
-    $service_fee = $total * 0.0225;
-    $grand_total = $total + $service_fee;
+    $grand_total = $total;
 }
 
 
@@ -252,10 +249,7 @@ $stmt = $order_status->getOrderStatus();
                     <span class="fw-bold">₱<?php echo number_format($total, 2); ?></span>
                 </div>
                 
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted small">Service Fee (2.25%)</span>
-                    <span class="fw-bold">₱<?php echo number_format($service_fee, 2); ?></span>
-                </div>
+
                 <?php
                     if ($order->mode_of_payment == "COD") {
                         echo "<div class='d-flex justify-content-between mb-3'>
