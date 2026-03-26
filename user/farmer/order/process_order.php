@@ -41,14 +41,14 @@ if ($order->mode_of_payment == "COD") {
     $user->reciever_id = $order->customer_id;
     $user->getShippingLocation();
 
-    // Coordinates with Fallback para hindi mag-error ang mapa
+    // Coordinates with Fallback
     $sender_latitude = !empty($user->sender_latitude) ? $user->sender_latitude : 13.4475;
     $sender_longitude = !empty($user->sender_longitude) ? $user->sender_longitude : 121.8347;
     $reciever_latitude = !empty($user->reciever_latitude) ? $user->reciever_latitude : 13.4767;
     $reciever_longitude = !empty($user->reciever_longitude) ? $user->reciever_longitude : 121.9032;
 
     $distanceText = "Route calculating...";
-    $distanceValue = 2; // Default distance
+    $distanceValue = 2;
 
     $apiKey = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjE1Mjc3ZmM2ZGM3ZDQ5M2M4NWMxNWExNmQ4MWMxMmNkIiwiaCI6Im11cm11cjY0In0=";
     $url = "https://api.openrouteservice.org/v2/directions/driving-car";
@@ -129,11 +129,18 @@ if ($_POST) {
     .info-box { background: #ffffff; border: 1px solid #e9ecef; border-radius: 16px; padding: 20px; height: 100%; position: relative; }
     #map { height: 350px; width: 100%; border-radius: 12px; margin-top: 15px; border: 1px solid #ddd; z-index: 1; }
     .btn-go-live { position: absolute; bottom: 35px; right: 35px; z-index: 1000; background: #fff; border-radius: 50px; padding: 10px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-decoration: none; display: flex; align-items: center; gap: 8px; color: #000; font-weight: bold; border: 1px solid #ddd; }
-    .modern-marker { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+    
+    /* WAYBILL DESIGN */
     .waybill-card { width: 100%; max-width: 500px; margin: 0 auto; color: #000; background: #fff; border: 2px solid #000; font-family: Arial, sans-serif; }
     .wb-header { border-bottom: 2px solid #000; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
     .wb-section { border-bottom: 1px solid #000; padding: 15px; }
-    @media print { body * { visibility: hidden; } #waybill-area, #waybill-area * { visibility: visible; } #waybill-area { position: absolute; left: 0; top: 0; width: 100%; } .no-print { display: none !important; } }
+    
+    @media print { 
+        body * { visibility: hidden; } 
+        #waybill-area, #waybill-area * { visibility: visible; } 
+        #waybill-area { position: absolute; left: 0; top: 0; width: 100%; } 
+        .no-print { display: none !important; } 
+    }
 </style>
 
 <div class="container py-5">
@@ -145,7 +152,7 @@ if ($_POST) {
         <div class="d-flex gap-2">
             <button class="btn btn-outline-dark px-4 rounded-pill" onclick="location.href='order.php'">Back</button>
             <?php if ($order->product_type == "harvest"): ?>
-                <button class="btn btn-dark px-4 rounded-pill shadow" data-bs-toggle='modal' data-bs-target='#waybillModal'>Print Waybill</button>
+                <button class="btn btn-dark px-4 rounded-pill shadow" data-bs-toggle='modal' data-bs-target='#waybillModal'><i class="bi bi-printer me-2"></i> Print Waybill</button>
             <?php endif; ?>
         </div>
     </div>
@@ -171,19 +178,19 @@ if ($_POST) {
                 <hr class="my-4 opacity-5">
                 <div class="info-box">
                     <h6 class="fw-bold mb-3"><i class="bi bi-person-circle me-2 text-primary"></i> Buyer & Logistics</h6>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <p class="mb-1 fw-bold"><?php echo $customer->firstname ." ". $customer->lastname; ?></p>
-                            <p class="mb-0 small text-muted"><?php echo $customer->address . ', ' . $customer->barangay . ', ' . $customer->municipality; ?></p>
+                            <p class="mb-1 text-primary small fw-bold"><i class="bi bi-telephone me-1"></i> <?php echo $customer->contact_number; ?></p>
+                            <p class="mb-0 small text-muted"><i class="bi bi-geo-alt me-1"></i> <?php echo $customer->address . ', ' . $customer->barangay . ', ' . $customer->municipality; ?></p>
                         </div>
                         <div class="col-md-6 text-md-end">
                             <h5 class="text-success fw-bold mb-1"><?php echo $order->mode_of_payment; ?></h5>
-                            <p class="small text-muted mb-0">Distance: <?php echo $distanceText; ?></p>
+                            <p class="small text-muted mb-0">Est. Distance: <?php echo $distanceText; ?></p>
                         </div>
                     </div>
-                    <?php $gmaps_url = "https://www.google.com/maps/dir/?api=1&origin=$sender_latitude,$sender_longitude&destination=$reciever_latitude,$reciever_longitude&travelmode=driving"; ?>
-                    <a href="<?php echo $gmaps_url; ?>" target="_blank" class="btn-go-live no-print">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg" width="20"> Google Maps
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=<?php echo $sender_latitude.','.$sender_longitude; ?>&destination=<?php echo $reciever_latitude.','.$reciever_longitude; ?>" target="_blank" class="btn-go-live no-print">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg" width="20"> Open Route
                     </a>
                     <div id="map"></div>
                 </div>
@@ -228,7 +235,31 @@ if ($_POST) {
     </div>
 </div>
 
-<div class="modal fade" id="waybillModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header no-print"><h5>Waybill</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body p-4"><div id="waybill-area" class="waybill-card"><div class="wb-header"><h4>HARVEST HUB</h4></div><div class="wb-section text-center"><h2>#<?php echo $order->invoice_number; ?></h2></div><div class="wb-section"><b>TO:</b> <?php echo strtoupper($customer->firstname ." ". $customer->lastname); ?><br><?php echo $customer->address; ?></div></div></div><div class="modal-footer no-print"><button class="btn btn-primary" onclick="window.print()">Print</button></div></div></div></div>
+<div class="modal fade" id="waybillModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-print"><h5>Waybill Preview</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body p-4">
+                <div id="waybill-area" class="waybill-card">
+                    <div class="wb-header"><h4>HARVEST HUB</h4><span>Standard Delivery</span></div>
+                    <div class="wb-section text-center">
+                        <small>INVOICE NUMBER</small>
+                        <h2 class="mb-0">#<?php echo $order->invoice_number; ?></h2>
+                    </div>
+                    <div class="wb-section">
+                        <p class="mb-1 text-bold small">RECEIVER:</p>
+                        <h4 class="mb-0"><?php echo strtoupper($customer->firstname ." ". $customer->lastname); ?></h4>
+                        <p class="mb-2 fw-bold"><?php echo $customer->contact_number; ?></p>
+                        <p class="small mb-0"><?php echo $customer->address . ', ' . $customer->barangay . ', ' . $customer->municipality; ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-primary px-4" onclick="window.print()">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -242,28 +273,22 @@ document.addEventListener('DOMContentLoaded', function() {
     var map = L.map('map', { zoomControl: false }).setView([sLat, sLng], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    // BLUE LINE - DIRECT FALLBACK
-    var routeLine = L.polyline([[sLat, sLng], [rLat, rLng]], {
-        color: '#1171ef', weight: 5, opacity: 0.8, dashArray: '10, 15'
-    }).addTo(map);
+    L.polyline([[sLat, sLng], [rLat, rLng]], { color: '#1171ef', weight: 5, opacity: 0.8, dashArray: '10, 15' }).addTo(map);
 
-    // SVG ICONS
-    var farmerSVG = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="white" stroke="#2dce89" stroke-width="2"/><path d="M20 12L12 18V28H28V18L20 12Z" fill="#2dce89"/></svg>`;
-    var customerSVG = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="white" stroke="#1171ef" stroke-width="2"/><path d="M20 12C16 12 13 15 13 19C13 24 20 30 20 30C20 30 27 24 27 19C27 15 24 12 20 12Z" fill="#1171ef"/></svg>`;
+    // SVG Markers
+    var farmIcon = L.divIcon({ html: `<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="13" fill="white" stroke="#2dce89" stroke-width="2"/><path d="M15 8L10 13V20H20V13L15 8Z" fill="#2dce89"/></svg>`, className: '', iconSize: [30, 30], iconAnchor: [15, 15] });
+    var userIcon = L.divIcon({ html: `<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="13" fill="white" stroke="#1171ef" stroke-width="2"/><path d="M15 8C12 8 10 10 10 13C10 17 15 21 15 21C15 21 20 17 20 13C20 10 18 8 15 8Z" fill="#1171ef"/></svg>`, className: '', iconSize: [30, 30], iconAnchor: [15, 15] });
 
-    var farmIcon = L.divIcon({ html: farmerSVG, className: 'modern-marker', iconSize: [40, 40], iconAnchor: [20, 20] });
-    var userIcon = L.divIcon({ html: customerSVG, className: 'modern-marker', iconSize: [40, 40], iconAnchor: [20, 20] });
-
-    L.marker([sLat, sLng], {icon: farmIcon}).addTo(map);
-    L.marker([rLat, rLng], {icon: userIcon}).addTo(map);
+    L.marker([sLat, sLng], {icon: farmIcon}).addTo(map).bindPopup('Farmer');
+    L.marker([rLat, rLng], {icon: userIcon}).addTo(map).bindPopup('Buyer');
 
     var group = new L.featureGroup([L.marker([sLat, sLng]), L.marker([rLat, rLng])]);
-    map.fitBounds(group.getBounds().pad(0.2));
+    map.fitBounds(group.getBounds().pad(0.3));
 });
 
 function confirmSubmit(action) {
     document.getElementById('actionInput').value = action;
-    Swal.fire({ title: 'Confirm?', text: "Status: " + action.toUpperCase(), icon: 'question', showCancelButton: true, confirmButtonColor: '#2dce89' })
+    Swal.fire({ title: 'Update Order?', text: "Status: " + action.toUpperCase(), icon: 'question', showCancelButton: true, confirmButtonColor: '#2dce89' })
     .then((res) => { if(res.isConfirmed) document.getElementById('actionForm').submit(); });
 }
 </script>
