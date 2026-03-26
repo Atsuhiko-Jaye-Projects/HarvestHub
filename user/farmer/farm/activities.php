@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <input type="number" step="0.01" id="total_width_sqm" class="form-control form-control-custom" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label class="small fw-bold">Total Height (SQM)</label>
+                            <label class="small fw-bold">Total Length (SQM)</label>
                             <input type="number" step="0.01"  id="total_height_sqm" class="form-control form-control-custom" readonly>
                         </div>
                         <div class="col-md-2">

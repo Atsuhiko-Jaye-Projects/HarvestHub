@@ -110,6 +110,10 @@
                                     <label class="form-label text-success">Total Stocks (KG)</label>
                                     <input type="text" name="stocks" value="<?php echo $row['stocks']; ?>" class="form-control stocks-badge" readonly>
                                 </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Estimated Harvest (total plants)</label>
+                                    <input type="text" name="kilo_per_plant" class="form-control">
+                                </div>
                                 <div class="col-12">
                                     <label class="form-label">Product Showcase Image</label>
                                     <input type="file" name="crop_image" class="form-control" required>
