@@ -22,6 +22,7 @@ class Crop{
     public $province;
     public $municipality;
     public $crop_status;
+    public $crop_image;
     public $baranggay;
 
     public function __construct($db) {
@@ -90,34 +91,7 @@ class Crop{
         return false;
     }
 
-    function readAllCrop($from_record_num, $records_per_page) {
-        $query = "SELECT * FROM " . $this->table_name . "
-                  WHERE user_id = :user_id
-                  ORDER BY id DESC
-                  LIMIT $from_record_num, $records_per_page";
 
-        $stmt = $this->conn->prepare($query);
-
-        // IMPORTANT: Use bindValue() instead of bindParam() for LIMIT (avoids reference issues)
-        $stmt->bindParam(":user_id", $this->user_id);
-        $stmt->execute();
-
-        return $stmt;
-
-        // // Count total rows for pagination
-        // $count_query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE user_id = :user_id";
-        // $count_stmt = $this->conn->prepare($count_query);
-        // $count_stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
-        // $count_stmt->execute();
-
-        // $count_row = $count_stmt->fetch(PDO::FETCH_ASSOC);
-        // $total_rows = $count_row['total_rows'];
-
-        // return [
-        //     "records" => $products,
-        //     "total_rows" => $total_rows
-        // ];
-    }
 
     function updateFarmProduct() {
         $query = "UPDATE
@@ -315,32 +289,59 @@ class Crop{
     }
 
     function readAllPlantedCrop($from_record_num, $records_per_page) {
+
+        $from_record_num = (int) $from_record_num;
+        $records_per_page = (int) $records_per_page;
+
         $query = "SELECT * FROM " . $this->table_name . "
-                  WHERE user_id = :user_id AND crop_status = 'crop planted'
-                  ORDER BY id DESC
-                  LIMIT $from_record_num, $records_per_page";
+                WHERE user_id = :user_id 
+                AND crop_status = 'crop planted'
+                ORDER BY id DESC
+                LIMIT $from_record_num, $records_per_page";
 
         $stmt = $this->conn->prepare($query);
-
-        // IMPORTANT: Use bindValue() instead of bindParam() for LIMIT (avoids reference issues)
-        $stmt->bindParam(":user_id", $this->user_id);
+        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt;
+    }
 
-        // // Count total rows for pagination
-        // $count_query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE user_id = :user_id";
-        // $count_stmt = $this->conn->prepare($count_query);
-        // $count_stmt->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
-        // $count_stmt->execute();
+    function readAllPreOrderCrop($from_record_num, $records_per_page) {
 
-        // $count_row = $count_stmt->fetch(PDO::FETCH_ASSOC);
-        // $total_rows = $count_row['total_rows'];
+        $from_record_num = (int) $from_record_num;
+        $records_per_page = (int) $records_per_page;
 
-        // return [
-        //     "records" => $products,
-        //     "total_rows" => $total_rows
-        // ];
+        $query = "SELECT * FROM " . $this->table_name . "
+                WHERE user_id = :user_id 
+                AND status = 'posted'
+                ORDER BY id DESC
+                LIMIT $from_record_num, $records_per_page";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":user_id", $this->user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function saveCropImage(){
+        $query = "UPDATE
+                    " . $this->table_name . "
+                SET
+                    crop_image=:crop_image
+                WHERE
+                    id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":crop_image", $this->crop_image);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

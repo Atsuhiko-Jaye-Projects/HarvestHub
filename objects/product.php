@@ -24,6 +24,7 @@ class Product{
     public $modified;
     public $product_type;
     public $avg_rating;
+    public $safe_harvest;
 
 
     public function __construct($db){
@@ -101,6 +102,7 @@ class Product{
                 price_per_unit=:price_per_unit,
                 category=:category,
                 total_stocks=:total_stocks,
+                safe_harvest = :safe_harvest,
                 available_stocks=:available_stocks,
                 product_description=:product_description,
                 product_image = :product_image,
@@ -116,6 +118,7 @@ class Product{
         $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
         $this->total_stocks = htmlspecialchars(strip_tags($this->total_stocks));
         $this->category = htmlspecialchars(strip_tags($this->category));
+        $this->safe_harvest = htmlspecialchars(strip_tags($this->safe_harvest));
         $this->status = htmlspecialchars(strip_tags($this->status));
         $this->product_image = htmlspecialchars(strip_tags($this->product_image));
         $this->product_type = htmlspecialchars(strip_tags($this->product_type));
@@ -129,6 +132,7 @@ class Product{
         $stmt->bindParam(":user_id", $this->user_id);
         $stmt->bindParam(":category", $this->category);
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":safe_harvest", $this->safe_harvest);
         $stmt->bindParam(":product_image", $this->product_image);
         $stmt->bindParam(":total_stocks", $this->total_stocks);
         $stmt->bindParam(":product_type", $this->product_type);
@@ -238,6 +242,7 @@ class Product{
             $this->product_image = $row['product_image'];
             $this->sold_count = $row['sold_count'];
             $this->available_stocks = $row['available_stocks'];
+            $this->safe_harvest = $row['safe_harvest'];
             $this->avg_rating = round($row['avg_rating'], 1);
     }
 
@@ -711,6 +716,57 @@ class Product{
 
         return $stmt;
     }
+
+    function UpdatePreOrderProduct(){
+        
+        $query = "UPDATE
+                    " . $this->table_name . "
+                    SET
+                    price_per_unit = :price_per_unit,
+                    total_stocks = :total_stocks,
+                    product_type = :product_type
+                  WHERE
+                    product_id = :product_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
+        $this->total_stocks = htmlspecialchars(strip_tags($this->total_stocks));
+        $this->product_type = htmlspecialchars(strip_tags($this->product_type));
+
+        $stmt->bindParam(":product_id", $this->product_id);
+        $stmt->bindParam(":price_per_unit", $this->price_per_unit);
+        $stmt->bindParam(":total_stocks", $this->total_stocks);
+        $stmt->bindParam(":product_type", $this->product_type);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+        
+    }
+
+    function moveImage($image, $user_id) {
+
+        // Current location of the existing file
+        $source = $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/user/uploads/{$user_id}/posted_crops/{$image}";
+        $destination = $_SERVER['DOCUMENT_ROOT'] . "/HarvestHub/user/uploads/{$user_id}/products/{$image}";
+
+        // Create destination folder if it doesn't exist
+        if (!is_dir(dirname($destination))) {
+            mkdir(dirname($destination), 0755, true);
+        }
+
+        // Move the file
+        if (file_exists($source) && rename($source, $destination)) {
+            echo "Image moved successfully!";
+        } else {
+            echo "Failed to move image. Source exists? " . (file_exists($source) ? 'Yes' : 'No');
+        }
+    }
+
+
 
 
 

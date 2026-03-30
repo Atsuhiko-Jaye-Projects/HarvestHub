@@ -43,6 +43,15 @@
         font-size: 1.1rem;
     }
 
+    .safe-stocks-badge {
+        background-color: #f0fdf4 !important;
+        border: 2px dashed #ffd500 !important;
+        font-weight: 800 !important;
+        color: #ffd503 !important;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
     .form-label {
         font-weight: 700;
         color: #334155;
@@ -102,14 +111,19 @@
                                     <label class="form-label">No. of Plants</label>
                                     <input type="number" name="plant_count" class="form-control" value="<?php echo $row['plant_count']; ?>" readonly>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">KG per Plant</label>
-                                    <input type="text" name="kilo_per_plant" class="form-control" value="<?php echo $row['yield']; ?>" readonly>
+                                <div class="">
+                                    <input type="hidden" name="kilo_per_plant" class="form-control" value="<?php echo $row['yield']; ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label text-success">Total Stocks (KG)</label>
                                     <input type="text" name="stocks" value="<?php echo $row['stocks']; ?>" class="form-control stocks-badge" readonly>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-warning">Safe Harvest Estimate (KG)</label>
+                                    <input type="number" name="safe_harvest" value="<?php echo number_format((float)$row['safe_harvest'], 2); ?>" class="form-control safe-stocks-badge" readonly>
+                                </div>
+                                
                                 <div class="col-12">
                                     <label class="form-label">Product Showcase Image</label>
                                     <input type="file" name="crop_image" class="form-control" required>
@@ -137,20 +151,13 @@
                                     <small class="text-muted d-block mt-1">Suggested price per kilogram.</small>
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="text-warning">Safe Harvest(KG)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-warning text-white border-0">KG</span>
-                                        <input type="number" name="safe_harvest" value="<?php echo number_format((float)$row['safe_harvest'], 2); ?>" class="form-control border-primary fw-bold text-warning fs-5 bg-white" readonly>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">Suggested price per kilogram.</small>
-                                </div>                            
+                     
 
                                 <div class="mb-0">
                                     <label class="text-success">Est. Total Product Value</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-success text-white border-0">₱</span>
-                                        <input type="number" name="product_value" class="form-control border-success fw-bold text-success fs-5 bg-white" readonly>
+                                        <input type="text" name="product_value" class="form-control border-success fw-bold text-success fs-5 bg-white" readonly>
                                     </div>
                                     <small class="text-muted d-block mt-1">Projected total revenue.</small>
                                 </div>
@@ -223,7 +230,12 @@ function computeModalLogic(modal) {
 
     // 3. Update UI
     if (pricePerUnit) pricePerUnit.value = finalPrice.toFixed(2);
-    if (productValue) productValue.value = (finalPrice * totalKilos).toFixed(2);
+    if (productValue) {
+        productValue.value = (finalPrice * totalKilos).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
 }
 
 // SweetAlert Confirmation

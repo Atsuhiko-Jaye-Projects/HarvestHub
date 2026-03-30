@@ -84,7 +84,9 @@ $expense = $farm_resource->cropExpense();
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" value="<?php echo $row['id'];?>">
                     <input type="hidden" name="farm_resource_id" value="<?php echo $row['farm_resource_id'];?>">
-                    <input type="hidden" id="expense-<?php echo $id; ?>" value="<?php echo $expense; ?>">
+                    <input type="hidden" name="total_plant_expense" id="expense-<?php echo $id; ?>" value="<?php echo $expense; ?>">
+                    <input type="text" name="cultivated_area" value="<?php echo $row['cultivated_area']; ?>">
+                    <input type="text" name="crop_image" value="<?php echo $row['crop_image']; ?>">
 
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
@@ -138,7 +140,7 @@ $expense = $farm_resource->cropExpense();
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="yield-box">
-                                    <label class="form-label text-muted">Total Expenses (PHP)</label>
+                                    <label class="form-label text-muted">Est. Total Harvest (KG)</label>
                                     <input type="number" id="est_yield-<?php echo $id; ?>" class="form-control-plaintext fw-bold fs-5 p-0" readonly>
                                 </div>
                             </div>
@@ -148,15 +150,11 @@ $expense = $farm_resource->cropExpense();
                                     <input type="number" step="0.1" id="actual_harvested-<?php echo $id; ?>" name="actual_yield" class="form-control form-control-lg border-warning" placeholder="0.0">
                                 </div>
                             </div>
-                            <div class="col-md-4 mt-3">
-                                <label class="form-label">Actual Yield/Plant (KG)</label>
-                                <input type="number" step="0.1" name="actual_yield_per_plant" class="form-control shadow-sm" placeholder="0.0">
-                            </div>
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label class="form-label">Profit Margin (%)</label>
-                                <input type="number" id="profit_margin-<?php echo $id; ?>" class="form-control shadow-sm" placeholder="e.g. 20">
+                                <input type="number" name="profit_margin" id="profit_margin-<?php echo $id; ?>" class="form-control shadow-sm" placeholder="e.g. 20">
                             </div>
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label class="form-label text-success fw-bold">Sug. Selling Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-success text-white border-0">₱</span>

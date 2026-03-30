@@ -34,15 +34,17 @@ $shipping_address = "{$user->address}, {$user->barangay}, {$user->municipality}"
 $product->product_id = $order->product_id;
 // get image location base on product type
 
+$product->getHarvestProductInfo();
+$image_path = "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
 
-if ($order->product_type == "harvest") {
-    // get harvested product type
-    $product->getHarvestProductInfo();
-    $image_path = "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
-}else{
-    $product->getProductInfo();
-    $image_path = "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}";
-}
+// if ($order->product_type == "harvest") {
+//     // get harvested product type
+//     $product->getHarvestProductInfo();
+//     $image_path = "{$base_url}user/uploads/{$product->user_id}/products/{$product->product_image}";
+// }else{
+//     $product->getProductInfo();
+//     $image_path = "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}";
+// }
 
 if ($order->mode_of_payment == "COD") {
     // get the coordinates of two user

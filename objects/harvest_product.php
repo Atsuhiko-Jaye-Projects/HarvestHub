@@ -6,6 +6,7 @@ class HarvestProduct{
     private $table_name = "harvested_products";
 
     public $id;
+    public $crop_id;
     public $product_name;
     public $price_per_unit;
     public $category;
@@ -20,6 +21,7 @@ class HarvestProduct{
     public $is_posted;
     public $expense;
     public $modified;
+    public $profit_margin;
     
 
 
@@ -33,6 +35,7 @@ class HarvestProduct{
                 " . $this->table_name . "
                 SET
                 user_id=:user_id,
+                crop_id = :crop_id,
                 product_name=:product_name,
                 unit=:unit,
                 price_per_unit=:price_per_unit,
@@ -43,7 +46,7 @@ class HarvestProduct{
                 product_image=:product_image,
                 is_posted = :is_posted,
                 expense = :expense,
-                kilo_per_plant = :kilo_per_plant,
+                profit_margin = :profit_margin,
                 plant_count=:plant_count,
                 created_at=:created_at";
 
@@ -61,14 +64,15 @@ class HarvestProduct{
         $this->product_description = htmlspecialchars(strip_tags($this->product_description));
         $this->product_image = htmlspecialchars(strip_tags($this->product_image));
         $this->plant_count = htmlspecialchars(strip_tags($this->plant_count));
-        $this->kilo_per_plant = htmlspecialchars(strip_tags($this->kilo_per_plant));
         $this->is_posted = htmlspecialchars(strip_tags($this->is_posted));
+        $this->profit_margin = htmlspecialchars(strip_tags($this->profit_margin));
         $this->created_at = date ("Y-m-d H:i:s");
 
 
         $stmt->bindParam(":user_id", $this->user_id);
 
         $stmt->bindParam(":product_name", $this->product_name);
+        $stmt->bindParam(":crop_id", $this->crop_id);
         $stmt->bindParam(":unit", $this->unit);
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
         $stmt->bindParam(":category", $this->category);
@@ -78,9 +82,8 @@ class HarvestProduct{
         $stmt->bindParam(":product_description", $this->product_description);
         $stmt->bindParam(":product_image", $this->product_image);
         $stmt->bindParam(":plant_count", $this->plant_count);
-        $stmt->bindParam(":kilo_per_plant", $this->kilo_per_plant);
         $stmt->bindParam(":is_posted", $this->is_posted);
-
+        $stmt->bindParam(":profit_margin", $this->profit_margin);
         $stmt->bindParam(":created_at", $this->created_at);
 
         if ($stmt->execute()) {

@@ -47,9 +47,13 @@ $records_per_page = 5;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 $crop->user_id = $_SESSION['user_id'];
 
-$crop_stmt = $crop->readAllCrop($from_record_num, $records_per_page);
+$crop_stmt = $crop->readAllPlantedCrop($from_record_num, $records_per_page);
 $crop_num = $crop_stmt->rowCount();
 $total_rows = $crop->countAll();
+
+
+
+
 
 
 $crop->user_id = $_SESSION['user_id'];
@@ -205,39 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $farm_expense = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
                 $total_farm_size = isset($_POST['cultivated_area']) ? (float)str_replace(',', '', $_POST['cultivated_area']) : 0;
                 
-                // // actual harvested input
-                // $actual_harvested = isset($_POST['actual_yield']) ? (float)str_replace(',', '', $_POST['actual_yield']) : 0;
-                // // General markup (50% profit)
-                // $markup = 0.20;
-
-                // // Prevent division by zero
-                // if ($farm_expense > 0 && $total_farm_size > 0) {
-
-                    
-                //     // Expense allocated to the planted area
-                //     //$kilo_harvested_product = $plant_count * $kilo_per_plant;
-
-                //     // Prevent zero division
-                //     if ($actual_harvested <= 0) {
-                //         $actual_harvested = 1;
-                //     }
-
-                //     //harvested
-                //     // $stocks = $plant_count * $kilo_per_plant;
-
-                //     // Cost per kg
-                //     $cost_per_kg = $farm_expense / $actual_harvested;
-
-                //     // Selling price with markup
-                //     $selling_price = $cost_per_kg * (1 + $markup);
-
-                //     // Rounded price (currency format)
-                //     $harvest_product->price_per_unit = $selling_price;
-
-                // } else {
-                //     $harvest_product->price_per_unit = 0;
-                // }
-
+                $harvest_product->crop_id = $_POST['id'];
                 $harvest_product->user_id = $_SESSION['user_id'];
                 $harvest_product->product_name = $_POST['crop_name'];
                 $harvest_product->total_stocks = $_POST['actual_yield'];
@@ -246,14 +218,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $harvest_product->lot_size = $_POST['cultivated_area'];
                 $harvest_product->category = "Not Set";
                 $harvest_product->unit = "KG";
+                $harvest_product->profit_margin = $_POST['profit_margin'];
                 $harvest_product->price_per_unit = $_POST['selling_price'];
-                $harvest_product->kilo_per_plant = $_POST['actual_yield_per_plant'];
-                $harvest_product->is_posted = "Pending";
+                $harvest_product->is_posted = "posted";
                 
                 $harvest_product->createProduct();
                 $crop->id = $_POST['id'];
                 $crop->status = "posted";
                 $crop->cropPosted();
+                
+                // update the existing posted pre order values to the actual values
+                $product->product_id = $_POST['id'];
+                $product->price_per_unit = $_POST['selling_price'];
+                $product->total_stocks = $_POST['actual_yield'];
+                $product->product_type = "harvest";
+                $product->UpdatePreOrderProduct();
+                
+                $image = $_POST['crop_image'];
+                $user_id = $_SESSION['user_id'];
+
+                $product->moveImage($image,$user_id);
+
                 
                 $_SESSION['flash'] = [
                 'title' => 'Success!',
@@ -274,37 +259,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
     }
 
-    else if ($_POST['action'] == 'post_crop') {
+    else if (isset($_POST['action']) && $_POST['action'] == 'post_crop') {
 
         $product->product_name = $_POST['crop_name'];
         $product->product_id = $_POST['id']; // Make sure your form has this hidden input
         $product->user_id = $_SESSION['user_id'];
         $product->price_per_unit = $_POST['price_per_unit'];
-        // $product->category = $_POST['category'];
+        $product->safe_harvest = $_POST['safe_harvest'];
         $product->product_description = "Reserve fresh farm produce ahead of time and get it delivered at peak quality.";
         $product->status = "Active";
-
         $product->product_type = "preorder";
-        //update the crop status to posted
 
+        // update the crop status to posted
         $product->total_stocks = $_POST['stocks'];
         $product->available_stocks = $_POST['stocks'];
 
-        $image=!empty($_FILES["crop_image"]["name"])
-        ? sha1_file($_FILES['crop_image']['tmp_name']) . "-" . basename($_FILES["crop_image"]["name"]) : "";
-        $product->product_image = $image;
+        // Handle image safely
+        $image = "";
+        if (!empty($_FILES["crop_image"]["name"]) && is_uploaded_file($_FILES['crop_image']['tmp_name'])) {
+            $image = sha1_file($_FILES['crop_image']['tmp_name']) . "-" . basename($_FILES["crop_image"]["name"]);
+            $product->product_image = $image;
+        } else {
+            $product->product_image = ""; // no image uploaded
+        }
 
         if ($product->postCrop()) {
-            $product->uploadPhoto();
+            if (!empty($image)) {
+                $product->uploadPhoto();
+            }
+
             $crop->id = $_POST['id'];
             $crop->status = "posted";
+            $crop->crop_image = $image;
             $crop->cropPosted();
+            $crop->saveCropImage();
 
-                $_SESSION['flash'] = [
-                    'title' => 'Success!',
-                    'text'  => 'Crop has been updated successfully.',
-                    'icon'  => 'success' // 'success', 'error', 'warning', 'info'
-                ];
+            $_SESSION['flash'] = [
+                'title' => 'Success!',
+                'text'  => 'Crop has been posted successfully.',
+                'icon'  => 'success' // 'success', 'error', 'warning', 'info'
+            ];
         }
     }
 

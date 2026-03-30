@@ -70,92 +70,50 @@
 
   </div>
 
-  <!-- Crop Table -->
-  <div class="table-responsive shadow-sm rounded-2">
-    <table class="table table-hover table-bordered align-middle mb-0 ">
-      <thead class="table-success text-uppercase text-center">
-        <tr>
-          <th><i class="bi bi-flower1 me-1"></i> </i> Crop Name</th>
-          <th><i class="bi bi-bar-chart-line me-1"></i> Yield/Plant (kg)</th>
-          <th><i class="bi bi-signpost-split me-1"></i> Cultivated Area (sqm)</th>
-          <th><i class="bi bi-box-seam me-1"></i> Harvest Stocks (EST.)</th>
-          <th><i class="bi bi-clipboard-data me-1"></i> Planted Crops</th>
-          <th><i class="bi bi-calendar-plus me-1"></i> Date Planted</th>
-          <th><i class="bi bi-calendar-check me-1"></i> Harvest Est.</th>
-          <!-- <th><i class="bi bi-clock me-1"></i> Duration</th>
-          <th><i class="bi bi-calendar3 me-1"></i> Crop Age</th> -->
-          <th class="text-center"><i class="bi bi-gear me-1"></i> Action</th>
-        </tr>
-      </thead>
-      <tbody id="crop_table" class="table-group-divider text-center">
-        <?php
-        if ($crop_num > 0) {
-          while ($row = $crop_stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            $datePlanted = new DateTime($row['date_planted']);
-            $harvestEst  = new DateTime($row['estimated_harvest_date']);
-            $today       = new DateTime(); // current date
+  <!-- tab window content here -->
+  <div class="row">
+      <div class="col-12">
+          <div class="analytics-container p-4 shadow-sm bg-white">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+                  <div>
+                      <h4 class="fw-bold mb-1 text-dark">Crop Overview</h4>
+                      <p class="text-muted small mb-0">Summary of your farm produce and availability</p>
+                  </div>
+                  
+                  <ul class="nav nav-pills gap-2 bg-light p-1 rounded-3" id="analyticsTabs" role="tablist">
+                      <li class="nav-item">
+                          <button class="nav-link active" id="planted-tab" data-bs-toggle="tab" data-bs-target="#planted_tab" type="button">
+                              <i class="bi bi-grid-1x2 me-2"></i>Planted Crops
+                          </button>
+                      </li>
+                      <li class="nav-item">
+                          <button class="nav-link" id="preorder-tab" data-bs-toggle="tab" data-bs-target="#preorder_tab" type="button">
+                              <i class="bi bi-seedling me-2"></i>Pre-Order Crops
+                          </button>
+                      </li>
+                  </ul>
+              </div>
 
-            // Duration: from planted to estimated harvest
-            $duration = $datePlanted->diff($harvestEst);
-            $durationDays = $duration->days;
+              <div class="tab-content" id="analyticsTabContent">
 
-            // Crop Age: from planted to today
-            $age = $datePlanted->diff($today);
-            $ageDays = $age->days;
+                  <!-- Planted Crops -->
+                  <div class="tab-pane fade show active" id="planted_tab" role="tabpanel">
+                      <div class="p-2">
+                          <?php include_once "tab_windows/planted_crop.php"; ?>
+                      </div>
+                  </div>
 
-            echo "<tr>";
-              echo "<td class='text-nowrap'>{$row['crop_name']}</td>";
-              echo "<td>{$row['yield']} KG/Plant</td>";
-              echo "<td>{$row['cultivated_area']} SQM</td>";
-              echo "<td>" . number_format($row['stocks']) . " KG</td>";
-              echo "<td>{$row['plant_count']} Crops</td>";
-              echo "<td>{$row['date_planted']}</td>";
-              echo "<td>{$row['estimated_harvest_date']}</td>";
-              // echo "<td>{$durationDays} days</td>";
-              // echo "<td>{$ageDays} days</td>";
-              echo "<td class='text-nowrap'>";
-                echo "<button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#update-crop-modal-{$row['id']}'>";
-                    echo "<i class='bi bi-pencil-square'></i>";
-                echo "</button>";
-                if ($row['crop_status'] != "harvested" && $row['status'] != 'posted') {
-                  echo "<button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
-                  <i class='bi bi-cloud-upload-fill'></i>
-                </button>";
-                }else if ($row['crop_status'] == "crop planted" && $row['status'] != 'posted'){
-                  echo "<button class='btn btn-success ms-1' data-bs-toggle='modal' data-bs-target='#post-crop-modal-{$row['id']}'>
-                  <i class='bi bi-cloud-upload-fill'></i>
-                </button>";
-                }
-                  echo "
-                  <button
-                      class='btn btn-danger ms-1 btn-delete'
-                      data-id='{$row['id']}'
-                      data-farm-resource-id='{$row['farm_resource_id']}'
-                      data-carea='{$row['cultivated_area']}'
-                      data-uid='{$row['user_id']}'
-                  >
-                      <i class='bi bi-trash'></i>
-                  </button>
-                  ";
-              echo "</td>";
-            echo "</tr>";
-            include "../modal-forms/crop/edit_crop.php";
-            include "../modal-forms/crop/post_crop.php";
-          }
-        
-        }else{
-          echo "<tr>
-            <td colspan='11' class='text-center'>No Crop found</td>
-          </tr>";
-        }
-        ?>
-      </tbody>
-    </table>
+                  <!-- Pre-Order Crops -->
+                  <div class="tab-pane fade" id="preorder_tab" role="tabpanel">
+                      <div class="p-2">
+                          <?php include_once "tab_windows/pre_order_crop.php"; ?>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
   </div>
-  <?php include_once "../../../paging.php"; ?>
-  <!-- Pagination -->
-  <!-- <div id="crop_pagination" class="mt-4 d-flex justify-content-center"></div> -->
    
 </div>
 

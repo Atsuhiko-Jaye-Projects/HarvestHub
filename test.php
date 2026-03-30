@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <label>Destination:</label><br>
     <input type="text" name="dest_lat" placeholder="Latitude" required>
     <input type="text" name="dest_lng" placeholder="Longitude" required>
-
+    <a href="https://www.google.com/maps/dir/7,+121.94379039695583/13.468558099245698,+121.85662333926827/@13.3620682,121.7984755,12z/data=!3m1!4b1!4m10!4m9!1m3!2m2!1d121.9437904!2d13.2546352!1m3!2m2!1d121.8566233!2d13.4685581!3e0!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D">Start Journey</a>
     <br><br>
     <button type="submit">Calculate Distance</button>
 </form>

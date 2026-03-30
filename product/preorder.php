@@ -151,7 +151,7 @@ if ($_POST) {
       </p>
       <h6>EST Available Stocks (KG):</h6>
       <p class="text-primary fw-bold">
-        <?php echo number_format($product->available_stocks); ?> KG
+        <?php echo number_format($product->safe_harvest); ?> KG
       </p>
 
       <p style="font-size:0.85em; color:red; margin-top:4px;">
