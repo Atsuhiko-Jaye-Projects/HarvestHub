@@ -84,6 +84,12 @@ function editHarvestProduct(row) {
  * DESIGN: Ultra-Modern Economic Dashboard with Profitability Logic
  * Gagamitin para ilipat ang harvest papunta sa Market (Product Posting).
  */
+function capitalizeWords(str) {
+  return str.replace(/\b\w/g, function(char) {
+    return char.toUpperCase();
+  });
+}
+
 function postHarvestProduct(row) {
   const farmSize = parseFloat(row.lot_size) || 1;
   const costPerKg = parseFloat(row.price_per_unit) || 0;
@@ -120,7 +126,7 @@ function postHarvestProduct(row) {
                   </span>
                 </div>
                 
-                <h3 class="fw-bold text-dark mb-1">${row.product_name}</h3>
+                <h3 class="fw-bold text-dark mb-1">${capitalizeWords(row.product_name)}</h3>
                 <p class="text-muted small mb-4">${row.product_description}</p>
                 
                 <div class="p-4 rounded-5 bg-white shadow-sm border border-light">

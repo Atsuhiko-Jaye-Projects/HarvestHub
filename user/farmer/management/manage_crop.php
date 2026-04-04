@@ -53,9 +53,6 @@ $total_rows = $crop->countAll();
 
 
 
-
-
-
 $crop->user_id = $_SESSION['user_id'];
 $farm_stats = $crop->getFarmStats();
 
@@ -208,11 +205,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $kilo_per_plant = isset($_POST['actual_yield_per_plant']) ? (float)str_replace(',', '', $_POST['actual_yield_per_plant']) : 0;
                 $farm_expense = isset($_POST['total_plant_expense']) ? (float)str_replace(',', '', $_POST['total_plant_expense']) : 0;
                 $total_farm_size = isset($_POST['cultivated_area']) ? (float)str_replace(',', '', $_POST['cultivated_area']) : 0;
+                $reserved_kg = $_POST['reserved_kg'];
+                $actual_stocks = $_POST['actual_yield'];
+                
+                if ($reserved_kg > 0) {
+                    $total_stocks = ($actual_stocks - $reserved_kg);
+                    $harvest_product->total_stocks = $total_stocks;
+
+                    $product->total_stocks = $total_stocks;
+                    $product->available_stocks = $total_stocks;
+                }else{
+                    $harvest_product->total_stocks = $_POST['actual_yield'];
+                    $product->total_stocks = $_POST['actual_yield'];
+                    $product->available_stocks = $_POST['actual_yield'];
+                }
                 
                 $harvest_product->crop_id = $_POST['id'];
                 $harvest_product->user_id = $_SESSION['user_id'];
                 $harvest_product->product_name = $_POST['crop_name'];
-                $harvest_product->total_stocks = $_POST['actual_yield'];
+                
                 $harvest_product->plant_count = $_POST['plant_count'];
                 $harvest_product->expense = $_POST['total_plant_expense'];
                 $harvest_product->lot_size = $_POST['cultivated_area'];

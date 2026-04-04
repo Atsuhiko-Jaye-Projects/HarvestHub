@@ -159,7 +159,7 @@ $cart_item_count = $cart_item->countItem();
     <div class="col-md-7">
       <p class="text-muted mb-1"><?php echo $product->category; ?></p>
       <h2><?php echo $product->product_name; ?></h2>
-      <p class="price-range"><?php echo "₱{$product->price_per_unit}.00";?></p>
+      <p class="price-range"><?php echo "₱{$product->price_per_unit}";?></p>
 
       <div class="d-flex align-items-center mb-3">
         <span class="me-3 text-muted"><?php echo $product->sold_count; ?> KG Sold</span>

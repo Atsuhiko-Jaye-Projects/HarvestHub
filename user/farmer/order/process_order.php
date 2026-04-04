@@ -6,6 +6,7 @@ include_once '../../../objects/order.php';
 include_once '../../../objects/product.php';
 include_once '../../../objects/user.php';
 include_once '../../../objects/order_status_history.php';
+include_once '../../../objects/crop.php';
 
 $page_title = "Order Processing | Harvest Hub";
 include_once "../layout/layout_head.php";
@@ -21,6 +22,7 @@ $product = new Product($db);
 $customer = new User($db);
 $user = new User($db);
 $order_status_history = new OrderHistory($db);
+$crop = new Crop($db);
 
 // Load Data
 $order->id = $order_id;
@@ -36,7 +38,7 @@ if ($order->product_type == "harvest") {
     $image_path = "{$base_url}user/uploads/{$product->user_id}/posted_crops/{$product->product_image}";
 }
 
-if ($order->mode_of_payment == "COD") {
+if ($order->mode_of_payment == "COD" || $order->mode_of_payment == "COP") {
     $user->sender_id = $order->farmer_id;
     $user->reciever_id = $order->customer_id;
     $user->getShippingLocation();
@@ -106,7 +108,14 @@ if ($_POST) {
             $product->product_id = $_POST['product_id'];
             $product->sold_count = $_POST['product_quantity'];
             $product->quantity = $_POST['product_quantity'];
-            $product->deductStock();
+            
+            if ($_POST['action'] == "accept pre-order") {
+                $crop->id = $_POST['product_id'];
+                $crop->reserve_kg = $_POST['product_quantity'];
+                $crop->AddReserveKG();
+            }else{
+                $product->deductStock();
+            }
 
             $order_status_history->product_id = $order->product_id;
             $order_status_history->status = $_POST['action'];
@@ -120,6 +129,9 @@ if ($_POST) {
 ?>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
 
 <style>
     :root { --harvest-green: #2dce89; --glass-bg: rgba(255, 255, 255, 0.9); }
@@ -271,25 +283,76 @@ document.addEventListener('DOMContentLoaded', function() {
     var rLng = <?php echo (float)$reciever_longitude; ?>;
 
     var map = L.map('map', { zoomControl: false }).setView([sLat, sLng], 12);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    L.polyline([[sLat, sLng], [rLat, rLng]], { color: '#1171ef', weight: 5, opacity: 0.8, dashArray: '10, 15' }).addTo(map);
-
     // SVG Markers
-    var farmIcon = L.divIcon({ html: `<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="13" fill="white" stroke="#2dce89" stroke-width="2"/><path d="M15 8L10 13V20H20V13L15 8Z" fill="#2dce89"/></svg>`, className: '', iconSize: [30, 30], iconAnchor: [15, 15] });
-    var userIcon = L.divIcon({ html: `<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="13" fill="white" stroke="#1171ef" stroke-width="2"/><path d="M15 8C12 8 10 10 10 13C10 17 15 21 15 21C15 21 20 17 20 13C20 10 18 8 15 8Z" fill="#1171ef"/></svg>`, className: '', iconSize: [30, 30], iconAnchor: [15, 15] });
+    var farmIcon = L.divIcon({
+        html: `<svg width="30" height="30" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="13" fill="white" stroke="#2dce89" stroke-width="2"/>
+                <path d="M15 8L10 13V20H20V13L15 8Z" fill="#2dce89"/>
+              </svg>`,
+        className: '',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
 
-    L.marker([sLat, sLng], {icon: farmIcon}).addTo(map).bindPopup('Farmer');
-    L.marker([rLat, rLng], {icon: userIcon}).addTo(map).bindPopup('Buyer');
+    var userIcon = L.divIcon({
+        html: `<svg width="30" height="30" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="13" fill="white" stroke="#1171ef" stroke-width="2"/>
+                <path d="M15 8C12 8 10 10 10 13C10 17 15 21 15 21C15 21 20 17 20 13C20 10 18 8 15 8Z" fill="#1171ef"/>
+              </svg>`,
+        className: '',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
 
-    var group = new L.featureGroup([L.marker([sLat, sLng]), L.marker([rLat, rLng])]);
-    map.fitBounds(group.getBounds().pad(0.3));
+    var startMarker = L.marker([sLat, sLng], {icon: farmIcon}).addTo(map).bindPopup('Farmer');
+    var endMarker = L.marker([rLat, rLng], {icon: userIcon}).addTo(map).bindPopup('Buyer');
+
+    // ✅ ROAD ROUTE (instead of straight line)
+    var routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(sLat, sLng),
+            L.latLng(rLat, rLng)
+        ],
+        addWaypoints: false,
+        draggableWaypoints: false,
+        routeWhileDragging: false,
+        createMarker: function() { return null; }, // we already made custom markers
+        lineOptions: {
+            styles: [
+                { color: '#1171ef', weight: 5, opacity: 0.8 }
+            ]
+        }
+    }).addTo(map);
+
+    // Hide routing panel UI
+    setTimeout(() => {
+        const container = document.querySelector('.leaflet-routing-container');
+        if (container) container.style.display = 'none';
+    }, 100);
+
+    // Fit map to route bounds
+    routingControl.on('routesfound', function(e) {
+        var route = e.routes[0];
+        var bounds = L.latLngBounds(route.coordinates);
+        map.fitBounds(bounds, { padding: [50, 50] });
+    });
 });
 
 function confirmSubmit(action) {
     document.getElementById('actionInput').value = action;
-    Swal.fire({ title: 'Update Order?', text: "Status: " + action.toUpperCase(), icon: 'question', showCancelButton: true, confirmButtonColor: '#2dce89' })
-    .then((res) => { if(res.isConfirmed) document.getElementById('actionForm').submit(); });
+
+    Swal.fire({
+        title: 'Update Order?',
+        text: "Status: " + action.toUpperCase(),
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2dce89'
+    }).then((res) => {
+        if(res.isConfirmed) document.getElementById('actionForm').submit();
+    });
 }
 </script>
 

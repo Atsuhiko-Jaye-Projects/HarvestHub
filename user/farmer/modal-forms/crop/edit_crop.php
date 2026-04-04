@@ -91,7 +91,7 @@ $expense = $farm_resource->cropExpense();
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Crop Name</label>
-                            <input type="text" name="crop_name" class="form-control shadow-sm" required value="<?php echo $row['crop_name'];?>">
+                            <input type="text" name="crop_name" class="form-control shadow-sm" required value="<?php echo ucwords($row['crop_name']); ?>">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Date Planted</label>
@@ -150,11 +150,19 @@ $expense = $farm_resource->cropExpense();
                                     <input type="number" step="0.1" id="actual_harvested-<?php echo $id; ?>" name="actual_yield" class="form-control form-control-lg border-warning" placeholder="0.0">
                                 </div>
                             </div>
-                            <div class="col-md-6 mt-3">
+
+                            <div class="col-md-4 mt-3">
+                                <label class="form-label">Reserved (kg)</label>
+                                <input type="text" name="reserved_kg" id="reserved_kg" class="form-control shadow-sm" placeholder="e.g. 20" value="<?php echo $row['reserve_kg']; ?>" readonly>
+                            </div>
+
+                            <div class="col-md-4 mt-3">
                                 <label class="form-label">Profit Margin (%)</label>
                                 <input type="number" name="profit_margin" id="profit_margin-<?php echo $id; ?>" class="form-control shadow-sm" placeholder="e.g. 20">
                             </div>
-                            <div class="col-md-6 mt-3">
+
+
+                            <div class="col-md-4 mt-3">
                                 <label class="form-label text-success fw-bold">Sug. Selling Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-success text-white border-0">₱</span>

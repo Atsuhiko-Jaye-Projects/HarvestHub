@@ -724,6 +724,7 @@ class Product{
                     SET
                     price_per_unit = :price_per_unit,
                     total_stocks = :total_stocks,
+                    available_stocks = :available_stocks,
                     product_type = :product_type
                   WHERE
                     product_id = :product_id";
@@ -731,11 +732,13 @@ class Product{
         $stmt = $this->conn->prepare($query);
 
         $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));
+        $this->available_stocks = htmlspecialchars(strip_tags($this->available_stocks));
         $this->total_stocks = htmlspecialchars(strip_tags($this->total_stocks));
         $this->product_type = htmlspecialchars(strip_tags($this->product_type));
 
         $stmt->bindParam(":product_id", $this->product_id);
         $stmt->bindParam(":price_per_unit", $this->price_per_unit);
+        $stmt->bindParam(":available_stocks", $this->available_stocks);
         $stmt->bindParam(":total_stocks", $this->total_stocks);
         $stmt->bindParam(":product_type", $this->product_type);
 

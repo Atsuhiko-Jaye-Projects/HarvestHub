@@ -24,6 +24,7 @@ class Crop{
     public $crop_status;
     public $crop_image;
     public $baranggay;
+    public $reserved_kg;
 
     public function __construct($db) {
 	    $this->conn = $db;
@@ -343,6 +344,48 @@ class Crop{
 
         return false;
     }
+
+    function AddReserveKG(){
+
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET
+                    reserve_kg = reserve_kg + :reserve_kg
+                WHERE
+                    id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":reserve_kg", $this->reserve_kg);
+        $stmt->bindParam(":id", $this->id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    function DeductReserveKG(){
+
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET
+                    reserve_kg = reserve_kg - :reserve_kg
+                WHERE
+                    id = :id
+                    AND reserve_kg >= :reserve_kg";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":reserve_kg", $this->reserve_kg);
+        $stmt->bindParam(":id", $this->id);
+
+        if ($stmt->execute()) {
+            return $stmt->rowCount() > 0; // ✅ only true if deduction happened
+        }
+
+        return false;    
+    } 
 
 }
 
