@@ -85,8 +85,8 @@ $expense = $farm_resource->cropExpense();
                     <input type="hidden" name="id" value="<?php echo $row['id'];?>">
                     <input type="hidden" name="farm_resource_id" value="<?php echo $row['farm_resource_id'];?>">
                     <input type="hidden" name="total_plant_expense" id="expense-<?php echo $id; ?>" value="<?php echo $expense; ?>">
-                    <input type="text" name="cultivated_area" value="<?php echo $row['cultivated_area']; ?>">
-                    <input type="text" name="crop_image" value="<?php echo $row['crop_image']; ?>">
+                    <input type="hidden" name="cultivated_area" value="<?php echo $row['cultivated_area']; ?>">
+                    <input type="hidden" name="crop_image" value="<?php echo $row['crop_image']; ?>">
 
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">

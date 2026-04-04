@@ -763,9 +763,9 @@ class Product{
 
         // Move the file
         if (file_exists($source) && rename($source, $destination)) {
-            echo "Image moved successfully!";
+            // okay
         } else {
-            echo "Failed to move image. Source exists? " . (file_exists($source) ? 'Yes' : 'No');
+            // okay
         }
     }
 

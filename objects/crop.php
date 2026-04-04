@@ -296,7 +296,6 @@ class Crop{
 
         $query = "SELECT * FROM " . $this->table_name . "
                 WHERE user_id = :user_id 
-                AND crop_status = 'crop planted'
                 ORDER BY id DESC
                 LIMIT $from_record_num, $records_per_page";
 
