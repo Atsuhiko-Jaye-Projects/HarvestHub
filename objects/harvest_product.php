@@ -53,7 +53,7 @@ class HarvestProduct{
         $stmt=$this->conn->prepare($query);
 
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
-
+        $this->crop_id = htmlspecialchars(strip_tags($this->crop_id));
         $this->product_name = htmlspecialchars(strip_tags($this->product_name));
         $this->unit = htmlspecialchars(strip_tags($this->unit));
         $this->price_per_unit = htmlspecialchars(strip_tags($this->price_per_unit));

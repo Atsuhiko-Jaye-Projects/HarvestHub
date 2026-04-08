@@ -328,7 +328,8 @@ class Crop{
         $query = "UPDATE
                     " . $this->table_name . "
                 SET
-                    crop_image=:crop_image
+                    crop_image=:crop_image,
+                    suggested_price=:price_per_unit
                 WHERE
                     id = :id";
 
@@ -336,7 +337,7 @@ class Crop{
 
         $stmt->bindParam(":id", $this->id);
         $stmt->bindParam(":crop_image", $this->crop_image);
-
+        $stmt->bindParam(":price_per_unit", $this->price_per_unit);
         if ($stmt->execute()) {
             return true;
         }

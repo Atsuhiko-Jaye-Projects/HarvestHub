@@ -301,6 +301,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
             $crop->id = $_POST['id'];
             $crop->status = "posted";
+            $crop->price_per_unit = $_POST['price_per_unit'];
             $crop->crop_image = $image;
             $crop->cropPosted();
             $crop->saveCropImage();
