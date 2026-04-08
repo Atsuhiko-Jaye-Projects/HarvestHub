@@ -72,4 +72,3 @@
         </tbody>
     </table>
 </div>
-<?php include_once "../../../paging.php"; ?>
