@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </form>
         `;
 
-        const postBtn = row.is_posted === 'Posted'
+        const postBtn = row.is_posted == 'posted'
         ? ''
         :`
           <button class='btn btn-success me-2'
@@ -51,16 +51,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-          if (row.is_posted === "Pending") {
+          if (row.is_posted == "Pending") {
             statusClass = "bg-warning text-dark";
-            } else if (row.is_posted === "Posted") {
+            } else if (row.is_posted == "posted") {
                 statusClass = "bg-success text-white";
             }
 
           rows += `
           <tr class='text-center'>
           <td>${row.product_name}</td>
-
           <td class='price'>₱${row.price_per_unit}.00</td>
           <td>${row.unit}</td>
           <td>${Number(row.total_stocks).toLocaleString()} KG</td>
@@ -77,8 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     data-bs-target='#edit-harvest-modal-${row.id}'>
               <i class='bi bi-pencil-square'></i>
             </button>
-
-
             ${postBtn}
             ${deleteBtn}
           </td>

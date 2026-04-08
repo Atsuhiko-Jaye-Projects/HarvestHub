@@ -163,8 +163,8 @@ if($user->getUserProfileById()) {
                         <div class="col-md-4"><label class="label-sm">Barangay</label><select class="form-select rounded-3" id="barangay"></select></div>
                         
                         <!-- hidden inputs -->
-                        <input type="text" name="latitude" id="latitude">
-                        <input type="text" name="longitude" id="longitude">
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
                         <input type="hidden" name="province" id="province_name">
                         <input type="hidden" name="municipality" id="municipality_name">
                         <input type="hidden" name="barangay" id="barangay_name">

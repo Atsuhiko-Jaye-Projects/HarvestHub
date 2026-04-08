@@ -43,7 +43,6 @@ $num = $stmt->rowCount();
     .invoice-header { background: #fcfdfd; padding: 12px 20px; border-bottom: 1px solid #f1f5f9; }
     .product-img-sm { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; }
     
-    /* Button Styles */
     .btn-sm-custom { border-radius: 8px; font-weight: 700; padding: 7px 16px; font-size: 0.8rem; text-decoration: none !important; display: inline-block; transition: 0.2s; }
     .btn-rate { background-color: #f59e0b; color: white; border: none; }
     .btn-rate:hover { background-color: #d97706; color: white; }
@@ -60,7 +59,6 @@ $num = $stmt->rowCount();
     <div class="filter-pills mb-4">
         <button class="filter-btn active" data-status="all">All</button>
         <button class="filter-btn" data-status="in-progress">In Progress</button>
-        <button class="filter-btn" data-status="delivered">Delivered</button>
         <button class="filter-btn" data-status="complete">Complete</button>
         <button class="filter-btn" data-status="cancelled">Cancelled</button>
     </div>
@@ -75,23 +73,32 @@ $num = $stmt->rowCount();
 
         foreach ($groupedOrders as $invoice => $orders) {
             $first = $orders[0];
-            $rawStatus = strtolower($first['status']);
             
-            // Logic for filtering Categories
+            // Normalize status for logic checking
+            $rawStatus = strtolower(trim($first['status']));
+            
+            // Logic for filtering Categories (used by JS filter)
             $category = "in-progress";
-            if($rawStatus == "complete") $category = "complete";
-            elseif($rawStatus == "delivered" || $rawStatus == "in transit") $category = "delivered";
-            elseif($rawStatus == "cancelled" || $rawStatus == "decline") $category = "cancelled";
+            if($rawStatus == "complete") {
+                $category = "complete";
+            } elseif($rawStatus == "delivered" || $rawStatus == "in transit") {
+                $category = "delivered";
+            } elseif(strpos($rawStatus, 'cancel') !== false || strpos($rawStatus, 'decline') !== false) {
+                $category = "cancelled";
+            }
 
-            // UI Status Badges
-            $statusLabel = $rawStatus; $statusClass = "bg-light text-dark";
+            // UI Status Badges Labels
+            $statusLabel = ucfirst($rawStatus); 
+            $statusClass = "bg-light text-dark";
+            
             switch($rawStatus) {
                 case "order placed": $statusLabel = "Order Placed"; $statusClass = "bg-info text-white"; break;
                 case "accept": $statusLabel = "Preparing"; $statusClass = "bg-warning text-dark"; break;
                 case "complete": $statusLabel = "Complete"; $statusClass = "bg-success text-white"; break;
                 case "in transit": $statusLabel = "In Transit"; $statusClass = "bg-primary text-white"; break;
                 case "delivered": $statusLabel = "Delivered"; $statusClass = "bg-success text-white"; break;
-                case "decline": $statusLabel = "Declined"; $statusClass = "bg-danger text-white"; break;
+                case "decline": 
+                case "declined": $statusLabel = "Declined"; $statusClass = "bg-danger text-white"; break;
                 case "cancelled": $statusLabel = "Cancelled"; $statusClass = "bg-secondary text-white"; break;
                 case "accept pre-order": $statusLabel = "Pre-Order Accepted"; $statusClass = "bg-info text-white"; break;
             }
@@ -173,13 +180,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
+            // Update Active Button UI
             filterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
             const filter = this.getAttribute('data-status');
+            
             cards.forEach(card => {
-                const cat = card.getAttribute('data-category');
-                card.style.display = (filter === 'all' || cat === filter) ? 'block' : 'none';
+                const cardCategory = card.getAttribute('data-category');
+                
+                if (filter === 'all' || cardCategory === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         });
     });

@@ -174,7 +174,7 @@
                         <div class="col-md-6">
                             <label class="form-label">Cultivated Area Size</label>
                             <div class="input-group shadow-sm">
-                                <input type="number" name="cultivated_area" id="area" class="form-control" value="50" readonly>
+                                <input type="number" name="cultivated_area" id="area" class="form-control" step="0.01" value="50" readonly>
                                 <span class="input-group-text">SQM</span>
                             </div>
                             <div class="form-text mt-2 ps-1" style="font-size: 0.75rem;">

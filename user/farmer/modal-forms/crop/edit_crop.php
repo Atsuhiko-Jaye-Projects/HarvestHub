@@ -136,14 +136,29 @@ $expense = $farm_resource->cropExpense();
 
                     <div id="actual-inputs-<?php echo $id; ?>" class="harvest-section">
                         <h6 class="fw-bold text-warning-emphasis mb-4"><i class="bi bi-basket2-fill me-2"></i> Final Harvest Summary</h6>
+
+                                        <div class="row g-3 mb-4">
+                  <div class="col-md-4">
+                    <div class="p-3 rounded-5 bg-primary bg-opacity-10 border border-primary border-opacity-10">
+                      <small class="text-primary fw-bold d-block mb-1">TOTAL YIELD</small>
+                      <h4 id="yield-label-${row.id}" class="fw-bold mb-0 text-primary">${row.total_stocks} KG</h4>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="p-3 rounded-5 bg-danger bg-opacity-10 border border-danger border-opacity-10">
+                      <small class="text-danger fw-bold d-block mb-1">TOTAL EXPENSES</small>
+                      <h4 class="fw-bold mb-0 text-danger">₱</h4>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div id="net-card-${row.id}" class="p-3 rounded-5 bg-dark text-white shadow-lg transition-all" style="transition: 0.3s;">
+                      <small class="opacity-75 fw-bold d-block mb-1">EST. NET INCOME</small>
+                      <h4 id="net-income-label-${row.id}" class="fw-bold mb-0">₱0.00</h4>
+                    </div>
+                  </div>
+                </div>
                         
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="yield-box">
-                                    <label class="form-label text-muted">Est. Total Harvest (KG)</label>
-                                    <input type="number" id="est_yield-<?php echo $id; ?>" class="form-control-plaintext fw-bold fs-5 p-0" readonly>
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="yield-box border-warning shadow-sm">
                                     <label class="form-label text-warning-emphasis">Actual Total Harvest (KG)</label>
@@ -155,20 +170,50 @@ $expense = $farm_resource->cropExpense();
                                 <label class="form-label">Reserved (kg)</label>
                                 <input type="text" name="reserved_kg" id="reserved_kg" class="form-control shadow-sm" placeholder="e.g. 20" value="<?php echo $row['reserve_kg']; ?>" readonly>
                             </div>
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold text-muted ps-2">Verify Harvest Stocks (KG)</label>
+                    <input type="number" name="total_stocks" id="stocks-${row.id}" value="${row.total_stocks}" class="form-control form-control-lg border-0 bg-light rounded-4 px-4 shadow-inner">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-bold text-muted ps-2">Cost per KG (Break-even)</label>
+                    <input type="text" class="form-control form-control-lg border-0 bg-light rounded-4 px-4 text-danger fw-bold" value="₱${costPerKg.toFixed(2)}" readonly>
+                    <input type="hidden" id="cost-${row.id}" value="${costPerKg}">
+                  </div>
 
-                            <div class="col-md-4 mt-3">
-                                <label class="form-label">Profit Margin (%)</label>
-                                <input type="number" name="profit_margin" id="profit_margin-<?php echo $id; ?>" class="form-control shadow-sm" placeholder="e.g. 20">
+                  <div class="col-md-12">
+                    <div class="p-4 rounded-5 border-2 border-dashed border-success bg-success bg-opacity-10">
+                       <div class="row align-items-center">
+                          <div class="col-md-7">
+                            <label class="form-label fw-bold text-success mb-2">Set Your Selling Price per KG</label>
+                            <div class="input-group input-group-lg shadow-sm">
+                              <span class="input-group-text border-0 bg-success text-white rounded-start-4">₱</span>
+                              <input type="number" step="0.01" name="selling_price" class="form-control border-0 rounded-end-4 fw-bold" id="selling-price-${row.id}" placeholder="0.00" required>
                             </div>
+                          </div>
+                          <div class="col-md-5 text-end mt-3 mt-md-0">
+                             <small class="text-muted d-block fw-bold mb-1">TOTAL ESTIMATED REVENUE</small>
+                             <h3 id="revenue-text-${row.id}" class="fw-bold text-success mb-0">₱0.00</h3>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
 
-
-                            <div class="col-md-4 mt-3">
-                                <label class="form-label text-success fw-bold">Sug. Selling Price</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-success text-white border-0">₱</span>
-                                    <input type="number" step="0.01" id="est_selling_price-<?php echo $id; ?>" name="selling_price" class="form-control border-success fw-bold">
-                                </div>
-                            </div>
+                  <div class="col-md-12">
+                     <div id="status-box-${row.id}" class="p-3 rounded-4 bg-light d-flex justify-content-between align-items-center transition-all">
+                        <div class="d-flex align-items-center">
+                           <div class="p-2 bg-white rounded-circle shadow-sm me-3" id="margin-icon-${row.id}">
+                             <i class="bi bi-graph-up-arrow text-muted"></i>
+                           </div>
+                           <div>
+                              <small class="text-muted fw-bold d-block">PROFIT MARGIN</small>
+                              <span id="margin-text-${row.id}" class="fw-bold h5 mb-0">0%</span>
+                           </div>
+                        </div>
+                        <span id="market-status-${row.id}" class="badge rounded-pill bg-secondary px-4 py-2">Waiting...</span>
+                     </div>
+                  </div>
+                </div>
                         </div>
                     </div>
                 </div>

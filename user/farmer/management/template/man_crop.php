@@ -77,6 +77,7 @@
         <tr>
           <th><i class="bi bi-flower1 me-1"></i> </i> Crop Name</th>
           <th><i class="bi bi-bar-chart-line me-1"></i> Reserved (kg)</th>
+          
           <th><i class="bi bi-signpost-split me-1"></i> Cultivated Area (sqm)</th>
           <th><i class="bi bi-box-seam me-1"></i> Harvest Stocks (EST.)</th>
           <th><i class="bi bi-clipboard-data me-1"></i> Planted Crops</th>
@@ -106,6 +107,7 @@
 
             echo "<tr>";
               echo "<td class='text-nowrap'>{$row['crop_name']}</td>";
+              
               echo "<td>{$row['reserve_kg']}</td>";
               echo "<td>{$row['cultivated_area']} SQM</td>";
               echo "<td>" . number_format($row['stocks']) . " KG</td>";

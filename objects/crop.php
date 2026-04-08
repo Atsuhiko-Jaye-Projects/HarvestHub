@@ -295,7 +295,7 @@ class Crop{
         $records_per_page = (int) $records_per_page;
 
         $query = "SELECT * FROM " . $this->table_name . "
-                WHERE user_id = :user_id 
+                WHERE user_id = :user_id AND crop_status != 'harvested'
                 ORDER BY id DESC
                 LIMIT $from_record_num, $records_per_page";
 

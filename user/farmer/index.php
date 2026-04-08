@@ -2,9 +2,6 @@
 ob_start();
 include_once "../../config/core.php";
 include_once "../../config/database.php";
-include_once "../../objects/order.php";
-include_once "../../objects/review.php";
-
 $page_title = "Index";
 $require_login = true;
 include_once "../../login_checker.php";
@@ -253,7 +250,7 @@ if ($_SESSION['is_farm_registered'] == 0) {
         <div class="col-lg-4">
             <div class="glass-card h-100 overflow-hidden">
                 <div class="p-4 border-bottom bg-light bg-opacity-25 d-flex justify-content-between">
-                    <h6 class="fw-bold mb-0"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Top Planted</h6>
+                    <h6 class="fw-bold mb-0"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Top Seling Products</h6>
                     <i class="bi bi-filter-right"></i>
                 </div>
                 <div class="table-responsive">

@@ -98,19 +98,20 @@
       <tbody id='harvest_product'>
         <?php
           // Existing PHP fetch logic (keep your original structure)
-          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
-            echo "<tr>";
-            echo "<td>{$product_names}</td>";
-            echo "<td>{$price_per_unit}</td>";
-            echo "<td>{$unit}</td>";
-            echo "<td>{$lot_size}</td>";
-            echo "<td>{$is_posted}</td>";
-            echo "<td class='text-center'>";
-            echo "<button class='btn btn-sm btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-$id'><i class='bi bi-pencil-square'></i></button>";
-            echo "<button class='btn btn-sm btn-success' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-$id'><i class='bi bi-upload'></i></button>";
-            echo "</td></tr>";
-          }
+          // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+          //   extract($row);
+          //   echo "<tr>";
+          //   echo "<td>{$product_names}</td>";
+          //   echo "<td>{$price_per_unit}</td>";
+          //   echo "<td>{$unit}</td>";
+          //   echo "<td>{$lot_size}</td>";
+          //   echo "<td class='text-primary'>{$is_posted}</td>";
+          //   echo "<td class='text-center'>";
+          //   echo "<button class='btn btn-sm btn-primary me-2' data-bs-toggle='modal' data-bs-target='#edit-harvest-modal-$id'><i class='bi bi-pencil-square'></i></button>";
+          //   echo "<button class='btn btn-sm btn-success' data-bs-toggle='modal' data-bs-target='#post-harvest-modal-$id'><i class='bi bi-upload'></i></button>";
+          //   echo "</td>
+          //   </tr>";
+          // }
         ?>
       </tbody>
     </table>
