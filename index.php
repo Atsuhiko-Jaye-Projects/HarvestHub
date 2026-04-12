@@ -122,7 +122,7 @@ if (isset($_SESSION['logged_in'])) {
     <div class="hero-slim shadow-sm">
         <div>
             <h1 class="fw-800">Harvest Hub</h1>
-            <p class="opacity-75">Sourcing the best vegetables from Baao farmers.</p>
+            <p class="opacity-75">Sourcing the best vegetables from farmers.</p>
         </div>
         <img src="libs/images/logo.png" style="width: 85px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">
     </div>
@@ -211,7 +211,7 @@ if (isset($_SESSION['logged_in'])) {
                                     <span class="text-success fw-800 fs-5">₱<?= number_format($price_per_unit, 2) ?></span>
                                 </div>
                                 <div class="text-end">
-                                    <span class="badge bg-light text-muted rounded-pill border fw-normal" style="font-size: 0.7rem;"><?= $total_stocks ?>kg left</span>
+                                    <span class="badge bg-light text-muted rounded-pill border fw-normal" style="font-size: 0.7rem;"><?php echo $available_stocks; ?>kg left</span>
                                 </div>
                             </div>
                             <div class="mt-3">

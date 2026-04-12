@@ -197,40 +197,46 @@ $cart_item_count = $cart_item->countItem();
       </p>
       <h6>Available Stocks:</h6>
       <p class="text-secondary">
-        <?php echo $product->available_stocks; ?> KG
+        <?php 
+          if ($product->available_stocks == 0) {
+            echo "<span class='text-danger fw-bold'>Out of Stock</span>";
+          } else {
+              echo $product->available_stocks . " KG";
+              echo '
+              <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="POST" id="cartForm">
+                <div class="mb-3">
+                  <label class="form-label">Select Kilos:</label><br>
+                  <div class="btn-group" role="group" aria-label="Select Kilos">
+                    <input type="text" name="product_id" hidden value="' . $product->id . '">
+                    <input type="text" name="amount" hidden value="' . $product->price_per_unit . '">
+                    <input type="text" id="available_stocks" hidden value="' . $product->available_stocks . '">
+
+                    <input type="radio" class="btn-check" name="unit" id="unitPiece" value="piece" checked>
+
+                    <input type="radio" class="btn-check" name="unit" id="unitGram" value="gram" checked>
+                    <label class="btn btn-outline-secondary" for="unitGram">Per Gram</label>
+
+                    <input type="radio" class="btn-check" name="unit" id="unitKg" value="kg">
+                    <label class="btn btn-outline-secondary" for="unitKg">Per KG</label>
+                  </div>
+                </div>
+
+                <div class="mt-3 col-md-4" id="quantityContainer">
+                  <label id="quantityLabel" class="form-label">Quantity</label>
+                  <input type="number" id="quantity" name="quantity" class="form-control" required>
+                  <small id="helperText" class="text-muted"></small>
+                </div>
+
+                <div class="d-flex gap-3">
+                  <button type="submit" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
+                  <input type="hidden" class="btn-check" name="farmer_id" value="' . $product->user_id . '">
+                </div>
+              </form>';
+          }
+        ?>
       </p>
 
-      <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method='POST' id="cartForm">
-        <div class="mb-3">
-          <label class="form-label">Select Kilos:</label><br>
-          <div class="btn-group" role="group" aria-label="Select Kilos">
-            <input type="text" name="product_id" hidden value="<?php echo $product->id; ?>">
-            <input type="text" name="amount" hidden value="<?php echo $product->price_per_unit; ?>">
-            <input type="text" id="available_stocks" hidden value="<?php echo $product->available_stocks; ?>">
 
-            <input type="radio" class="btn-check" name="unit" id="unitPiece" value="piece" checked>
-            <!-- <label class="btn btn-outline-secondary" for="unitPiece">Per Piece</label> -->
-
-            <input type="radio" class="btn-check" name="unit" id="unitGram" value="gram" checked>
-            <label class="btn btn-outline-secondary" for="unitGram">Per Gram</label>
-
-            <input type="radio" class="btn-check" name="unit" id="unitKg" value="kg">
-            <label class="btn btn-outline-secondary" for="unitKg">Per KG</label>
-          </div>
-        </div>
-
-        <div class="mt-3 col-md-4" id="quantityContainer">
-            <label id="quantityLabel" class="form-label">Quantity</label>
-            <input type="number" id="quantity" name="quantity" class="form-control" required>
-            <small id="helperText" class="text-muted"></small>
-        </div>
-
-        <div class="d-flex gap-3">
-          <button type="submit" id="addToCartBtn" class="btn btn-success px-4">Add to Cart</button>
-          <input type="hidden" class="btn-check" name="farmer_id" value="<?php echo $product->user_id;?>">
-        </div>
-      </div>
-    </form>
   </div>
 
 <!-- shop information -->

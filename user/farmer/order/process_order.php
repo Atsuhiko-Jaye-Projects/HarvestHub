@@ -101,7 +101,7 @@ $product_image_path = ($product_type == 'preorder')
     : "{$base_url}user/uploads/{$user_id}/products/{$raw_product_image}";
 
 if ($_POST) {
-    if (!empty($_POST['action']) && $_POST['action'] == "accept") {
+    if (!empty($_POST['action'])) {
         $order->id = $_POST['order_id'];
         $order->status = $_POST['action'];
         if ($order->processOrder($_POST['action'])) {

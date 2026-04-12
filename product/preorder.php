@@ -164,7 +164,7 @@ if ($_POST) {
           <div class="btn-group" role="group" aria-label="Select Kilos">
             <input type="text" name="product_id" hidden value="<?php echo $product->id; ?>">
             <input type="text" name="amount" hidden value="<?php echo $product->price_per_unit; ?>">
-            <input type="text" id="available_stocks" hidden value="<?php echo $product->available_stocks; ?>">
+            <input type="text" id="available_stocks" hidden value="<?php echo $product->safe_harvest; ?>">
 
             <input type="radio" class="btn-check" name="unit" id="unitPiece" value="piece" checked>
             <!-- <label class="btn btn-outline-secondary" for="unitPiece">Per Piece</label> -->
