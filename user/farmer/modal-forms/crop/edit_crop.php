@@ -152,17 +152,24 @@ $expense = $farm_resource->cropExpense();
                         </div>
 
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="yield-box border-warning shadow-sm">
                                     <label class="form-label text-warning-emphasis">Actual Total Harvest (KG)</label>
                                     <input type="number" step="0.1" id="actual_harvested-<?php echo $id; ?>" name="actual_yield" class="form-control form-control-lg border-warning" placeholder="0.0">
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mt-3">
+                            <div class="col-md-4 mt-3">
                                 <div class="yield-box border-warning shadow-sm">
                                     <label class="form-label">Reserved (kg)</label>
                                     <input type="text" name="reserved_kg" id="reserved_kg" class="form-control shadow-sm" placeholder="e.g. 20" value="<?php echo $row['reserve_kg']; ?>" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mt-3">
+                                <div class="yield-box border-primary shadow-sm">
+                                    <label class="form-label">Suggested Price</label>
+                                    <input type="text" name="reserved_kg" id="suggested_price" class="form-control shadow-sm" placeholder="e.g. 20" value="<?php echo $row['suggested_price']; ?>" readonly>
                                 </div>
                             </div>
 
@@ -223,10 +230,11 @@ function updateFinancials(id) {
     const expense = parseFloat(document.getElementById(`expense-${id}`)?.value) || 0;
     const harvest = parseFloat(document.getElementById(`actual_harvested-${id}`)?.value) || 0;
     const price   = parseFloat(document.getElementById(`selling-price-${id}`)?.value) || 0;
+    const suggestedPrice = parseFloat(document.getElementById("suggested_price")?.value) || 0;
 
     const revenue = harvest * price;
     const net = revenue - expense;
-    const margin = harvest > 0 ? (net / expense) * 100 : 0;
+    const margin = suggestedPrice > 0 ? ((price - suggestedPrice) / suggestedPrice) * 100 : 0;
 
     // Update Revenue
     const revenueText = document.getElementById(`revenue-text-${id}`);
@@ -256,13 +264,26 @@ function updateFinancials(id) {
     // Update Market Status
     const marketStatus = document.getElementById(`market-status-${id}`);
     if (marketStatus) {
-        if (margin >= 20) {
-            marketStatus.innerText = "Compliant";
-            marketStatus.className = "badge rounded-pill bg-success px-4 py-2";
-        } else if (margin < 0) {
+
+        const suggestedPrice = parseFloat(
+            document.getElementById("suggested_price")?.value
+        ) || 0;
+
+        const maxAllowed = suggestedPrice * 1.20; // ✅ 20% cap
+
+        if (price > maxAllowed && suggestedPrice > 0) {
             marketStatus.innerText = "Overpriced";
             marketStatus.className = "badge rounded-pill bg-danger px-4 py-2";
-        } else {
+        } 
+        else if (price < suggestedPrice && suggestedPrice > 0) {
+            marketStatus.innerText = "Underpriced";
+            marketStatus.className = "badge rounded-pill bg-warning px-4 py-2";
+        } 
+        else if (price >= suggestedPrice && price <= maxAllowed && suggestedPrice > 0) {
+            marketStatus.innerText = "Compliant";
+            marketStatus.className = "badge rounded-pill bg-success px-4 py-2";
+        } 
+        else {
             marketStatus.innerText = "Waiting...";
             marketStatus.className = "badge rounded-pill bg-secondary px-4 py-2";
         }
