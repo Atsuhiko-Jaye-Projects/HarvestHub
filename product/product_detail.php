@@ -203,7 +203,7 @@ $cart_item_count = $cart_item->countItem();
           } else {
               echo $product->available_stocks . " KG";
               echo '
-              <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="POST" id="cartForm">
+              <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '?pid=' . $product_id . '" method="POST">
                 <div class="mb-3">
                   <label class="form-label">Select Kilos:</label><br>
                   <div class="btn-group" role="group" aria-label="Select Kilos">
