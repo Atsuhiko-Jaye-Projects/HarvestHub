@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const results = data.expense.result; // array of objects
 
             // Map the results to arrays for Chart.js
-            const labels = results.map(r => r.date_sales);
+            const labels = results.map(r => r.month_sales);
             const sales = results.map(r => parseFloat(r.total_sales));
 
             new Chart(ctx, {
